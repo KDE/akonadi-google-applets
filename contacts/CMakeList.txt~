@@ -1,0 +1,23 @@
+project(plasma-contact)
+
+cmake_minimum_required(VERSION 2.8)
+
+add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+include_directories(
+   ${CMAKE_SOURCE_DIR}
+   ${CMAKE_BINARY_DIR}
+   ${KDE4_INCLUDES}
+   )
+ 
+set(contact_SRCS plasma-contact.cpp)
+ 
+kde4_add_plugin(plasma_applet_contact ${tutorial1_SRCS})
+target_link_libraries(plasma_applet_contact
+                      ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS})
+ 
+install(TARGETS plasma_applet_contact
+        DESTINATION ${PLUGIN_INSTALL_DIR})
+ 
+install(FILES plasma-applet-contact.desktop
+        DESTINATION ${SERVICES_INSTALL_DIR})
+ 

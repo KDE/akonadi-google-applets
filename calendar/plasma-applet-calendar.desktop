@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Calendar plasmoid
+Comment=Calendar plasmoid for akonadi google resources
+Type=Service
+ServiceTypes=Plasma/Applet
+ 
+X-KDE-Library=plasma_applet_calendar
+X-KDE-PluginInfo-Name=plasma_calendar
+X-KDE-PluginInfo-Category=Online Services
+X-KDE-PluginInfo-Author=Jan Grulich
+X-KDE-PluginInfo-Email=grulja@gmail.com
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Website=http://phoenix.inf.upol.cz/~grulichj
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
