@@ -1,1 +1,16 @@
-This is the first step in my project.
+##############
+Installation
+##############
+
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+make
+make install (as root)
+
+kbuildsycoca4
+
+and maybe you must quit plasma-desktop
+
+kquitapp plasma-desktop
+kstart plasma-desktop
