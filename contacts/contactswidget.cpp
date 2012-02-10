@@ -3,7 +3,9 @@
 ContactsWidget::ContactsWidget(QGraphicsWidget *parent)
 {
 
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this); 
+    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    
+    setLayout(m_layout);
 
 }
 

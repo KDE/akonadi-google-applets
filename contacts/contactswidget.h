@@ -1,13 +1,12 @@
 #ifndef CONTACTSWIDGET_H
 #define CONTACTSWIDGET_H
 
-#include <Plasma/ScrollWidget>
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
 #include "contactitem.h"
 
-class ContactsWidget : public Plasma::ScrollWidget
+class ContactsWidget : public QGraphicsWidget
 {
     Q_OBJECT
 

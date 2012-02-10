@@ -1,7 +1,7 @@
 #include "contactitem.h"
 #include <kicon.h>
 
-ContactItem::ContactItem(QGraphicsWidget* parent): QGraphicsWidget(parent)
+ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): QGraphicsWidget(parent)
 {
    
     m_layout = new QGraphicsLinearLayout(Qt::Horizontal,this);
@@ -9,15 +9,19 @@ ContactItem::ContactItem(QGraphicsWidget* parent): QGraphicsWidget(parent)
     contact_picture = new Plasma::IconWidget(this);
     contact_name = new Plasma::Label(this);
     
+    // TESTING
     contact_picture->setIcon(KIcon("KDE"));
-    contact_name->setText("Honza Grulich");
+    contact_name->setText("Name LastName");
     
+    contact_name->setWordWrap(false);
+        
     m_layout->addItem(contact_picture);
     m_layout->addItem(contact_name);
     
-    this->setLayout(m_layout);
-    //this->setMinimumSize(200, 40);
+    setLayout(m_layout);
 
+    addressee = addr;
+    
 }
 
 

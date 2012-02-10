@@ -4,6 +4,7 @@
 #include <KIcon>
 
 #include <Plasma/Applet>
+#include <Plasma/ScrollWidget>
 
 #include <QGraphicsLinearLayout>
 
@@ -16,12 +17,14 @@ class PlasmaContacts : public Plasma::Applet
     public:
 	
         PlasmaContacts(QObject *parent, const QVariantList &args);
-        ~PlasmaContacts();
+        ~PlasmaContacts() {};
  
 	void init();
  
     private:
         KIcon m_icon;
+	
+	Plasma::ScrollWidget *m_scroll;
 	
 	QGraphicsLinearLayout *m_layout;
 	ContactsWidget *contact_list;
