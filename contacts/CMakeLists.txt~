@@ -12,7 +12,7 @@ include_directories(
    ${KDE4_INCLUDES}
    )
 
-set(contacts_SRCS contactswidget.cpp contactitem.cpp plasma-contacts.cpp)
+set(contacts_SRCS contactitem.cpp plasma-contacts.cpp)
  
 kde4_add_plugin(plasma_applet_contacts ${contacts_SRCS})
 target_link_libraries(plasma_applet_contacts

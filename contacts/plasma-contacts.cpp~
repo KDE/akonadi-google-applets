@@ -31,7 +31,7 @@ void PlasmaContacts::init()
   
     ContactItem * item;
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10 i++) {
 	
 	item = new ContactItem(this);
 	

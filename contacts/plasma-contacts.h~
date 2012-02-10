@@ -23,7 +23,6 @@ class PlasmaContacts : public Plasma::Applet
     private:
         KIcon m_icon;
 	
-	QGraphicsLinearLayout *m_layout;
 	ContactsWidget *contact_list;
 	
 	
