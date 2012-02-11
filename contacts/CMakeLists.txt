@@ -19,7 +19,7 @@ set(contacts_SRCS contactswidget.cpp contactitem.cpp plasma-contacts.cpp)
  
 kde4_add_plugin(plasma_applet_contacts ${contacts_SRCS})
 target_link_libraries(plasma_applet_contacts
-                      ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_KABC_LIBS})
+                      ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDE4_KDECORE_LIBS})
  
 install(TARGETS plasma_applet_contacts
         DESTINATION ${PLUGIN_INSTALL_DIR})
