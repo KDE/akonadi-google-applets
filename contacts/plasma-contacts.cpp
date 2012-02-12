@@ -8,12 +8,8 @@
 
 #include <Plasma/Theme>
 
-#include <QPainter>
-
-PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args): Plasma::Applet(parent, args)
-{
-    m_icon = KIcon("kde");
-  
+PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args): Plasma::Applet(parent, args), m_icon("user-identity")
+{  
     setHasConfigurationInterface(false);  
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
@@ -42,8 +38,6 @@ void PlasmaContacts::init()
     setLayout(m_layout);
     
     fetchCollections();
-    
-
 
 } 
 
@@ -95,7 +89,6 @@ void PlasmaContacts::fetchItems(const Akonadi::Collection & collection)
 
 void PlasmaContacts::fetchItemsFinished(KJob* job)
 {
-    
     if (job->error()) {
 	
         qDebug() << "fetchItems failed";
@@ -109,13 +102,12 @@ void PlasmaContacts::fetchItemsFinished(KJob* job)
    
    foreach ( const Akonadi::Item &item, items ) {
        
-     KABC::Addressee addr = item.payload<KABC::Addressee>();
-     
-     KABC::Addressee * addrr = new KABC::Addressee(addr);
+     KABC::Addressee tmp = item.payload<KABC::Addressee>();
+     KABC::Addressee * addr = new KABC::Addressee(tmp);
      
      ContactItem * item;
     
-     item = new ContactItem(addrr,this);
+     item = new ContactItem(addr,this);
 	
      contact_list->addContact(item); 
      

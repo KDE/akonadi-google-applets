@@ -1,10 +1,10 @@
 #include "contactswidget.h"
+
 #include <KABC/Addressee>
 #include <KABC/SortMode>
 
-ContactsWidget::ContactsWidget(QGraphicsWidget *parent)
+ContactsWidget::ContactsWidget(QGraphicsWidget *parent) : QGraphicsWidget(parent)
 {
-
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
     
     setLayout(m_layout);

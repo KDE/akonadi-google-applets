@@ -1,8 +1,8 @@
 #include "contactitem.h"
 
-#include <KABC/Picture>
-
 #include <kicon.h>
+
+#include <KABC/Picture>
 
 ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): QGraphicsWidget(parent)
 {    
@@ -49,6 +49,8 @@ ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): QGrap
     
     m_layout->addItem(contact_picture);
     m_layout->addItem(contact_name);
+    
+    m_layout->setSpacing(10);
     
     setLayout(m_layout);
     

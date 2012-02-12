@@ -14,3 +14,11 @@ and maybe you must quit plasma-desktop
 
 kquitapp plasma-desktop
 kstart plasma-desktop
+
+################
+Required
+################
+Qt4 
+KDE4
+KdepimLibs
+Akonadi-google - https://projects.kde.org/projects/playground/pim/akonadi-google/repository

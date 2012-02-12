@@ -9,12 +9,12 @@
 
 #include <QGraphicsLinearLayout>
 
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Collection>
+
 #include "contactitem.h"
 #include "contactswidget.h"
 
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/Collection>
- 
 class PlasmaContacts : public Plasma::Applet
 {
     Q_OBJECT
