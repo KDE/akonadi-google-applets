@@ -11,7 +11,7 @@
 #include <Plasma/Label>
 
 
-class ContactItem : public QGraphicsWidget
+class ContactItem : public Plasma::IconWidget
 {
     Q_OBJECT
 
@@ -21,16 +21,15 @@ public:
     virtual ~ContactItem() { };
     
     const KABC::Addressee * getAddressee() { return addressee; }
-
+    
+public slots:
+    
+    void clickedOnContact();
+    
 private:
-
-    QGraphicsLinearLayout *m_layout;
-    
-    Plasma::IconWidget *contact_picture;
-    Plasma::Label *contact_name;
-    
+        
     KABC::Addressee * addressee;
-
+    
 };
 
 

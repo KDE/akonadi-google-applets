@@ -7,6 +7,7 @@
 #include <Akonadi/Item>
 
 #include <Plasma/Theme>
+#include <Plasma/IconWidget>
 
 PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args): Plasma::Applet(parent, args), m_icon("user-identity")
 {  
@@ -22,17 +23,13 @@ void PlasmaContacts::init()
 {
         
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    //m_buttons_layout = new QGraphicsLinearLayout(Qt::Horizontal);
     contact_list = new ContactsWidget(this);
     m_scroll = new Plasma::ScrollWidget(this);
     
     m_scroll->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_scroll->setWidget(contact_list);
-    
-    Plasma::Label * label = new Plasma::Label(this);
-    label->setText("Contacts");
-    label->setAlignment(Qt::AlignCenter);
 
-    m_layout->addItem(label);
     m_layout->addItem(m_scroll);
     
     setLayout(m_layout);

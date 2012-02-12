@@ -32,6 +32,7 @@ class PlasmaContacts : public Plasma::Applet
 	Plasma::ScrollWidget *m_scroll;
 	
 	QGraphicsLinearLayout *m_layout;
+	
 	ContactsWidget *contact_list;
 
         void fetchCollections();
