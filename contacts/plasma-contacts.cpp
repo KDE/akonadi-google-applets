@@ -111,9 +111,11 @@ void PlasmaContacts::fetchItemsFinished(KJob* job)
        
      KABC::Addressee addr = item.payload<KABC::Addressee>();
      
+     KABC::Addressee * addrr = new KABC::Addressee(addr);
+     
      ContactItem * item;
     
-     item = new ContactItem(&addr,this);
+     item = new ContactItem(addrr,this);
 	
      contact_list->addContact(item); 
      

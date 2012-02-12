@@ -5,21 +5,18 @@
 #include <kicon.h>
 
 ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): QGraphicsWidget(parent)
-{
-   
+{    
     m_layout = new QGraphicsLinearLayout(Qt::Horizontal,this);
     
     contact_picture = new Plasma::IconWidget(this);
     contact_name = new Plasma::Label(this);
     
     addressee = addr;
-    
-    qDebug() << addr->hasCategory("photo");
-    
+        
     if (addr->photo().isEmpty()) {
 		
-	// TODO: kde icon just for now
-	contact_picture->setIcon(KIcon("kde"));
+	// TODO: 
+	contact_picture->setIcon(KIcon("user-identity"));
 	
     } else {
 
@@ -33,8 +30,8 @@ ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): QGrap
     
     if (addr->name().isEmpty()) {
     
-        // TODO: set "Without name" just for now
-	contact_name->setText("Without name");
+        // TODO: 
+	contact_name->setText("no name");
 	
     } else {
 	

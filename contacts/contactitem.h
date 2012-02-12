@@ -19,6 +19,8 @@ public:
     ContactItem(KABC::Addressee * addr, QGraphicsWidget *parent = 0);
     
     virtual ~ContactItem() { };
+    
+    const KABC::Addressee * getAddressee() { return addressee; }
 
 private:
 
