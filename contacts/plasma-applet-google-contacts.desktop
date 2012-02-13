@@ -4,8 +4,8 @@ Comment=Contacts plasmoid for akonadi google resources
 Type=Service
 ServiceTypes=Plasma/Applet
  
-X-KDE-Library=plasma_applet_contacts
-X-KDE-PluginInfo-Name=plasma_contacts
+X-KDE-Library=plasma_applet_google_contacts
+X-KDE-PluginInfo-Name=plasma_google_contacts
 X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Author=Jan Grulich
 X-KDE-PluginInfo-Email=grulja@gmail.com

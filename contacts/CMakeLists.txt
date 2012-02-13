@@ -15,15 +15,15 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(contacts_SRCS contactswidget.cpp contactitem.cpp plasma-contacts.cpp)
+set(contacts_SRCS contactswidget.cpp contactitem.cpp plasmacontacts.cpp)
  
-kde4_add_plugin(plasma_applet_contacts ${contacts_SRCS})
-target_link_libraries(plasma_applet_contacts
+kde4_add_plugin(plasma_applet_google_contacts ${contacts_SRCS})
+target_link_libraries(plasma_applet_google_contacts
                       ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDE4_KDECORE_LIBS})
  
-install(TARGETS plasma_applet_contacts
+install(TARGETS plasma_applet_google_contacts
         DESTINATION ${PLUGIN_INSTALL_DIR})
  
-install(FILES plasma-applet-contacts.desktop
+install(FILES plasma-applet-google-contacts.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
