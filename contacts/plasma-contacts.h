@@ -6,6 +6,7 @@
 
 #include <Plasma/Applet>
 #include <Plasma/ScrollWidget>
+#include <Plasma/LineEdit>
 
 #include <QGraphicsLinearLayout>
 
@@ -30,6 +31,7 @@ class PlasmaContacts : public Plasma::Applet
         KIcon m_icon;
 	
 	Plasma::ScrollWidget *m_scroll;
+	Plasma::LineEdit *m_line;
 	
 	QGraphicsLinearLayout *m_layout;
 	
@@ -42,6 +44,7 @@ class PlasmaContacts : public Plasma::Applet
    
        void fetchCollectionsFinished(KJob *job);
        void fetchItemsFinished(KJob * job);
+       void lineChanged(QString text);
 	
 	
 };

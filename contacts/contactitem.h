@@ -22,12 +22,20 @@ public:
     
     const KABC::Addressee * getAddressee() { return addressee; }
     
+    bool containsString(QString string);
+    
+    // TODO
+    void hideContact();
+    void showContact();
+    
 public slots:
     
-    void clickedOnContact();
     
 private:
         
+    void setWidgetText();
+    void setTooltipText();
+    
     KABC::Addressee * addressee;
     
 };

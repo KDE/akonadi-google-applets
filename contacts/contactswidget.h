@@ -3,6 +3,7 @@
 
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
+#include <QGraphicsLayoutItem>
 
 #include "contactitem.h"
 
@@ -16,11 +17,11 @@ public:
     ~ContactsWidget() { };
     
     void addContact(ContactItem *item);
+    void showContactsContains(QString string);
 
 private:
 
     QGraphicsLinearLayout *m_layout;       
-
 
 };
 

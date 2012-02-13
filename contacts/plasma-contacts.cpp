@@ -23,18 +23,23 @@ void PlasmaContacts::init()
 {
         
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
-    //m_buttons_layout = new QGraphicsLinearLayout(Qt::Horizontal);
+    m_line = new Plasma::LineEdit(this);
     contact_list = new ContactsWidget(this);
     m_scroll = new Plasma::ScrollWidget(this);
+    
+    m_line->setClearButtonShown(true);
     
     m_scroll->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_scroll->setWidget(contact_list);
 
+    m_layout->addItem(m_line);
     m_layout->addItem(m_scroll);
     
     setLayout(m_layout);
     
     fetchCollections();
+    
+    connect(m_line,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
 
 } 
 
@@ -111,6 +116,14 @@ void PlasmaContacts::fetchItemsFinished(KJob* job)
    }
 
 }
+
+void PlasmaContacts::lineChanged(QString text)
+{
+
+    contact_list->showContactsContains(text);
+    
+}
+
  
 #include "plasma-contacts.moc"
 

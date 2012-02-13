@@ -6,7 +6,7 @@
 ContactsWidget::ContactsWidget(QGraphicsWidget *parent) : QGraphicsWidget(parent)
 {
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
-    
+       
     setLayout(m_layout);
 
 }
@@ -28,5 +28,22 @@ void ContactsWidget::addContact(ContactItem* item)
      
     m_layout->addItem(item); 
 }
+
+void ContactsWidget::showContactsContains(QString string)
+{
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+	
+	((ContactItem*)m_layout->itemAt(i))->showContact();
+		
+	if (!((ContactItem*)m_layout->itemAt(i))->containsString(string)) {
+	    
+	    ((ContactItem*)m_layout->itemAt(i))->hideContact();
+	}
+	
+    }
+    
+}
+
 
 
