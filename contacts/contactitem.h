@@ -21,7 +21,9 @@ public:
     
     const KABC::Addressee * addressee() { return m_addressee; }
     
-    bool containsString(QString string);
+    bool containsString(const QString & string);
+    
+    // TODO
     bool containsMail();
     bool containsPhone();
     

@@ -11,7 +11,7 @@ ContactsWidget::ContactsWidget(QGraphicsWidget *parent) : QGraphicsWidget(parent
 
 }
 
-void ContactsWidget::addContact(ContactItem* item)
+void ContactsWidget::addContact(ContactItem * item)
 {
     
     for (int i = 0; i < m_layout->count(); i++) {
@@ -29,7 +29,7 @@ void ContactsWidget::addContact(ContactItem* item)
     m_layout->addItem(item); 
 }
 
-void ContactsWidget::showContactsContainsText(QString string)
+void ContactsWidget::showContactsContainsText(const QString & string)
 {
     
     for (int i = 0; i < m_layout->count(); i++) {

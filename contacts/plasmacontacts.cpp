@@ -108,7 +108,7 @@ void PlasmaContacts::fetchItems(const Akonadi::Collection & collection)
 
 }
 
-void PlasmaContacts::fetchItemsFinished(KJob* job)
+void PlasmaContacts::fetchItemsFinished(KJob * job)
 {
     if (job->error()) {
 	
@@ -136,7 +136,7 @@ void PlasmaContacts::fetchItemsFinished(KJob* job)
 
 }
 
-void PlasmaContacts::lineChanged(QString text)
+void PlasmaContacts::lineChanged(const QString & text)
 {
 	
     contact_list->showContactsContainsText(text);	

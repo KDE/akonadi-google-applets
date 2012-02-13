@@ -49,7 +49,7 @@ class PlasmaContacts : public Plasma::Applet
        void fetchCollectionsFinished(KJob *job);
        void fetchItemsFinished(KJob * job);
        
-       void lineChanged(QString text);
+       void lineChanged(const QString & text);
        void lineFocusChanged(bool change);
        
        // TODO

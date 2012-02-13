@@ -111,7 +111,7 @@ void ContactItem::setTooltipText()
         
 }
 
-bool ContactItem::containsString(QString string)
+bool ContactItem::containsString(const QString & string)
 {
 
     return text().toLower().contains(string.toLower());

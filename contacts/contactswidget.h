@@ -18,7 +18,7 @@ public:
     
     void addContact(ContactItem *item);
     
-    void showContactsContainsText(QString string);
+    void showContactsContainsText(const QString & string);
     // TODO:
     void showContactsContainsPhone(bool show);
     void showContactsContainsMail(bool show);
