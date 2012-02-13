@@ -16,7 +16,7 @@ void ContactsWidget::addContact(ContactItem* item)
     
     for (int i = 0; i < m_layout->count(); i++) {
 	
-	if ((item->getAddressee()->name().toLower()) < (((ContactItem*)m_layout->itemAt(i))->getAddressee()->name().toLower())) {
+	if ((item->addressee()->name().toLower()) < (((ContactItem*)m_layout->itemAt(i))->addressee()->name().toLower())) {
 	 
 	   m_layout->insertItem(i,item);  
 	   
@@ -29,7 +29,7 @@ void ContactsWidget::addContact(ContactItem* item)
     m_layout->addItem(item); 
 }
 
-void ContactsWidget::showContactsContains(QString string)
+void ContactsWidget::showContactsContainsText(QString string)
 {
     
     for (int i = 0; i < m_layout->count(); i++) {
@@ -42,6 +42,21 @@ void ContactsWidget::showContactsContains(QString string)
 	}
 	
     }
+    
+}
+
+// TODO
+void ContactsWidget::showContactsContainsPhone(bool show)
+{
+
+    Q_UNUSED(show);
+    
+}
+
+void ContactsWidget::showContactsContainsMail(bool show)
+{
+
+    Q_UNUSED(show);
     
 }
 

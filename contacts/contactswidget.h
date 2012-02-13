@@ -17,12 +17,16 @@ public:
     ~ContactsWidget() { };
     
     void addContact(ContactItem *item);
-    void showContactsContains(QString string);
+    
+    void showContactsContainsText(QString string);
+    // TODO:
+    void showContactsContainsPhone(bool show);
+    void showContactsContainsMail(bool show);
 
 private:
 
-    QGraphicsLinearLayout *m_layout;       
-
+    QGraphicsLinearLayout *m_layout;     
+    
 };
 
 #endif // CONTACTSWIDGET_H

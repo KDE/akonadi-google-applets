@@ -16,11 +16,10 @@ ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): Plasm
     setOrientation(Qt::Horizontal);
     setDrawBackground(true);
     
-    addressee = addr;
+    m_addressee = addr;
     
-    if (addressee->photo().isEmpty()) {
+    if (m_addressee->photo().isEmpty()) {
 		
-	// TODO: 
 	setIcon(KIcon("user-identity"));
 	
     } else {
@@ -44,9 +43,9 @@ ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): Plasm
 void ContactItem::setWidgetText()
 {
 
-    if (addressee->name().isEmpty()) {
+    if (m_addressee->name().isEmpty()) {
     
-        QStringList emails = addressee->emails();
+        QStringList emails = m_addressee->emails();
 	
 	if (!emails.empty()) {
 	 
@@ -60,11 +59,10 @@ void ContactItem::setWidgetText()
 	
     } else {
 	
-	setText(addressee->name());
+	setText(m_addressee->name());
 	
     }
     
-
 }
 
 void ContactItem::setTooltipText()
@@ -79,26 +77,27 @@ void ContactItem::setTooltipText()
     
     QString sub; 
     
-    if (!addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
+    if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 	
-	sub += QString::fromUtf8("Domů: ") + addressee->phoneNumber(KABC::PhoneNumber::Home).number();
+	sub += QString::fromUtf8("Domů: ") + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number();
 	
     }
     
-    if (!addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
+    if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
 	
-	sub += QString::fromUtf8("Práce: ") + addressee->phoneNumber(KABC::PhoneNumber::Work).number();
+	sub += QString::fromUtf8("Práce: ") + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number();
 	
     }
     
     // TODO: show more emails
     
-    if (!addressee->emails().isEmpty()) {
+    if (!m_addressee->emails().isEmpty()) {
 	
-	sub += "Email: " + addressee->emails().first();
+	sub += "Email: " + m_addressee->emails().first();
 	
     }
     
+    // TODO: 
     Plasma::ToolTipContent data;
     
     data.setMainText(main);
@@ -116,6 +115,20 @@ bool ContactItem::containsString(QString string)
 {
 
     return text().toLower().contains(string.toLower());
+    
+}
+
+bool ContactItem::containsPhone()
+{
+
+    return (!m_addressee->phoneNumbers().isEmpty());    
+    
+}
+
+bool ContactItem::containsMail()
+{
+
+    return (!m_addressee->emailLabel().isEmpty());
     
 }
 

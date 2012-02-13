@@ -1,4 +1,4 @@
-#include <plasma-contacts.h>
+#include <plasmacontacts.h>
 
 #include <KABC/Addressee>
 
@@ -21,26 +21,45 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args): Plasm
  
 void PlasmaContacts::init()
 {
-        
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    m_show_numbers = new Plasma::IconWidget(this);
+    m_show_numbers->setIcon(KIcon("call-start"));
+    m_show_numbers->setDrawBackground(true);
+    m_show_numbers->setMaximumHeight(30);
+    
+    m_show_emails = new Plasma::IconWidget(this);
+    m_show_emails->setIcon(KIcon("mail-flag"));
+    m_show_emails->setDrawBackground(true);
+    m_show_emails->setMaximumHeight(30);
+    
     m_line = new Plasma::LineEdit(this);
-    contact_list = new ContactsWidget(this);
-    m_scroll = new Plasma::ScrollWidget(this);
-    
     m_line->setClearButtonShown(true);
+    m_line->setText(" Hledat ");
+    m_line->setMinimumHeight(35);
     
+    m_buttons_layout = new QGraphicsLinearLayout(Qt::Horizontal);
+    m_buttons_layout->addItem(m_line);
+    m_buttons_layout->addItem(m_show_emails);
+    m_buttons_layout->addItem(m_show_numbers);
+    
+    contact_list = new ContactsWidget(this);
+    
+    m_scroll = new Plasma::ScrollWidget(this);
     m_scroll->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_scroll->setWidget(contact_list);
-
-    m_layout->addItem(m_line);
-    m_layout->addItem(m_scroll);
     
-    setLayout(m_layout);
+    m_main_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    m_main_layout->addItem(m_buttons_layout);
+    m_main_layout->addItem(m_scroll);
+
+    setLayout(m_main_layout);
+    
+    connect(m_line,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
+    connect(m_line,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
+    connect(m_show_emails,SIGNAL(clicked()),SLOT(showEmails()));
+    connect(m_show_numbers,SIGNAL(clicked()),SLOT(showNumbers()));
     
     fetchCollections();
     
-    connect(m_line,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
-
 } 
 
 void PlasmaContacts::fetchCollections()
@@ -119,12 +138,35 @@ void PlasmaContacts::fetchItemsFinished(KJob* job)
 
 void PlasmaContacts::lineChanged(QString text)
 {
+	
+    contact_list->showContactsContainsText(text);	
+       
+}
 
-    contact_list->showContactsContains(text);
+void PlasmaContacts::lineFocusChanged(bool change)
+{
+ 
+    if (change && m_line->text().contains(" Hledat ")) {
+	
+	m_line->setText("");
+	
+    }
     
 }
 
+// TODO
+void PlasmaContacts::showEmails()
+{
+
+    
+}
+
+void PlasmaContacts::showNumbers()
+{
+
+}
+
  
-#include "plasma-contacts.moc"
+#include "plasmacontacts.moc"
 
  

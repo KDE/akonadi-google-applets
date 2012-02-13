@@ -10,7 +10,6 @@
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
 
-
 class ContactItem : public Plasma::IconWidget
 {
     Q_OBJECT
@@ -20,9 +19,11 @@ public:
     
     virtual ~ContactItem() { };
     
-    const KABC::Addressee * getAddressee() { return addressee; }
+    const KABC::Addressee * addressee() { return m_addressee; }
     
     bool containsString(QString string);
+    bool containsMail();
+    bool containsPhone();
     
     // TODO
     void hideContact();
@@ -36,7 +37,7 @@ private:
     void setWidgetText();
     void setTooltipText();
     
-    KABC::Addressee * addressee;
+    KABC::Addressee * m_addressee;
     
 };
 

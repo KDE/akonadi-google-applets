@@ -7,6 +7,7 @@
 #include <Plasma/Applet>
 #include <Plasma/ScrollWidget>
 #include <Plasma/LineEdit>
+#include <Plasma/IconWidget>
 
 #include <QGraphicsLinearLayout>
 
@@ -32,8 +33,11 @@ class PlasmaContacts : public Plasma::Applet
 	
 	Plasma::ScrollWidget *m_scroll;
 	Plasma::LineEdit *m_line;
+	Plasma::IconWidget *m_show_emails;
+	Plasma::IconWidget *m_show_numbers;
 	
-	QGraphicsLinearLayout *m_layout;
+	QGraphicsLinearLayout *m_main_layout;
+	QGraphicsLinearLayout *m_buttons_layout;
 	
 	ContactsWidget *contact_list;
 
@@ -44,12 +48,17 @@ class PlasmaContacts : public Plasma::Applet
    
        void fetchCollectionsFinished(KJob *job);
        void fetchItemsFinished(KJob * job);
+       
        void lineChanged(QString text);
-	
+       void lineFocusChanged(bool change);
+       
+       // TODO
+       void showEmails();
+       void showNumbers();	
 	
 };
  
-K_EXPORT_PLASMA_APPLET(plasma_contacts, PlasmaContacts)
+K_EXPORT_PLASMA_APPLET(plasma_googgle_contacts, PlasmaContacts)
 
 
 #endif 
