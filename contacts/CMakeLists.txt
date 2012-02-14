@@ -16,6 +16,8 @@ include_directories(
    )
 
 set(contacts_SRCS contactswidget.cpp contactitem.cpp plasmacontacts.cpp)
+
+kde4_add_ui_files(contacts_SRCS config.ui)
  
 kde4_add_plugin(plasma_applet_google_contacts ${contacts_SRCS})
 target_link_libraries(plasma_applet_google_contacts

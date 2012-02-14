@@ -1,13 +1,14 @@
 #ifndef PLASMA_CONTACTS_HEADER
 #define PLASMA_CONTACTS_HEADER
 
+#include <KConfigDialog>
 #include <KIcon>
 #include <KJob>
 
 #include <Plasma/Applet>
 #include <Plasma/ScrollWidget>
 #include <Plasma/LineEdit>
-#include <Plasma/IconWidget>
+#include <Plasma/PushButton>
 
 #include <QGraphicsLinearLayout>
 
@@ -16,6 +17,7 @@
 
 #include "contactitem.h"
 #include "contactswidget.h"
+#include "ui_config.h"
 
 class PlasmaContacts : public Plasma::Applet
 {
@@ -26,6 +28,7 @@ class PlasmaContacts : public Plasma::Applet
         PlasmaContacts(QObject *parent, const QVariantList &args);
         ~PlasmaContacts() {};
  
+	void createConfigurationInterface(KConfigDialog *parent);
 	void init();
  
     private:
@@ -33,29 +36,26 @@ class PlasmaContacts : public Plasma::Applet
 	
 	Plasma::ScrollWidget *m_scroll;
 	Plasma::LineEdit *m_line;
-	Plasma::IconWidget *m_show_emails;
-	Plasma::IconWidget *m_show_numbers;
-	
+
 	QGraphicsLinearLayout *m_main_layout;
-	QGraphicsLinearLayout *m_buttons_layout;
 	
 	ContactsWidget *contact_list;
+	
+	Ui::config configDialog;
 
         void fetchCollections();
         void fetchItems(const Akonadi::Collection & collections);
 	
    public slots:
    
-       void fetchCollectionsFinished(KJob *job);
-       void fetchItemsFinished(KJob * job);
+       	//void configAccepted();
        
-       void lineChanged(const QString & text);
-       void lineFocusChanged(bool change);
+        void fetchCollectionsFinished(KJob *job);
+        void fetchItemsFinished(KJob * job);
        
-       // TODO
-       void showEmails();
-       void showNumbers();	
-	
+        void lineChanged(const QString & text);
+        void lineFocusChanged(bool change);
+       	
 };
  
 K_EXPORT_PLASMA_APPLET(plasma_googgle_contacts, PlasmaContacts)

@@ -11,7 +11,7 @@
 
 PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args): Plasma::Applet(parent, args), m_icon("user-identity")
 {  
-    setHasConfigurationInterface(false);  
+    //setHasConfigurationInterface(false);  
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setMinimumHeight(300);
@@ -21,25 +21,9 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args): Plasm
  
 void PlasmaContacts::init()
 {
-    m_show_numbers = new Plasma::IconWidget(this);
-    m_show_numbers->setIcon(KIcon("call-start"));
-    m_show_numbers->setDrawBackground(true);
-    m_show_numbers->setMaximumHeight(30);
-    
-    m_show_emails = new Plasma::IconWidget(this);
-    m_show_emails->setIcon(KIcon("mail-flag"));
-    m_show_emails->setDrawBackground(true);
-    m_show_emails->setMaximumHeight(30);
-    
     m_line = new Plasma::LineEdit(this);
     m_line->setClearButtonShown(true);
     m_line->setText(" Hledat ");
-    m_line->setMinimumHeight(35);
-    
-    m_buttons_layout = new QGraphicsLinearLayout(Qt::Horizontal);
-    m_buttons_layout->addItem(m_line);
-    m_buttons_layout->addItem(m_show_emails);
-    m_buttons_layout->addItem(m_show_numbers);
     
     contact_list = new ContactsWidget(this);
     
@@ -48,19 +32,27 @@ void PlasmaContacts::init()
     m_scroll->setWidget(contact_list);
     
     m_main_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
-    m_main_layout->addItem(m_buttons_layout);
+    m_main_layout->addItem(m_line);
     m_main_layout->addItem(m_scroll);
 
     setLayout(m_main_layout);
     
     connect(m_line,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
     connect(m_line,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
-    connect(m_show_emails,SIGNAL(clicked()),SLOT(showEmails()));
-    connect(m_show_numbers,SIGNAL(clicked()),SLOT(showNumbers()));
     
     fetchCollections();
     
 } 
+
+void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
+{
+    QWidget *widget = new QWidget(0);
+
+    configDialog.setupUi(widget);
+
+    parent->addPage(widget,"General",icon());
+}
+
 
 void PlasmaContacts::fetchCollections()
 {
@@ -153,19 +145,6 @@ void PlasmaContacts::lineFocusChanged(bool change)
     }
     
 }
-
-// TODO
-void PlasmaContacts::showEmails()
-{
-
-    
-}
-
-void PlasmaContacts::showNumbers()
-{
-
-}
-
  
 #include "plasmacontacts.moc"
 
