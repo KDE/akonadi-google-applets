@@ -9,6 +9,7 @@
 
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
+#include <Plasma/ToolTipContent>
 
 class ContactItem : public Plasma::IconWidget
 {
@@ -22,6 +23,9 @@ public:
     const KABC::Addressee * addressee() { return m_addressee; }
     
     bool containsString(const QString & string);
+    
+    void setShowInfo(bool emails, bool numbers);
+
     
     // TODO
     bool containsMail();
@@ -37,10 +41,9 @@ public slots:
 private:
         
     void setWidgetText();
-    void setTooltipText();
     
     KABC::Addressee * m_addressee;
-    
+        
 };
 
 

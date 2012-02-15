@@ -31,13 +31,11 @@ ContactItem::ContactItem(KABC::Addressee * addr, QGraphicsWidget* parent): Plasm
         setIcon(KIcon(QIcon(pixmap)));
 	
     }
-    
+        
     setMaximumSize(250,50);
     setMinimumSize(250,50);
     
-    setWidgetText();
-    setTooltipText();
-        
+    setWidgetText();        
 }
 
 void ContactItem::setWidgetText()
@@ -65,49 +63,63 @@ void ContactItem::setWidgetText()
     
 }
 
-void ContactItem::setTooltipText()
+void ContactItem::setShowInfo(bool emails, bool numbers)
 {
-
-    // TODO: show other info about contact (maybe)
-    // TODO: improve formating of tooltip
-    
-    QString main = text();
+    QString main = text() + "<br/>";  
     
     // TODO: show more numbers 
     
     QString sub; 
     
-    if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
-	
-	sub += QString::fromUtf8("Domů: ") + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number();
-	
-    }
+    if (numbers) {
     
-    if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
+	if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 	
-	sub += QString::fromUtf8("Práce: ") + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number();
+	    sub += QString::fromUtf8("<strong>Telefon domů: </strong>") + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "<br/>";
 	
-    }
+	}
+    
+	if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() && numbers) {
+	    
+	    sub += QString::fromUtf8("<strong>Telefon do práce: </strong>") + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "<br/>";
+	
+	}
     
     // TODO: show more emails
+    }
     
-    if (!m_addressee->emails().isEmpty()) {
+    if (emails) {
 	
-	sub += "Email: " + m_addressee->emails().first();
+	if (!m_addressee->emails().isEmpty() && emails) {
+	
+	    sub += "<strong>Email: </strong> <a href=\"mailto:" + m_addressee->emails().first() + "\">" + m_addressee->emails().first() + "</a><br/>";
+	
+	}
 	
     }
     
     // TODO: 
-    Plasma::ToolTipContent data;
     
-    data.setMainText(main);
-    data.setImage(icon());
-    data.setSubText(sub);
-    data.setAutohide(false);
+    if (sub.isEmpty()) {
+	
+	hideContact();
+	
+    }
     
-    Plasma::ToolTipManager::self()->setContent(this, data);
+    Plasma::ToolTipContent m_tooltip;
+        
+    m_tooltip.setMainText(main);
+    m_tooltip.setImage(icon());
+    m_tooltip.setSubText(sub);
+    m_tooltip.setAutohide(false);
     
-    data.setClickable(true);
+    m_tooltip.setAutohide(false);
+    m_tooltip.setClickable(true);
+    
+    // TODO: capture linkActivated signal (KRun)
+    
+    Plasma::ToolTipManager::self()->setContent(this, m_tooltip);
+           
         
 }
 
@@ -136,7 +148,8 @@ bool ContactItem::containsMail()
 void ContactItem::hideContact()
 {
 
-    hide();    
+    hide();  
+    
 }
 
 // TODO

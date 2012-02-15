@@ -3,7 +3,7 @@
 #include <KABC/Addressee>
 #include <KABC/SortMode>
 
-ContactsWidget::ContactsWidget(QGraphicsWidget *parent) : QGraphicsWidget(parent)
+ContactsWidget::ContactsWidget(QGraphicsWidget *parent) : QGraphicsWidget(parent), m_showEmails(1), m_showNumbers(1)
 {
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
        
@@ -20,6 +20,8 @@ void ContactsWidget::addContact(ContactItem * item)
 	 
 	   m_layout->insertItem(i,item);  
 	   
+	   item->setShowInfo(m_showEmails, m_showNumbers);
+	   
 	   return;
 	   	    
 	}
@@ -27,6 +29,9 @@ void ContactsWidget::addContact(ContactItem * item)
     }
      
     m_layout->addItem(item); 
+    
+    item->setShowInfo(m_showEmails, m_showNumbers);
+    
 }
 
 void ContactsWidget::showContactsContainsText(const QString & string)
@@ -43,22 +48,36 @@ void ContactsWidget::showContactsContainsText(const QString & string)
 	
     }
     
+
 }
 
-// TODO
-void ContactsWidget::showContactsContainsPhone(bool show)
+void ContactsWidget::setShowEmails(bool show)
 {
 
-    Q_UNUSED(show);
+    m_showEmails = show;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+		
+	((ContactItem*)m_layout->itemAt(i))->setShowInfo(m_showEmails,m_showNumbers);
+	
+    }
     
 }
 
-void ContactsWidget::showContactsContainsMail(bool show)
+void ContactsWidget::setShowNumbers(bool show)
 {
 
-    Q_UNUSED(show);
+    m_showNumbers = show;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+		
+	((ContactItem*)m_layout->itemAt(i))->setShowInfo(m_showEmails,m_showNumbers);
+	
+    }
     
 }
+
+
 
 
 

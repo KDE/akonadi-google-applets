@@ -19,13 +19,16 @@ public:
     void addContact(ContactItem *item);
     
     void showContactsContainsText(const QString & string);
-    // TODO:
-    void showContactsContainsPhone(bool show);
-    void showContactsContainsMail(bool show);
+    
+    void setShowEmails(bool show = 1);
+    void setShowNumbers(bool show = 1);
 
 private:
 
     QGraphicsLinearLayout *m_layout;     
+    
+    bool m_showEmails;
+    bool m_showNumbers;
     
 };
 
