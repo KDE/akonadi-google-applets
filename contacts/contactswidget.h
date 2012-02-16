@@ -5,6 +5,11 @@
 #include <QGraphicsLinearLayout>
 #include <QGraphicsLayoutItem>
 
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
+
+#include <KJob>
+
 #include "contactitem.h"
 
 class ContactsWidget : public QGraphicsWidget
@@ -12,23 +17,36 @@ class ContactsWidget : public QGraphicsWidget
     Q_OBJECT
 
 public:
-    ContactsWidget(QGraphicsWidget *parent = 0);
+    ContactsWidget(QGraphicsItem* parent = 0);
     
     ~ContactsWidget() { };
     
-    void addContact(ContactItem *item);
+    void setOrientation(Qt::Orientation orientation = Qt::Vertical);
+    void setShowEmails(bool show = 1);
+    void setShowNumbers(bool show = 1);
+    void setCollectionId(Akonadi::Collection::Id id);
     
     void showContactsContainsText(const QString & string);
     
-    void setShowEmails(bool show = 1);
-    void setShowNumbers(bool show = 1);
+    void fetchItems(const Akonadi::Collection & collections);
+    
+public slots:
+    
+    void fetchItemsFinished(KJob * job);
+    void fetchCollectionsFinished(KJob *job);
 
 private:
 
     QGraphicsLinearLayout *m_layout;     
     
+    Akonadi::Collection::Id m_collectionId;
     bool m_showEmails;
     bool m_showNumbers;
+    
+    void fetchCollections();
+    
+    void addContact(ContactItem *item);
+
     
 };
 

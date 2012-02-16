@@ -1,6 +1,7 @@
 #include "contactitem.h"
 
 #include <KIcon>
+#include <KRun>
 
 #include <QIcon>
 
@@ -51,7 +52,7 @@ void ContactItem::setWidgetText()
 	    
 	} else {
 	 
-	    setText("Contact without name");
+	    setText(i18n("Contact without name"));
 	    
 	}
 	
@@ -65,6 +66,7 @@ void ContactItem::setWidgetText()
 
 void ContactItem::setShowInfo(bool emails, bool numbers)
 {
+    
     QString main = text() + "<br/>";  
     
     // TODO: show more numbers 
@@ -74,14 +76,14 @@ void ContactItem::setShowInfo(bool emails, bool numbers)
     if (numbers) {
     
 	if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
-	
-	    sub += QString::fromUtf8("<strong>Telefon domů: </strong>") + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "<br/>";
+
+	    sub += "<strong>" + i18n("Phone to home") + ": </strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "<br/>";
 	
 	}
     
 	if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() && numbers) {
 	    
-	    sub += QString::fromUtf8("<strong>Telefon do práce: </strong>") + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "<br/>";
+	    sub += "<strong>" + i18n("Phone to work") + ": </strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "<br/>";
 	
 	}
     
@@ -102,7 +104,7 @@ void ContactItem::setShowInfo(bool emails, bool numbers)
     
     if (sub.isEmpty()) {
 	
-	hideContact();
+	//hideContact();
 	
     }
     
@@ -110,15 +112,14 @@ void ContactItem::setShowInfo(bool emails, bool numbers)
         
     m_tooltip.setMainText(main);
     m_tooltip.setImage(icon());
-    m_tooltip.setSubText(sub);
-    m_tooltip.setAutohide(false);
-    
-    m_tooltip.setAutohide(false);
-    m_tooltip.setClickable(true);
+    m_tooltip.setSubText(sub);    
+    //m_tooltip.setAutohide(false);
     
     // TODO: capture linkActivated signal (KRun)
     
     Plasma::ToolTipManager::self()->setContent(this, m_tooltip);
+    
+    //connect(Plasma::ToolTipManager::self(),SIGNAL(linkActivated(QString)),SLOT(linkActivated(QString)));
            
         
 }
@@ -159,6 +160,10 @@ void ContactItem::showContact()
     
 }
 
+/*void ContactItem::linkActivated(const QString string)
+{
+    KRun::runUrl(KUrl(string), "text/html", 0);
+}*/
 
 
 

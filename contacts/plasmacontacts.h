@@ -32,26 +32,26 @@ class PlasmaContacts : public Plasma::Applet
 	void init();
  
     private:
+	
+	void configChanged();
+	
         KIcon m_icon;
 	
 	Plasma::ScrollWidget *m_scroll;
-	Plasma::LineEdit *m_line;
+	Plasma::LineEdit *m_find;
 
-	QGraphicsLinearLayout *m_main_layout;
+	QGraphicsLinearLayout *m_layout;
 	
 	ContactsWidget *contact_list;
 	
 	Ui::config configDialog;
-
-        void fetchCollections();
-        void fetchItems(const Akonadi::Collection & collections);
 	
    public slots:
    
-       	//void configAccepted();
+       	void configAccepted();
        
+	void fetchCollections();
         void fetchCollectionsFinished(KJob *job);
-        void fetchItemsFinished(KJob * job);
        
         void lineChanged(const QString & text);
         void lineFocusChanged(bool change);

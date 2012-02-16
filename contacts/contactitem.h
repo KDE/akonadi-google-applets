@@ -37,6 +37,7 @@ public:
     
 public slots:
     
+    //void linkActivated(QString);
     
 private:
         
