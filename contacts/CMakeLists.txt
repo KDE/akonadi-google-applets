@@ -15,7 +15,7 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(contacts_SRCS contactswidget.cpp contactitem.cpp plasmacontacts.cpp)
+set(contacts_SRCS contactitem.cpp plasmacontacts.cpp)
 
 kde4_add_ui_files(contacts_SRCS config.ui)
  

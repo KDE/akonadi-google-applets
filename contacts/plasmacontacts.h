@@ -11,9 +11,12 @@
 #include <Plasma/PushButton>
 
 #include <QGraphicsLinearLayout>
+#include <QGraphicsWidget>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
+#include <Akonadi/Item>
+
 
 #include "contactitem.h"
 #include "contactswidget.h"
@@ -30,30 +33,48 @@ class PlasmaContacts : public Plasma::Applet
  
 	void createConfigurationInterface(KConfigDialog *parent);
 	void init();
- 
+	 
     private:
 	
-	void configChanged();
+	// Functions
 	
-        KIcon m_icon;
+	void addContact(ContactItem *item);
+	void configChanged();
+	void fetchItems(const Akonadi::Collection & collections);
+	void fetchCollectionsForContacts();
+	void changeTooltip();
+	void showContactsContainsText(const QString & text);
+
+	// Variables
 	
 	Plasma::ScrollWidget *m_scroll;
 	Plasma::LineEdit *m_find;
 
 	QGraphicsLinearLayout *m_layout;
+	QGraphicsLinearLayout *m_mainLayout;
 	
-	ContactsWidget *contact_list;
+	QGraphicsWidget *m_contactList;
+	
+	Akonadi::Collection::Id m_id;
+	
+	bool m_showEmails;
+	bool m_showNumbers;
 	
 	Ui::config configDialog;
+	
+	//ContactsWidget *contact_list;
 	
    public slots:
    
        	void configAccepted();
-       
+	
 	void fetchCollections();
         void fetchCollectionsFinished(KJob *job);
-       
-        void lineChanged(const QString & text);
+        void fetchCollectionsForContactsFinished(KJob *job);
+
+	void fetchItemsFinished(KJob * job);
+
+	void lineChanged(const QString & text);
         void lineFocusChanged(bool change);
        	
 };
