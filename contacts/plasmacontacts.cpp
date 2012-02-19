@@ -1,3 +1,21 @@
+/*
+    Akonadi google contact plasmoid
+    Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <plasmacontacts.h>
 
 #include <KABC/Addressee>
@@ -10,25 +28,21 @@
 #include <Plasma/Theme>
 #include <Plasma/IconWidget>
 
-PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args):
-        Plasma::Applet(parent, args)
-
+PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
+        : Plasma::Applet(parent, args),
+        m_id(-1),
+        m_findData(true),
+        m_showEmails(true),
+        m_showNumbers(true)
 {
-    m_showEmails = true;
-    m_showNumbers = true;
-    m_id = -1;
-
+    setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
-    setMinimumHeight(300);
-    setMinimumWidth(300);
 
 }
 
 void PlasmaContacts::init()
 {
-    //contact_list = new ContactsWidget(this);
-
     m_find = new Plasma::LineEdit(this);
     m_find->setClearButtonShown(true);
     m_find->setText(i18n(" Find "));
@@ -53,6 +67,7 @@ void PlasmaContacts::init()
 
     configChanged();
 
+
 }
 
 void PlasmaContacts::configChanged()
@@ -60,35 +75,27 @@ void PlasmaContacts::configChanged()
 
     KConfigGroup conf = config();
 
-    if (conf.readEntry("showEmails",true) != m_showEmails) {
-	
-       m_showEmails = conf.readEntry("showEmails",true);
-	
-       changeTooltip();
-       
-    }
-    
-    if (conf.readEntry("showNumbers",true) != m_showNumbers) {
-	
-       m_showNumbers = conf.readEntry("showNumbers",true);
-       
-       changeTooltip();
-	
-    }
-    
+    qDebug() << "foo";
+
     if (conf.readEntry("collection",-1) != m_id) {
-	
-	m_id = conf.readEntry("collection",-1);
+
+        setConfigurationRequired(false);
+
+        m_id = conf.readEntry("collection",-1);
 
         fetchCollectionsForContacts();
-	
+
     }
-    
-    if ((conf.readEntry("orientation",1)+1) != m_layout->orientation()) {
-	
-	m_layout->setOrientation((Qt::Orientation)(conf.readEntry("orientation",1)+1));
-	
+
+
+    changeOrientation((Qt::Orientation)(conf.readEntry("orientation",1)+1));
+
+    if (conf.readEntry("findData",true) != m_findData) {
+
+        m_findData = conf.readEntry("findData",true);
+
     }
+
 }
 
 void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
@@ -100,11 +107,24 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
     KConfigGroup conf = config();
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
-    configDialog.orientationBox->setCurrentIndex(conf.readEntry("orientation",0));
-    configDialog.showEmails->setChecked(conf.readEntry("showEmails",true));
-    configDialog.showNumbers->setChecked(conf.readEntry("showNumbers",true));
+    configDialog.orientationBox->setCurrentIndex(conf.readEntry("orientation",1));
+    configDialog.findData->setChecked(conf.readEntry("findData",true));
 
-    connect(parent, SIGNAL(accepted()), this, SLOT(configAccepted()));
+    if (m_id != -1) {
+
+        configDialog.collectionBox->addItem(QString::number(m_id));
+
+    }
+
+    //configDialog.showEmails->setChecked(conf.readEntry("showEmails",true));
+    //configDialog.showNumbers->setChecked(conf.readEntry("showNumbers",true));
+
+    // TODO: connect changes for apply
+    connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
+    connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
+    connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
+    connect(configDialog.orientationBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
+    connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections,SIGNAL(clicked(bool)),SLOT(fetchCollections()));
 
     parent->addPage(widget,"General",icon());
@@ -116,10 +136,48 @@ void PlasmaContacts::configAccepted()
 
     conf.writeEntry("collection",configDialog.collectionBox->currentText());
     conf.writeEntry("orientation",configDialog.orientationBox->currentIndex());
-    conf.writeEntry("showEmails",configDialog.showEmails->isChecked());
-    conf.writeEntry("showNumbers",configDialog.showNumbers->isChecked());
+    conf.writeEntry("findData", configDialog.findData->isChecked());
+    //conf.writeEntry("showEmails",configDialog.showEmails->isChecked());
+    //conf.writeEntry("showNumbers",configDialog.showNumbers->isChecked());
 
     emit configNeedsSaving();
+
+}
+
+void PlasmaContacts::lineChanged(const QString & text)
+{
+
+    showContactsContainsText(text);
+
+}
+
+void PlasmaContacts::lineFocusChanged(bool change)
+{
+
+    if (change && m_find->text().contains(i18n(" Find "))) {
+
+        m_find->setText("");
+
+    }
+
+}
+
+void PlasmaContacts::changeOrientation(Qt::Orientation orientation)
+{
+
+    m_layout->setOrientation(orientation);
+
+    // TODO
+    
+    if (orientation == Qt::Vertical) {
+
+       resize(300,300);
+
+    } else {
+
+       resize(600,100);
+
+    }
 
 }
 
@@ -163,25 +221,6 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
 
 }
 
-
-void PlasmaContacts::lineChanged(const QString & text)
-{
-
-    showContactsContainsText(text);
-
-}
-
-void PlasmaContacts::lineFocusChanged(bool change)
-{
-
-    if (change && m_find->text().contains(i18n(" Find "))) {
-
-        m_find->setText("");
-
-    }
-
-}
-
 void PlasmaContacts::fetchCollectionsForContacts()
 {
 
@@ -189,6 +228,7 @@ void PlasmaContacts::fetchCollectionsForContacts()
 
         qDebug() << "No collection";
 
+	return;
     }
 
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
@@ -267,53 +307,63 @@ void PlasmaContacts::fetchItemsFinished(KJob * job)
 
 void PlasmaContacts::addContact(ContactItem * item)
 {
-    
+
     for (int i = 0; i < m_layout->count(); i++) {
-	
-	if ((item->addressee()->name().toLower()) < (((ContactItem*)m_layout->itemAt(i))->addressee()->name().toLower())) {
-	 
-	   m_layout->insertItem(i,item);  
-	   
-	   item->setShowInfo(m_showEmails, m_showNumbers);
-	   
-	   return;
-	   	    
-	}
-	   
+
+        if ((item->addressee()->name().toLower()) < (((ContactItem*)m_layout->itemAt(i))->addressee()->name().toLower())) {
+
+            m_layout->insertItem(i,item);
+
+            return;
+
+        }
+
     }
-     
-    m_layout->addItem(item); 
-    
-    item->setShowInfo(m_showEmails, m_showNumbers);
-    
+
+    m_layout->addItem(item);
+
 }
 
 void PlasmaContacts::showContactsContainsText(const QString & string)
 {
-    
-    for (int i = 0; i < m_layout->count(); i++) {
-	
-	((ContactItem*)m_layout->itemAt(i))->showContact();
-		
-	if (!((ContactItem*)m_layout->itemAt(i))->containsString(string)) {
-	    
-	    ((ContactItem*)m_layout->itemAt(i))->hideContact();
-	}
-	
+
+    while (!m_list.isEmpty()) {
+
+        addContact((ContactItem*)m_list.first());
+        ((ContactItem*)m_list.first())->show();
+        m_list.pop_front();
+
     }
-    
+
+    for (int i = 0; i < m_layout->count(); i++) {
+
+        if ((( (!((ContactItem*)m_layout->itemAt(i))->containsString(string))) && m_findData && (!((ContactItem*)m_layout->itemAt(i))->containsStringInData(string)) ) ||
+                (!m_findData && (!((ContactItem*)m_layout->itemAt(i))->containsString(string))))
+	{
+
+            ((ContactItem*)m_layout->itemAt(i))->hide();
+            m_list.push_back(m_layout->itemAt(i));
+            m_layout->removeAt(i);
+            i--;
+
+        }
+
+    }
+
+    qDebug() << m_layout->count();
+
 }
 
-void PlasmaContacts::changeTooltip()
+/*void PlasmaContacts::changeTooltip()
 {
-        
+
      for (int i = 0; i < m_layout->count(); i++) {
-		
-	 ((ContactItem*)m_layout->itemAt(i))->setShowInfo(m_showEmails,m_showNumbers);
-	
+
+	 //((ContactItem*)m_layout->itemAt(i))->setShowInfo(m_showEmails,m_showNumbers);
+
      }
-    
-}
+
+}*/
 
 
 #include "plasmacontacts.moc"

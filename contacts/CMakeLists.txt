@@ -29,3 +29,4 @@ install(TARGETS plasma_applet_google_contacts
 install(FILES plasma-applet-google-contacts.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
+kde4_install_icons(${ICON_INSTALL_DIR})

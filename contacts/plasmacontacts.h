@@ -1,3 +1,21 @@
+/*
+    Akonadi google contact plasmoid
+    Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef PLASMA_CONTACTS_HEADER
 #define PLASMA_CONTACTS_HEADER
 
@@ -12,6 +30,8 @@
 
 #include <QGraphicsLinearLayout>
 #include <QGraphicsWidget>
+#include <QGraphicsItem>
+#include <QList>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
@@ -19,7 +39,6 @@
 
 
 #include "contactitem.h"
-#include "contactswidget.h"
 #include "ui_config.h"
 
 class PlasmaContacts : public Plasma::Applet
@@ -42,7 +61,8 @@ class PlasmaContacts : public Plasma::Applet
 	void configChanged();
 	void fetchItems(const Akonadi::Collection & collections);
 	void fetchCollectionsForContacts();
-	void changeTooltip();
+	//void changeTooltip();
+	void changeOrientation(Qt::Orientation orientation);
 	void showContactsContainsText(const QString & text);
 
 	// Variables
@@ -55,15 +75,16 @@ class PlasmaContacts : public Plasma::Applet
 	
 	QGraphicsWidget *m_contactList;
 	
+	QList<QGraphicsLayoutItem*> m_list;
+	
 	Akonadi::Collection::Id m_id;
 	
+	bool m_findData;
 	bool m_showEmails;
 	bool m_showNumbers;
 	
 	Ui::config configDialog;
-	
-	//ContactsWidget *contact_list;
-	
+		
    public slots:
    
        	void configAccepted();

@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Konfigurace</string>
+   <string>Configuration</string>
   </property>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
@@ -29,7 +29,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Kolekce</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QComboBox" name="collectionBox">
@@ -58,20 +58,23 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
+     <y>85</y>
      <width>100</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Zobrazit emaily</string>
+    <string>Show emails</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="showEmails">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>60</y>
+     <y>85</y>
      <width>150</width>
      <height>20</height>
     </rect>
@@ -84,10 +87,13 @@
    </property>
   </widget>
   <widget class="QCheckBox" name="showNumbers">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>85</y>
+     <y>110</y>
      <width>89</width>
      <height>21</height>
     </rect>
@@ -103,13 +109,13 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>85</y>
+     <y>110</y>
      <width>100</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Zobrazit čísla</string>
+    <string>Show numbers</string>
    </property>
   </widget>
   <widget class="QPushButton" name="loadCollections">
@@ -129,28 +135,34 @@
    </property>
   </widget>
   <widget class="QComboBox" name="orientationBox">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>150</x>
      <y>35</y>
-     <width>115</width>
-     <height>20</height>
+     <width>101</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
    </property>
    <property name="sizeAdjustPolicy">
     <enum>QComboBox::AdjustToContents</enum>
    </property>
    <item>
     <property name="text">
-     <string>Horizontální</string>
+     <string>Horizontal</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Vertikální</string>
+     <string>Vertical</string>
     </property>
    </item>
   </widget>
@@ -164,7 +176,36 @@
     </rect>
    </property>
    <property name="text">
-    <string>Orientace</string>
+    <string>Orientation</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Find by data</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="findData">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>60</y>
+     <width>89</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
