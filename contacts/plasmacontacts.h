@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid
+    Akonadi google contact plasmoid - plasmacontacts.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -37,8 +37,8 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
-
-#include "contactitem.h"
+#include "contactwidget.h"
+#include "contactwidgetitem.h"
 #include "ui_config.h"
 
 class PlasmaContacts : public Plasma::Applet
@@ -57,26 +57,20 @@ class PlasmaContacts : public Plasma::Applet
 	
 	// Functions
 	
-	void addContact(ContactItem *item);
 	void configChanged();
 	void fetchItems(const Akonadi::Collection & collections);
 	void fetchCollectionsForContacts();
-	//void changeTooltip();
 	void changeOrientation(Qt::Orientation orientation);
-	void showContactsContainsText(const QString & text);
 
 	// Variables
 	
 	Plasma::ScrollWidget *m_scroll;
 	Plasma::LineEdit *m_find;
 
-	QGraphicsLinearLayout *m_layout;
 	QGraphicsLinearLayout *m_mainLayout;
 	
-	QGraphicsWidget *m_contactList;
-	
-	QList<QGraphicsLayoutItem*> m_list;
-	
+	ContactWidget *m_contactList;
+		
 	Akonadi::Collection::Id m_id;
 	
 	bool m_findData;

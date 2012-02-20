@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid
+    Akonadi google contact plasmoid - contactwidget.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -16,47 +16,41 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONTACTITEM_H
-#define CONTACTITEM_H
+
+#ifndef CONTACTWIDGET_H
+#define CONTACTWIDGET_H
 
 #include <QObject>
+#include <QList>
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
-
-#include <KABC/Addressee>
+#include <QGraphicsLayoutItem>
 
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
-#include <Plasma/ToolTipContent>
 
-class ContactItem : public Plasma::IconWidget
+#include "contactwidgetitem.h"
+
+class ContactWidget : public QGraphicsWidget
 {
     Q_OBJECT
-
+    
 public:
-    ContactItem(KABC::Addressee * addr, QGraphicsWidget *parent = 0);
     
-    ~ContactItem();
+    ContactWidget(QGraphicsWidget * parent = 0);
     
-    const KABC::Addressee * addressee() { return m_addressee; }
-    
-    bool containsString(const QString & string);
-    bool containsStringInData(const QString & string);
-    
-    void setTooltipText();
- 
-    
-public slots:
-    
-    void linkActivated(QString);
+    void addItem(ContactWidgetItem * item);
+    void clear();
+    void showContactsContains(const QString & text);
+    void setFilterData(bool filter = true);
     
 private:
-        
-    void setWidgetText();
     
-    KABC::Addressee * m_addressee;
-        
+    QGraphicsLinearLayout * m_layout;
+    
+    QList<QGraphicsLayoutItem*> m_list;
+    
+    bool m_findData;
 };
 
-
-#endif // CONTACTITEM_H
+#endif // CONTACTWIDGET_H

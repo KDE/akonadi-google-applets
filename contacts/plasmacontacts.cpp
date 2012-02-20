@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid
+    Akonadi google contact plasmoid - plasmacontacts.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemFetchJob>
 
-
 #include <Plasma/Theme>
 #include <Plasma/IconWidget>
 
@@ -38,25 +37,22 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
-
+    setMinimumSize(300,300);
 }
 
 void PlasmaContacts::init()
 {
     m_find = new Plasma::LineEdit(this);
     m_find->setClearButtonShown(true);
-    m_find->setText(i18n(" Find "));
-
-    m_layout = new QGraphicsLinearLayout();
-
-    m_contactList = new QGraphicsWidget(this);
-    m_contactList->setLayout(m_layout);
+    m_find->setText(i18n(" Find contact "));
+    
+    m_contactList = new ContactWidget(this);
 
     m_scroll = new Plasma::ScrollWidget(this);
-    m_scroll->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     m_scroll->setWidget(m_contactList);
 
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
+
     m_mainLayout->addItem(m_find);
     m_mainLayout->addItem(m_scroll);
 
@@ -76,6 +72,8 @@ void PlasmaContacts::configChanged()
     KConfigGroup conf = config();
 
     qDebug() << "foo";
+    
+    m_find->setText("");
 
     if (conf.readEntry("collection",-1) != m_id) {
 
@@ -83,16 +81,19 @@ void PlasmaContacts::configChanged()
 
         m_id = conf.readEntry("collection",-1);
 
+	m_contactList->clear();
         fetchCollectionsForContacts();
 
     }
 
 
-    changeOrientation((Qt::Orientation)(conf.readEntry("orientation",1)+1));
+    //changeOrientation((Qt::Orientation)(conf.readEntry("orientation",1)+1));
 
     if (conf.readEntry("findData",true) != m_findData) {
 
         m_findData = conf.readEntry("findData",true);
+	
+	m_contactList->setFilterData(m_findData);
 
     }
 
@@ -107,7 +108,7 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
     KConfigGroup conf = config();
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
-    configDialog.orientationBox->setCurrentIndex(conf.readEntry("orientation",1));
+    //configDialog.orientationBox->setCurrentIndex(conf.readEntry("orientation",1));
     configDialog.findData->setChecked(conf.readEntry("findData",true));
 
     if (m_id != -1) {
@@ -123,7 +124,7 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
-    connect(configDialog.orientationBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
+    //connect(configDialog.orientationBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
     connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections,SIGNAL(clicked(bool)),SLOT(fetchCollections()));
 
@@ -135,7 +136,7 @@ void PlasmaContacts::configAccepted()
     KConfigGroup conf = config();
 
     conf.writeEntry("collection",configDialog.collectionBox->currentText());
-    conf.writeEntry("orientation",configDialog.orientationBox->currentIndex());
+    //conf.writeEntry("orientation",configDialog.orientationBox->currentIndex());
     conf.writeEntry("findData", configDialog.findData->isChecked());
     //conf.writeEntry("showEmails",configDialog.showEmails->isChecked());
     //conf.writeEntry("showNumbers",configDialog.showNumbers->isChecked());
@@ -147,7 +148,7 @@ void PlasmaContacts::configAccepted()
 void PlasmaContacts::lineChanged(const QString & text)
 {
 
-    showContactsContainsText(text);
+    m_contactList->showContactsContains(text);
 
 }
 
@@ -162,10 +163,10 @@ void PlasmaContacts::lineFocusChanged(bool change)
 
 }
 
-void PlasmaContacts::changeOrientation(Qt::Orientation orientation)
+/*oid PlasmaContacts::changeOrientation(Qt::Orientation orientation)
 {
 
-    m_layout->setOrientation(orientation);
+    //m_layout->setOrientation(orientation);
 
     // TODO
     
@@ -179,7 +180,7 @@ void PlasmaContacts::changeOrientation(Qt::Orientation orientation)
 
     }
 
-}
+}*/
 
 
 void PlasmaContacts::fetchCollections()
@@ -295,75 +296,15 @@ void PlasmaContacts::fetchItemsFinished(KJob * job)
 
         KABC::Addressee * addr = new KABC::Addressee(tmp);
 
-        ContactItem * item;
+        ContactWidgetItem * item;
 
-        item = new ContactItem(addr,this);
+        item = new ContactWidgetItem(addr,this);
 
-        addContact(item);
+        m_contactList->addItem(item);
 
     }
 
 }
-
-void PlasmaContacts::addContact(ContactItem * item)
-{
-
-    for (int i = 0; i < m_layout->count(); i++) {
-
-        if ((item->addressee()->name().toLower()) < (((ContactItem*)m_layout->itemAt(i))->addressee()->name().toLower())) {
-
-            m_layout->insertItem(i,item);
-
-            return;
-
-        }
-
-    }
-
-    m_layout->addItem(item);
-
-}
-
-void PlasmaContacts::showContactsContainsText(const QString & string)
-{
-
-    while (!m_list.isEmpty()) {
-
-        addContact((ContactItem*)m_list.first());
-        ((ContactItem*)m_list.first())->show();
-        m_list.pop_front();
-
-    }
-
-    for (int i = 0; i < m_layout->count(); i++) {
-
-        if ((( (!((ContactItem*)m_layout->itemAt(i))->containsString(string))) && m_findData && (!((ContactItem*)m_layout->itemAt(i))->containsStringInData(string)) ) ||
-                (!m_findData && (!((ContactItem*)m_layout->itemAt(i))->containsString(string))))
-	{
-
-            ((ContactItem*)m_layout->itemAt(i))->hide();
-            m_list.push_back(m_layout->itemAt(i));
-            m_layout->removeAt(i);
-            i--;
-
-        }
-
-    }
-
-    qDebug() << m_layout->count();
-
-}
-
-/*void PlasmaContacts::changeTooltip()
-{
-
-     for (int i = 0; i < m_layout->count(); i++) {
-
-	 //((ContactItem*)m_layout->itemAt(i))->setShowInfo(m_showEmails,m_showNumbers);
-
-     }
-
-}*/
 
 
 #include "plasmacontacts.moc"
