@@ -82,7 +82,8 @@ void PlasmaContacts::configChanged()
         m_id = conf.readEntry("collection",-1);
 
 	m_contactList->clear();
-        fetchCollectionsForContacts();
+
+	fetchCollectionsForContacts();
 
     }
 

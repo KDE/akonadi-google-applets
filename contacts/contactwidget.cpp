@@ -22,8 +22,8 @@
 ContactWidget::ContactWidget(QGraphicsWidget* parent): QGraphicsWidget(parent)
 {    
     m_layout = new QGraphicsLinearLayout(Qt::Vertical, this);
-    m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
+    m_layout->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    m_layout->setInstantInvalidatePropagation(true);
     setLayout(m_layout);
     
 }
@@ -46,26 +46,6 @@ void ContactWidget::addItem(ContactWidgetItem* item)
         
 }
 
-void ContactWidget::clear()
-{
-
-    QGraphicsLayoutItem * item;
-    
-    while (m_layout->count() > 0) {
-	
-	item = m_layout->itemAt(0);
-	
-	((ContactWidgetItem*)item)->hide();
-	
-	m_layout->removeItem(item);
-	
-        ((ContactWidgetItem*)item)->deleteLater();;
-	
-    }
-    
-}
-
-
 void ContactWidget::setFilterData(bool filter)
 {
 
@@ -73,29 +53,62 @@ void ContactWidget::setFilterData(bool filter)
     
 }
 
+void ContactWidget::clear()
+{
+
+    QList<ContactWidgetItem*> list;
+    ContactWidgetItem * item;
+    
+    while (m_layout->count() > 0) {
+	
+	item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
+		
+	item->hide();
+	
+	list.push_back(item);
+	
+	m_layout->removeItem(item);
+	
+        //item->deleteLater();
+	
+    }
+    
+    for (int i = 0; i < list.count(); i++) {
+	
+	delete list.at(i);
+	
+    }
+    
+}
+
 void ContactWidget::showContactsContains(const QString& text)
 {
     while (!m_list.isEmpty()) {
 
-        addItem((ContactWidgetItem*)m_list.first());
+        addItem(static_cast<ContactWidgetItem*>(m_list.first()));
 	
-        ((ContactWidgetItem*)m_list.first())->show();
+        static_cast<ContactWidgetItem*>(m_list.first())->show();
 	
         m_list.pop_front();
 
     }
 
+    ContactWidgetItem * item;
+    
     for (int i = 0; i < m_layout->count(); i++) {
 
-        if ((( (!((ContactWidgetItem*)m_layout->itemAt(i))->containsString(text))) && m_findData && (!((ContactWidgetItem*)m_layout->itemAt(i))->containsStringInData(text)) ) ||
-                (!m_findData && (!((ContactWidgetItem*)m_layout->itemAt(i))->containsString(text))))
-	{
+	item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+	
+	item->show();
+	
+	if ( ((!item->containsString(text)) && m_findData && (!item->containsStringInData(text))) ||
+	     ((!item->containsString(text)) && !m_findData)) {
 
-            ((ContactWidgetItem*)m_layout->itemAt(i))->hide();
+            item->hide();
 	    
-            m_list.push_back(m_layout->itemAt(i));
+            m_list.push_back(item);
 	    
-            m_layout->removeAt(i);
+            m_layout->removeItem(item);;
 	    
             i--;
 
