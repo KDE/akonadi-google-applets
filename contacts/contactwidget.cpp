@@ -19,11 +19,13 @@
 
 #include "contactwidget.h"
 
-ContactWidget::ContactWidget(QGraphicsWidget* parent): QGraphicsWidget(parent)
+ContactWidget::ContactWidget(QGraphicsWidget* parent)
+    : QGraphicsWidget(parent),
+      m_findData(true),
+      m_neededScroll(false)
 {    
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical, this);
-    m_layout->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    m_layout->setInstantInvalidatePropagation(true);
+    m_layout = new ContactsLayout(Qt::Vertical, this);
+    m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setLayout(m_layout);
     
 }
@@ -36,6 +38,7 @@ void ContactWidget::addItem(ContactWidgetItem* item)
         if ((item->addressee()->name().toLower()) < (((ContactWidgetItem*)m_layout->itemAt(i))->addressee()->name().toLower())) {
 
             m_layout->insertItem(i,item);
+	    	    
             return;
 
         }
@@ -56,29 +59,18 @@ void ContactWidget::setFilterData(bool filter)
 void ContactWidget::clear()
 {
 
-    QList<ContactWidgetItem*> list;
     ContactWidgetItem * item;
     
     while (m_layout->count() > 0) {
 	
 	item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
-		
-	item->hide();
-	
-	list.push_back(item);
-	
+				
 	m_layout->removeItem(item);
 	
-        //item->deleteLater();
+        item->deleteLater();
 	
-    }
-    
-    for (int i = 0; i < list.count(); i++) {
-	
-	delete list.at(i);
-	
-    }
-    
+    }  
+        
 }
 
 void ContactWidget::showContactsContains(const QString& text)
@@ -116,4 +108,5 @@ void ContactWidget::showContactsContains(const QString& text)
 
     }
    
+
 }

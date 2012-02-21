@@ -20,6 +20,8 @@
 
 #include <KABC/Addressee>
 
+#include <QWidget>
+
 #include <Akonadi/Entity>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemFetchJob>
@@ -49,6 +51,8 @@ void PlasmaContacts::init()
     m_contactList = new ContactWidget(this);
 
     m_scroll = new Plasma::ScrollWidget(this);
+    //m_scroll->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
     m_scroll->setWidget(m_contactList);
 
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
@@ -60,7 +64,8 @@ void PlasmaContacts::init()
 
     connect(m_find,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
     connect(m_find,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
-
+    //connect(m_contactList, SIGNAL(scrollbarIsNeeded(bool)), SLOT(showScrollbar(bool)));
+    
     configChanged();
 
 
@@ -82,7 +87,6 @@ void PlasmaContacts::configChanged()
         m_id = conf.readEntry("collection",-1);
 
 	m_contactList->clear();
-
 	fetchCollectionsForContacts();
 
     }
@@ -150,6 +154,7 @@ void PlasmaContacts::lineChanged(const QString & text)
 {
 
     m_contactList->showContactsContains(text);
+
 
 }
 

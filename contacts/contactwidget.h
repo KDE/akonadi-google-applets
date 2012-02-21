@@ -30,6 +30,7 @@
 #include <Plasma/Label>
 
 #include "contactwidgetitem.h"
+#include "contactslayout.h"
 
 class ContactWidget : public QGraphicsWidget
 {
@@ -46,11 +47,19 @@ public:
     
 private:
     
-    QGraphicsLinearLayout * m_layout;
+    void isScrollbarNeeded();
+    
+    ContactsLayout * m_layout;
     
     QList<QGraphicsLayoutItem*> m_list;
     
     bool m_findData;
+    bool m_neededScroll;
+    
+signals:
+    
+    //bool scrollbarIsNeeded(bool needed);
+    
 };
 
 #endif // CONTACTWIDGET_H
