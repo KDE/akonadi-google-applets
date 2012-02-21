@@ -32,7 +32,6 @@ ContactWidgetItem::ContactWidgetItem(KABC::Addressee * addressee, QGraphicsWidge
         m_show(false)
 
 {
-
     m_addressee = addressee;
 
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
@@ -102,10 +101,14 @@ void ContactWidgetItem::setInfo()
 
         m_homeNumber = new Plasma::Label(this);
 
-        text = "<strong>" + i18n("→ Home number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number();
+        text = "<strong>" + i18n("Home number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number();
 
         m_homeNumber->setText(text);
         m_homeNumber->nativeWidget()->setIndent(10);
+        m_homeNumber->setMinimumHeight(30);
+        m_homeNumber->setMaximumHeight(30);
+        m_homeNumber->nativeWidget()->setFrameShape(QFrame::WinPanel);
+        m_homeNumber->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_homeNumber->hide();
     }
 
@@ -113,10 +116,14 @@ void ContactWidgetItem::setInfo()
 
         m_officeNumber = new Plasma::Label(this);
 
-        text = "<strong>" + i18n("→ Office number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number();
+        text = "<strong>" + i18n("Office number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number();
 
         m_officeNumber->setText(text);
         m_officeNumber->nativeWidget()->setIndent(10);
+        m_officeNumber->setMinimumHeight(30);
+        m_officeNumber->setMaximumHeight(30);
+        m_officeNumber->nativeWidget()->setFrameShape(QFrame::WinPanel);
+        m_officeNumber->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_officeNumber->hide();
 
     }
@@ -125,10 +132,14 @@ void ContactWidgetItem::setInfo()
 
         m_cellPhone = new Plasma::Label(this);
 
-        text = "<strong>" + i18n("→ Cell phone: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number();
+        text = "<strong>" + i18n("Cell phone: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number();
 
         m_cellPhone->setText(text);
         m_cellPhone->nativeWidget()->setIndent(10);
+        m_cellPhone->setMinimumHeight(30);
+        m_cellPhone->setMaximumHeight(30);
+        m_cellPhone->nativeWidget()->setFrameShape(QFrame::WinPanel);
+        m_cellPhone->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_cellPhone->hide();
     }
 
@@ -138,10 +149,14 @@ void ContactWidgetItem::setInfo()
 
         m_mail = new Plasma::Label(this);
 
-        text = "<strong>" + i18n("→ Email: ") + "</strong>" + m_addressee->emails().first();
+        text = "<strong>" + i18n("Email: ") + "</strong>" + m_addressee->emails().first();
 
         m_mail->setText(text);
         m_mail->nativeWidget()->setIndent(10);
+        m_mail->setMinimumHeight(30);
+        m_mail->setMaximumHeight(30);
+        m_mail->nativeWidget()->setFrameShape(QFrame::WinPanel);
+        m_mail->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_mail->hide();
 
     }
@@ -182,7 +197,7 @@ void ContactWidgetItem::showInfo()
             m_mail->hide();
 
         }
-
+        
         m_show = false;
 
     } else {
@@ -215,7 +230,7 @@ void ContactWidgetItem::showInfo()
             m_mail->show();
 
         }
-
+        
         m_show = true;
 
     }
@@ -267,6 +282,19 @@ bool ContactWidgetItem::containsStringInData(const QString & string)
     return false;
 
 }
+
+bool ContactWidgetItem::isEmpty()
+{
+
+    if (!m_homeNumber && !m_officeNumber && !m_cellPhone &&
+	!m_mail && !m_mail2) 
+	
+	return true;
+    
+    return false;
+    
+}
+
 
 ContactWidgetItem::~ContactWidgetItem()
 {

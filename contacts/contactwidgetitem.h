@@ -39,9 +39,11 @@ public:
     virtual ~ContactWidgetItem();
     
     const KABC::Addressee * addressee() { return m_addressee; }
+    const QString name() { return m_icon->text(); }
     
     bool containsString(const QString & string);
     bool containsStringInData(const QString & string);
+    bool isEmpty();
     
 public slots:
     

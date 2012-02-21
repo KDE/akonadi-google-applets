@@ -34,7 +34,8 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
         m_id(-1),
         m_findData(true),
         m_showEmails(true),
-        m_showNumbers(true)
+        m_showNumbers(true),
+        m_showEmptyContacts(true)
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -51,7 +52,6 @@ void PlasmaContacts::init()
     m_contactList = new ContactWidget(this);
 
     m_scroll = new Plasma::ScrollWidget(this);
-    //m_scroll->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     m_scroll->setWidget(m_contactList);
 
@@ -64,7 +64,6 @@ void PlasmaContacts::init()
 
     connect(m_find,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
     connect(m_find,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
-    //connect(m_contactList, SIGNAL(scrollbarIsNeeded(bool)), SLOT(showScrollbar(bool)));
     
     configChanged();
 
@@ -79,19 +78,7 @@ void PlasmaContacts::configChanged()
     qDebug() << "foo";
     
     m_find->setText("");
-
-    if (conf.readEntry("collection",-1) != m_id) {
-
-        setConfigurationRequired(false);
-
-        m_id = conf.readEntry("collection",-1);
-
-	m_contactList->clear();
-	fetchCollectionsForContacts();
-
-    }
-
-
+    
     //changeOrientation((Qt::Orientation)(conf.readEntry("orientation",1)+1));
 
     if (conf.readEntry("findData",true) != m_findData) {
@@ -101,6 +88,27 @@ void PlasmaContacts::configChanged()
 	m_contactList->setFilterData(m_findData);
 
     }
+    
+    if (conf.readEntry("showEmptyContacts",true) != m_showEmptyContacts) {
+
+        m_showEmptyContacts = conf.readEntry("showEmptyContacts",true);
+	
+	m_contactList->setShowEmptyContacts(m_showEmptyContacts);
+
+    }
+    
+    if (conf.readEntry("collection",-1) != m_id) {
+
+        setConfigurationRequired(false);
+
+        m_id = conf.readEntry("collection",-1);
+
+	m_contactList->clear();
+	
+	fetchCollectionsForContacts();
+
+    }
+    
 
 }
 
@@ -124,13 +132,15 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
 
     //configDialog.showEmails->setChecked(conf.readEntry("showEmails",true));
     //configDialog.showNumbers->setChecked(conf.readEntry("showNumbers",true));
-
+    configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts",true));
+    
     // TODO: connect changes for apply
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
     //connect(configDialog.orientationBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
     connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
+    connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections,SIGNAL(clicked(bool)),SLOT(fetchCollections()));
 
     parent->addPage(widget,"General",icon());
@@ -145,7 +155,8 @@ void PlasmaContacts::configAccepted()
     conf.writeEntry("findData", configDialog.findData->isChecked());
     //conf.writeEntry("showEmails",configDialog.showEmails->isChecked());
     //conf.writeEntry("showNumbers",configDialog.showNumbers->isChecked());
-
+    conf.writeEntry("showEmptyContacts",configDialog.showEmptyContacts->isChecked());
+    
     emit configNeedsSaving();
 
 }

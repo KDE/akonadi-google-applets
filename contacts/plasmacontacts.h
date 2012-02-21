@@ -76,6 +76,7 @@ class PlasmaContacts : public Plasma::Applet
 	bool m_findData;
 	bool m_showEmails;
 	bool m_showNumbers;
+	bool m_showEmptyContacts;
 	
 	Ui::config configDialog;
 		

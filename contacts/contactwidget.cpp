@@ -20,25 +20,38 @@
 #include "contactwidget.h"
 
 ContactWidget::ContactWidget(QGraphicsWidget* parent)
-    : QGraphicsWidget(parent),
-      m_findData(true),
-      m_neededScroll(false)
-{    
+        : QGraphicsWidget(parent),
+        m_findData(true),
+        m_showEmptyContacts(true)
+
+{
     m_layout = new ContactsLayout(Qt::Vertical, this);
     m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setLayout(m_layout);
-    
+
 }
 
 void ContactWidget::addItem(ContactWidgetItem* item)
 {
 
-     for (int i = 0; i < m_layout->count(); i++) {
+    if (!m_showEmptyContacts && item->isEmpty()) {
+	
+	item->hide();
+	m_listFilterEmpty.push_back(item);
+	
+	return;
+    }
+    
+    ContactWidgetItem * tmpItem;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
 
-        if ((item->addressee()->name().toLower()) < (((ContactWidgetItem*)m_layout->itemAt(i))->addressee()->name().toLower())) {
+        tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+
+        if (item->name().toLower() < tmpItem->name().toLower()) {
 
             m_layout->insertItem(i,item);
-	    	    
+
             return;
 
         }
@@ -46,13 +59,64 @@ void ContactWidget::addItem(ContactWidgetItem* item)
     }
 
     m_layout->addItem(item);
-        
+
 }
 
 void ContactWidget::setFilterData(bool filter)
 {
 
     m_findData = filter;
+
+}
+
+void ContactWidget::setShowEmptyContacts(bool show)
+{
+
+    if (m_showEmptyContacts != show) {
+	
+        m_showEmptyContacts = show;
+
+        updateContacts();
+	
+    }
+    
+}
+
+void ContactWidget::updateContacts()
+{
+            
+    while (!m_listFilterEmpty.isEmpty()) {
+
+        addItem(static_cast<ContactWidgetItem*>(m_listFilterEmpty.first()));
+
+        static_cast<ContactWidgetItem*>(m_listFilterEmpty.first())->show();
+
+        m_listFilterEmpty.pop_front();
+
+    }
+
+    ContactWidgetItem * item;
+
+    if (!m_showEmptyContacts) {
+
+        for (int i = 0; i < m_layout->count(); i++) {
+
+            item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+
+            if (item->isEmpty()) {
+
+                item->hide();
+
+                m_listFilterEmpty.push_back(item);
+
+                m_layout->removeItem(item);;
+
+                i--;
+            }
+
+        }
+
+    }
     
 }
 
@@ -60,53 +124,53 @@ void ContactWidget::clear()
 {
 
     ContactWidgetItem * item;
-    
+
     while (m_layout->count() > 0) {
-	
-	item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
-				
-	m_layout->removeItem(item);
-	
+
+        item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
+
+        m_layout->removeItem(item);
+
         item->deleteLater();
-	
-    }  
-        
+
+    }
+
 }
 
 void ContactWidget::showContactsContains(const QString& text)
 {
-    while (!m_list.isEmpty()) {
+    while (!m_listFilterText.isEmpty()) {
 
-        addItem(static_cast<ContactWidgetItem*>(m_list.first()));
-	
-        static_cast<ContactWidgetItem*>(m_list.first())->show();
-	
-        m_list.pop_front();
+        addItem(static_cast<ContactWidgetItem*>(m_listFilterText.first()));
+
+        static_cast<ContactWidgetItem*>(m_listFilterText.first())->show();
+
+        m_listFilterText.pop_front();
 
     }
 
     ContactWidgetItem * item;
-    
+
     for (int i = 0; i < m_layout->count(); i++) {
 
-	item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
-	
-	item->show();
-	
-	if ( ((!item->containsString(text)) && m_findData && (!item->containsStringInData(text))) ||
-	     ((!item->containsString(text)) && !m_findData)) {
+        item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+
+        item->show();
+
+        if ( ((!item->containsString(text)) && m_findData && (!item->containsStringInData(text))) ||
+                ((!item->containsString(text)) && !m_findData)) {
 
             item->hide();
-	    
-            m_list.push_back(item);
-	    
+
+            m_listFilterText.push_back(item);
+
             m_layout->removeItem(item);;
-	    
+
             i--;
 
         }
 
     }
-   
+
 
 }

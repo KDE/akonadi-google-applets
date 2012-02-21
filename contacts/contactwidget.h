@@ -44,21 +44,21 @@ public:
     void clear();
     void showContactsContains(const QString & text);
     void setFilterData(bool filter = true);
+    void setShowEmptyContacts(bool show = true);
+    
     
 private:
     
-    void isScrollbarNeeded();
+    void updateContacts();
     
     ContactsLayout * m_layout;
     
-    QList<QGraphicsLayoutItem*> m_list;
+    QList<QGraphicsLayoutItem*> m_listFilterText;
+    QList<QGraphicsLayoutItem*> m_listFilterEmpty;
     
     bool m_findData;
-    bool m_neededScroll;
+    bool m_showEmptyContacts;
     
-signals:
-    
-    //bool scrollbarIsNeeded(bool needed);
     
 };
 
