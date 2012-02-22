@@ -21,24 +21,18 @@
 
 #include <KConfigDialog>
 #include <KIcon>
-#include <KJob>
 
 #include <Plasma/Applet>
 #include <Plasma/ScrollWidget>
 #include <Plasma/LineEdit>
-#include <Plasma/PushButton>
 
 #include <QGraphicsLinearLayout>
 #include <QGraphicsWidget>
-#include <QGraphicsItem>
-#include <QList>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
-#include <Akonadi/Item>
 
 #include "contactwidget.h"
-#include "contactwidgetitem.h"
 #include "ui_config.h"
 
 class PlasmaContacts : public Plasma::Applet
@@ -55,14 +49,8 @@ class PlasmaContacts : public Plasma::Applet
 	 
     private:
 	
-	// Functions
-	
 	void configChanged();
-	void fetchItems(const Akonadi::Collection & collections);
-	void fetchCollectionsForContacts();
 	void changeOrientation(Qt::Orientation orientation);
-
-	// Variables
 	
 	Plasma::ScrollWidget *m_scroll;
 	Plasma::LineEdit *m_find;
@@ -86,10 +74,7 @@ class PlasmaContacts : public Plasma::Applet
 	
 	void fetchCollections();
         void fetchCollectionsFinished(KJob *job);
-        void fetchCollectionsForContactsFinished(KJob *job);
-
-	void fetchItemsFinished(KJob * job);
-
+        
 	void lineChanged(const QString & text);
         void lineFocusChanged(bool change);
        	

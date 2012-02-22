@@ -41,12 +41,12 @@ public:
     ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
     virtual ~ContactWidgetItem();
     
-    const KABC::Addressee * addressee() { return m_addressee; }
-    const QString name() { return m_icon->text(); }
-    
     bool containsString(const QString & string);
     bool containsStringInData(const QString & string);
     bool isEmpty();
+    
+    const KABC::Addressee * addressee() { return m_addressee; }
+    const QString name() { return m_icon->text(); }
     
 public slots:
     
@@ -66,7 +66,6 @@ private:
  
     Plasma::IconWidget * m_icon;
     
-    // TODO: add more info?    
     Plasma::Label * m_homeNumber;
     Plasma::Label * m_officeNumber;
     Plasma::Label * m_cellPhone;

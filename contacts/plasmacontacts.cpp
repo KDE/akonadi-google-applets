@@ -74,8 +74,6 @@ void PlasmaContacts::configChanged()
 {
 
     KConfigGroup conf = config();
-
-    qDebug() << "foo";
     
     m_find->setText("");
     
@@ -103,10 +101,7 @@ void PlasmaContacts::configChanged()
 
         m_id = conf.readEntry("collection",-1);
 
-	m_contactList->clear();
-	
-	fetchCollectionsForContacts();
-
+        m_contactList->setCollection(m_id);	
     }
     
 
@@ -239,85 +234,7 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
 
 }
 
-void PlasmaContacts::fetchCollectionsForContacts()
-{
 
-    if (m_id == -1) {
-
-        qDebug() << "No collection";
-
-	return;
-    }
-
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
-
-    job->fetchScope();
-
-    connect(job,SIGNAL(result(KJob*)), SLOT(fetchCollectionsForContactsFinished(KJob*)));
-
-}
-
-void PlasmaContacts::fetchCollectionsForContactsFinished(KJob* job)
-{
-    if (job->error()) {
-
-        qDebug() << "fetchCollections failed";
-
-        return;
-    }
-
-    Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
-
-    const Akonadi::Collection::List collections = fetchJob->collections();
-
-    foreach ( const Akonadi::Collection &collection, collections ) {
-
-        if (collection.id() == m_id) {
-
-            fetchItems(collection);
-
-        }
-
-    }
-
-}
-
-void PlasmaContacts::fetchItems(const Akonadi::Collection & collection)
-{
-
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection);
-
-    connect(job,SIGNAL(result(KJob*)), SLOT(fetchItemsFinished(KJob*)));
-
-    job->fetchScope().fetchFullPayload(true);
-
-
-}
-
-void PlasmaContacts::fetchItemsFinished(KJob * job)
-{
-    if (job->error()) {
-
-        qDebug() << "fetchItems failed";
-
-        return;
-    }
-
-    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
-
-    const Akonadi::Item::List items = fetchJob->items();
-
-    foreach ( const Akonadi::Item &item, items ) {
-
-        ContactWidgetItem * contact;
-
-        contact = new ContactWidgetItem(item,this);
-
-        m_contactList->addItem(contact);
-
-    }
-
-}
 
 
 #include "plasmacontacts.moc"

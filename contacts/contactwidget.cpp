@@ -19,6 +19,10 @@
 
 #include "contactwidget.h"
 
+#include <Akonadi/Entity>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemFetchJob>
+
 ContactWidget::ContactWidget(QGraphicsWidget* parent)
         : QGraphicsWidget(parent),
         m_findData(true),
@@ -31,34 +35,16 @@ ContactWidget::ContactWidget(QGraphicsWidget* parent)
 
 }
 
-void ContactWidget::addItem(ContactWidgetItem* item)
+void ContactWidget::setCollection(Akonadi::Collection::Id id)
 {
-
-    if (!m_showEmptyContacts && item->isEmpty()) {
-	
-	item->hide();
-	m_listFilterEmpty.push_back(item);
-	
-	return;
-    }
     
-    ContactWidgetItem * tmpItem;
+    clear();
     
-    for (int i = 0; i < m_layout->count(); i++) {
-
-        tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
-
-        if (item->name().toLower() < tmpItem->name().toLower()) {
-
-            m_layout->insertItem(i,item);
-
-            return;
-
-        }
-
-    }
-
-    m_layout->addItem(item);
+    m_id = id;
+    
+    if (m_id != -1) 
+    
+	fetchCollections();
 
 }
 
@@ -80,61 +66,6 @@ void ContactWidget::setShowEmptyContacts(bool show)
 	
     }
     
-}
-
-void ContactWidget::updateContacts()
-{
-            
-    while (!m_listFilterEmpty.isEmpty()) {
-
-        addItem(static_cast<ContactWidgetItem*>(m_listFilterEmpty.first()));
-
-        static_cast<ContactWidgetItem*>(m_listFilterEmpty.first())->show();
-
-        m_listFilterEmpty.pop_front();
-
-    }
-
-    ContactWidgetItem * item;
-
-    if (!m_showEmptyContacts) {
-
-        for (int i = 0; i < m_layout->count(); i++) {
-
-            item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
-
-            if (item->isEmpty()) {
-
-                item->hide();
-
-                m_listFilterEmpty.push_back(item);
-
-                m_layout->removeItem(item);;
-
-                i--;
-            }
-
-        }
-
-    }
-    
-}
-
-void ContactWidget::clear()
-{
-
-    ContactWidgetItem * item;
-
-    while (m_layout->count() > 0) {
-
-        item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
-
-        m_layout->removeItem(item);
-
-        item->deleteLater();
-
-    }
-
 }
 
 void ContactWidget::showContactsContains(const QString& text)
@@ -173,4 +104,163 @@ void ContactWidget::showContactsContains(const QString& text)
     }
 
 
+}
+
+void ContactWidget::fetchCollections()
+{
+    
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
+
+    job->fetchScope();
+
+    connect(job,SIGNAL(result(KJob*)), SLOT(fetchCollectionsFinished(KJob*)));
+
+}
+
+void ContactWidget::fetchCollectionsFinished(KJob* job)
+{
+    if (job->error()) {
+
+        qDebug() << "fetchCollections failed";
+
+        return;
+    }
+
+    Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+
+    const Akonadi::Collection::List collections = fetchJob->collections();
+
+    foreach ( const Akonadi::Collection &collection, collections ) {
+
+        if (collection.id() == m_id) {
+
+            fetchItems(collection);
+
+        }
+
+    }
+
+}
+
+void ContactWidget::fetchItems(const Akonadi::Collection & collection)
+{
+
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection);
+
+    connect(job,SIGNAL(result(KJob*)), SLOT(fetchItemsFinished(KJob*)));
+
+    job->fetchScope().fetchFullPayload(true);
+
+
+}
+
+void ContactWidget::fetchItemsFinished(KJob * job)
+{
+    if (job->error()) {
+
+        qDebug() << "fetchItems failed";
+
+        return;
+    }
+
+    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
+
+    const Akonadi::Item::List items = fetchJob->items();
+
+    foreach ( const Akonadi::Item &item, items ) {
+
+        ContactWidgetItem * contact;
+
+        contact = new ContactWidgetItem(item,this);
+
+        addItem(contact);
+
+    }
+
+}
+
+void ContactWidget::addItem(ContactWidgetItem* item)
+{
+
+    if (!m_showEmptyContacts && item->isEmpty()) {
+	
+	item->hide();
+	m_listFilterEmpty.push_back(item);
+	
+	return;
+    }
+    
+    ContactWidgetItem * tmpItem;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+
+        tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+
+        if (item->name().toLower() < tmpItem->name().toLower()) {
+
+            m_layout->insertItem(i,item);
+
+            return;
+
+        }
+
+    }
+
+    m_layout->addItem(item);
+
+}
+
+void ContactWidget::clear()
+{
+
+    ContactWidgetItem * item;
+
+    while (m_layout->count() > 0) {
+
+        item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
+
+        m_layout->removeItem(item);
+
+        item->deleteLater();
+
+    }
+
+}
+
+void ContactWidget::updateContacts()
+{
+            
+    while (!m_listFilterEmpty.isEmpty()) {
+
+        addItem(static_cast<ContactWidgetItem*>(m_listFilterEmpty.first()));
+
+        static_cast<ContactWidgetItem*>(m_listFilterEmpty.first())->show();
+
+        m_listFilterEmpty.pop_front();
+
+    }
+
+    ContactWidgetItem * item;
+
+    if (!m_showEmptyContacts) {
+
+        for (int i = 0; i < m_layout->count(); i++) {
+
+            item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+
+            if (item->isEmpty()) {
+
+                item->hide();
+
+                m_listFilterEmpty.push_back(item);
+
+                m_layout->removeItem(item);;
+
+                i--;
+            }
+
+        }
+
+    }
+    
 }

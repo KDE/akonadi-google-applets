@@ -20,6 +20,7 @@
 #include "contactwidgetitem.h"
 
 #include <KIcon>
+#include <KDialog>
 #include <KToolInvocation>
 
 #include <Akonadi/Contact/ContactEditor>
@@ -47,14 +48,12 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_mainLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_edit = new Plasma::PushButton(this);
+    m_edit->setMinimumHeight(20);
+    m_edit->setMaximumHeight(20);
     m_edit->setText(i18n("Edit"));
-    
     m_edit->hide();
 
     m_icon = new Plasma::IconWidget(this);
-
-    // SET ICON
-
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setDrawBackground(true);
     m_icon->setMinimumSize(250,50);
@@ -95,8 +94,6 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     }
 
     setInfo();
-
-    // SET LAYOUT
 
     m_mainLayout->addItem(m_icon);
 
@@ -312,14 +309,21 @@ bool ContactWidgetItem::isEmpty()
 
 void ContactWidgetItem::editContact()
 {
+    KDialog * dialog = new KDialog();
+    
+    dialog->setCaption(m_icon->text());
+    dialog->setButtons( KDialog::Ok | KDialog::Cancel);
+    
     Akonadi::ContactEditor *editor = new Akonadi::ContactEditor(Akonadi::ContactEditor::EditMode);
     
     editor->loadContact(m_item);
     
-    editor->show();
+    dialog->setMainWidget(editor);
+        
+    connect(dialog, SIGNAL(okClicked()),editor,SLOT(saveContact()));
     
-    // TODO: saveContact, delete editor
-    
+    dialog->show();
+        
 }
 
 void ContactWidgetItem::openEmail(const QString & string)

@@ -26,6 +26,9 @@
 #include <QGraphicsLinearLayout>
 #include <QGraphicsLayoutItem>
 
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Collection>
+
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
 
@@ -39,25 +42,37 @@ class ContactWidget : public QGraphicsWidget
 public:
     
     ContactWidget(QGraphicsWidget * parent = 0);
-    
-    void addItem(ContactWidgetItem * item);
-    void clear();
-    void showContactsContains(const QString & text);
+   
+    void setCollection(Akonadi::Collection::Id id);
     void setFilterData(bool filter = true);
     void setShowEmptyContacts(bool show = true);
     
+    void showContactsContains(const QString & text);
     
+public slots:
+    
+    void fetchCollectionsFinished(KJob *job);
+    void fetchItemsFinished(KJob * job);
+
 private:
     
+    void addItem(ContactWidgetItem * item);
+    void clear();
     void updateContacts();
+
+    void fetchCollections();
+    void fetchItems(const Akonadi::Collection & collections);
     
     ContactsLayout * m_layout;
     
     QList<QGraphicsLayoutItem*> m_listFilterText;
     QList<QGraphicsLayoutItem*> m_listFilterEmpty;
     
+    Akonadi::Collection::Id m_id;
+    
     bool m_findData;
     bool m_showEmptyContacts;
+    
     
     
 };
