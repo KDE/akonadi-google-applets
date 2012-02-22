@@ -20,7 +20,7 @@
 #include "contactwidgetitem.h"
 
 #include <KIcon>
-#include <KRun>
+#include <KToolInvocation>
 
 #include <Akonadi/Contact/ContactEditor>
 
@@ -157,7 +157,7 @@ void ContactWidgetItem::setInfo()
 
         m_mail = new Plasma::Label(this);
 
-        text = "<strong>" + i18n("Email: ") + "</strong><a href=mailto:\"" + m_addressee->emails().first() + "\">" + m_addressee->emails().first() +
+        text = "<strong>" + i18n("Email: ") + "</strong><a href=\"" + m_addressee->emails().first() + "\">" + m_addressee->emails().first() +
                "</a>";
 
         qDebug() << text;
@@ -325,8 +325,8 @@ void ContactWidgetItem::editContact()
 void ContactWidgetItem::openEmail(const QString & string)
 {
 
-    // TODO
-    //KRun::runUrl(KUrl(string), "mailto", 0);
+    KToolInvocation::invokeMailer(string);
+    
 }
 
 
