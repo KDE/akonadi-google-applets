@@ -21,7 +21,8 @@ kde4_add_ui_files(contacts_SRCS config.ui)
  
 kde4_add_plugin(plasma_applet_google_contacts ${contacts_SRCS})
 target_link_libraries(plasma_applet_google_contacts
-                      ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS})
+                      ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_KABC_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
  
 install(TARGETS plasma_applet_google_contacts
         DESTINATION ${PLUGIN_INSTALL_DIR})

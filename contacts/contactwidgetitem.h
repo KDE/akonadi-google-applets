@@ -26,8 +26,11 @@
 
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
+#include <Plasma/PushButton>
+#include <Plasma/GroupBox>
 
 #include <KABC/Addressee>
+#include <Akonadi/Item>
 
 class ContactWidgetItem : public QGraphicsWidget
 {
@@ -35,7 +38,7 @@ class ContactWidgetItem : public QGraphicsWidget
     
 public:
     
-    ContactWidgetItem(KABC::Addressee * addressee, QGraphicsWidget * parent = 0);
+    ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
     virtual ~ContactWidgetItem();
     
     const KABC::Addressee * addressee() { return m_addressee; }
@@ -48,10 +51,14 @@ public:
 public slots:
     
     void showInfo();
+    void editContact();
+    void openEmail(const QString & string);
     
 private:
     
     void setInfo();
+    
+    Akonadi::Item m_item;
     
     KABC::Addressee * m_addressee;
     
@@ -59,14 +66,14 @@ private:
  
     Plasma::IconWidget * m_icon;
     
-    // TODO: add more info?
-    Plasma::Label * m_name;
-    
+    // TODO: add more info?    
     Plasma::Label * m_homeNumber;
     Plasma::Label * m_officeNumber;
     Plasma::Label * m_cellPhone;
     Plasma::Label * m_mail;
     Plasma::Label * m_mail2;
+    
+    Plasma::PushButton *m_edit;
     
     bool m_show;
     

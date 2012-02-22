@@ -309,15 +309,11 @@ void PlasmaContacts::fetchItemsFinished(KJob * job)
 
     foreach ( const Akonadi::Item &item, items ) {
 
-        KABC::Addressee tmp = item.payload<KABC::Addressee>();
+        ContactWidgetItem * contact;
 
-        KABC::Addressee * addr = new KABC::Addressee(tmp);
+        contact = new ContactWidgetItem(item,this);
 
-        ContactWidgetItem * item;
-
-        item = new ContactWidgetItem(addr,this);
-
-        m_contactList->addItem(item);
+        m_contactList->addItem(contact);
 
     }
 

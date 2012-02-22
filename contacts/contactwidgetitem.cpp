@@ -20,22 +20,36 @@
 #include "contactwidgetitem.h"
 
 #include <KIcon>
+#include <KRun>
+
+#include <Akonadi/Contact/ContactEditor>
+
 #include <QLabel>
 
-ContactWidgetItem::ContactWidgetItem(KABC::Addressee * addressee, QGraphicsWidget* parent)
+ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget* parent)
         : QGraphicsWidget(parent),
         m_homeNumber(0),
         m_officeNumber(0),
         m_cellPhone(0),
         m_mail(0),
         m_mail2(0),
+        m_edit(0),
         m_show(false)
 
 {
-    m_addressee = addressee;
+    m_item = item;
+
+    KABC::Addressee addressee = m_item.payload<KABC::Addressee>();
+
+    m_addressee = new KABC::Addressee(addressee);
 
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_mainLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    m_edit = new Plasma::PushButton(this);
+    m_edit->setText(i18n("Edit"));
+    
+    m_edit->hide();
 
     m_icon = new Plasma::IconWidget(this);
 
@@ -89,6 +103,7 @@ ContactWidgetItem::ContactWidgetItem(KABC::Addressee * addressee, QGraphicsWidge
     setLayout(m_mainLayout);
 
     connect(m_icon, SIGNAL(clicked()), SLOT(showInfo()));
+    connect(m_edit, SIGNAL(clicked()), SLOT(editContact()));
 
 }
 
@@ -107,8 +122,6 @@ void ContactWidgetItem::setInfo()
         m_homeNumber->nativeWidget()->setIndent(10);
         m_homeNumber->setMinimumHeight(30);
         m_homeNumber->setMaximumHeight(30);
-        m_homeNumber->nativeWidget()->setFrameShape(QFrame::WinPanel);
-        m_homeNumber->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_homeNumber->hide();
     }
 
@@ -122,10 +135,7 @@ void ContactWidgetItem::setInfo()
         m_officeNumber->nativeWidget()->setIndent(10);
         m_officeNumber->setMinimumHeight(30);
         m_officeNumber->setMaximumHeight(30);
-        m_officeNumber->nativeWidget()->setFrameShape(QFrame::WinPanel);
-        m_officeNumber->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_officeNumber->hide();
-
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
@@ -138,8 +148,6 @@ void ContactWidgetItem::setInfo()
         m_cellPhone->nativeWidget()->setIndent(10);
         m_cellPhone->setMinimumHeight(30);
         m_cellPhone->setMaximumHeight(30);
-        m_cellPhone->nativeWidget()->setFrameShape(QFrame::WinPanel);
-        m_cellPhone->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_cellPhone->hide();
     }
 
@@ -149,15 +157,18 @@ void ContactWidgetItem::setInfo()
 
         m_mail = new Plasma::Label(this);
 
-        text = "<strong>" + i18n("Email: ") + "</strong>" + m_addressee->emails().first();
+        text = "<strong>" + i18n("Email: ") + "</strong><a href=mailto:\"" + m_addressee->emails().first() + "\">" + m_addressee->emails().first() +
+               "</a>";
+
+        qDebug() << text;
 
         m_mail->setText(text);
         m_mail->nativeWidget()->setIndent(10);
         m_mail->setMinimumHeight(30);
         m_mail->setMaximumHeight(30);
-        m_mail->nativeWidget()->setFrameShape(QFrame::WinPanel);
-        m_mail->nativeWidget()->setFrameShadow(QFrame::Sunken);
         m_mail->hide();
+
+        connect(m_mail, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
 
     }
 
@@ -168,7 +179,6 @@ void ContactWidgetItem::showInfo()
 {
 
     if (m_show) {
-
 
         if (m_homeNumber) {
 
@@ -197,11 +207,13 @@ void ContactWidgetItem::showInfo()
             m_mail->hide();
 
         }
-        
+
+        m_mainLayout->removeItem(m_edit);
+        m_edit->hide();
+
         m_show = false;
 
     } else {
-
 
         if (m_homeNumber) {
 
@@ -230,7 +242,10 @@ void ContactWidgetItem::showInfo()
             m_mail->show();
 
         }
-        
+
+        m_mainLayout->addItem(m_edit);
+        m_edit->show();
+
         m_show = true;
 
     }
@@ -287,12 +302,31 @@ bool ContactWidgetItem::isEmpty()
 {
 
     if (!m_homeNumber && !m_officeNumber && !m_cellPhone &&
-	!m_mail && !m_mail2) 
-	
-	return true;
-    
+            !m_mail && !m_mail2)
+
+        return true;
+
     return false;
+
+}
+
+void ContactWidgetItem::editContact()
+{
+    Akonadi::ContactEditor *editor = new Akonadi::ContactEditor(Akonadi::ContactEditor::EditMode);
     
+    editor->loadContact(m_item);
+    
+    editor->show();
+    
+    // TODO: saveContact, delete editor
+    
+}
+
+void ContactWidgetItem::openEmail(const QString & string)
+{
+
+    // TODO
+    //KRun::runUrl(KUrl(string), "mailto", 0);
 }
 
 
