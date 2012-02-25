@@ -28,6 +28,7 @@
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
+#include <Akonadi/Monitor>
 
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
@@ -42,6 +43,7 @@ class ContactWidget : public QGraphicsWidget
 public:
     
     ContactWidget(QGraphicsWidget * parent = 0);
+    virtual ~ContactWidget();
    
     void setCollection(Akonadi::Collection::Id id);
     void setFilterData(bool filter = true);
@@ -54,6 +56,10 @@ public slots:
     void fetchCollectionsFinished(KJob *job);
     void fetchItemsFinished(KJob * job);
 
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection & collection);
+    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array );
+    void itemRemoved(const Akonadi::Item & item);
+    
 private:
     
     void addItem(ContactWidgetItem * item);
@@ -69,6 +75,7 @@ private:
     QList<QGraphicsLayoutItem*> m_listFilterEmpty;
     
     Akonadi::Collection::Id m_id;
+    Akonadi::Monitor * m_monitor;
     
     bool m_findData;
     bool m_showEmptyContacts;

@@ -40,7 +40,7 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
-    setMinimumSize(300,300);
+    setMinimumSize(300,500);
 }
 
 void PlasmaContacts::init()
@@ -52,7 +52,6 @@ void PlasmaContacts::init()
     m_contactList = new ContactWidget(this);
 
     m_scroll = new Plasma::ScrollWidget(this);
-
     m_scroll->setWidget(m_contactList);
 
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);

@@ -41,22 +41,26 @@ public:
     ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
     virtual ~ContactWidgetItem();
     
-    bool containsString(const QString & string);
-    bool containsStringInData(const QString & string);
     bool isEmpty();
+    bool hasStringInName(const QString & string);
+    bool hasStringInData(const QString & string);
+  
+    void updateContact(const Akonadi::Item & item);
     
     const KABC::Addressee * addressee() { return m_addressee; }
     const QString name() { return m_icon->text(); }
+    Akonadi::Entity::Id id() { return m_item.id(); }
     
 public slots:
     
-    void showInfo();
     void editContact();
+    void showContactInfo();
     void openEmail(const QString & string);
     
 private:
     
-    void setInfo();
+    void setContactInfo();
+    void setContactIcon();
     
     Akonadi::Item m_item;
     
@@ -70,11 +74,11 @@ private:
     Plasma::Label * m_officeNumber;
     Plasma::Label * m_cellPhone;
     Plasma::Label * m_mail;
-    Plasma::Label * m_mail2;
     
     Plasma::PushButton *m_edit;
     
     bool m_show;
+    bool m_info;
     
 };
 

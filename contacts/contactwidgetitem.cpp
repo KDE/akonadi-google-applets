@@ -23,7 +23,7 @@
 #include <KDialog>
 #include <KToolInvocation>
 
-#include <Akonadi/Contact/ContactEditor>
+#include <Akonadi/Contact/ContactEditorDialog>
 
 #include <QLabel>
 
@@ -33,9 +33,9 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
         m_officeNumber(0),
         m_cellPhone(0),
         m_mail(0),
-        m_mail2(0),
         m_edit(0),
-        m_show(false)
+        m_show(false),
+        m_info(false)
 
 {
     m_item = item;
@@ -48,8 +48,8 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_mainLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_edit = new Plasma::PushButton(this);
-    m_edit->setMinimumHeight(20);
-    m_edit->setMaximumHeight(20);
+    m_edit->setMinimumHeight(25);
+    m_edit->setMaximumHeight(25);
     m_edit->setText(i18n("Edit"));
     m_edit->hide();
 
@@ -58,6 +58,20 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_icon->setDrawBackground(true);
     m_icon->setMinimumSize(250,50);
     m_icon->setMaximumHeight(50);
+
+    setContactIcon();
+
+    m_mainLayout->addItem(m_icon);
+
+    setLayout(m_mainLayout);
+
+    connect(m_icon, SIGNAL(clicked()), SLOT(showContactInfo()));
+    connect(m_edit, SIGNAL(clicked()), SLOT(editContact()));
+
+}
+
+void ContactWidgetItem::setContactIcon()
+{
 
     if (m_addressee->photo().isEmpty()) {
 
@@ -73,7 +87,7 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 
     }
 
-    if (m_addressee->name().isEmpty()) {
+    if (m_addressee->formattedName().isEmpty() && m_addressee->name().isEmpty()) {
 
         QStringList emails = m_addressee->emails();
 
@@ -89,22 +103,21 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 
     } else {
 
-        m_icon->setText(m_addressee->name());
+        if (!m_addressee->isEmpty())
+
+            m_icon->setText(m_addressee->formattedName());
+
+        else
+
+            m_icon->setText(m_addressee->name());
 
     }
 
-    setInfo();
-
-    m_mainLayout->addItem(m_icon);
-
-    setLayout(m_mainLayout);
-
-    connect(m_icon, SIGNAL(clicked()), SLOT(showInfo()));
-    connect(m_edit, SIGNAL(clicked()), SLOT(editContact()));
 
 }
 
-void ContactWidgetItem::setInfo()
+
+void ContactWidgetItem::setContactInfo()
 {
 
     QString text;
@@ -117,8 +130,8 @@ void ContactWidgetItem::setInfo()
 
         m_homeNumber->setText(text);
         m_homeNumber->nativeWidget()->setIndent(10);
-        m_homeNumber->setMinimumHeight(30);
-        m_homeNumber->setMaximumHeight(30);
+        m_homeNumber->setMinimumHeight(20);
+        m_homeNumber->setMaximumHeight(20);
         m_homeNumber->hide();
     }
 
@@ -130,8 +143,8 @@ void ContactWidgetItem::setInfo()
 
         m_officeNumber->setText(text);
         m_officeNumber->nativeWidget()->setIndent(10);
-        m_officeNumber->setMinimumHeight(30);
-        m_officeNumber->setMaximumHeight(30);
+        m_officeNumber->setMinimumHeight(20);
+        m_officeNumber->setMaximumHeight(20);
         m_officeNumber->hide();
     }
 
@@ -143,8 +156,8 @@ void ContactWidgetItem::setInfo()
 
         m_cellPhone->setText(text);
         m_cellPhone->nativeWidget()->setIndent(10);
-        m_cellPhone->setMinimumHeight(30);
-        m_cellPhone->setMaximumHeight(30);
+        m_cellPhone->setMinimumHeight(20);
+        m_cellPhone->setMaximumHeight(20);
         m_cellPhone->hide();
     }
 
@@ -157,12 +170,10 @@ void ContactWidgetItem::setInfo()
         text = "<strong>" + i18n("Email: ") + "</strong><a href=\"" + m_addressee->emails().first() + "\">" + m_addressee->emails().first() +
                "</a>";
 
-        qDebug() << text;
-
         m_mail->setText(text);
         m_mail->nativeWidget()->setIndent(10);
-        m_mail->setMinimumHeight(30);
-        m_mail->setMaximumHeight(30);
+        m_mail->setMinimumHeight(20);
+        m_mail->setMaximumHeight(20);
         m_mail->hide();
 
         connect(m_mail, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
@@ -171,9 +182,15 @@ void ContactWidgetItem::setInfo()
 
 }
 
-
-void ContactWidgetItem::showInfo()
+void ContactWidgetItem::showContactInfo()
 {
+
+    if (!m_info) {
+	
+	setContactInfo();
+	m_info = true;
+	
+    }
 
     if (m_show) {
 
@@ -211,7 +228,7 @@ void ContactWidgetItem::showInfo()
         m_show = false;
 
     } else {
-
+	
         if (m_homeNumber) {
 
             m_mainLayout->addItem(m_homeNumber);
@@ -249,14 +266,14 @@ void ContactWidgetItem::showInfo()
 
 }
 
-bool ContactWidgetItem::containsString(const QString & string)
+bool ContactWidgetItem::hasStringInName(const QString & string)
 {
 
     return m_icon->text().toLower().contains(string.toLower());
 
 }
 
-bool ContactWidgetItem::containsStringInData(const QString & string)
+bool ContactWidgetItem::hasStringInData(const QString & string)
 {
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
@@ -299,7 +316,7 @@ bool ContactWidgetItem::isEmpty()
 {
 
     if (!m_homeNumber && !m_officeNumber && !m_cellPhone &&
-            !m_mail && !m_mail2)
+            !m_mail)
 
         return true;
 
@@ -309,28 +326,71 @@ bool ContactWidgetItem::isEmpty()
 
 void ContactWidgetItem::editContact()
 {
-    KDialog * dialog = new KDialog();
+    Akonadi::ContactEditorDialog *dialog = new Akonadi::ContactEditorDialog( Akonadi::ContactEditorDialog::EditMode);
     
-    dialog->setCaption(m_icon->text());
-    dialog->setButtons( KDialog::Ok | KDialog::Cancel);
-    
-    Akonadi::ContactEditor *editor = new Akonadi::ContactEditor(Akonadi::ContactEditor::EditMode);
-    
-    editor->loadContact(m_item);
-    
-    dialog->setMainWidget(editor);
-        
-    connect(dialog, SIGNAL(okClicked()),editor,SLOT(saveContact()));
-    
+    dialog->setContact(m_item);
     dialog->show();
-        
+
 }
 
 void ContactWidgetItem::openEmail(const QString & string)
 {
 
     KToolInvocation::invokeMailer(string);
+
+}
+
+void ContactWidgetItem::updateContact(const Akonadi::Item & item)
+{
+
+    if (m_show) {
+
+        showContactInfo();
+
+        m_show = false;
+
+    }
+
+    m_item = item;
+
+    KABC::Addressee addressee = m_item.payload<KABC::Addressee>();
+
+    delete m_addressee;
+
+    m_addressee = new KABC::Addressee(addressee);
+
+    if (m_homeNumber) {
+
+        delete m_homeNumber;
+        m_homeNumber = 0;
+
+    }
+
+    if (m_officeNumber) {
+
+        delete m_officeNumber;
+        m_officeNumber = 0;
+    }
+
+    if (m_cellPhone) {
+
+        delete m_cellPhone;
+        m_cellPhone = 0;
+
+    }
+
+    if (m_mail) {
+
+        delete m_mail;
+        m_mail = 0;
+
+    }
+
+    setContactIcon();
     
+    m_info = false;
+    
+    //setContactInfo();
 }
 
 
@@ -338,5 +398,6 @@ ContactWidgetItem::~ContactWidgetItem()
 {
 
     delete m_addressee;
+
 }
 
