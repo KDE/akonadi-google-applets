@@ -50,7 +50,6 @@ class PlasmaContacts : public Plasma::Applet
     private:
 	
 	void configChanged();
-	void changeOrientation(Qt::Orientation orientation);
 	
 	Plasma::ScrollWidget *m_scroll;
 	Plasma::LineEdit *m_find;

@@ -76,8 +76,6 @@ void PlasmaContacts::configChanged()
     
     m_find->setText("");
     
-    //changeOrientation((Qt::Orientation)(conf.readEntry("orientation",1)+1));
-
     if (conf.readEntry("findData",true) != m_findData) {
 
         m_findData = conf.readEntry("findData",true);
@@ -115,7 +113,6 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
     KConfigGroup conf = config();
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
-    //configDialog.orientationBox->setCurrentIndex(conf.readEntry("orientation",1));
     configDialog.findData->setChecked(conf.readEntry("findData",true));
 
     if (m_id != -1) {
@@ -124,15 +121,12 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
 
     }
 
-    //configDialog.showEmails->setChecked(conf.readEntry("showEmails",true));
-    //configDialog.showNumbers->setChecked(conf.readEntry("showNumbers",true));
     configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts",true));
     
     // TODO: connect changes for apply
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
-    //connect(configDialog.orientationBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
     connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections,SIGNAL(clicked(bool)),SLOT(fetchCollections()));
@@ -145,10 +139,7 @@ void PlasmaContacts::configAccepted()
     KConfigGroup conf = config();
 
     conf.writeEntry("collection",configDialog.collectionBox->currentText());
-    //conf.writeEntry("orientation",configDialog.orientationBox->currentIndex());
     conf.writeEntry("findData", configDialog.findData->isChecked());
-    //conf.writeEntry("showEmails",configDialog.showEmails->isChecked());
-    //conf.writeEntry("showNumbers",configDialog.showNumbers->isChecked());
     conf.writeEntry("showEmptyContacts",configDialog.showEmptyContacts->isChecked());
     
     emit configNeedsSaving();
@@ -173,26 +164,6 @@ void PlasmaContacts::lineFocusChanged(bool change)
     }
 
 }
-
-/*oid PlasmaContacts::changeOrientation(Qt::Orientation orientation)
-{
-
-    //m_layout->setOrientation(orientation);
-
-    // TODO
-    
-    if (orientation == Qt::Vertical) {
-
-       resize(300,300);
-
-    } else {
-
-       resize(600,100);
-
-    }
-
-}*/
-
 
 void PlasmaContacts::fetchCollections()
 {

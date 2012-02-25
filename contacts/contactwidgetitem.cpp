@@ -326,7 +326,7 @@ bool ContactWidgetItem::isEmpty()
 
 void ContactWidgetItem::editContact()
 {
-    Akonadi::ContactEditorDialog *dialog = new Akonadi::ContactEditorDialog( Akonadi::ContactEditorDialog::EditMode);
+    Akonadi::ContactEditorDialog *dialog = new Akonadi::ContactEditorDialog(Akonadi::ContactEditorDialog::EditMode);
     
     dialog->setContact(m_item);
     dialog->show();

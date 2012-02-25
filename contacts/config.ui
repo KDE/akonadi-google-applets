@@ -54,70 +54,6 @@
     <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>85</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Show emails</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="showEmails">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>85</y>
-     <width>150</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="showNumbers">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>110</y>
-     <width>89</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Show numbers</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="loadCollections">
    <property name="geometry">
     <rect>
@@ -134,56 +70,11 @@
     <string/>
    </property>
   </widget>
-  <widget class="QComboBox" name="orientationBox">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>35</y>
-     <width>101</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <property name="sizeAdjustPolicy">
-    <enum>QComboBox::AdjustToContents</enum>
-   </property>
-   <item>
-    <property name="text">
-     <string>Horizontal</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Vertical</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>35</y>
-     <width>100</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Orientation</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
+     <y>40</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -196,7 +87,7 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>60</y>
+     <y>40</y>
      <width>89</width>
      <height>20</height>
     </rect>
@@ -212,7 +103,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>135</y>
+     <y>70</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -225,7 +116,7 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>135</y>
+     <y>70</y>
      <width>89</width>
      <height>20</height>
     </rect>
