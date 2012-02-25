@@ -315,10 +315,14 @@ bool ContactWidgetItem::hasStringInData(const QString & string)
 bool ContactWidgetItem::isEmpty()
 {
 
-    if (!m_homeNumber && !m_officeNumber && !m_cellPhone &&
-            !m_mail)
+    if (m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty() &&
+	m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() &&
+	m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty() &&
+	m_addressee->emails().isEmpty()) {
 
         return true;
+    
+    }
 
     return false;
 
