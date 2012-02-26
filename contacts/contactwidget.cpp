@@ -209,7 +209,7 @@ void ContactWidget::addItem(ContactWidgetItem* item)
 
         tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
 
-        if (item->name().toLower() < tmpItem->name().toLower()) {
+        if (item->operator<(tmpItem)) {
 
             m_layout->insertItem(i,item);
 
@@ -281,14 +281,11 @@ void ContactWidget::updateContacts()
 void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection  & collection)
 {
 
-    qDebug() << "item added";
-
     if (collection.id() == m_id) {
 
         ContactWidgetItem * contact;
 
         contact = new ContactWidgetItem(item,this);
-        qDebug() << "bar";
 
         addItem(contact);
 
@@ -298,21 +295,19 @@ void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collect
 
 void ContactWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array )
 {
- 
-    qDebug() << "change";
-    
+
     Q_UNUSED(array);
-    
+
     ContactWidgetItem * tmpItem;
-    
+
     for (int i = 0; i < m_layout->count(); i++) {
 
         tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
 
-        if (item.id() == tmpItem->id()) {
+        if (tmpItem->operator=(item)) {
 
             tmpItem->updateContact(item);
-	    
+
             return;
         }
 
@@ -329,14 +324,14 @@ void ContactWidget::itemRemoved(const Akonadi::Item & item)
 
         tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
 
-        if (item.id() == tmpItem->id()) {
+        if (tmpItem->operator=(item)) {
 
             tmpItem->hide();
 
             m_layout->removeItem(tmpItem);;
 
-	    tmpItem->deleteLater();
-	    
+            tmpItem->deleteLater();
+
             return;
         }
 

@@ -20,12 +20,9 @@
 #include "contactwidgetitem.h"
 
 #include <KIcon>
-#include <KDialog>
 #include <KToolInvocation>
-
-#include <Akonadi/Contact/ContactEditorDialog>
-
 #include <QLabel>
+#include <Akonadi/Contact/ContactEditorDialog>
 
 ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget* parent)
         : QGraphicsWidget(parent),
@@ -103,7 +100,7 @@ void ContactWidgetItem::setContactIcon()
 
     } else {
 
-        if (!m_addressee->isEmpty())
+        if (!m_addressee->formattedName().isEmpty())
 
             m_icon->setText(m_addressee->formattedName());
 
@@ -186,13 +183,14 @@ void ContactWidgetItem::showContactInfo()
 {
 
     if (!m_info) {
-	
-	setContactInfo();
-	m_info = true;
-	
+
+        setContactInfo();
+        m_info = true;
+
     }
 
     if (m_show) {
+
 
         if (m_homeNumber) {
 
@@ -228,7 +226,7 @@ void ContactWidgetItem::showContactInfo()
         m_show = false;
 
     } else {
-	
+
         if (m_homeNumber) {
 
             m_mainLayout->addItem(m_homeNumber);
@@ -316,25 +314,42 @@ bool ContactWidgetItem::isEmpty()
 {
 
     if (m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty() &&
-	m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() &&
-	m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty() &&
-	m_addressee->emails().isEmpty()) {
+            m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() &&
+            m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty() &&
+            m_addressee->emails().isEmpty()) {
 
         return true;
-    
+
     }
 
     return false;
 
 }
 
+bool ContactWidgetItem::operator<(const ContactWidgetItem * item)
+{
+    return (this->m_icon->text().toLower() < item->m_icon->text().toLower());
+
+}
+
+bool ContactWidgetItem::operator=(const Akonadi::Item& item)
+{
+
+    return (this->m_item.id() == item.id());
+
+}
+
 void ContactWidgetItem::editContact()
 {
     Akonadi::ContactEditorDialog *dialog = new Akonadi::ContactEditorDialog(Akonadi::ContactEditorDialog::EditMode);
-    
-    dialog->setContact(m_item);
-    dialog->show();
 
+    dialog->setContact(m_item);
+    
+    connect(dialog, SIGNAL(closeClicked()), dialog, SLOT(delayedDestruct()));
+    connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
+    connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
+    
+    dialog->show();
 }
 
 void ContactWidgetItem::openEmail(const QString & string)
@@ -391,12 +406,10 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
     }
 
     setContactIcon();
-    
-    m_info = false;
-    
-    //setContactInfo();
-}
 
+    m_info = false;
+
+}
 
 ContactWidgetItem::~ContactWidgetItem()
 {

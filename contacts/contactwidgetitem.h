@@ -20,14 +20,12 @@
 #ifndef CONTACTWIDGETITEM_H
 #define CONTACTWIDGETITEM_H
 
-#include <QObject>
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
 #include <Plasma/PushButton>
-#include <Plasma/GroupBox>
 
 #include <KABC/Addressee>
 #include <Akonadi/Item>
@@ -47,10 +45,9 @@ public:
   
     void updateContact(const Akonadi::Item & item);
     
-    const KABC::Addressee * addressee() { return m_addressee; }
-    const QString name() { return m_icon->text(); }
-    Akonadi::Entity::Id id() { return m_item.id(); }
-    
+    bool operator<(const ContactWidgetItem * item);
+    bool operator=(const Akonadi::Item & item);
+        
 public slots:
     
     void editContact();
@@ -62,20 +59,17 @@ private:
     void setContactInfo();
     void setContactIcon();
     
-    Akonadi::Item m_item;
-    
-    KABC::Addressee * m_addressee;
-    
     QGraphicsLinearLayout * m_mainLayout;
  
     Plasma::IconWidget * m_icon;
-    
     Plasma::Label * m_homeNumber;
     Plasma::Label * m_officeNumber;
     Plasma::Label * m_cellPhone;
     Plasma::Label * m_mail;
-    
     Plasma::PushButton *m_edit;
+        
+    Akonadi::Item m_item;
+    KABC::Addressee * m_addressee;
     
     bool m_show;
     bool m_info;

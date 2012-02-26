@@ -51,12 +51,14 @@ class PlasmaContacts : public Plasma::Applet
 	
 	void configChanged();
 	
-	Plasma::ScrollWidget *m_scroll;
-	Plasma::LineEdit *m_find;
-
-	QGraphicsLinearLayout *m_mainLayout;
+	Ui::config configDialog;
 	
 	ContactWidget *m_contactList;
+	
+	QGraphicsLinearLayout *m_mainLayout;
+	
+	Plasma::ScrollWidget *m_scroll;
+	Plasma::LineEdit *m_find;
 		
 	Akonadi::Collection::Id m_id;
 	
@@ -64,8 +66,6 @@ class PlasmaContacts : public Plasma::Applet
 	bool m_showEmails;
 	bool m_showNumbers;
 	bool m_showEmptyContacts;
-	
-	Ui::config configDialog;
 		
    public slots:
    

@@ -66,7 +66,6 @@ void PlasmaContacts::init()
     
     configChanged();
 
-
 }
 
 void PlasmaContacts::configChanged()
@@ -123,7 +122,6 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
 
     configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts",true));
     
-    // TODO: connect changes for apply
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
