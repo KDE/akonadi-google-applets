@@ -26,54 +26,55 @@
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
 #include <Plasma/PushButton>
+#include <Plasma/Frame>
 
 #include <KABC/Addressee>
 #include <Akonadi/Item>
 
-class ContactWidgetItem : public QGraphicsWidget
+class ContactWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
-    
+
 public:
-    
+
     ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
     virtual ~ContactWidgetItem();
-    
+
     bool isEmpty();
     bool hasStringInName(const QString & string);
     bool hasStringInData(const QString & string);
-  
+
     void updateContact(const Akonadi::Item & item);
-    
+
     bool operator<(const ContactWidgetItem * item);
     bool operator=(const Akonadi::Item & item);
-        
+
 public slots:
-    
+
     void editContact();
     void showContactInfo();
     void openEmail(const QString & string);
-    
+
 private:
-    
+
     void setContactInfo();
     void setContactIcon();
-    
+
     QGraphicsLinearLayout * m_mainLayout;
- 
+
     Plasma::IconWidget * m_icon;
     Plasma::Label * m_homeNumber;
     Plasma::Label * m_officeNumber;
     Plasma::Label * m_cellPhone;
     Plasma::Label * m_mail;
     Plasma::PushButton *m_edit;
-        
+
     Akonadi::Item m_item;
     KABC::Addressee * m_addressee;
-    
+
     bool m_show;
     bool m_info;
-    
+
 };
 
 #endif // CONTACTWIDGETITEM_H

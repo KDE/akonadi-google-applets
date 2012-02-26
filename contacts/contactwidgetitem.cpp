@@ -25,14 +25,14 @@
 #include <Akonadi/Contact/ContactEditorDialog>
 
 ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget* parent)
-        : QGraphicsWidget(parent),
-        m_homeNumber(0),
-        m_officeNumber(0),
-        m_cellPhone(0),
-        m_mail(0),
-        m_edit(0),
-        m_show(false),
-        m_info(false)
+    : Plasma::Frame(parent),
+      m_homeNumber(0),
+      m_officeNumber(0),
+      m_cellPhone(0),
+      m_mail(0),
+      m_edit(0),
+      m_show(false),
+      m_info(false)
 
 {
     m_item = item;
@@ -60,6 +60,8 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 
     m_mainLayout->addItem(m_icon);
 
+    setFrameShadow(Plasma::Frame::Raised);
+    
     setLayout(m_mainLayout);
 
     connect(m_icon, SIGNAL(clicked()), SLOT(showContactInfo()));
@@ -171,6 +173,7 @@ void ContactWidgetItem::setContactInfo()
         m_mail->nativeWidget()->setIndent(10);
         m_mail->setMinimumHeight(20);
         m_mail->setMaximumHeight(20);
+	
         m_mail->hide();
 
         connect(m_mail, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
@@ -191,7 +194,8 @@ void ContactWidgetItem::showContactInfo()
 
     if (m_show) {
 
-
+        setFrameShadow(Plasma::Frame::Raised);
+	
         if (m_homeNumber) {
 
             m_mainLayout->removeItem(m_homeNumber);
@@ -227,6 +231,9 @@ void ContactWidgetItem::showContactInfo()
 
     } else {
 
+	setFrameShadow(Plasma::Frame::Sunken);
+
+	
         if (m_homeNumber) {
 
             m_mainLayout->addItem(m_homeNumber);
@@ -344,11 +351,11 @@ void ContactWidgetItem::editContact()
     Akonadi::ContactEditorDialog *dialog = new Akonadi::ContactEditorDialog(Akonadi::ContactEditorDialog::EditMode);
 
     dialog->setContact(m_item);
-    
+
     connect(dialog, SIGNAL(closeClicked()), dialog, SLOT(delayedDestruct()));
     connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
     connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
-    
+
     dialog->show();
 }
 

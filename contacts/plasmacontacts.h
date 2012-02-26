@@ -39,47 +39,47 @@ class PlasmaContacts : public Plasma::Applet
 {
     Q_OBJECT
 
-    public:
-	
-        PlasmaContacts(QObject *parent, const QVariantList &args);
-        ~PlasmaContacts() {};
- 
-	void createConfigurationInterface(KConfigDialog *parent);
-	void init();
-	 
-    private:
-	
-	void configChanged();
-	
-	Ui::config configDialog;
-	
-	ContactWidget *m_contactList;
-	
-	QGraphicsLinearLayout *m_mainLayout;
-	
-	Plasma::ScrollWidget *m_scroll;
-	Plasma::LineEdit *m_find;
-		
-	Akonadi::Collection::Id m_id;
-	
-	bool m_findData;
-	bool m_showEmails;
-	bool m_showNumbers;
-	bool m_showEmptyContacts;
-		
-   public slots:
-   
-       	void configAccepted();
-	
-	void fetchCollections();
-        void fetchCollectionsFinished(KJob *job);
-        
-	void lineChanged(const QString & text);
-        void lineFocusChanged(bool change);
-       	
+public:
+
+    PlasmaContacts(QObject *parent, const QVariantList &args);
+    ~PlasmaContacts() {};
+
+    void createConfigurationInterface(KConfigDialog *parent);
+    void init();
+
+private:
+
+    void configChanged();
+
+    Ui::config configDialog;
+
+    ContactWidget *m_contactList;
+
+    QGraphicsLinearLayout *m_mainLayout;
+
+    Plasma::ScrollWidget *m_scroll;
+    Plasma::LineEdit *m_find;
+
+    Akonadi::Collection::Id m_id;
+
+    bool m_findData;
+    bool m_showEmails;
+    bool m_showNumbers;
+    bool m_showEmptyContacts;
+
+public slots:
+
+    void configAccepted();
+
+    void fetchCollections();
+    void fetchCollectionsFinished(KJob *job);
+
+    void lineChanged(const QString & text);
+    void lineFocusChanged(bool change);
+
 };
- 
+
 K_EXPORT_PLASMA_APPLET(plasma_googgle_contacts, PlasmaContacts)
 
 
-#endif 
+#endif

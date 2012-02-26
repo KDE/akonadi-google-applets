@@ -25,9 +25,9 @@
 #include <Akonadi/Session>
 
 ContactWidget::ContactWidget(QGraphicsWidget* parent)
-        : QGraphicsWidget(parent),
-        m_findData(true),
-        m_showEmptyContacts(true)
+    : QGraphicsWidget(parent),
+      m_findData(true),
+      m_showEmptyContacts(true)
 
 {
     m_layout = new ContactsLayout(Qt::Vertical, this);
