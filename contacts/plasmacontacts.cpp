@@ -23,11 +23,14 @@
 #include <QWidget>
 
 #include <Akonadi/Entity>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/CollectionFetchScope>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemFetchJob>
 
 #include <Plasma/Theme>
 #include <Plasma/IconWidget>
+
 
 PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
     : Plasma::Applet(parent, args),
@@ -53,6 +56,7 @@ void PlasmaContacts::init()
 
     m_scroll = new Plasma::ScrollWidget(this);
     m_scroll->setWidget(m_contactList);
+    m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
 
@@ -114,11 +118,7 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
     configDialog.findData->setChecked(conf.readEntry("findData",true));
 
-    if (m_id != -1) {
-
-        configDialog.collectionBox->addItem(QString::number(m_id));
-
-    }
+    fetchCollections();
 
     configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts",true));
 
@@ -136,7 +136,7 @@ void PlasmaContacts::configAccepted()
 {
     KConfigGroup conf = config();
 
-    conf.writeEntry("collection",configDialog.collectionBox->currentText());
+    conf.writeEntry("collection",configDialog.collectionBox->itemData(configDialog.collectionBox->currentIndex()).toInt());
     conf.writeEntry("findData", configDialog.findData->isChecked());
     conf.writeEntry("showEmptyContacts",configDialog.showEmptyContacts->isChecked());
 
@@ -187,17 +187,32 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
     }
 
     Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
-
     const Akonadi::Collection::List collections = fetchJob->collections();
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (collection.resource().contains("akonadi_googlecontacts_resource")) {
+        if (collection.resource().contains("akonadi_googlecontacts_resource") &&
+            collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
-            configDialog.collectionBox->addItem(QString::number(collection.id()));
+            Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+	
+            if (!attribute)
+		
+                configDialog.collectionBox->addItem(collection.name(), collection.id());
+	    
+            else
+		
+                configDialog.collectionBox->addItem(attribute->displayName(), collection.id());
 
         }
 
+    }
+
+    if (m_id != -1) {
+	
+        int i = configDialog.collectionBox->findData(m_id);
+        configDialog.collectionBox->setCurrentIndex(i);
+	
     }
 
 }

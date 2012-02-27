@@ -20,7 +20,6 @@
 #ifndef CONTACTWIDGETITEM_H
 #define CONTACTWIDGETITEM_H
 
-#include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
 #include <Plasma/IconWidget>
@@ -30,6 +29,8 @@
 
 #include <KABC/Addressee>
 #include <Akonadi/Item>
+
+class QPropertyAnimation;
 
 class ContactWidgetItem : public Plasma::Frame
 {
@@ -49,11 +50,17 @@ public:
     bool operator<(const ContactWidgetItem * item);
     bool operator=(const Akonadi::Item & item);
 
+    void hide();
+    void show();
+
 public slots:
 
     void editContact();
     void showContactInfo();
     void openEmail(const QString & string);
+
+private slots:
+    void doHide();
 
 private:
 
@@ -71,6 +78,8 @@ private:
 
     Akonadi::Item m_item;
     KABC::Addressee * m_addressee;
+
+    QPropertyAnimation * m_animation;
 
     bool m_show;
     bool m_info;

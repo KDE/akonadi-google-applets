@@ -23,6 +23,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/Session>
+#include <QGraphicsOpacityEffect>
 
 ContactWidget::ContactWidget(QGraphicsWidget* parent)
     : QGraphicsWidget(parent),
@@ -31,7 +32,7 @@ ContactWidget::ContactWidget(QGraphicsWidget* parent)
 
 {
     m_layout = new ContactsLayout(Qt::Vertical, this);
-    m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_layout->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
     setLayout(m_layout);
 
     m_monitor = new Akonadi::Monitor();
@@ -97,8 +98,6 @@ void ContactWidget::showContactsContains(const QString& text)
 
         item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
 
-        item->show();
-
         if ( ((!item->hasStringInName(text)) && m_findData && (!item->hasStringInData(text))) ||
                 ((!item->hasStringInName(text)) && !m_findData)) {
 
@@ -110,8 +109,11 @@ void ContactWidget::showContactsContains(const QString& text)
 
             i--;
 
+        } else {
+	    
+            item->show();
+	    
         }
-
     }
 
 
@@ -197,7 +199,7 @@ void ContactWidget::addItem(ContactWidgetItem* item)
 
     if (!m_showEmptyContacts && item->isEmpty()) {
 
-        item->hide();
+        item->setVisible(false);
         m_listFilterEmpty.push_back(item);
 
         return;
@@ -220,6 +222,7 @@ void ContactWidget::addItem(ContactWidgetItem* item)
     }
 
     m_layout->addItem(item);
+    item->show();
 
 }
 

@@ -24,6 +24,9 @@
 #include <QLabel>
 #include <Akonadi/Contact/ContactEditorDialog>
 
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+
 ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget* parent)
     : Plasma::Frame(parent),
       m_homeNumber(0),
@@ -61,12 +64,86 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_mainLayout->addItem(m_icon);
 
     setFrameShadow(Plasma::Frame::Raised);
-    
+
     setLayout(m_mainLayout);
 
+    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
+    effect->setOpacity(1);
+    setGraphicsEffect(effect);
+
+    m_animation = new QPropertyAnimation(effect, "opacity", effect);
+    m_animation->setStartValue(0);
+    m_animation->setEndValue(1);
+    m_animation->setDuration(200);
+    
+    connect(m_animation, SIGNAL(finished()),this, SLOT(doHide()));
     connect(m_icon, SIGNAL(clicked()), SLOT(showContactInfo()));
     connect(m_edit, SIGNAL(clicked()), SLOT(editContact()));
+}
 
+void ContactWidgetItem::hide()
+{
+    if (!isVisible()) {
+	
+        return;
+	
+    }
+
+    if (m_animation->state() == QAbstractAnimation::Running) {
+	
+        m_animation->pause();
+	
+    }
+
+    m_animation->setDirection(QAbstractAnimation::Backward);
+
+    if (m_animation->state() == QAbstractAnimation::Paused) {
+	
+        m_animation->resume();
+	
+    } else {
+	
+        m_animation->start();
+	
+    }
+}
+
+void ContactWidgetItem::doHide()
+{
+    if (m_animation->direction() == QAbstractAnimation::Backward) {
+	
+        QGraphicsWidget::hide();
+	
+    }
+}
+
+void ContactWidgetItem::show()
+{
+    if (isVisible()) {
+	
+        return;
+	
+    }
+
+    QGraphicsWidget::show();
+
+    if (m_animation->state() == QAbstractAnimation::Running) {
+	
+        m_animation->pause();
+	
+    }
+
+    m_animation->setDirection(QAbstractAnimation::Forward);
+
+    if (m_animation->state() == QAbstractAnimation::Paused) {
+	
+        m_animation->resume();
+	
+    } else {
+	
+        m_animation->start();
+	
+    }
 }
 
 void ContactWidgetItem::setContactIcon()
@@ -102,16 +179,19 @@ void ContactWidgetItem::setContactIcon()
 
     } else {
 
-        if (!m_addressee->formattedName().isEmpty())
+        if (!m_addressee->formattedName().isEmpty()) {
 
             m_icon->setText(m_addressee->formattedName());
+	    
+	}
 
-        else
+        else {
 
             m_icon->setText(m_addressee->name());
+	    
+	}
 
     }
-
 
 }
 
@@ -131,6 +211,7 @@ void ContactWidgetItem::setContactInfo()
         m_homeNumber->nativeWidget()->setIndent(10);
         m_homeNumber->setMinimumHeight(20);
         m_homeNumber->setMaximumHeight(20);
+	m_homeNumber->setTextSelectable(true);
         m_homeNumber->hide();
     }
 
@@ -144,6 +225,7 @@ void ContactWidgetItem::setContactInfo()
         m_officeNumber->nativeWidget()->setIndent(10);
         m_officeNumber->setMinimumHeight(20);
         m_officeNumber->setMaximumHeight(20);
+	m_officeNumber->setTextSelectable(true);
         m_officeNumber->hide();
     }
 
@@ -157,6 +239,7 @@ void ContactWidgetItem::setContactInfo()
         m_cellPhone->nativeWidget()->setIndent(10);
         m_cellPhone->setMinimumHeight(20);
         m_cellPhone->setMaximumHeight(20);
+	m_cellPhone->setTextSelectable(true);
         m_cellPhone->hide();
     }
 
@@ -173,7 +256,7 @@ void ContactWidgetItem::setContactInfo()
         m_mail->nativeWidget()->setIndent(10);
         m_mail->setMinimumHeight(20);
         m_mail->setMaximumHeight(20);
-	
+	m_mail->setTextSelectable(true);
         m_mail->hide();
 
         connect(m_mail, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
