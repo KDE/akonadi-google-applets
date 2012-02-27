@@ -196,13 +196,17 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
 
             Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 	
-            if (!attribute)
+            if (!attribute) {
 		
                 configDialog.collectionBox->addItem(collection.name(), collection.id());
+		
+	    }
 	    
-            else
+            else {
 		
                 configDialog.collectionBox->addItem(attribute->displayName(), collection.id());
+		
+	    }
 
         }
 
