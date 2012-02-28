@@ -23,6 +23,7 @@
 #include <KIcon>
 
 #include <Plasma/Applet>
+#include <Plasma/PopupApplet>
 #include <Plasma/ScrollWidget>
 #include <Plasma/LineEdit>
 
@@ -35,7 +36,7 @@
 #include "contactwidget.h"
 #include "ui_config.h"
 
-class PlasmaContacts : public Plasma::Applet
+class PlasmaContacts : public Plasma::PopupApplet
 {
     Q_OBJECT
 
@@ -45,16 +46,16 @@ public:
     ~PlasmaContacts() {};
 
     void createConfigurationInterface(KConfigDialog *parent);
-    void init();
 
 private:
 
     void configChanged();
+    virtual QGraphicsWidget *graphicsWidget();
 
     Ui::config configDialog;
 
     ContactWidget *m_contactList;
-
+    QGraphicsWidget *m_widget;
     QGraphicsLinearLayout *m_mainLayout;
 
     Plasma::ScrollWidget *m_scroll;

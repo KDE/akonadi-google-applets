@@ -33,7 +33,8 @@
 
 
 PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
-    : Plasma::Applet(parent, args),
+    : Plasma::PopupApplet(parent, args),
+      m_widget(0),
       m_id(-1),
       m_findData(true),
       m_showEmails(true),
@@ -43,33 +44,44 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
-    setMinimumSize(300,500);
+    setPopupIcon(icon());
+    
 }
 
-void PlasmaContacts::init()
+QGraphicsWidget *PlasmaContacts::graphicsWidget()
 {
-    m_find = new Plasma::LineEdit(this);
-    m_find->setClearButtonShown(true);
-    m_find->setText(i18n(" Find contact "));
+    
+    if (!m_widget) {
+	
+	m_widget = new QGraphicsWidget(this);
+	
+	 m_widget->setMinimumSize(300,500);
+	
+	m_find = new Plasma::LineEdit(m_widget);
+	m_find->setClearButtonShown(true);
+	m_find->setText(i18n(" Find contact "));
 
-    m_contactList = new ContactWidget(this);
+	m_contactList = new ContactWidget(m_widget);
 
-    m_scroll = new Plasma::ScrollWidget(this);
-    m_scroll->setWidget(m_contactList);
-    m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	m_scroll = new Plasma::ScrollWidget(m_widget);
+	m_scroll->setWidget(m_contactList);
+	m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
+	m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,m_widget);
 
-    m_mainLayout->addItem(m_find);
-    m_mainLayout->addItem(m_scroll);
+	m_mainLayout->addItem(m_find);
+	m_mainLayout->addItem(m_scroll);
 
-    setLayout(m_mainLayout);
+	m_widget->setLayout(m_mainLayout);
 
-    connect(m_find,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
-    connect(m_find,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
+	connect(m_find,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
+	connect(m_find,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
 
-    configChanged();
-
+	configChanged();
+	
+    }
+    
+    return m_widget;
 }
 
 void PlasmaContacts::configChanged()
