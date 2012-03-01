@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid - plasmacontacts.cpp
+    Akonadi google tasks plasmoid - plasmatasks.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -16,33 +16,31 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <plasmacontacts.h>
+#include <plasmatasks.h>
 
-#include <KABC/Addressee>
+#include <Plasma/Theme>
+
+#include <KIcon>
 
 #include <Akonadi/Entity>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CollectionFetchScope>
 
-#include <Plasma/Theme>
+#include <KCalCore/Todo>
 
-PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
-    : Plasma::PopupApplet(parent, args),
-      m_widget(0),
-      m_id(-1),
-      m_findData(true),
-      m_showEmails(true),
-      m_showNumbers(true),
-      m_showEmptyContacts(true)
+PlasmaTasks::PlasmaTasks(QObject *parent, const QVariantList &args)
+  : Plasma::PopupApplet(parent, args),
+    m_widget(0),
+    m_id(-1)
 {
-    setConfigurationRequired(true);
+    setConfigurationRequired(true); 
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
-    
+
 }
 
-QGraphicsWidget *PlasmaContacts::graphicsWidget()
+QGraphicsWidget *PlasmaTasks::graphicsWidget()
 {
     
     if (!m_widget) {
@@ -51,55 +49,29 @@ QGraphicsWidget *PlasmaContacts::graphicsWidget()
 	
 	m_widget->setMinimumSize(300,500);
 	
-	m_find = new Plasma::LineEdit(m_widget);
-	m_find->setClearButtonShown(true);
-	m_find->setText(i18n(" Find contact "));
-
-	m_contactList = new ContactWidget(m_widget);
-
+	m_tasksList = new TaskWidget(m_widget);
+	
 	m_scroll = new Plasma::ScrollWidget(m_widget);
-	m_scroll->setWidget(m_contactList);
+	m_scroll->setWidget(m_tasksList);
 	m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,m_widget);
 
-	m_mainLayout->addItem(m_find);
 	m_mainLayout->addItem(m_scroll);
 
 	m_widget->setLayout(m_mainLayout);
 
-	connect(m_find,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
-	connect(m_find,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
-
 	configChanged();
 	
     }
-    
+        
     return m_widget;
-}
+} 
 
-void PlasmaContacts::configChanged()
+void PlasmaTasks::configChanged()
 {
 
     KConfigGroup conf = config();
-
-    m_find->setText("");
-
-    if (conf.readEntry("findData",true) != m_findData) {
-
-        m_findData = conf.readEntry("findData",true);
-
-        m_contactList->setFilterData(m_findData);
-
-    }
-
-    if (conf.readEntry("showEmptyContacts",true) != m_showEmptyContacts) {
-
-        m_showEmptyContacts = conf.readEntry("showEmptyContacts",true);
-
-        m_contactList->setShowEmptyContacts(m_showEmptyContacts);
-
-    }
 
     if (conf.readEntry("collection",-1) != m_id) {
 
@@ -107,13 +79,13 @@ void PlasmaContacts::configChanged()
 
         m_id = conf.readEntry("collection",-1);
 
-        m_contactList->setCollection(m_id);
+        m_tasksList->setCollection(m_id);
     }
 
 
 }
 
-void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
+void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
 {
     QWidget *widget = new QWidget(0);
 
@@ -122,54 +94,26 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
     KConfigGroup conf = config();
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
-    configDialog.findData->setChecked(conf.readEntry("findData",true));
 
     fetchCollections();
 
-    configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts",true));
-
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
-    connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
-    connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
-    connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
-    connect(configDialog.loadCollections,SIGNAL(clicked(bool)),SLOT(fetchCollections()));
-
+    
     parent->addPage(widget,"General",icon());
 }
-
-void PlasmaContacts::configAccepted()
+ 
+void PlasmaTasks::configAccepted()
 {
     KConfigGroup conf = config();
 
     conf.writeEntry("collection",configDialog.collectionBox->itemData(configDialog.collectionBox->currentIndex()).toInt());
-    conf.writeEntry("findData", configDialog.findData->isChecked());
-    conf.writeEntry("showEmptyContacts",configDialog.showEmptyContacts->isChecked());
 
     emit configNeedsSaving();
 
 }
-
-void PlasmaContacts::lineChanged(const QString & text)
-{
-
-    m_contactList->showContactsContains(text);
-
-
-}
-
-void PlasmaContacts::lineFocusChanged(bool change)
-{
-
-    if (change && m_find->text().contains(i18n(" Find "))) {
-
-        m_find->setText("");
-
-    }
-
-}
-
-void PlasmaContacts::fetchCollections()
+ 
+void PlasmaTasks::fetchCollections()
 {
 
     configDialog.collectionBox->clear();
@@ -182,7 +126,7 @@ void PlasmaContacts::fetchCollections()
 
 }
 
-void PlasmaContacts::fetchCollectionsFinished(KJob* job)
+void PlasmaTasks::fetchCollectionsFinished(KJob* job)
 {
 
     if (job->error()) {
@@ -197,8 +141,8 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (collection.resource().contains("akonadi_googlecontacts_resource") &&
-            collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
+        if (collection.resource().contains("akonadi_googletasks_resource") &&
+	   collection.contentMimeTypes().contains(KCalCore::Todo::mimeType())) {
 
             Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 	
@@ -227,9 +171,11 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
 
 }
 
+PlasmaTasks::~PlasmaTasks()
+{
 
-
-
-#include "plasmacontacts.moc"
-
+}
+  
+ 
+#include "plasmatasks.moc"
 

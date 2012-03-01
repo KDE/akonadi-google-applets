@@ -22,7 +22,6 @@
 #include <Akonadi/Entity>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemFetchJob>
-#include <Akonadi/Session>
 #include <QGraphicsOpacityEffect>
 
 ContactWidget::ContactWidget(QGraphicsWidget* parent)

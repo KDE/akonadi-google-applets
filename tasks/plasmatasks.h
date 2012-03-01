@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid - plasmacontacts.h
+    Akonadi google tasks plasmoid - plasmatasks.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -16,15 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PLASMA_CONTACTS_HEADER
-#define PLASMA_CONTACTS_HEADER
+#ifndef PLASMA_TASKS_HEADER
+#define PLASMA_TASKS_HEADER
 
 #include <KConfigDialog>
 #include <KIcon>
 
 #include <Plasma/PopupApplet>
 #include <Plasma/ScrollWidget>
-#include <Plasma/LineEdit>
 
 #include <QGraphicsLinearLayout>
 #include <QGraphicsWidget>
@@ -32,54 +31,44 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
 
-#include "contactwidget.h"
+#include "taskwidget.h"
 #include "ui_config.h"
 
-class PlasmaContacts : public Plasma::PopupApplet
+class PlasmaTasks : public Plasma::PopupApplet
 {
     Q_OBJECT
-
+    
 public:
 
-    PlasmaContacts(QObject *parent, const QVariantList &args);
-    ~PlasmaContacts() {};
+    PlasmaTasks(QObject *parent, const QVariantList &args);
+    ~PlasmaTasks();
 
     void createConfigurationInterface(KConfigDialog *parent);
 
 private:
-
+    
     void configChanged();
     virtual QGraphicsWidget *graphicsWidget();
-
+    
     Ui::config configDialog;
-
-    ContactWidget *m_contactList;
+    
     QGraphicsWidget *m_widget;
     QGraphicsLinearLayout *m_mainLayout;
-
+    
+    TaskWidget * m_tasksList;
+    
     Plasma::ScrollWidget *m_scroll;
-    Plasma::LineEdit *m_find;
-
+    
     Akonadi::Collection::Id m_id;
-
-    bool m_findData;
-    bool m_showEmails;
-    bool m_showNumbers;
-    bool m_showEmptyContacts;
-
+    
 public slots:
-
+    
     void configAccepted();
-
+    
     void fetchCollections();
     void fetchCollectionsFinished(KJob *job);
-
-    void lineChanged(const QString & text);
-    void lineFocusChanged(bool change);
-
 };
 
-K_EXPORT_PLASMA_APPLET(plasma_google_contacts, PlasmaContacts)
-
+K_EXPORT_PLASMA_APPLET(plasma_google_tasks, PlasmaTasks)
 
 #endif

@@ -30,7 +30,7 @@
 #include <KABC/Addressee>
 #include <Akonadi/Item>
 
-class QPropertyAnimation;
+#include <QPropertyAnimation>
 
 class ContactWidgetItem : public Plasma::Frame
 {

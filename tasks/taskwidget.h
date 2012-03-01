@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid - contactwidget.h
+    Akonadi google tasks plasmoid - taskwidget.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -17,12 +17,11 @@
 */
 
 
-#ifndef CONTACTWIDGET_H
-#define CONTACTWIDGET_H
+#ifndef TASKWIDGET_H
+#define TASKWIDGET_H
 
-#include <QList>
 #include <QGraphicsWidget>
-#include <QGraphicsLayoutItem>
+#include <QGraphicsLinearLayout>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
@@ -31,55 +30,36 @@
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
 
-#include "contactwidgetitem.h"
-#include "contactslayout.h"
+#include "taskwidgetitem.h"
 
-class ContactWidget : public QGraphicsWidget
+class TaskWidget : public QGraphicsWidget
 {
     Q_OBJECT
 
 public:
 
-    ContactWidget(QGraphicsWidget * parent = 0);
-    virtual ~ContactWidget();
-
+    TaskWidget(QGraphicsWidget * parent = 0);
+    
     void setCollection(Akonadi::Collection::Id id);
-    void setFilterData(bool filter = true);
-    void setShowEmptyContacts(bool show = true);
-
-    void showContactsContains(const QString & text);
-
-public slots:
-
+    
+public slots:  
+    
     void fetchCollectionsFinished(KJob *job);
     void fetchItemsFinished(KJob * job);
-
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection & collection);
-    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array );
-    void itemRemoved(const Akonadi::Item & item);
-
+    
 private:
-
-    void addItem(ContactWidgetItem * item);
+    
+    void addItem(TaskWidgetItem * item);
+    
     void clear();
-    void updateContacts();
-
+    
     void fetchCollections();
     void fetchItems(const Akonadi::Collection & collections);
 
-    ContactsLayout * m_layout;
-
-    QList<QGraphicsLayoutItem*> m_listFilterText;
-    QList<QGraphicsLayoutItem*> m_listFilterEmpty;
-
+    
+    QGraphicsLinearLayout * m_layout;
+    
     Akonadi::Collection::Id m_id;
-    Akonadi::Monitor * m_monitor;
-
-    bool m_findData;
-    bool m_showEmptyContacts;
-
-
-
 };
 
-#endif // CONTACTWIDGET_H
+#endif // TASKWIDGET_H
