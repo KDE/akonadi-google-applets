@@ -141,8 +141,8 @@ void PlasmaTasks::fetchCollectionsFinished(KJob* job)
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (collection.resource().contains("akonadi_googletasks_resource") &&
-	   collection.contentMimeTypes().contains(KCalCore::Todo::mimeType())) {
+        if (collection.resource().contains("akonadi_googletasks_resource")) {
+	  // collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
             Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 	

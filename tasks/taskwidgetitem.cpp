@@ -22,8 +22,8 @@
 #include <KDateTime>
 
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
-    : QGraphicsWidget(parent),
-      m_copleted(0),
+    : Plasma::Frame(parent),
+      m_completed(0),
       m_date(0),
       m_name(0)
 {
@@ -32,9 +32,12 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
         
     m_mainLayout = new QGraphicsLinearLayout(Qt::Horizontal,this);
+    
     m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
     
     setLayout(m_mainLayout);
+    
+    setFrameShadow(Plasma::Frame::Raised);
     
     setItemInfo();
 }
@@ -42,22 +45,26 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 void TaskWidgetItem::setItemInfo()
 {
 
-    m_copleted = new Plasma::CheckBox(this);
-    m_copleted->setChecked(m_todo->isCompleted());
-    m_copleted->setMaximumSize(20,20);
+    m_completed = new Plasma::CheckBox(this);
+    m_completed->setChecked(m_todo->isCompleted());
+    m_completed->setMaximumHeight(40);
     
-    m_mainLayout->addItem(m_copleted);
+    m_mainLayout->addItem(m_completed);
     
-    m_date = new Plasma::Label(this);
-    m_date->setText(m_todo->completed().toString(KDateTime::LocalDate));
-    m_date->setMaximumSize(20,200);
+    if (m_todo->hasDueDate()) {
+    
+	m_date = new Plasma::Label(this);
+	m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
+	m_date->setMaximumHeight(20);
+	
+	m_infoLayout->addItem(m_date);
+    }
     
     m_name = new Plasma::Label(this);
     m_name->setText(m_todo->summary());
-    m_name->setMaximumSize(20,200);
+    m_name->setMaximumHeight(20);
     
     m_infoLayout->addItem(m_name);
-    m_infoLayout->addItem(m_date);
     
     m_mainLayout->addItem(m_infoLayout);
 }

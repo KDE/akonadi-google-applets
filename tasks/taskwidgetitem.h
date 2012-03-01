@@ -22,13 +22,14 @@
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
+#include <Plasma/Frame>
 #include <Plasma/CheckBox>
 #include <Plasma/Label>
 
 #include <KCalCore/Todo>
 #include <Akonadi/Item>
 
-class TaskWidgetItem : public QGraphicsWidget
+class TaskWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
 
@@ -44,7 +45,7 @@ private:
     QGraphicsLinearLayout * m_mainLayout;
     QGraphicsLinearLayout * m_infoLayout;
     
-    Plasma::CheckBox * m_copleted;
+    Plasma::CheckBox * m_completed;
     Plasma::Label * m_date;
     Plasma::Label * m_name;
     
