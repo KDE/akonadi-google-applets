@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/bin/bash
 $EXTRACTRC `find . -name \*.ui` >> rc.cpp
 $XGETTEXT `find . -name \*.cpp` -o $podir/plasma_google_contacts.pot
 rm -f rc.cpp

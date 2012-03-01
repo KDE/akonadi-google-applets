@@ -15,7 +15,6 @@ include_directories(
    ${CMAKE_BINARY_DIR}
    ${KDE4_INCLUDES}
    ${KDEPIMLIBS_INCLUDE_DIRS}
-   ${KDE4_INCLUDE_DIR} ../../
    )
 
 set(tasks_SRCS taskwidget.cpp taskwidgetitem.cpp plasmatasks.cpp)
@@ -24,8 +23,11 @@ kde4_add_ui_files(tasks_SRCS config.ui)
  
 kde4_add_plugin(plasma_applet_google_tasks ${tasks_SRCS})
 target_link_libraries(plasma_applet_google_tasks
-                      ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS}
-                      ${KDEPIMLIBS_AKONADI_LIBS} ${KDE4_KDECORE_LIBS} ${KDE4_KCALCORE_LIBS})
+                      ${KDE4_PLASMA_LIBS} 
+		      ${KDE4_KDEUI_LIBS}
+                      ${KDEPIMLIBS_AKONADI_LIBS} 
+                      ${KDE4_KDECORE_LIBS}
+                      ${KDE4_KCALCORE_LIBS})
  
 install(TARGETS plasma_applet_google_tasks
         DESTINATION ${PLUGIN_INSTALL_DIR})
