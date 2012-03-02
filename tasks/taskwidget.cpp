@@ -28,7 +28,7 @@ TaskWidget::TaskWidget(QGraphicsWidget* parent)
 {
     
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
-    m_layout->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+    m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
     setLayout(m_layout);
 
@@ -116,12 +116,29 @@ void TaskWidget::fetchItemsFinished(KJob * job)
         addItem(contact);
 
     }
+    
 
 }
 
 void TaskWidget::addItem(TaskWidgetItem* item)
 {
 
+    TaskWidgetItem * tmpItem;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+
+        tmpItem = static_cast<TaskWidgetItem*>(m_layout->itemAt(i));
+
+        if (item->operator<(tmpItem)) {
+
+            m_layout->insertItem(i,item);
+
+            return;
+
+        }
+
+    }
+    
     m_layout->addItem(item);
 
 }

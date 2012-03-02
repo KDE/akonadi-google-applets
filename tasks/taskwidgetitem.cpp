@@ -49,13 +49,33 @@ void TaskWidgetItem::setItemInfo()
     m_completed->setChecked(m_todo->isCompleted());
     m_completed->setMaximumHeight(40);
     
+    connect(m_completed,SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
+    
     m_mainLayout->addItem(m_completed);
+    
+    m_mainLayout->setAlignment(m_completed,Qt::AlignVCenter);
     
     if (m_todo->hasDueDate()) {
     
 	m_date = new Plasma::Label(this);
 	m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
 	m_date->setMaximumHeight(20);
+	
+	int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
+	
+	if (days < 0) {
+	    
+	    m_date->setStyleSheet("color : red;");
+	    
+	} else if (days < 8) {
+	    
+	    m_date->setStyleSheet("color : orange;");
+	
+	} else {
+	    
+	    m_date->setStyleSheet("color : yellow");
+	    
+	}
 	
 	m_infoLayout->addItem(m_date);
     }
@@ -64,7 +84,64 @@ void TaskWidgetItem::setItemInfo()
     m_name->setText(m_todo->summary());
     m_name->setMaximumHeight(20);
     
+    if (m_completed->isChecked()) {
+	
+	m_name->setStyleSheet("text-decoration : line-through");
+
+    }
+    
     m_infoLayout->addItem(m_name);
     
     m_mainLayout->addItem(m_infoLayout);
+    
 }
+
+void TaskWidgetItem::setCompleted(bool completed)
+{
+
+    if (completed) {
+	
+	m_name->setStyleSheet("text-decoration : line-through");
+	
+    } else {
+	
+	m_name->setStyleSheet("text-decoration : none");
+	
+    }
+    
+}
+
+void TaskWidgetItem::setRelated()
+{
+    
+    // TODO
+    
+}
+
+bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
+{
+    
+    if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
+	
+	if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
+	    
+	    return (this->m_todo->summary() < item->m_todo->summary());
+	    
+	}
+	
+	return (this->m_todo->dtDue() < item->m_todo->dtDue());
+	
+    } else if (this->m_todo->hasDueDate()) {
+	
+	return true;
+	
+    } else if (item->m_todo->hasDueDate()) {
+	
+	return false;
+	
+    }
+    
+    return (this->m_todo->summary() < item->m_todo->summary());
+
+}
+

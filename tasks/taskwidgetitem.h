@@ -37,7 +37,14 @@ public:
 
     TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
+    void setRelated();
+    
+    bool operator<(const TaskWidgetItem * item);
 
+public slots:
+    
+    void setCompleted(bool completed);
+    
 private:
 
     void setItemInfo();
