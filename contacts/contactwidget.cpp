@@ -209,7 +209,7 @@ void ContactWidget::addItem(ContactWidgetItem* item)
     for (int i = 0; i < m_layout->count(); i++) {
 
         tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
-
+	
         if (item->operator<(tmpItem)) {
 
             m_layout->insertItem(i,item);

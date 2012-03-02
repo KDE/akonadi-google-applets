@@ -70,10 +70,7 @@ private:
     QGraphicsLinearLayout * m_mainLayout;
 
     Plasma::IconWidget * m_icon;
-    Plasma::Label * m_homeNumber;
-    Plasma::Label * m_officeNumber;
-    Plasma::Label * m_cellPhone;
-    Plasma::Label * m_mail;
+    Plasma::Label * m_infoText;
     Plasma::PushButton *m_edit;
 
     Akonadi::Item m_item;
