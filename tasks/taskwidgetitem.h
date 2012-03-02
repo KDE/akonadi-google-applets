@@ -38,9 +38,14 @@ public:
     TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
     void setRelated();
+    void setUnrelated();
     
+    bool isRelated() { return m_related; }
     bool operator<(const TaskWidgetItem * item);
+    bool operator=(const TaskWidgetItem * item);
 
+    QString relatedTo() { return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent); }
+    
 public slots:
     
     void setCompleted(bool completed);
@@ -58,6 +63,8 @@ private:
     
     Akonadi::Item m_item;
     KCalCore::Todo::Ptr m_todo;
+    
+    bool m_related;
     
     
 };

@@ -117,6 +117,7 @@ void TaskWidget::fetchItemsFinished(KJob * job)
 
     }
     
+    updateRelationship();
 
 }
 
@@ -142,6 +143,43 @@ void TaskWidget::addItem(TaskWidgetItem* item)
     m_layout->addItem(item);
 
 }
+
+void TaskWidget::updateRelationship()
+{
+
+    TaskWidgetItem * item;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+	
+	item = static_cast<TaskWidgetItem*>(m_layout->itemAt(i));
+	
+	if (!item->relatedTo().isEmpty() && !item->isRelated()) {
+	 
+	    item->setRelated();
+	    
+	    TaskWidgetItem * item2;
+	    
+	    m_layout->removeItem(item);
+	    
+	    for (int j = 0; j < m_layout->count(); j++) {
+		
+		item2 = static_cast<TaskWidgetItem*>(m_layout->itemAt(j));
+		
+		if (item->operator=(item2)) {
+		 
+		    m_layout->insertItem(j+1,item);
+		    
+		    break;
+		}
+		
+	    }
+	    
+	}
+	
+    }
+    
+}
+
 
 void TaskWidget::clear()
 {

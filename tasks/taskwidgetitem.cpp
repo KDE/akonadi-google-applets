@@ -25,7 +25,8 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     : Plasma::Frame(parent),
       m_completed(0),
       m_date(0),
-      m_name(0)
+      m_name(0),
+      m_related(false)
 {
     m_item = item;
     
@@ -47,7 +48,6 @@ void TaskWidgetItem::setItemInfo()
 
     m_completed = new Plasma::CheckBox(this);
     m_completed->setChecked(m_todo->isCompleted());
-    m_completed->setMaximumHeight(40);
     
     connect(m_completed,SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
     
@@ -74,15 +74,15 @@ void TaskWidgetItem::setItemInfo()
 	} else {
 	    
 	    m_date->setStyleSheet("color : yellow");
-	    
+	        
+
 	}
-	
+
 	m_infoLayout->addItem(m_date);
     }
     
     m_name = new Plasma::Label(this);
     m_name->setText(m_todo->summary());
-    m_name->setMaximumHeight(20);
     
     if (m_completed->isChecked()) {
 	
@@ -113,9 +113,16 @@ void TaskWidgetItem::setCompleted(bool completed)
 
 void TaskWidgetItem::setRelated()
 {
+     m_mainLayout->setContentsMargins(30,0,0,0);
     
-    // TODO
-    
+     m_related = true;
+}
+
+void TaskWidgetItem::setUnrelated()
+{
+     m_mainLayout->setContentsMargins(0,0,0,0);
+ 
+     m_related = false;
 }
 
 bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
@@ -143,5 +150,12 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
     
     return (this->m_todo->summary() < item->m_todo->summary());
 
+}
+
+bool TaskWidgetItem::operator=(const TaskWidgetItem * item)
+{
+    
+    return (this->m_todo->relatedTo(KCalCore::Incidence::RelTypeParent) == item->m_todo->uid());
+    
 }
 

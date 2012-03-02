@@ -55,6 +55,7 @@ private:
     void fetchCollections();
     void fetchItems(const Akonadi::Collection & collections);
 
+    void updateRelationship();
     
     QGraphicsLinearLayout * m_layout;
     
