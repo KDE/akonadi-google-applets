@@ -199,20 +199,20 @@ void ContactWidgetItem::setContactInfo()
     
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
-        text += "<p><strong>" + i18n("Home number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "</p>";
+        text += "<strong>" + i18n("Home number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "<hr>";
         
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
 
 
-        text += "<p><strong>" + i18n("Office number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "</p>";
+        text += "<strong>" + i18n("Office number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "<hr>";
         
     }
     
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
 
-        text += "<p><strong>" + i18n("Cell phone: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "</p>";
+        text += "<strong>" + i18n("Cell phone: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "<hr>";
        
     } 
     
@@ -220,16 +220,16 @@ void ContactWidgetItem::setContactInfo()
 
 	for (int i = 0; i < m_addressee->emails().count(); i++) {
 	    
-	    text += "<p><strong>" + i18n("Email"); 
+	    text += "<strong>" + i18n("Email"); 
 	    
 	    if (i != 0) {
-		
-		text += QString::number(i);
+		//TODO
+		//text += QString::number(i);
 		
 	    }
 	    
 	    text += ": </strong><a href=\"" + m_addressee->emails().at(i) + "\">" + m_addressee->emails().at(i) +
-               "</a>" + "</p>";
+               "</a>" + "<hr>";
 	}
 	
     }
