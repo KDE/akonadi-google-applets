@@ -186,7 +186,7 @@ void ContactWidget::fetchItemsFinished(KJob * job)
         ContactWidgetItem * contact;
 
         contact = new ContactWidgetItem(item,this);
-
+        
         addItem(contact);
 
     }

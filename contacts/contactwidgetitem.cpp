@@ -220,16 +220,8 @@ void ContactWidgetItem::setContactInfo()
 
 	for (int i = 0; i < m_addressee->emails().count(); i++) {
 	    
-	    text += "<strong>" + i18n("Email"); 
-	    
-	    if (i != 0) {
-		//TODO
-		//text += QString::number(i);
-		
-	    }
-	    
-	    text += ": </strong><a href=\"" + m_addressee->emails().at(i) + "\">" + m_addressee->emails().at(i) +
-               "</a>" + "<hr>";
+	    text += "<strong>" + i18n("Email") + ": </strong><a href=\"" + m_addressee->emails().at(i)
+	            + "\">" + m_addressee->emails().at(i) + "</a>" + "<hr>";
 	}
 	
     }
@@ -238,7 +230,7 @@ void ContactWidgetItem::setContactInfo()
     m_infoText->setText(text);
     m_infoText->nativeWidget()->setIndent(10);
     m_infoText->setTextSelectable(true);
-    
+    m_infoText->setMaximumHeight(m_infoText->size().height());
     connect(m_infoText, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
 }
 
@@ -256,8 +248,12 @@ void ContactWidgetItem::showContactInfo()
 
         setFrameShadow(Plasma::Frame::Raised);
 	
-	m_mainLayout->removeItem(m_infoText);
-	m_infoText->hide();
+	if (!isEmpty()){
+	
+	    m_mainLayout->removeItem(m_infoText);
+	    m_infoText->hide();
+	    
+	}
 
         m_mainLayout->removeItem(m_edit);
         m_edit->hide();
@@ -268,8 +264,12 @@ void ContactWidgetItem::showContactInfo()
 
         setFrameShadow(Plasma::Frame::Sunken);
 	
-	m_mainLayout->addItem(m_infoText);
-        m_infoText->show();
+	if (!isEmpty()) {
+	
+	    m_mainLayout->addItem(m_infoText);
+	    m_infoText->show();
+	    
+	}
 
         m_mainLayout->addItem(m_edit);
         m_edit->show();
@@ -380,7 +380,9 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
 
     if (m_show) {
 
-        showContactInfo();
+	if (!isEmpty())
+	
+	    showContactInfo();
 
         m_show = false;
 
