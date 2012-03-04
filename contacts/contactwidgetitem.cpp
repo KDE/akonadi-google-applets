@@ -197,22 +197,22 @@ void ContactWidgetItem::setContactInfo()
 
     QString text;
     
+    text += "<table cellpadding=2>";
+    
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
-        text += "<strong>" + i18n("Home number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "<hr>";
-        
+        text += "<tr><td><strong>" + i18n("Home number") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "</td></tr>";
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
 
-
-        text += "<strong>" + i18n("Office number: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "<hr>";
+        text += "<tr><td><strong>" + i18n("Office number") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "</td></tr>";
         
     }
     
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
 
-        text += "<strong>" + i18n("Cell phone: ") + "</strong>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "<hr>";
+	text += "<tr><td><strong>" + i18n("Cell phone") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "</td></tr>";
        
     } 
     
@@ -220,11 +220,21 @@ void ContactWidgetItem::setContactInfo()
 
 	for (int i = 0; i < m_addressee->emails().count(); i++) {
 	    
-	    text += "<strong>" + i18n("Email") + ": </strong><a href=\"" + m_addressee->emails().at(i)
-	            + "\">" + m_addressee->emails().at(i) + "</a>" + "<hr>";
+	    text += "<tr><td>";
+	    
+	    if (i == 0) {
+		
+		text += "<strong>" + i18n("Email") + ": </strong>";
+		
+	    }
+	    
+	    text += "</td><td><a href=\"" + m_addressee->emails().at(i) + "\">" + m_addressee->emails().at(i) + "</a></td></tr>";
+	    
 	}
 	
     }
+    
+    text += "</table>";
 
     m_infoText = new Plasma::Label(this);
     m_infoText->setText(text);

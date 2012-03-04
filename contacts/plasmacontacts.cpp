@@ -197,7 +197,7 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (//collection.resource().contains("akonadi_googlecontacts_resource") &&
+        if (collection.resource().contains("akonadi_googlecontacts_resource") &&
             collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
             Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
