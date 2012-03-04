@@ -396,8 +396,12 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
 
     m_addressee = new KABC::Addressee(addressee);
 
-    delete m_infoText;
-    m_infoText = 0;
+    if (!m_infoText) {
+    
+	delete m_infoText;
+	m_infoText = 0;
+	
+    }
 
     setContactIcon();
 
