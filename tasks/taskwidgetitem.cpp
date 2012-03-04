@@ -21,25 +21,26 @@
 
 #include <KDateTime>
 
+#include <Akonadi/ItemModifyJob>
+
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
+      m_infoLayout(0),
       m_completed(0),
       m_date(0),
       m_name(0),
       m_related(false)
 {
     m_item = item;
-    
+
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
-        
+
     m_mainLayout = new QGraphicsLinearLayout(Qt::Horizontal,this);
-    
-    m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
-    
+
     setLayout(m_mainLayout);
-    
+
     setFrameShadow(Plasma::Frame::Raised);
-    
+
     setItemInfo();
 }
 
@@ -48,51 +49,56 @@ void TaskWidgetItem::setItemInfo()
 
     m_completed = new Plasma::CheckBox(this);
     m_completed->setChecked(m_todo->isCompleted());
-    
+
     connect(m_completed,SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
-    
+
     m_mainLayout->addItem(m_completed);
-    
+
     m_mainLayout->setAlignment(m_completed,Qt::AlignVCenter);
-    
+
+    m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
+
     if (m_todo->hasDueDate()) {
-    
-	m_date = new Plasma::Label(this);
-	m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
-	m_date->setMaximumHeight(20);
-	
-	int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
-	
-	if (days < 0) {
-	    
-	    m_date->setStyleSheet("color : red;");
-	    
-	} else if (days < 8) {
-	    
-	    m_date->setStyleSheet("color : orange;");
-	
-	} else {
-	    
-	    m_date->setStyleSheet("color : yellow");
-	        
 
-	}
+        m_date = new Plasma::Label(this);
+        m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
+        m_date->setMaximumHeight(20);
 
-	m_infoLayout->addItem(m_date);
+        int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
+
+        if (days < 0) {
+
+            m_date->setStyleSheet("color : red;");
+
+        } else if (days < 8) {
+
+            m_date->setStyleSheet("color : orange;");
+
+        } else {
+
+            m_date->setStyleSheet("color : yellow");
+
+
+        }
+
+        m_infoLayout->addItem(m_date);
     }
-    
+
     m_name = new Plasma::Label(this);
     m_name->setText(m_todo->summary());
+
+    m_name->setMaximumHeight(m_name->size().height());
     
     if (m_completed->isChecked()) {
-	
-	m_name->setStyleSheet("text-decoration : line-through");
+
+        m_name->setStyleSheet("text-decoration : line-through");
 
     }
-    
+
     m_infoLayout->addItem(m_name);
-    
     m_mainLayout->addItem(m_infoLayout);
+
+    
     
 }
 
@@ -100,51 +106,123 @@ void TaskWidgetItem::setCompleted(bool completed)
 {
 
     if (completed) {
-	
-	m_name->setStyleSheet("text-decoration : line-through");
-	
+
+        m_name->setStyleSheet("text-decoration : line-through");
+        m_todo->setCompleted(true);
+
     } else {
-	
-	m_name->setStyleSheet("text-decoration : none");
-	
+
+        m_name->setStyleSheet("text-decoration : none");
+        m_todo->setCompleted(false);
     }
-    
+
+    m_item.setPayload<KCalCore::Todo::Ptr>(m_todo);
+
+    Akonadi::ItemModifyJob * job = new Akonadi::ItemModifyJob(m_item);
+    connect(job, SIGNAL(result(KJob*)), SLOT(modifyFinished(KJob*)));
 }
 
 void TaskWidgetItem::setRelated()
 {
-     m_mainLayout->setContentsMargins(30,0,0,0);
-    
-     m_related = true;
+    m_mainLayout->setContentsMargins(30,0,0,0);
+
+    m_related = true;
 }
 
 void TaskWidgetItem::setUnrelated()
 {
-     m_mainLayout->setContentsMargins(0,0,0,0);
- 
-     m_related = false;
+    m_mainLayout->setContentsMargins(5,0,0,0);
+
+    m_related = false;
 }
+
+void TaskWidgetItem::updateTask(const Akonadi::Item& item)
+{
+
+    m_item = item;
+
+    m_todo = m_item.payload<KCalCore::Todo::Ptr>();
+
+    if (isRelated()) {
+
+        setUnrelated();
+
+    }
+
+    if (m_completed) {
+
+        m_mainLayout->removeItem(m_completed);
+
+        delete m_completed;
+        m_completed = 0;
+
+    }
+
+    if (m_date) {
+
+        m_infoLayout->removeItem(m_date);
+
+        delete m_date;
+        m_date = 0;
+
+    }
+
+    if (m_name) {
+
+        m_infoLayout->removeItem(m_name);
+
+        delete m_name;
+        m_name = 0;
+
+    }
+
+    if (m_infoLayout) {
+
+        m_infoLayout->removeItem(m_infoLayout);
+
+        delete m_infoLayout;
+        m_infoLayout = 0;
+
+    }
+
+    setItemInfo();
+
+}
+
 
 bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 {
-    
-    if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
-	
-	if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
-	    
-	    return (this->m_todo->summary() < item->m_todo->summary());
-	    
-	}
-	
-	return (this->m_todo->dtDue() < item->m_todo->dtDue());
-	
-    } else if (this->m_todo->hasDueDate()) {
-	
-	return true;
-	
-    } else if (item->m_todo->hasDueDate()) {
+
+    if ((this->m_todo->isCompleted() && item->m_todo->isCompleted()) ||
+	(!this->m_todo->isCompleted() && !item->m_todo->isCompleted())) {
+   
+        if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
+
+            if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
+
+                return (this->m_todo->summary() < item->m_todo->summary());
+
+            }
+
+            return (this->m_todo->dtDue() < item->m_todo->dtDue());
+
+        } else if (this->m_todo->hasDueDate()) {
+
+            return true;
+
+        } else if (item->m_todo->hasDueDate()) {
+
+            return false;
+
+        }
+        
+    } else if (this->m_todo->isCompleted()) {
 	
 	return false;
+	
+    } else if (item->m_todo->isCompleted()) {
+	
+	return true;
 	
     }
     
@@ -152,10 +230,32 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 
 }
 
-bool TaskWidgetItem::operator=(const TaskWidgetItem * item)
+bool TaskWidgetItem::operator<<(const TaskWidgetItem * item)
 {
-    
+
     return (this->m_todo->relatedTo(KCalCore::Incidence::RelTypeParent) == item->m_todo->uid());
-    
+
 }
+
+bool TaskWidgetItem::operator==(const Akonadi::Item & item)
+{
+
+    return (this->m_item.id() == item.id());
+
+}
+
+
+void TaskWidgetItem::modifyFinished(KJob* job)
+{
+
+    if ( job->error() )
+
+        qDebug() << "Error occurred";
+
+    else
+
+        qDebug() << "Item modified successfully";
+
+}
+
 

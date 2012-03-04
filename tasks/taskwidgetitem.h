@@ -29,6 +29,8 @@
 #include <KCalCore/Todo>
 #include <Akonadi/Item>
 
+#include <KJob>
+
 class TaskWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
@@ -40,14 +42,19 @@ public:
     void setRelated();
     void setUnrelated();
     
+    void updateTask(const Akonadi::Item & item);
+    
     bool isRelated() { return m_related; }
+    
     bool operator<(const TaskWidgetItem * item);
-    bool operator=(const TaskWidgetItem * item);
+    bool operator<<(const TaskWidgetItem * item);
+    bool operator==(const Akonadi::Item & item);
 
     QString relatedTo() { return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent); }
     
 public slots:
     
+    void modifyFinished(KJob * job);
     void setCompleted(bool completed);
     
 private:

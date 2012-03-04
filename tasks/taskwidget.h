@@ -29,6 +29,7 @@
 #include <Plasma/IconWidget>
 #include <Plasma/Label>
 
+#include "tasklayout.h"
 #include "taskwidgetitem.h"
 
 class TaskWidget : public QGraphicsWidget
@@ -46,6 +47,10 @@ public slots:
     void fetchCollectionsFinished(KJob *job);
     void fetchItemsFinished(KJob * job);
     
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection & collection);
+    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array );
+    void itemRemoved(const Akonadi::Item & item);
+    
 private:
     
     void addItem(TaskWidgetItem * item);
@@ -54,12 +59,12 @@ private:
     
     void fetchCollections();
     void fetchItems(const Akonadi::Collection & collections);
-
-    void updateRelationship();
     
-    QGraphicsLinearLayout * m_layout;
+    TaskLayout * m_layout;
     
     Akonadi::Collection::Id m_id;
+    
+    Akonadi::Monitor * m_monitor;
 };
 
 #endif // TASKWIDGET_H
