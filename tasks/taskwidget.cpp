@@ -24,14 +24,14 @@
 #include <Akonadi/ItemFetchJob>
 
 TaskWidget::TaskWidget(QGraphicsWidget* parent)
-   : QGraphicsWidget(parent)
+    : QGraphicsWidget(parent)
 {
-    
+
     m_layout = new TaskLayout(Qt::Vertical,this);
     m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    
+
     setLayout(m_layout);
-    
+
     m_monitor = new Akonadi::Monitor();
     m_monitor->itemFetchScope().fetchFullPayload(true);
 
@@ -53,7 +53,7 @@ void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
     if (!m_idList.isEmpty())
 
         fetchCollections();
-    
+
 }
 
 void TaskWidget::fetchCollections()
@@ -84,8 +84,8 @@ void TaskWidget::fetchCollectionsFinished(KJob* job)
 
         if (m_idList.contains(collection.id())) {
 
-	    m_monitor->setCollectionMonitored(collection,true);
-	    
+            m_monitor->setCollectionMonitored(collection,true);
+
             fetchItems(collection);
 
         }
@@ -125,10 +125,10 @@ void TaskWidget::fetchItemsFinished(KJob * job)
 
         contact = new TaskWidgetItem(item,this);
 
-	addItem(contact);
+        addItem(contact);
 
     }
-    
+
 
 }
 
@@ -144,22 +144,26 @@ void TaskWidget::clear()
 {
 
     m_layout->clear();
-    
+
 }
 
 void TaskWidget::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-//TODO
-    /*if (collection.id() == m_id) {
 
-        TaskWidgetItem * task;
+    for (int i = 0; i < m_idList.count(); i++) {
 
-        task = new TaskWidgetItem(item,this);
+        if (m_idList.at(i) == collection.id()) {
 
-        addItem(task);
+            TaskWidgetItem * task;
 
-    }*/
-    
+            task = new TaskWidgetItem(item,this);
+
+            addItem(task);
+
+        }
+
+    }
+
 }
 
 void TaskWidget::itemChanged(const Akonadi::Item& item, QSet< QByteArray > array)
@@ -176,15 +180,15 @@ void TaskWidget::itemChanged(const Akonadi::Item& item, QSet< QByteArray > array
         if (task->operator==(item)) {
 
             task->updateTask(item);
-    	    
-	    m_layout->removeItem(task);
-	    m_layout->addItem(task);
-	    
+
+            m_layout->removeItem(task);
+            m_layout->addItem(task);
+
             return;
         }
 
     }
-     
+
 }
 
 void TaskWidget::itemRemoved(const Akonadi::Item & item)
@@ -197,7 +201,7 @@ void TaskWidget::itemRemoved(const Akonadi::Item & item)
         task = static_cast<TaskWidgetItem*>(m_layout->itemAt(i));
 
         if (task->operator==(item)) {
-		    qDebug() << "foo";
+            qDebug() << "foo";
 
             task->hide();
 
