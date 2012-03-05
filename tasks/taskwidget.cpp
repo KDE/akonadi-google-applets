@@ -201,7 +201,6 @@ void TaskWidget::itemRemoved(const Akonadi::Item & item)
         task = static_cast<TaskWidgetItem*>(m_layout->itemAt(i));
 
         if (task->operator==(item)) {
-            qDebug() << "foo";
 
             task->hide();
 

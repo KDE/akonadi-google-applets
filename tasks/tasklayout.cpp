@@ -31,11 +31,11 @@ void TaskLayout::addItem(TaskWidgetItem * item)
     TaskWidgetItem * item2;
 
     if (!item->relatedTo().isEmpty()) {
-	
-	item->setRelated();
-	
+
+        item->setRelated();
+
     }
-    
+
     for (int i = 0; i < count(); i++) {
 
         item2 = static_cast<TaskWidgetItem*>(itemAt(i));

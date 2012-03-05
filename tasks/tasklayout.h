@@ -33,7 +33,7 @@ public:
     
     TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem* parent = 0);
     virtual ~TaskLayout();
-    
+        
     void addItem(TaskWidgetItem * item);
     void clear();
     

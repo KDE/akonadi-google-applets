@@ -23,6 +23,8 @@
 
 #include <Akonadi/ItemModifyJob>
 
+#include <QFontMetrics>
+
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_infoLayout(0),
@@ -56,12 +58,15 @@ void TaskWidgetItem::setItemInfo()
     m_mainLayout->setAlignment(m_completed,Qt::AlignVCenter);
 
     m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
+    m_infoLayout->setInstantInvalidatePropagation(true);
     
     m_mainLayout->addItem(m_infoLayout);
     
     if (m_todo->hasDueDate()) {
 
         m_date = new Plasma::Label(this);
+	m_infoLayout->addItem(m_date);
+	
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
         m_date->setMaximumHeight(20);
 
@@ -84,14 +89,21 @@ void TaskWidgetItem::setItemInfo()
             m_date->setStyleSheet("color : yellow");
 
         }
-
-        m_infoLayout->addItem(m_date);
-	
+        	
     } 
 
     m_name = new Plasma::Label(this);
+
+    m_infoLayout->addItem(m_name);
+    
+    QFontMetrics * metrics = new QFontMetrics(m_name->font());
+
+    //m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,100));
     m_name->setText(m_todo->summary());
-    m_name->setMaximumHeight(m_name->size().height());
+
+    qDebug() << m_name->geometry().width();
+    
+    m_name->setMaximumHeight(m_name->geometry().height());
     
     if (m_completed->isChecked()) {
 
@@ -99,8 +111,7 @@ void TaskWidgetItem::setItemInfo()
 
     }
 
-    m_infoLayout->addItem(m_name);
-    
+
 }
 
 void TaskWidgetItem::setCompleted(bool completed)
