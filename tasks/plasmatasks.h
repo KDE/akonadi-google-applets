@@ -25,6 +25,7 @@
 #include <Plasma/PopupApplet>
 #include <Plasma/ScrollWidget>
 
+#include <QList>
 #include <QGraphicsLinearLayout>
 #include <QGraphicsWidget>
 
@@ -59,7 +60,7 @@ private:
     
     Plasma::ScrollWidget *m_scroll;
     
-    Akonadi::Collection::Id m_id;
+    QList<Akonadi::Collection::Id> m_idList;
     
 public slots:
     

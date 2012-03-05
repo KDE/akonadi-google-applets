@@ -53,11 +53,12 @@ void TaskWidgetItem::setItemInfo()
     connect(m_completed,SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
 
     m_mainLayout->addItem(m_completed);
-
     m_mainLayout->setAlignment(m_completed,Qt::AlignVCenter);
 
     m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
-
+    
+    m_mainLayout->addItem(m_infoLayout);
+    
     if (m_todo->hasDueDate()) {
 
         m_date = new Plasma::Label(this);
@@ -68,25 +69,28 @@ void TaskWidgetItem::setItemInfo()
 
         if (days < 0) {
 
-            m_date->setStyleSheet("color : red;");
+            m_date->setStyleSheet("color : #FF00FF");
+
+        } else if (days == 0) {
+
+            m_date->setStyleSheet("color : red");
 
         } else if (days < 8) {
-
-            m_date->setStyleSheet("color : orange;");
-
-        } else {
+	    
+	    m_date->setStyleSheet("color : orange");
+	    
+	} else {
 
             m_date->setStyleSheet("color : yellow");
-
 
         }
 
         m_infoLayout->addItem(m_date);
-    }
+	
+    } 
 
     m_name = new Plasma::Label(this);
     m_name->setText(m_todo->summary());
-
     m_name->setMaximumHeight(m_name->size().height());
     
     if (m_completed->isChecked()) {
@@ -96,9 +100,6 @@ void TaskWidgetItem::setItemInfo()
     }
 
     m_infoLayout->addItem(m_name);
-    m_mainLayout->addItem(m_infoLayout);
-
-    
     
 }
 

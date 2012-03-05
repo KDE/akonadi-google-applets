@@ -19,6 +19,7 @@
 #ifndef TASKWIDGET_H
 #define TASKWIDGET_H
 
+#include <QList>
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
@@ -40,7 +41,7 @@ public:
 
     TaskWidget(QGraphicsWidget * parent = 0);
     
-    void setCollection(Akonadi::Collection::Id id);
+    void setCollections(QList<Akonadi::Collection::Id> ids);
     
 public slots:  
     
@@ -62,7 +63,7 @@ private:
     
     TaskLayout * m_layout;
     
-    Akonadi::Collection::Id m_id;
+    QList<Akonadi::Collection::Id> m_idList;
     
     Akonadi::Monitor * m_monitor;
 };

@@ -44,13 +44,13 @@ TaskWidget::TaskWidget(QGraphicsWidget* parent)
 
 }
 
-void TaskWidget::setCollection(Akonadi::Entity::Id id)
+void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 {
     clear();
 
-    m_id = id;
+    m_idList = ids;
 
-    if (m_id != -1)
+    if (!m_idList.isEmpty())
 
         fetchCollections();
     
@@ -82,7 +82,7 @@ void TaskWidget::fetchCollectionsFinished(KJob* job)
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (collection.id() == m_id) {
+        if (m_idList.contains(collection.id())) {
 
 	    m_monitor->setCollectionMonitored(collection,true);
 	    
@@ -149,8 +149,8 @@ void TaskWidget::clear()
 
 void TaskWidget::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-
-    if (collection.id() == m_id) {
+//TODO
+    /*if (collection.id() == m_id) {
 
         TaskWidgetItem * task;
 
@@ -158,7 +158,7 @@ void TaskWidget::itemAdded(const Akonadi::Item& item, const Akonadi::Collection&
 
         addItem(task);
 
-    }
+    }*/
     
 }
 

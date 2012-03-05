@@ -22,6 +22,9 @@
 
 #include <KIcon>
 
+#include <QListWidgetItem>
+#include <QCheckBox>
+
 #include <Akonadi/Entity>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CollectionFetchScope>
@@ -30,8 +33,7 @@
 
 PlasmaTasks::PlasmaTasks(QObject *parent, const QVariantList &args)
   : Plasma::PopupApplet(parent, args),
-    m_widget(0),
-    m_id(-1)
+    m_widget(0)
 {
     setConfigurationRequired(true); 
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -72,17 +74,29 @@ void PlasmaTasks::configChanged()
 {
 
     KConfigGroup conf = config();
-
-    if (conf.readEntry("collection",-1) != m_id) {
-
-        setConfigurationRequired(false);
-
-        m_id = conf.readEntry("collection",-1);
-
-        m_tasksList->setCollection(m_id);
+    
+    QList<Akonadi::Item::Id> list = conf.readEntry("collections",QList<Akonadi::Item::Id>());
+        
+    if (configurationRequired()) {
+    
+	if (!list.isEmpty()) {
+	
+	    setConfigurationRequired(false);
+	
+	    m_idList = list;
+	
+	    m_tasksList->setCollections(m_idList);
+	}
+	
+    } else {
+	
+	setConfigurationRequired(false);
+	
+	m_idList = list;
+	
+	m_tasksList->setCollections(m_idList);
+	
     }
-
-
 }
 
 void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
@@ -99,6 +113,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
 
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
+    connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
     
     parent->addPage(widget,"General",icon());
 }
@@ -107,7 +122,19 @@ void PlasmaTasks::configAccepted()
 {
     KConfigGroup conf = config();
 
-    conf.writeEntry("collection",configDialog.collectionBox->itemData(configDialog.collectionBox->currentIndex()).toInt());
+    QList<Akonadi::Item::Id> list;
+    
+    for (int i = 0; i < configDialog.collectionsList->count(); i++) {
+		
+	if (configDialog.collectionsList->item(i)->checkState()) {
+	 
+	    list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
+
+	}
+	
+    }
+    
+    conf.writeEntry("collections",list);
 
     emit configNeedsSaving();
 
@@ -116,7 +143,11 @@ void PlasmaTasks::configAccepted()
 void PlasmaTasks::fetchCollections()
 {
 
-    configDialog.collectionBox->clear();
+    while (configDialog.collectionsList->count() != 0) {
+	
+	delete configDialog.collectionsList->item(0);
+	
+    }
 
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
 
@@ -141,31 +172,47 @@ void PlasmaTasks::fetchCollectionsFinished(KJob* job)
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (collection.resource().contains("akonadi_googletasks_resource")) {
-	  // collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+        if (collection.resource().contains("akonadi_googletasks_resource") && 
+	    collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
             Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 	
+	    QListWidgetItem * item = new QListWidgetItem();
+	
             if (!attribute) {
 		
-                configDialog.collectionBox->addItem(collection.name(), collection.id());
+		item->setText(collection.name());
+				
+	    } else {
 		
+		item->setText(attribute->displayName());
+				
 	    }
 	    
-            else {
-		
-                configDialog.collectionBox->addItem(attribute->displayName(), collection.id());
-		
-	    }
-
+	    item->setData(Qt::UserRole, collection.id());
+	    item->setCheckState(Qt::Unchecked);
+	    
+	    configDialog.collectionsList->insertItem(configDialog.collectionsList->count(),item);
+	    
         }
 
     }
 
-    if (m_id != -1) {
+    if (!m_idList.isEmpty()){
 	
-        int i = configDialog.collectionBox->findData(m_id);
-        configDialog.collectionBox->setCurrentIndex(i);
+        for (int i = 0; i < m_idList.count(); i++) {
+	    
+	    for (int j = 0; j < configDialog.collectionsList->count(); j++) {
+		
+		if (m_idList.at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
+		 
+		    configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
+		    
+		}
+		
+	    }
+	    
+        }
 	
     }
 
