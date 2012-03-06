@@ -39,13 +39,13 @@ public:
 
     TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
-    void setRelated();
+    int indent() const { return m_indent; }
+    
+    void setRelated(TaskWidgetItem * item);
     void setUnrelated();
     
     void updateTask(const Akonadi::Item & item);
-    
-    bool isRelated() { return m_related; }
-    
+        
     bool operator<(const TaskWidgetItem * item);
     bool operator<<(const TaskWidgetItem * item);
     bool operator==(const Akonadi::Item & item);
@@ -71,8 +71,7 @@ private:
     Akonadi::Item m_item;
     KCalCore::Todo::Ptr m_todo;
     
-    bool m_related;
-    
+    int m_indent;    
     
 };
 

@@ -31,7 +31,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
       m_completed(0),
       m_date(0),
       m_name(0),
-      m_related(false)
+      m_indent(0)
 {
     m_item = item;
 
@@ -40,7 +40,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_mainLayout = new QGraphicsLinearLayout(Qt::Horizontal,this);
 
     setLayout(m_mainLayout);
-
+    
     setFrameShadow(Plasma::Frame::Raised);
 
     setItemInfo();
@@ -65,10 +65,9 @@ void TaskWidgetItem::setItemInfo()
     if (m_todo->hasDueDate()) {
 
         m_date = new Plasma::Label(this);
-	m_infoLayout->addItem(m_date);
 	
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
-        m_date->setMaximumHeight(20);
+        m_date->setMaximumHeight(15);
 
         int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
 
@@ -89,21 +88,20 @@ void TaskWidgetItem::setItemInfo()
             m_date->setStyleSheet("color : yellow");
 
         }
-        	
+
+        m_infoLayout->addItem(m_date);
+
     } 
 
     m_name = new Plasma::Label(this);
-
-    m_infoLayout->addItem(m_name);
-    
-    QFontMetrics * metrics = new QFontMetrics(m_name->font());
-
-    //m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,100));
     m_name->setText(m_todo->summary());
-
-    qDebug() << m_name->geometry().width();
+  
+    /* TODO: 
+    QFontMetrics * metrics = new QFontMetrics(m_name->font());
+    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,220));
+    */ 
     
-    m_name->setMaximumHeight(m_name->geometry().height());
+    m_name->setMaximumHeight(15);
     
     if (m_completed->isChecked()) {
 
@@ -111,7 +109,8 @@ void TaskWidgetItem::setItemInfo()
 
     }
 
-
+    m_infoLayout->addItem(m_name);
+    
 }
 
 void TaskWidgetItem::setCompleted(bool completed)
@@ -134,18 +133,20 @@ void TaskWidgetItem::setCompleted(bool completed)
     connect(job, SIGNAL(result(KJob*)), SLOT(modifyFinished(KJob*)));
 }
 
-void TaskWidgetItem::setRelated()
+void TaskWidgetItem::setRelated(TaskWidgetItem * item)
 {
-    m_mainLayout->setContentsMargins(30,0,0,0);
+    
+    m_indent = item->indent() + 1;
+    
+    m_mainLayout->setContentsMargins((m_indent*25)+5,0,0,0);
 
-    m_related = true;
 }
 
 void TaskWidgetItem::setUnrelated()
 {
     m_mainLayout->setContentsMargins(5,0,0,0);
 
-    m_related = false;
+    m_indent = 0;
 }
 
 void TaskWidgetItem::updateTask(const Akonadi::Item& item)
@@ -155,7 +156,7 @@ void TaskWidgetItem::updateTask(const Akonadi::Item& item)
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
-    if (isRelated()) {
+    if (m_indent != 0) {
 
         setUnrelated();
 
@@ -212,11 +213,11 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 
             if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
 
-                return (this->m_todo->summary() < item->m_todo->summary());
+                return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
 
             }
 
-            return (this->m_todo->dtDue() < item->m_todo->dtDue());
+            return (this->m_todo->dtDue() <= item->m_todo->dtDue());
 
         } else if (this->m_todo->hasDueDate()) {
 
@@ -237,8 +238,8 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 	return true;
 	
     }
-    
-    return (this->m_todo->summary() < item->m_todo->summary());
+    qDebug() << this->m_todo->summary().toLower() << " <= " << item->m_todo->summary().toLower();
+    return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
 
 }
 

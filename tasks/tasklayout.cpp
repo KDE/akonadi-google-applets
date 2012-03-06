@@ -32,29 +32,215 @@ void TaskLayout::addItem(TaskWidgetItem * item)
 
     if (!item->relatedTo().isEmpty()) {
 
-        item->setRelated();
+        if (!hasParent(item)) {
 
-    }
-
-    for (int i = 0; i < count(); i++) {
-
-        item2 = static_cast<TaskWidgetItem*>(itemAt(i));
-
-        if (item->operator<(item2)) {
-
-            insertItem(i,item);
+            item->hide();
+            m_list.push_back(item);
 
             return;
+
+        } else {
+	    
+	    for (int i = 0; i < count(); i++) {
+		
+		item2 = static_cast<TaskWidgetItem*>(itemAt(i));
+	
+		if (item->operator<<(item2)) {
+		    
+		    item->setRelated(item2);
+		    
+		}
+	    }
+	    
+        }
+
+    }
+    
+    foreach (const int index, neighborsIndexes(item)) {
+		
+        item2 = static_cast<TaskWidgetItem*>(itemAt(index));
+	
+	if (item->operator<(item2)) {
+	 
+	    insertItem(index,item);
+	    
+	    updateHierarchy();
+	    
+	    return;
+	}
+	
+    }
+
+    insertItem(lastIndex(item),item);
+
+    updateHierarchy();
+
+    return;
+
+}
+
+void TaskLayout::updateHierarchy()
+{
+    for (int i = 0; i < m_list.count(); i++) {
+
+        if (hasParent(m_list.at(i))) {
+
+            TaskWidgetItem * item2 = m_list.at(i);
+
+            m_list.removeAt(i);
+
+            item2->show();
+
+            addItem(item2);
+
+            i--;
 
         }
 
     }
 
-    QGraphicsLinearLayout::addItem(item);
+}
 
-    return;
+bool TaskLayout::hasParent(TaskWidgetItem * item)
+{
+
+    TaskWidgetItem * item2;
+
+    for (int i = 0; i < count(); i++) {
+
+        item2 = static_cast<TaskWidgetItem*>(itemAt(i));
+
+        if (item->operator<<(item2)) {
+
+            return true;
+
+        }
+
+    }
+
+    return false;
+}
+
+QList< int > TaskLayout::neighborsIndexes(TaskWidgetItem* item)
+{
+
+    TaskWidgetItem * item2;
+    QList<int> indexes;
+    QString parent = item->relatedTo();
+    
+    for (int i = 0; i < count(); i++) {
+	
+        item2 = static_cast<TaskWidgetItem*>(itemAt(i));
+	
+	if (parent == item2->relatedTo()) {
+	 
+	    indexes.push_back(i);
+	    
+	}
+
+    }
+    
+    return indexes;
+    
+}
+
+int TaskLayout::lastIndex(TaskWidgetItem* item)
+{
+
+    int i = 0;
+    
+    TaskWidgetItem * item2;
+    int depth = 0;
+    
+    bool tmp = false;
+    
+    for (i = 0; i < count(); i++) {
+	
+	item2 = static_cast<TaskWidgetItem*>(itemAt(i));
+	
+	if (!tmp) {
+	    
+	    if (item->operator<<(item2)) {
+	    
+		depth = item2->indent();
+		tmp = true;
+	  
+	    }
+	    
+	} else {
+	    
+	    if (depth >= item2->indent()) {
+		
+		return i;
+		
+	    }	
+	    
+	}
+	    
+
+    }
+    
+    return i;
+}
+
+
+
+QSizeF TaskLayout::sizeHint (Qt::SizeHint which, const QSizeF &constraint) const
+{
+    QSizeF hint;
+    int cnt = count();
+
+    if (cnt == 0) {
+
+        hint.setHeight(0);
+
+    } else {
+
+        hint = QGraphicsLinearLayout::sizeHint (which, constraint);
+
+    }
+
+    return hint;
+}
+
+void TaskLayout::updateItem(TaskWidgetItem* item)
+{
+
+    TaskWidgetItem * item2;
+    TaskWidgetItem * item3; 
+    
+    for (int i = 0; i < count(); i++) {
+
+        item2 = static_cast<TaskWidgetItem*>(itemAt(i));
+
+        if (item2->operator<<(item)) {
+
+            for (int j = i; j < lastIndex(item2); j++) {
+		
+		item3 = static_cast<TaskWidgetItem*>(itemAt(j));
+		
+		item3->hide();
+
+		m_list.push_back(item3);
+
+		QGraphicsLinearLayout::removeItem(item3);
+
+		j--;
+		
+            }
+	    
+            break;
+	    
+        }
+
+    }
+
+    QGraphicsLinearLayout::removeItem(item);
+    
+    addItem(item);
 
 }
+
 
 void TaskLayout::clear()
 {
@@ -65,9 +251,15 @@ void TaskLayout::clear()
 
         item = static_cast<TaskWidgetItem*>(itemAt(0));
 
-        removeItem(item);
+        QGraphicsLinearLayout::removeItem(item);
 
         item->deleteLater();
+
+    }
+
+    while (!m_list.isEmpty()) {
+
+        delete m_list.at(0);
 
     }
 

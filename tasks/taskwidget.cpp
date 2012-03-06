@@ -181,8 +181,7 @@ void TaskWidget::itemChanged(const Akonadi::Item& item, QSet< QByteArray > array
 
             task->updateTask(item);
 
-            m_layout->removeItem(task);
-            m_layout->addItem(task);
+            m_layout->updateItem(task);
 
             return;
         }
