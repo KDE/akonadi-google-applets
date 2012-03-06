@@ -32,10 +32,10 @@
 #include <KCalCore/Todo>
 
 PlasmaTasks::PlasmaTasks(QObject *parent, const QVariantList &args)
-  : Plasma::PopupApplet(parent, args),
-    m_widget(0)
+    : Plasma::PopupApplet(parent, args),
+      m_widget(0)
 {
-    setConfigurationRequired(true); 
+    setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
@@ -44,59 +44,53 @@ PlasmaTasks::PlasmaTasks(QObject *parent, const QVariantList &args)
 
 QGraphicsWidget *PlasmaTasks::graphicsWidget()
 {
-    
+
     if (!m_widget) {
-	
-	m_widget = new QGraphicsWidget(this);
-	
-	m_widget->setMinimumSize(300,500);
-	
-	m_tasksList = new TaskWidget(m_widget);
-	
-	m_scroll = new Plasma::ScrollWidget(m_widget);
-	m_scroll->setWidget(m_tasksList);
-	m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,m_widget);
+        m_widget = new QGraphicsWidget(this);
 
-	m_mainLayout->addItem(m_scroll);
+        m_widget->setMinimumSize(300,500);
 
-	m_widget->setLayout(m_mainLayout);
+        m_tasksList = new TaskWidget(m_widget);
 
-	configChanged();
-	
+        m_scroll = new Plasma::ScrollWidget(m_widget);
+        m_scroll->setWidget(m_tasksList);
+        m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,m_widget);
+
+        m_mainLayout->addItem(m_scroll);
+
+        m_widget->setLayout(m_mainLayout);
+
+        configChanged();
+
     }
-        
+
     return m_widget;
-} 
+}
 
 void PlasmaTasks::configChanged()
 {
 
     KConfigGroup conf = config();
-    
+
     QList<Akonadi::Item::Id> list = conf.readEntry("collections",QList<Akonadi::Item::Id>());
-        
-    if (configurationRequired()) {
-    
-	if (!list.isEmpty()) {
+
+    if (list.isEmpty()) {
 	
-	    setConfigurationRequired(false);
-	
-	    m_idList = list;
-	
-	    m_tasksList->setCollections(m_idList);
-	}
+	setConfigurationRequired(true);
 	
     } else {
 	
 	setConfigurationRequired(false);
 	
-	m_idList = list;
-	
-	m_tasksList->setCollections(m_idList);
-	
     }
+    
+    m_idList = list;
+
+    m_tasksList->setCollections(m_idList);
+
 }
 
 void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
@@ -114,39 +108,39 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
-    
+
     parent->addPage(widget,"General",icon());
 }
- 
+
 void PlasmaTasks::configAccepted()
 {
     KConfigGroup conf = config();
 
     QList<Akonadi::Item::Id> list;
-    
-    for (int i = 0; i < configDialog.collectionsList->count(); i++) {
-		
-	if (configDialog.collectionsList->item(i)->checkState()) {
-	 
-	    list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
 
-	}
-	
+    for (int i = 0; i < configDialog.collectionsList->count(); i++) {
+
+        if (configDialog.collectionsList->item(i)->checkState()) {
+
+            list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
+
+        }
+
     }
-    
+
     conf.writeEntry("collections",list);
 
     emit configNeedsSaving();
 
 }
- 
+
 void PlasmaTasks::fetchCollections()
 {
 
     while (configDialog.collectionsList->count() != 0) {
-	
-	delete configDialog.collectionsList->item(0);
-	
+
+        delete configDialog.collectionsList->item(0);
+
     }
 
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
@@ -172,48 +166,48 @@ void PlasmaTasks::fetchCollectionsFinished(KJob* job)
 
     foreach ( const Akonadi::Collection &collection, collections ) {
 
-        if (collection.resource().contains("akonadi_googletasks_resource") && 
-	    collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+        if (collection.resource().contains("akonadi_googletasks_resource") &&
+                collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
             Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
-	
-	    QListWidgetItem * item = new QListWidgetItem();
-	
+
+            QListWidgetItem * item = new QListWidgetItem();
+
             if (!attribute) {
-		
-		item->setText(collection.name());
-				
-	    } else {
-		
-		item->setText(attribute->displayName());
-				
-	    }
-	    
-	    item->setData(Qt::UserRole, collection.id());
-	    item->setCheckState(Qt::Unchecked);
-	    
-	    configDialog.collectionsList->insertItem(configDialog.collectionsList->count(),item);
-	    
+
+                item->setText(collection.name());
+
+            } else {
+
+                item->setText(attribute->displayName());
+
+            }
+
+            item->setData(Qt::UserRole, collection.id());
+            item->setCheckState(Qt::Unchecked);
+
+            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(),item);
+
         }
 
     }
 
-    if (!m_idList.isEmpty()){
-	
+    if (!m_idList.isEmpty()) {
+
         for (int i = 0; i < m_idList.count(); i++) {
-	    
-	    for (int j = 0; j < configDialog.collectionsList->count(); j++) {
-		
-		if (m_idList.at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
-		 
-		    configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
-		    
-		}
-		
-	    }
-	    
+
+            for (int j = 0; j < configDialog.collectionsList->count(); j++) {
+
+                if (m_idList.at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
+
+                    configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
+
+                }
+
+            }
+
         }
-	
+
     }
 
 }
@@ -222,7 +216,7 @@ PlasmaTasks::~PlasmaTasks()
 {
 
 }
-  
- 
+
+
 #include "plasmatasks.moc"
 

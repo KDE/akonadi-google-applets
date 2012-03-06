@@ -29,9 +29,9 @@ void TaskLayout::addItem(TaskWidgetItem * item)
 {
 
     TaskWidgetItem * item2;
-
+    
     if (!item->relatedTo().isEmpty()) {
-
+	
         if (!hasParent(item)) {
 
             item->hide();
@@ -40,7 +40,7 @@ void TaskLayout::addItem(TaskWidgetItem * item)
             return;
 
         } else {
-	    
+	    	    
 	    for (int i = 0; i < count(); i++) {
 		
 		item2 = static_cast<TaskWidgetItem*>(itemAt(i));
@@ -55,10 +55,12 @@ void TaskLayout::addItem(TaskWidgetItem * item)
         }
 
     }
-    
+        
     foreach (const int index, neighborsIndexes(item)) {
 		
         item2 = static_cast<TaskWidgetItem*>(itemAt(index));
+
+	// Item must be compared with other items
 	
 	if (item->operator<(item2)) {
 	 
@@ -70,7 +72,7 @@ void TaskLayout::addItem(TaskWidgetItem * item)
 	}
 	
     }
-
+    
     insertItem(lastIndex(item),item);
 
     updateHierarchy();
@@ -183,26 +185,6 @@ int TaskLayout::lastIndex(TaskWidgetItem* item)
     return i;
 }
 
-
-
-QSizeF TaskLayout::sizeHint (Qt::SizeHint which, const QSizeF &constraint) const
-{
-    QSizeF hint;
-    int cnt = count();
-
-    if (cnt == 0) {
-
-        hint.setHeight(0);
-
-    } else {
-
-        hint = QGraphicsLinearLayout::sizeHint (which, constraint);
-
-    }
-
-    return hint;
-}
-
 void TaskLayout::updateItem(TaskWidgetItem* item)
 {
 
@@ -241,6 +223,24 @@ void TaskLayout::updateItem(TaskWidgetItem* item)
 
 }
 
+
+QSizeF TaskLayout::sizeHint (Qt::SizeHint which, const QSizeF &constraint) const
+{
+    QSizeF hint;
+    int cnt = count();
+
+    if (cnt == 0) {
+
+        hint.setHeight(0);
+
+    } else {
+
+        hint = QGraphicsLinearLayout::sizeHint (which, constraint);
+
+    }
+
+    return hint;
+}
 
 void TaskLayout::clear()
 {

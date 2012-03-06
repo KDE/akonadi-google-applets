@@ -60,6 +60,7 @@ public slots:
 private:
 
     void setItemInfo();
+    void setColorForDate();
     
     QGraphicsLinearLayout * m_mainLayout;
     QGraphicsLinearLayout * m_infoLayout;

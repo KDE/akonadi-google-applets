@@ -40,7 +40,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_mainLayout = new QGraphicsLinearLayout(Qt::Horizontal,this);
 
     setLayout(m_mainLayout);
-    
+
     setFrameShadow(Plasma::Frame::Raised);
 
     setItemInfo();
@@ -59,17 +59,48 @@ void TaskWidgetItem::setItemInfo()
 
     m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
     m_infoLayout->setInstantInvalidatePropagation(true);
-    
+
     m_mainLayout->addItem(m_infoLayout);
-    
+
     if (m_todo->hasDueDate()) {
 
         m_date = new Plasma::Label(this);
-	
+
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
         m_date->setMaximumHeight(15);
 
-        int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
+        setColorForDate();
+
+        m_infoLayout->addItem(m_date);
+
+    }
+
+    m_name = new Plasma::Label(this);
+    m_name->setText(m_todo->summary());
+
+    /* TODO:
+    QFontMetrics * metrics = new QFontMetrics(m_name->font());
+    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,220));
+    */
+
+    m_name->setMaximumHeight(15);
+
+    if (m_completed->isChecked()) {
+
+        m_name->setStyleSheet("text-decoration : line-through");
+
+    }
+
+    m_infoLayout->addItem(m_name);
+
+}
+
+void TaskWidgetItem::setColorForDate()
+{
+
+    int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
+
+    if (!m_completed->isChecked()) {
 
         if (days < 0) {
 
@@ -80,37 +111,17 @@ void TaskWidgetItem::setItemInfo()
             m_date->setStyleSheet("color : red");
 
         } else if (days < 8) {
-	    
-	    m_date->setStyleSheet("color : orange");
-	    
-	} else {
+
+            m_date->setStyleSheet("color : orange");
+
+        } else {
 
             m_date->setStyleSheet("color : yellow");
 
         }
 
-        m_infoLayout->addItem(m_date);
-
-    } 
-
-    m_name = new Plasma::Label(this);
-    m_name->setText(m_todo->summary());
-  
-    /* TODO: 
-    QFontMetrics * metrics = new QFontMetrics(m_name->font());
-    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,220));
-    */ 
-    
-    m_name->setMaximumHeight(15);
-    
-    if (m_completed->isChecked()) {
-
-        m_name->setStyleSheet("text-decoration : line-through");
-
     }
 
-    m_infoLayout->addItem(m_name);
-    
 }
 
 void TaskWidgetItem::setCompleted(bool completed)
@@ -135,9 +146,9 @@ void TaskWidgetItem::setCompleted(bool completed)
 
 void TaskWidgetItem::setRelated(TaskWidgetItem * item)
 {
-    
+
     m_indent = item->indent() + 1;
-    
+
     m_mainLayout->setContentsMargins((m_indent*25)+5,0,0,0);
 
 }
@@ -207,8 +218,8 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 {
 
     if ((this->m_todo->isCompleted() && item->m_todo->isCompleted()) ||
-	(!this->m_todo->isCompleted() && !item->m_todo->isCompleted())) {
-   
+            (!this->m_todo->isCompleted() && !item->m_todo->isCompleted())) {
+
         if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
 
             if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
@@ -228,17 +239,17 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
             return false;
 
         }
-        
+
     } else if (this->m_todo->isCompleted()) {
-	
-	return false;
-	
+
+        return false;
+
     } else if (item->m_todo->isCompleted()) {
-	
-	return true;
-	
+
+        return true;
+
     }
-    qDebug() << this->m_todo->summary().toLower() << " <= " << item->m_todo->summary().toLower();
+
     return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
 
 }
