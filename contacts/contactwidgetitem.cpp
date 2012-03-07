@@ -284,7 +284,7 @@ void ContactWidgetItem::showContactInfo()
         m_mainLayout->addItem(m_edit);
         m_edit->show();
 
-        m_show = true;
+	m_show = true;
 
     }
 

@@ -25,9 +25,11 @@
 
 #include <QFontMetrics>
 
+#include <Plasma/ToolTipContent>
+#include <Plasma/ToolTipManager>
+
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
-      m_infoLayout(0),
       m_completed(0),
       m_date(0),
       m_name(0),
@@ -37,10 +39,10 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
-    m_mainLayout = new QGraphicsLinearLayout(Qt::Horizontal,this);
-
-    setLayout(m_mainLayout);
-
+    m_layout = new QGraphicsGridLayout(this);
+    
+    setLayout(m_layout);
+    
     setFrameShadow(Plasma::Frame::Raised);
 
     setItemInfo();
@@ -51,16 +53,12 @@ void TaskWidgetItem::setItemInfo()
 
     m_completed = new Plasma::CheckBox(this);
     m_completed->setChecked(m_todo->isCompleted());
-
+    m_completed->setMaximumSize(25,25);
+    
+    m_layout->addItem(m_completed,0,0);    
+    m_layout->setColumnAlignment(0,Qt::AlignVCenter);
+    
     connect(m_completed,SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
-
-    m_mainLayout->addItem(m_completed);
-    m_mainLayout->setAlignment(m_completed,Qt::AlignVCenter);
-
-    m_infoLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
-    m_infoLayout->setInstantInvalidatePropagation(true);
-
-    m_mainLayout->addItem(m_infoLayout);
 
     if (m_todo->hasDueDate()) {
 
@@ -71,16 +69,16 @@ void TaskWidgetItem::setItemInfo()
 
         setColorForDate();
 
-        m_infoLayout->addItem(m_date);
+	m_layout->addItem(m_date,0,1);
 
     }
 
     m_name = new Plasma::Label(this);
-    m_name->setText(m_todo->summary());
-
-    /* TODO:
+    m_name->setText(m_todo->summary()); 
+    
+    /* TODO
     QFontMetrics * metrics = new QFontMetrics(m_name->font());
-    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,220));
+    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,m_name->size().width()));
     */
 
     m_name->setMaximumHeight(15);
@@ -90,9 +88,17 @@ void TaskWidgetItem::setItemInfo()
         m_name->setStyleSheet("text-decoration : line-through");
 
     }
-
-    m_infoLayout->addItem(m_name);
-
+    
+    if (m_date) {
+	
+	m_layout->addItem(m_name,1,1);
+	
+    } else {
+	
+	m_layout->addItem(m_name,0,1);
+	
+    }
+        
 }
 
 void TaskWidgetItem::setColorForDate()
@@ -149,14 +155,14 @@ void TaskWidgetItem::setRelated(TaskWidgetItem * item)
 
     m_indent = item->indent() + 1;
 
-    m_mainLayout->setContentsMargins((m_indent*25)+5,0,0,0);
+    m_layout->setContentsMargins((m_indent*25)+5,0,0,0);
 
 }
 
 void TaskWidgetItem::setUnrelated()
 {
-    m_mainLayout->setContentsMargins(5,0,0,0);
-
+    m_layout->setContentsMargins(5,0,0,0);
+    
     m_indent = 0;
 }
 
@@ -175,8 +181,8 @@ void TaskWidgetItem::updateTask(const Akonadi::Item& item)
 
     if (m_completed) {
 
-        m_mainLayout->removeItem(m_completed);
-
+        m_layout->removeItem(m_completed);
+        
         delete m_completed;
         m_completed = 0;
 
@@ -184,8 +190,8 @@ void TaskWidgetItem::updateTask(const Akonadi::Item& item)
 
     if (m_date) {
 
-        m_infoLayout->removeItem(m_date);
-
+        m_layout->removeItem(m_date); 
+        
         delete m_date;
         m_date = 0;
 
@@ -193,22 +199,13 @@ void TaskWidgetItem::updateTask(const Akonadi::Item& item)
 
     if (m_name) {
 
-        m_infoLayout->removeItem(m_name);
-
+        m_layout->removeItem(m_name);
+        
         delete m_name;
         m_name = 0;
 
     }
-
-    if (m_infoLayout) {
-
-        m_infoLayout->removeItem(m_infoLayout);
-
-        delete m_infoLayout;
-        m_infoLayout = 0;
-
-    }
-
+    
     setItemInfo();
 
 }
@@ -281,5 +278,3 @@ void TaskWidgetItem::modifyFinished(KJob* job)
         qDebug() << "Item modified successfully";
 
 }
-
-

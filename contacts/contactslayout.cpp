@@ -35,16 +35,19 @@ ContactsLayout::~ContactsLayout()
 
 QSizeF ContactsLayout::sizeHint (Qt::SizeHint which, const QSizeF &constraint) const
 {
-	QSizeF hint;
-	int cnt = count();
+    QSizeF hint;
+    int cnt = count();
 
-	if (cnt == 0)
-		hint.setHeight(0);
-	else
-		hint = QGraphicsLinearLayout::sizeHint (which, constraint);
+    if (cnt == 0) {	
+	
+        hint.setHeight(0);
+	
+    } else {
+	
+        hint = QGraphicsLinearLayout::sizeHint (which, constraint);
+	
+    }
 
-	kDebug() << "SizeHint for" << cnt << "items: " << hint;
-
-	return hint;
+    return hint;
 }
 

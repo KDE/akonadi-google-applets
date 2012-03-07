@@ -21,6 +21,7 @@
 
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
+#include <QGraphicsGridLayout>
 
 #include <Plasma/Frame>
 #include <Plasma/CheckBox>
@@ -62,8 +63,7 @@ private:
     void setItemInfo();
     void setColorForDate();
     
-    QGraphicsLinearLayout * m_mainLayout;
-    QGraphicsLinearLayout * m_infoLayout;
+    QGraphicsGridLayout * m_layout;
     
     Plasma::CheckBox * m_completed;
     Plasma::Label * m_date;

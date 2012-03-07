@@ -58,7 +58,7 @@ public slots:
     void editContact();
     void showContactInfo();
     void openEmail(const QString & string);
-
+    
 private slots:
     void doHide();
 
