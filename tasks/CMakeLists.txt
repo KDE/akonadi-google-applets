@@ -20,6 +20,7 @@ include_directories(
 set(tasks_SRCS tasklayout.cpp taskwidget.cpp taskwidgetitem.cpp plasmatasks.cpp)
 
 kde4_add_ui_files(tasks_SRCS config.ui)
+kde4_add_ui_files(tasks_SRCS taskedit.ui)
  
 kde4_add_plugin(plasma_applet_google_tasks ${tasks_SRCS})
 target_link_libraries(plasma_applet_google_tasks

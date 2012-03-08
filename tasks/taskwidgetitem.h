@@ -26,11 +26,14 @@
 #include <Plasma/Frame>
 #include <Plasma/CheckBox>
 #include <Plasma/Label>
+#include <Plasma/IconWidget>
 
 #include <KCalCore/Todo>
 #include <Akonadi/Item>
 
 #include <KJob>
+
+#include "ui_taskedit.h"
 
 class TaskWidgetItem : public Plasma::Frame
 {
@@ -57,17 +60,21 @@ public slots:
     
     void modifyFinished(KJob * job);
     void setCompleted(bool completed);
-    
+    void editTask();
+    void saveTask();
+        
 private:
 
     void setItemInfo();
     void setColorForDate();
     
+    Ui::taskedit taskEditor;
+    
     QGraphicsGridLayout * m_layout;
     
     Plasma::CheckBox * m_completed;
-    Plasma::Label * m_date;
-    Plasma::Label * m_name;
+    Plasma::IconWidget * m_date;
+    Plasma::IconWidget * m_name;
     
     Akonadi::Item m_item;
     KCalCore::Todo::Ptr m_todo;

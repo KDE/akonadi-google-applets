@@ -19,7 +19,11 @@
 
 #include "taskwidgetitem.h"
 
+#include <QWidget>
+
+#include <KIcon>
 #include <KDateTime>
+#include <KDateTimeEdit>
 
 #include <Akonadi/ItemModifyJob>
 
@@ -62,8 +66,9 @@ void TaskWidgetItem::setItemInfo()
 
     if (m_todo->hasDueDate()) {
 
-        m_date = new Plasma::Label(this);
-
+        m_date = new Plasma::IconWidget(this);
+        m_date->setOrientation(Qt::Horizontal);
+	
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
         m_date->setMaximumHeight(15);
 
@@ -73,20 +78,21 @@ void TaskWidgetItem::setItemInfo()
 
     }
 
-    m_name = new Plasma::Label(this);
+    m_name = new Plasma::IconWidget(this);
+
     m_name->setText(m_todo->summary()); 
+    m_name->setOrientation(Qt::Horizontal);
     
     /* TODO
     QFontMetrics * metrics = new QFontMetrics(m_name->font());
-    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,m_name->size().width()));
+    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,m_name->geometry().width()));
     */
 
     m_name->setMaximumHeight(15);
 
     if (m_completed->isChecked()) {
 
-        m_name->setStyleSheet("text-decoration : line-through");
-
+        m_name->setIcon(KIcon("dialog-ok"));
     }
     
     if (m_date) {
@@ -98,8 +104,54 @@ void TaskWidgetItem::setItemInfo()
 	m_layout->addItem(m_name,0,1);
 	
     }
-        
+            
+    connect(m_name,SIGNAL(clicked()),SLOT(editTask()));
+    
+    if (m_date) {
+    
+	connect(m_date,SIGNAL(clicked()),SLOT(editTask()));
+	
+    }
+            
 }
+
+void TaskWidgetItem::TaskWidgetItem::editTask()
+{
+
+    QWidget *widget = new QWidget(0);
+
+    taskEditor.setupUi(widget);
+      
+    taskEditor.dateEdit->setDateTime(m_todo->dtDue());
+    taskEditor.nameEdit->setText(m_todo->summary());
+    taskEditor.descriptionEdit->setText(m_todo->description());
+    
+    KDialog * dialog = new KDialog();
+    dialog->setCaption(m_todo->summary());
+    dialog->setButtons( KDialog::Ok | KDialog::Cancel);
+    
+    dialog->setMainWidget(widget);
+    
+    connect(dialog,SIGNAL(okClicked()),SLOT(saveTask()));
+    
+    dialog->show();
+    
+}
+
+void TaskWidgetItem::saveTask()
+{    
+    qDebug() << taskEditor.dateEdit->dateTime().toString(KDateTime::LocalDate);
+    
+    m_todo->setDtDue(taskEditor.dateEdit->dateTime());
+    m_todo->setSummary(taskEditor.nameEdit->text());
+    m_todo->setDescription(taskEditor.descriptionEdit->toPlainText());
+     
+    m_item.setPayload<KCalCore::Todo::Ptr>(m_todo);
+
+    Akonadi::ItemModifyJob * job = new Akonadi::ItemModifyJob(m_item);
+    connect(job, SIGNAL(result(KJob*)), SLOT(modifyFinished(KJob*)));
+}
+
 
 void TaskWidgetItem::setColorForDate()
 {
@@ -110,19 +162,19 @@ void TaskWidgetItem::setColorForDate()
 
         if (days < 0) {
 
-            m_date->setStyleSheet("color : #FF00FF");
+            m_date->setTextBackgroundColor(Qt::red);
 
         } else if (days == 0) {
 
-            m_date->setStyleSheet("color : red");
+            m_date->setTextBackgroundColor(Qt::red);
 
         } else if (days < 8) {
 
-            m_date->setStyleSheet("color : orange");
+            m_date->setTextBackgroundColor(Qt::yellow);
 
         } else {
 
-            m_date->setStyleSheet("color : yellow");
+            m_date->setTextBackgroundColor(Qt::blue);
 
         }
 
@@ -135,12 +187,10 @@ void TaskWidgetItem::setCompleted(bool completed)
 
     if (completed) {
 
-        m_name->setStyleSheet("text-decoration : line-through");
         m_todo->setCompleted(true);
 
     } else {
 
-        m_name->setStyleSheet("text-decoration : none");
         m_todo->setCompleted(false);
     }
 
