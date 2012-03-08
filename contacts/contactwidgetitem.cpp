@@ -2,7 +2,7 @@
     Akonadi google contact plasmoid - contactwidgetitem.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modif y
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -27,7 +27,7 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 
-ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget* parent)
+ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_edit(0),
       m_show(false),
@@ -40,7 +40,7 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 
     m_addressee = new KABC::Addressee(addressee);
 
-    m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, this);
     m_mainLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_edit = new Plasma::PushButton(this);
@@ -52,7 +52,7 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setDrawBackground(true);
-    m_icon->setMinimumSize(250,50);
+    m_icon->setMinimumSize(250, 50);
     m_icon->setMaximumHeight(50);
 
     setContactIcon();
@@ -63,7 +63,7 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 
     setLayout(m_mainLayout);
 
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
+    QGraphicsOpacityEffect * effect = new QGraphicsOpacityEffect(this);
     effect->setOpacity(1);
     setGraphicsEffect(effect);
 
@@ -72,7 +72,7 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_animation->setEndValue(1);
     m_animation->setDuration(300);
 
-    connect(m_animation, SIGNAL(finished()),this, SLOT(doHide()));
+    connect(m_animation, SIGNAL(finished()), this, SLOT(doHide()));
     connect(m_icon, SIGNAL(clicked()), SLOT(showContactInfo()));
     connect(m_edit, SIGNAL(clicked()), SLOT(editContact()));
 }
@@ -196,9 +196,9 @@ void ContactWidgetItem::setContactInfo()
 {
 
     QString text;
-    
+
     text += "<table cellpadding=2>";
-    
+
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
         text += "<tr><td><strong>" + i18n("Home number") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "</td></tr>";
@@ -207,33 +207,33 @@ void ContactWidgetItem::setContactInfo()
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
 
         text += "<tr><td><strong>" + i18n("Office number") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "</td></tr>";
-        
+
     }
-    
+
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
 
-	text += "<tr><td><strong>" + i18n("Cell phone") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "</td></tr>";
-       
-    } 
-    
+        text += "<tr><td><strong>" + i18n("Cell phone") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "</td></tr>";
+
+    }
+
     if (!m_addressee->emails().isEmpty()) {
 
-	for (int i = 0; i < m_addressee->emails().count(); i++) {
-	    
-	    text += "<tr><td>";
-	    
-	    if (i == 0) {
-		
-		text += "<strong>" + i18n("Email") + ": </strong>";
-		
-	    }
-	    
-	    text += "</td><td><a href=\"" + m_addressee->emails().at(i) + "\">" + m_addressee->emails().at(i) + "</a></td></tr>";
-	    
-	}
-	
+        for(int i = 0; i < m_addressee->emails().count(); i++) {
+
+            text += "<tr><td>";
+
+            if (i == 0) {
+
+                text += "<strong>" + i18n("Email") + ": </strong>";
+
+            }
+
+            text += "</td><td><a href=\"" + m_addressee->emails().at(i) + "\">" + m_addressee->emails().at(i) + "</a></td></tr>";
+
+        }
+
     }
-    
+
     text += "</table>";
 
     m_infoText = new Plasma::Label(this);
@@ -257,13 +257,13 @@ void ContactWidgetItem::showContactInfo()
     if (m_show) {
 
         setFrameShadow(Plasma::Frame::Raised);
-	
-	if (!isEmpty()){
-	
-	    m_mainLayout->removeItem(m_infoText);
-	    m_infoText->hide();
-	    
-	}
+
+        if (!isEmpty()) {
+
+            m_mainLayout->removeItem(m_infoText);
+            m_infoText->hide();
+
+        }
 
         m_mainLayout->removeItem(m_edit);
         m_edit->hide();
@@ -273,18 +273,18 @@ void ContactWidgetItem::showContactInfo()
     } else {
 
         setFrameShadow(Plasma::Frame::Sunken);
-	
-	if (!isEmpty()) {
-	
-	    m_mainLayout->addItem(m_infoText);
-	    m_infoText->show();
-	    
-	}
+
+        if (!isEmpty()) {
+
+            m_mainLayout->addItem(m_infoText);
+            m_infoText->show();
+
+        }
 
         m_mainLayout->addItem(m_edit);
         m_edit->show();
 
-	m_show = true;
+        m_show = true;
 
     }
 
@@ -352,13 +352,13 @@ bool ContactWidgetItem::isEmpty()
 
 }
 
-bool ContactWidgetItem::operator<(const ContactWidgetItem * item)
+bool ContactWidgetItem::operator< (const ContactWidgetItem * item)
 {
     return (this->m_icon->text().toLower() < item->m_icon->text().toLower());
 
 }
 
-bool ContactWidgetItem::operator=(const Akonadi::Item& item)
+bool ContactWidgetItem::operator= (const Akonadi::Item & item)
 {
 
     return (this->m_item.id() == item.id());
@@ -367,7 +367,7 @@ bool ContactWidgetItem::operator=(const Akonadi::Item& item)
 
 void ContactWidgetItem::editContact()
 {
-    Akonadi::ContactEditorDialog *dialog = new Akonadi::ContactEditorDialog(Akonadi::ContactEditorDialog::EditMode);
+    Akonadi::ContactEditorDialog * dialog = new Akonadi::ContactEditorDialog(Akonadi::ContactEditorDialog::EditMode);
 
     dialog->setContact(m_item);
 
@@ -390,9 +390,9 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
 
     if (m_show) {
 
-	if (!isEmpty())
-	
-	    showContactInfo();
+        if (!isEmpty())
+
+            showContactInfo();
 
         m_show = false;
 
@@ -407,10 +407,10 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
     m_addressee = new KABC::Addressee(addressee);
 
     if (!m_infoText) {
-    
-	delete m_infoText;
-	m_infoText = 0;
-	
+
+        delete m_infoText;
+        m_infoText = 0;
+
     }
 
     setContactIcon();
@@ -425,4 +425,5 @@ ContactWidgetItem::~ContactWidgetItem()
     delete m_addressee;
 
 }
+
 

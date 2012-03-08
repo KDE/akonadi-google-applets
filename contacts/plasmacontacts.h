@@ -35,47 +35,51 @@
 #include "contactwidget.h"
 #include "ui_config.h"
 
-class PlasmaContacts : public Plasma::PopupApplet
-{
+class PlasmaContacts : public Plasma::PopupApplet {
+    
     Q_OBJECT
 
-public:
+    public:
 
-    PlasmaContacts(QObject *parent, const QVariantList &args);
-    ~PlasmaContacts() {};
+        PlasmaContacts(QObject * parent, const QVariantList & args);
+        ~PlasmaContacts() {};
 
-    void createConfigurationInterface(KConfigDialog *parent);
+        void createConfigurationInterface(KConfigDialog * parent);
 
-private:
+    private:
 
-    void configChanged();
-    virtual QGraphicsWidget *graphicsWidget();
+        void configChanged();
 
-    Ui::config configDialog;
+        virtual QGraphicsWidget * graphicsWidget();
 
-    ContactWidget *m_contactList;
-    QGraphicsWidget *m_widget;
-    QGraphicsLinearLayout *m_mainLayout;
+        Ui::config configDialog;
 
-    Plasma::ScrollWidget *m_scroll;
-    Plasma::LineEdit *m_find;
+        ContactWidget * m_contactList;
 
-    Akonadi::Collection::Id m_id;
+        QGraphicsWidget * m_widget;
 
-    bool m_findData;
-    bool m_showEmails;
-    bool m_showNumbers;
-    bool m_showEmptyContacts;
+        QGraphicsLinearLayout * m_mainLayout;
 
-public slots:
+        Plasma::ScrollWidget * m_scroll;
 
-    void configAccepted();
+        Plasma::LineEdit * m_find;
 
-    void fetchCollections();
-    void fetchCollectionsFinished(KJob *job);
+        Akonadi::Collection::Id m_id;
 
-    void lineChanged(const QString & text);
-    void lineFocusChanged(bool change);
+        bool m_findData;
+        bool m_showEmails;
+        bool m_showNumbers;
+        bool m_showEmptyContacts;
+
+    private slots:
+
+        void configAccepted();
+
+        void fetchCollections();
+        void fetchCollectionsFinished(KJob * job);
+
+        void lineChanged(const QString & text);
+        void lineFocusChanged(bool change);
 
 };
 

@@ -2,7 +2,7 @@
     Akonadi google tasks plasmoid - plasmatasks.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modif y
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -10,7 +10,7 @@
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    GNU General Public License for  more details.
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -31,7 +31,7 @@
 
 #include <KCalCore/Todo>
 
-PlasmaTasks::PlasmaTasks(QObject *parent, const QVariantList &args)
+PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
     : Plasma::PopupApplet(parent, args),
       m_widget(0)
 {
@@ -42,14 +42,14 @@ PlasmaTasks::PlasmaTasks(QObject *parent, const QVariantList &args)
 
 }
 
-QGraphicsWidget *PlasmaTasks::graphicsWidget()
+QGraphicsWidget * PlasmaTasks::graphicsWidget()
 {
 
     if (!m_widget) {
 
         m_widget = new QGraphicsWidget(this);
 
-        m_widget->setMinimumSize(300,500);
+        m_widget->setMinimumSize(300, 500);
 
         m_tasksList = new TaskWidget(m_widget);
 
@@ -57,7 +57,7 @@ QGraphicsWidget *PlasmaTasks::graphicsWidget()
         m_scroll->setWidget(m_tasksList);
         m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,m_widget);
+        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
 
         m_mainLayout->addItem(m_scroll);
 
@@ -75,27 +75,27 @@ void PlasmaTasks::configChanged()
 
     KConfigGroup conf = config();
 
-    QList<Akonadi::Item::Id> list = conf.readEntry("collections",QList<Akonadi::Item::Id>());
+    QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
     if (list.isEmpty()) {
-	
-	setConfigurationRequired(true);
-	
+
+        setConfigurationRequired(true);
+
     } else {
-	
-	setConfigurationRequired(false);
-	
+
+        setConfigurationRequired(false);
+
     }
-    
+
     m_idList = list;
 
     m_tasksList->setCollections(m_idList);
 
 }
 
-void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
+void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 {
-    QWidget *widget = new QWidget(0);
+    QWidget * widget = new QWidget(0);
 
     configDialog.setupUi(widget);
 
@@ -109,7 +109,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog* parent)
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
-    parent->addPage(widget,"General",icon());
+    parent->addPage(widget, "General", icon());
 }
 
 void PlasmaTasks::configAccepted()
@@ -128,7 +128,7 @@ void PlasmaTasks::configAccepted()
 
     }
 
-    conf.writeEntry("collections",list);
+    conf.writeEntry("collections", list);
 
     emit configNeedsSaving();
 
@@ -143,15 +143,15 @@ void PlasmaTasks::fetchCollections()
 
     }
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
 
     job->fetchScope();
 
-    connect(job,SIGNAL(result(KJob*)), SLOT(fetchCollectionsFinished(KJob*)));
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 
 }
 
-void PlasmaTasks::fetchCollectionsFinished(KJob* job)
+void PlasmaTasks::fetchCollectionsFinished(KJob * job)
 {
 
     if (job->error()) {
@@ -161,15 +161,15 @@ void PlasmaTasks::fetchCollectionsFinished(KJob* job)
         return;
     }
 
-    Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach ( const Akonadi::Collection &collection, collections ) {
+    foreach(const Akonadi::Collection & collection, collections) {
 
         if (collection.resource().contains("akonadi_googletasks_resource") &&
-                collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+            collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
-            Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+            Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
             QListWidgetItem * item = new QListWidgetItem();
 
@@ -186,7 +186,7 @@ void PlasmaTasks::fetchCollectionsFinished(KJob* job)
             item->setData(Qt::UserRole, collection.id());
             item->setCheckState(Qt::Unchecked);
 
-            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(),item);
+            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
 
         }
 
@@ -216,7 +216,6 @@ PlasmaTasks::~PlasmaTasks()
 {
 
 }
-
 
 #include "plasmatasks.moc"
 

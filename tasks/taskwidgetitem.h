@@ -35,52 +35,59 @@
 
 #include "ui_taskedit.h"
 
-class TaskWidgetItem : public Plasma::Frame
-{
+class TaskWidgetItem : public Plasma::Frame {
+       
     Q_OBJECT
 
-public:
+    public:
 
-    TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
+        TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
-    int indent() const { return m_indent; }
-    
-    void setRelated(TaskWidgetItem * item);
-    void setUnrelated();
-    
-    void updateTask(const Akonadi::Item & item);
-        
-    bool operator<(const TaskWidgetItem * item);
-    bool operator<<(const TaskWidgetItem * item);
-    bool operator==(const Akonadi::Item & item);
+        void setRelated(TaskWidgetItem * item);
+        void setUnrelated();
 
-    QString relatedTo() { return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent); }
-    
-public slots:
-    
-    void modifyFinished(KJob * job);
-    void setCompleted(bool completed);
-    void editTask();
-    void saveTask();
-        
-private:
+        void updateTask(const Akonadi::Item & item);
 
-    void setItemInfo();
-    void setColorForDate();
+        bool operator<(const TaskWidgetItem * item);
+        bool operator<<(const TaskWidgetItem * item);
+        bool operator==(const Akonadi::Item & item);
+
+	int indent() const {
+            return m_indent;
+        }
+	
+        QString relatedTo() {
+            return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent);
+        }
+
+    public slots:
+
+        void setCompleted(bool completed);
+        void editTask();
+        void saveTask();
+
+    private slots:
     
-    Ui::taskedit taskEditor;
-    
-    QGraphicsGridLayout * m_layout;
-    
-    Plasma::CheckBox * m_completed;
-    Plasma::IconWidget * m_date;
-    Plasma::IconWidget * m_name;
-    
-    Akonadi::Item m_item;
-    KCalCore::Todo::Ptr m_todo;
-    
-    int m_indent;    
-    
+        void modifyFinished(KJob * job);
+	
+    private:
+
+        void setItemInfo();
+        void setColorForDate();
+
+        Ui::taskedit taskEditor;
+
+        QGraphicsGridLayout * m_layout;
+
+        Plasma::CheckBox * m_completed;
+        Plasma::IconWidget * m_date;
+        Plasma::IconWidget * m_name;
+
+        Akonadi::Item m_item;
+        KCalCore::Todo::Ptr m_todo;
+
+        int m_indent;
+
 };
 
 #endif // TASKWIDGETITEM_H

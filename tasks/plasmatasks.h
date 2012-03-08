@@ -19,55 +19,59 @@
 #ifndef PLASMA_TASKS_HEADER
 #define PLASMA_TASKS_HEADER
 
+#include <QList>
+#include <QGraphicsWidget>
+#include <QGraphicsLinearLayout>
+
 #include <KConfigDialog>
 #include <KIcon>
 
 #include <Plasma/PopupApplet>
 #include <Plasma/ScrollWidget>
 
-#include <QList>
-#include <QGraphicsLinearLayout>
-#include <QGraphicsWidget>
-
-#include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
 
 #include "taskwidget.h"
 #include "ui_config.h"
 
-class PlasmaTasks : public Plasma::PopupApplet
-{
+class PlasmaTasks : public Plasma::PopupApplet {
+    
     Q_OBJECT
-    
-public:
 
-    PlasmaTasks(QObject *parent, const QVariantList &args);
-    ~PlasmaTasks();
+    public:
 
-    void createConfigurationInterface(KConfigDialog *parent);
+        PlasmaTasks(QObject * parent, const QVariantList & args);
+	
+        ~PlasmaTasks();
 
-private:
-    
-    void configChanged();
-    virtual QGraphicsWidget *graphicsWidget();
-    
-    Ui::config configDialog;
-    
-    QGraphicsWidget *m_widget;
-    QGraphicsLinearLayout *m_mainLayout;
-    
-    TaskWidget * m_tasksList;
-    
-    Plasma::ScrollWidget *m_scroll;
-    
-    QList<Akonadi::Collection::Id> m_idList;
-    
-public slots:
-    
-    void configAccepted();
-    
-    void fetchCollections();
-    void fetchCollectionsFinished(KJob *job);
+        void createConfigurationInterface(KConfigDialog * parent);
+
+    private slots:
+
+        void configAccepted();
+
+        void fetchCollections();
+        void fetchCollectionsFinished(KJob * job);
+
+    private:
+
+        void configChanged();
+
+        virtual QGraphicsWidget * graphicsWidget();
+
+        QGraphicsWidget * m_widget;
+        QGraphicsLinearLayout * m_mainLayout;
+
+        TaskWidget * m_tasksList;
+	
+        Plasma::ScrollWidget * m_scroll;
+
+        Ui::config configDialog;
+
+        QList<Akonadi::Collection::Id> m_idList;
+
+
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_tasks, PlasmaTasks)

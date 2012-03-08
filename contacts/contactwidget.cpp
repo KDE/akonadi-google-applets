@@ -2,7 +2,7 @@
     Akonadi google contact plasmoid - contactwidget.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modif y
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -24,7 +24,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <QGraphicsOpacityEffect>
 
-ContactWidget::ContactWidget(QGraphicsWidget* parent)
+ContactWidget::ContactWidget(QGraphicsWidget * parent)
     : QGraphicsWidget(parent),
       m_findData(true),
       m_showEmptyContacts(true)
@@ -37,10 +37,10 @@ ContactWidget::ContactWidget(QGraphicsWidget* parent)
     m_monitor = new Akonadi::Monitor();
     m_monitor->itemFetchScope().fetchFullPayload(true);
 
-    connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
-            SLOT(itemAdded(Akonadi::Item,Akonadi::Collection)));
-    connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
-            SLOT(itemChanged(Akonadi::Item,QSet<QByteArray>)));
+    connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
+            SLOT(itemAdded(Akonadi::Item, Akonadi::Collection)));
+    connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
+            SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             SLOT(itemRemoved(Akonadi::Item)));
 
@@ -79,13 +79,13 @@ void ContactWidget::setShowEmptyContacts(bool show)
 
 }
 
-void ContactWidget::showContactsContains(const QString& text)
+void ContactWidget::showContactsContains(const QString & text)
 {
-    while (!m_listFilterText.isEmpty()) {
+    while(!m_listFilterText.isEmpty()) {
 
-        addItem(static_cast<ContactWidgetItem*>(m_listFilterText.first()));
+        addItem(static_cast<ContactWidgetItem *>(m_listFilterText.first()));
 
-        static_cast<ContactWidgetItem*>(m_listFilterText.first())->show();
+        static_cast<ContactWidgetItem *>(m_listFilterText.first())->show();
 
         m_listFilterText.pop_front();
 
@@ -93,12 +93,12 @@ void ContactWidget::showContactsContains(const QString& text)
 
     ContactWidgetItem * item;
 
-    for (int i = 0; i < m_layout->count(); i++) {
+    for(int i = 0; i < m_layout->count(); i++) {
 
-        item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+        item = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
 
-        if ( ((!item->hasStringInName(text)) && m_findData && (!item->hasStringInData(text))) ||
-                ((!item->hasStringInName(text)) && !m_findData)) {
+        if (((!item->hasStringInName(text)) && m_findData && (!item->hasStringInData(text))) ||
+            ((!item->hasStringInName(text)) && !m_findData)) {
 
             item->hide();
 
@@ -109,9 +109,9 @@ void ContactWidget::showContactsContains(const QString& text)
             i--;
 
         } else {
-	    
+
             item->show();
-	    
+
         }
     }
 
@@ -121,15 +121,15 @@ void ContactWidget::showContactsContains(const QString& text)
 void ContactWidget::fetchCollections()
 {
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
 
     job->fetchScope();
 
-    connect(job,SIGNAL(result(KJob*)), SLOT(fetchCollectionsFinished(KJob*)));
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 
 }
 
-void ContactWidget::fetchCollectionsFinished(KJob* job)
+void ContactWidget::fetchCollectionsFinished(KJob * job)
 {
     if (job->error()) {
 
@@ -138,15 +138,15 @@ void ContactWidget::fetchCollectionsFinished(KJob* job)
         return;
     }
 
-    Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
 
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach ( const Akonadi::Collection &collection, collections ) {
+    foreach(const Akonadi::Collection & collection, collections) {
 
         if (collection.id() == m_id) {
 
-            m_monitor->setCollectionMonitored(collection,true);
+            m_monitor->setCollectionMonitored(collection, true);
 
             fetchItems(collection);
 
@@ -159,9 +159,9 @@ void ContactWidget::fetchCollectionsFinished(KJob* job)
 void ContactWidget::fetchItems(const Akonadi::Collection & collection)
 {
 
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection);
+    Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob(collection);
 
-    connect(job,SIGNAL(result(KJob*)), SLOT(fetchItemsFinished(KJob*)));
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchItemsFinished(KJob *)));
 
     job->fetchScope().fetchFullPayload(true);
 
@@ -177,23 +177,23 @@ void ContactWidget::fetchItemsFinished(KJob * job)
         return;
     }
 
-    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
+    Akonadi::ItemFetchJob * fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
 
     const Akonadi::Item::List items = fetchJob->items();
 
-    foreach ( const Akonadi::Item &item, items ) {
+    foreach(const Akonadi::Item & item, items) {
 
         ContactWidgetItem * contact;
 
-        contact = new ContactWidgetItem(item,this);
-        
+        contact = new ContactWidgetItem(item, this);
+
         addItem(contact);
 
     }
 
 }
 
-void ContactWidget::addItem(ContactWidgetItem* item)
+void ContactWidget::addItem(ContactWidgetItem * item)
 {
 
     if (!m_showEmptyContacts && item->isEmpty()) {
@@ -206,13 +206,13 @@ void ContactWidget::addItem(ContactWidgetItem* item)
 
     ContactWidgetItem * tmpItem;
 
-    for (int i = 0; i < m_layout->count(); i++) {
+    for(int i = 0; i < m_layout->count(); i++) {
 
-        tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
-	
+        tmpItem = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
+
         if (item->operator<(tmpItem)) {
 
-            m_layout->insertItem(i,item);
+            m_layout->insertItem(i, item);
 
             return;
 
@@ -232,7 +232,7 @@ void ContactWidget::clear()
 
     while (m_layout->count() > 0) {
 
-        item = static_cast<ContactWidgetItem*>(m_layout->itemAt(0));
+        item = static_cast<ContactWidgetItem *>(m_layout->itemAt(0));
 
         m_layout->removeItem(item);
 
@@ -247,9 +247,9 @@ void ContactWidget::updateContacts()
 
     while (!m_listFilterEmpty.isEmpty()) {
 
-        addItem(static_cast<ContactWidgetItem*>(m_listFilterEmpty.first()));
+        addItem(static_cast<ContactWidgetItem *>(m_listFilterEmpty.first()));
 
-        static_cast<ContactWidgetItem*>(m_listFilterEmpty.first())->show();
+        static_cast<ContactWidgetItem *>(m_listFilterEmpty.first())->show();
 
         m_listFilterEmpty.pop_front();
 
@@ -261,7 +261,7 @@ void ContactWidget::updateContacts()
 
         for (int i = 0; i < m_layout->count(); i++) {
 
-            item = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+            item = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
 
             if (item->isEmpty()) {
 
@@ -287,7 +287,7 @@ void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collect
 
         ContactWidgetItem * contact;
 
-        contact = new ContactWidgetItem(item,this);
+        contact = new ContactWidgetItem(item, this);
 
         addItem(contact);
 
@@ -295,7 +295,7 @@ void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collect
 
 }
 
-void ContactWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array )
+void ContactWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
 {
 
     Q_UNUSED(array);
@@ -304,7 +304,7 @@ void ContactWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > a
 
     for (int i = 0; i < m_layout->count(); i++) {
 
-        tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+        tmpItem = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
 
         if (tmpItem->operator=(item)) {
 
@@ -322,9 +322,9 @@ void ContactWidget::itemRemoved(const Akonadi::Item & item)
 
     ContactWidgetItem * tmpItem;
 
-    for (int i = 0; i < m_layout->count(); i++) {
+    for(int i = 0; i < m_layout->count(); i++) {
 
-        tmpItem = static_cast<ContactWidgetItem*>(m_layout->itemAt(i));
+        tmpItem = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
 
         if (tmpItem->operator=(item)) {
 

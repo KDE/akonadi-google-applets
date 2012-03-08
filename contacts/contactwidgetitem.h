@@ -32,54 +32,55 @@
 
 #include <QPropertyAnimation>
 
-class ContactWidgetItem : public Plasma::Frame
-{
+class ContactWidgetItem : public Plasma::Frame {
+    
     Q_OBJECT
 
-public:
+    public:
 
-    ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
-    virtual ~ContactWidgetItem();
+        ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
+	
+        virtual ~ContactWidgetItem();
 
-    bool isEmpty();
-    bool hasStringInName(const QString & string);
-    bool hasStringInData(const QString & string);
+	void hide();
+        void show();
+        void updateContact(const Akonadi::Item & item);
+	
+        bool isEmpty();
+        bool hasStringInName(const QString & string);
+        bool hasStringInData(const QString & string);
 
-    void updateContact(const Akonadi::Item & item);
+	bool operator<(const ContactWidgetItem * item);
+        bool operator=(const Akonadi::Item & item);
+	
+    public slots:
 
-    bool operator<(const ContactWidgetItem * item);
-    bool operator=(const Akonadi::Item & item);
+        void editContact();
+        void showContactInfo();
+        void openEmail(const QString & string);
 
-    void hide();
-    void show();
+    private slots:
+	
+        void doHide();
 
-public slots:
+    private:
 
-    void editContact();
-    void showContactInfo();
-    void openEmail(const QString & string);
-    
-private slots:
-    void doHide();
+        void setContactInfo();
+        void setContactIcon();
 
-private:
+        QGraphicsLinearLayout * m_mainLayout;
 
-    void setContactInfo();
-    void setContactIcon();
+	QPropertyAnimation * m_animation;
+	
+        Plasma::IconWidget * m_icon;
+        Plasma::Label * m_infoText;
+        Plasma::PushButton * m_edit;
 
-    QGraphicsLinearLayout * m_mainLayout;
+        Akonadi::Item m_item;
+        KABC::Addressee * m_addressee;
 
-    Plasma::IconWidget * m_icon;
-    Plasma::Label * m_infoText;
-    Plasma::PushButton *m_edit;
-
-    Akonadi::Item m_item;
-    KABC::Addressee * m_addressee;
-
-    QPropertyAnimation * m_animation;
-
-    bool m_show;
-    bool m_info;
+        bool m_show;
+        bool m_info;
 
 };
 

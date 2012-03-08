@@ -34,49 +34,49 @@
 #include "contactwidgetitem.h"
 #include "contactslayout.h"
 
-class ContactWidget : public QGraphicsWidget
-{
+class ContactWidget : public QGraphicsWidget {
+    
     Q_OBJECT
 
-public:
+    public:
 
-    ContactWidget(QGraphicsWidget * parent = 0);
-    virtual ~ContactWidget();
+        ContactWidget(QGraphicsWidget * parent = 0);
+	
+        virtual ~ContactWidget();
 
-    void setCollection(Akonadi::Collection::Id id);
-    void setFilterData(bool filter = true);
-    void setShowEmptyContacts(bool show = true);
+        void setCollection(Akonadi::Collection::Id id);
+        void setFilterData(bool filter = true);
+        void setShowEmptyContacts(bool show = true);
+        void showContactsContains(const QString & text);
 
-    void showContactsContains(const QString & text);
+    public slots:
 
-public slots:
+        void fetchCollectionsFinished(KJob * job);
+        void fetchItemsFinished(KJob * job);
 
-    void fetchCollectionsFinished(KJob *job);
-    void fetchItemsFinished(KJob * job);
+        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+        void itemRemoved(const Akonadi::Item & item);
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection & collection);
-    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array );
-    void itemRemoved(const Akonadi::Item & item);
+    private:
 
-private:
+        void addItem(ContactWidgetItem * item);
+        void clear();
+        void updateContacts();
 
-    void addItem(ContactWidgetItem * item);
-    void clear();
-    void updateContacts();
+        void fetchCollections();
+        void fetchItems(const Akonadi::Collection & collections);
 
-    void fetchCollections();
-    void fetchItems(const Akonadi::Collection & collections);
+        ContactsLayout * m_layout;
 
-    ContactsLayout * m_layout;
+        QList<QGraphicsLayoutItem *> m_listFilterText;
+        QList<QGraphicsLayoutItem *> m_listFilterEmpty;
 
-    QList<QGraphicsLayoutItem*> m_listFilterText;
-    QList<QGraphicsLayoutItem*> m_listFilterEmpty;
+        Akonadi::Collection::Id m_id;
+        Akonadi::Monitor * m_monitor;
 
-    Akonadi::Collection::Id m_id;
-    Akonadi::Monitor * m_monitor;
-
-    bool m_findData;
-    bool m_showEmptyContacts;
+        bool m_findData;
+        bool m_showEmptyContacts;
 
 
 

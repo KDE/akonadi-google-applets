@@ -22,8 +22,8 @@
 
 #include <KDebug>
 
-ContactsLayout::ContactsLayout (Qt::Orientation orientation, QGraphicsLayoutItem *parent):
-	QGraphicsLinearLayout (orientation, parent)
+ContactsLayout::ContactsLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent):
+    QGraphicsLinearLayout(orientation, parent)
 {
     setMinimumWidth(250);
 }
@@ -33,19 +33,19 @@ ContactsLayout::~ContactsLayout()
 
 }
 
-QSizeF ContactsLayout::sizeHint (Qt::SizeHint which, const QSizeF &constraint) const
+QSizeF ContactsLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
 {
     QSizeF hint;
     int cnt = count();
 
-    if (cnt == 0) {	
-	
+    if (cnt == 0) {
+
         hint.setHeight(0);
-	
+
     } else {
-	
-        hint = QGraphicsLinearLayout::sizeHint (which, constraint);
-	
+
+        hint = QGraphicsLinearLayout::sizeHint(which, constraint);
+
     }
 
     return hint;

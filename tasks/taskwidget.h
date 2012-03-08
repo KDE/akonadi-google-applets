@@ -23,49 +23,48 @@
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/Collection>
 #include <Akonadi/Monitor>
-
-#include <Plasma/IconWidget>
-#include <Plasma/Label>
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
 
 #include "tasklayout.h"
 #include "taskwidgetitem.h"
 
-class TaskWidget : public QGraphicsWidget
-{
+class TaskWidget : public QGraphicsWidget {
+        
     Q_OBJECT
 
-public:
+    public:
 
-    TaskWidget(QGraphicsWidget * parent = 0);
-    
-    void setCollections(QList<Akonadi::Collection::Id> ids);
-    
-public slots:  
-    
-    void fetchCollectionsFinished(KJob *job);
-    void fetchItemsFinished(KJob * job);
-    
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection & collection);
-    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array );
-    void itemRemoved(const Akonadi::Item & item);
-    
-private:
-    
-    void addItem(TaskWidgetItem * item);
-    
-    void clear();
-    
-    void fetchCollections();
-    void fetchItems(const Akonadi::Collection & collections);
-    
-    TaskLayout * m_layout;
-    
-    QList<Akonadi::Collection::Id> m_idList;
-    
-    Akonadi::Monitor * m_monitor;
+        TaskWidget(QGraphicsWidget * parent = 0);
+
+        void setCollections(QList<Akonadi::Collection::Id> ids);
+
+    private slots:
+
+        void fetchCollectionsFinished(KJob * job);
+        void fetchItemsFinished(KJob * job);
+
+        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+        void itemRemoved(const Akonadi::Item & item);
+
+    private:
+
+        void addItem(TaskWidgetItem * item);
+        void clear();
+
+        void fetchCollections();
+        void fetchItems(const Akonadi::Collection & collections);
+
+        TaskLayout * m_layout;
+
+        QList<Akonadi::Collection::Id> m_idList;
+
+        Akonadi::Monitor * m_monitor;
+
+
 };
+
 
 #endif // TASKWIDGET_H

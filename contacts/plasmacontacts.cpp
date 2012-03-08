@@ -26,7 +26,7 @@
 
 #include <Plasma/Theme>
 
-PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
+PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
     : Plasma::PopupApplet(parent, args),
       m_widget(0),
       m_id(-1),
@@ -39,42 +39,41 @@ PlasmaContacts::PlasmaContacts(QObject *parent, const QVariantList &args)
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
-    
+
 }
 
-QGraphicsWidget *PlasmaContacts::graphicsWidget()
+QGraphicsWidget * PlasmaContacts::graphicsWidget()
 {
-    
+
     if (!m_widget) {
-	
-	m_widget = new QGraphicsWidget(this);
-	
-	m_widget->setMinimumSize(300,500);
-	
-	m_find = new Plasma::LineEdit(m_widget);
-	m_find->setClearButtonShown(true);
-	m_find->setText(i18n(" Find contact "));
 
-	m_contactList = new ContactWidget(m_widget);
+        m_widget = new QGraphicsWidget(this);
 
-	m_scroll = new Plasma::ScrollWidget(m_widget);
-	m_scroll->setWidget(m_contactList);
-	m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        m_widget->setMinimumSize(300, 500);
 
-	m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,m_widget);
+        m_find = new Plasma::LineEdit(m_widget);
+        m_find->setClearButtonShown(true);
+        m_find->setText(i18n(" Find contact "));
 
-	m_mainLayout->addItem(m_find);
-	m_mainLayout->addItem(m_scroll);
+        m_contactList = new ContactWidget(m_widget);
 
-	m_widget->setLayout(m_mainLayout);
+        m_scroll = new Plasma::ScrollWidget(m_widget);
+        m_scroll->setWidget(m_contactList);
+        m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	connect(m_find,SIGNAL(textChanged(QString)),SLOT(lineChanged(QString)));
-	connect(m_find,SIGNAL(focusChanged(bool)),SLOT(lineFocusChanged(bool)));
+        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
 
-	configChanged();
-	
+        m_mainLayout->addItem(m_find);
+        m_mainLayout->addItem(m_scroll);
+
+        m_widget->setLayout(m_mainLayout);
+
+        connect(m_find, SIGNAL(textChanged(QString)), SLOT(lineChanged(QString)));
+        connect(m_find, SIGNAL(focusChanged(bool)), SLOT(lineFocusChanged(bool)));
+
+        configChanged();
     }
-    
+
     return m_widget;
 }
 
@@ -85,66 +84,63 @@ void PlasmaContacts::configChanged()
 
     m_find->setText("");
 
-    if (conf.readEntry("findData",true) != m_findData) {
+    if (conf.readEntry("findData", true) != m_findData) {
 
-        m_findData = conf.readEntry("findData",true);
-
+        m_findData = conf.readEntry("findData", true);
         m_contactList->setFilterData(m_findData);
 
     }
 
-    if (conf.readEntry("showEmptyContacts",true) != m_showEmptyContacts) {
+    if (conf.readEntry("showEmptyContacts", true) != m_showEmptyContacts) {
 
-        m_showEmptyContacts = conf.readEntry("showEmptyContacts",true);
-
+        m_showEmptyContacts = conf.readEntry("showEmptyContacts", true);
         m_contactList->setShowEmptyContacts(m_showEmptyContacts);
 
     }
 
-    if (conf.readEntry("collection",-1) != m_id) {
+    if (conf.readEntry("collection", -1) != m_id) {
 
         setConfigurationRequired(false);
-
-        m_id = conf.readEntry("collection",-1);
-
+        m_id = conf.readEntry("collection", -1);
         m_contactList->setCollection(m_id);
+
     }
 
 
 }
 
-void PlasmaContacts::createConfigurationInterface(KConfigDialog* parent)
+void PlasmaContacts::createConfigurationInterface(KConfigDialog * parent)
 {
-    QWidget *widget = new QWidget(0);
+    QWidget * widget = new QWidget(0);
 
     configDialog.setupUi(widget);
 
     KConfigGroup conf = config();
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
-    configDialog.findData->setChecked(conf.readEntry("findData",true));
+    configDialog.findData->setChecked(conf.readEntry("findData", true));
 
     fetchCollections();
 
-    configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts",true));
+    configDialog.showEmptyContacts->setChecked(conf.readEntry("showEmptyContacts", true));
 
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.collectionBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
     connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
-    connect(configDialog.loadCollections,SIGNAL(clicked(bool)),SLOT(fetchCollections()));
+    connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
-    parent->addPage(widget,"General",icon());
+    parent->addPage(widget, "General", icon());
 }
 
 void PlasmaContacts::configAccepted()
 {
     KConfigGroup conf = config();
 
-    conf.writeEntry("collection",configDialog.collectionBox->itemData(configDialog.collectionBox->currentIndex()).toInt());
+    conf.writeEntry("collection", configDialog.collectionBox->itemData(configDialog.collectionBox->currentIndex()).toInt());
     conf.writeEntry("findData", configDialog.findData->isChecked());
-    conf.writeEntry("showEmptyContacts",configDialog.showEmptyContacts->isChecked());
+    conf.writeEntry("showEmptyContacts", configDialog.showEmptyContacts->isChecked());
 
     emit configNeedsSaving();
 
@@ -152,37 +148,29 @@ void PlasmaContacts::configAccepted()
 
 void PlasmaContacts::lineChanged(const QString & text)
 {
-
     m_contactList->showContactsContains(text);
-
 
 }
 
 void PlasmaContacts::lineFocusChanged(bool change)
 {
-
-    if (change && m_find->text().contains(i18n(" Find "))) {
-
+    if(change && m_find->text().contains(i18n(" Find ")))
         m_find->setText("");
-
-    }
 
 }
 
 void PlasmaContacts::fetchCollections()
 {
-
     configDialog.collectionBox->clear();
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this );
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
 
     job->fetchScope();
 
-    connect(job,SIGNAL(result(KJob*)), SLOT(fetchCollectionsFinished(KJob*)));
-
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
 
-void PlasmaContacts::fetchCollectionsFinished(KJob* job)
+void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 {
 
     if (job->error()) {
@@ -192,26 +180,24 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
         return;
     }
 
-    Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *> (job);
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach ( const Akonadi::Collection &collection, collections ) {
+    foreach(const Akonadi::Collection & collection, collections) {
 
         if (collection.resource().contains("akonadi_googlecontacts_resource") &&
-            collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
+                collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
-            Akonadi::EntityDisplayAttribute *attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
-	
+            Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+
             if (!attribute) {
-		
+
                 configDialog.collectionBox->addItem(collection.name(), collection.id());
 		
-	    }
-	    
-            else {
-		
+	    } else { 
+
                 configDialog.collectionBox->addItem(attribute->displayName(), collection.id());
-		
+
 	    }
 
         }
@@ -219,10 +205,10 @@ void PlasmaContacts::fetchCollectionsFinished(KJob* job)
     }
 
     if (m_id != -1) {
-	
+
         int i = configDialog.collectionBox->findData(m_id);
         configDialog.collectionBox->setCurrentIndex(i);
-	
+
     }
 
 }
