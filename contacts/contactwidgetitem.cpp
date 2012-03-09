@@ -32,7 +32,6 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
       m_edit(0),
       m_show(false),
       m_info(false)
-
 {
     m_item = item;
 
