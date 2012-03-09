@@ -63,6 +63,7 @@ class TaskWidgetItem : public Plasma::Frame {
     public slots:
 
         void setCompleted(bool completed);
+	void setAllDayEnabled();
         void editTask();
         void saveTask();
 

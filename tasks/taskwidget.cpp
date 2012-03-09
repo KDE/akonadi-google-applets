@@ -49,7 +49,7 @@ void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
     clear();
 
     m_idList = ids;
-
+    
     if (!m_idList.isEmpty())
 
         fetchCollections();
@@ -81,7 +81,7 @@ void TaskWidget::fetchCollectionsFinished(KJob * job)
     const Akonadi::Collection::List collections = fetchJob->collections();
 
     foreach (const Akonadi::Collection & collection, collections) {
-
+	
         if (m_idList.contains(collection.id())) {
 
             m_monitor->setCollectionMonitored(collection, true);
