@@ -122,7 +122,37 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
 
     taskEditor.setupUi(widget);
 
-    taskEditor.dateEdit->setDateTime(m_todo->dtDue());
+    if (m_todo->hasDueDate()) {
+	
+	taskEditor.allDay->setChecked(m_todo->allDay());
+	taskEditor.dateEdit->setDate(m_todo->dtDue().date());
+	
+	if (taskEditor.allDay->isChecked()) {
+	
+	    taskEditor.timeEdit->setEnabled(false);
+	    
+	} else {
+	 
+	    taskEditor.timeEdit->setTime(m_todo->dtDue().time());
+	    
+	}
+	
+    } else {
+	
+	taskEditor.dateEdit->setDate(QDate::currentDate());
+	
+	taskEditor.dateTime->setChecked(false);
+	taskEditor.allDay->setDisabled(true);
+	taskEditor.dateEdit->setDisabled(true);
+	taskEditor.timeEdit->setDisabled(true);
+
+    }
+    
+    connect(taskEditor.dateTime,SIGNAL(clicked(bool)),taskEditor.allDay,SLOT(setEnabled(bool)));
+    connect(taskEditor.dateTime,SIGNAL(clicked(bool)),taskEditor.dateEdit,SLOT(setEnabled(bool)));
+    connect(taskEditor.dateTime,SIGNAL(clicked(bool)),taskEditor.timeEdit,SLOT(setEnabled(bool)));
+    connect(taskEditor.allDay,SIGNAL(clicked(bool)),taskEditor.timeEdit,SLOT(setDisabled(bool)));
+    
     taskEditor.nameEdit->setText(m_todo->summary());
     taskEditor.descriptionEdit->setText(m_todo->description());
 
@@ -133,16 +163,40 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     dialog->setMainWidget(widget);
 
     connect(dialog, SIGNAL(okClicked()), SLOT(saveTask()));
-
+    
+    connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
+    connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
+        
     dialog->show();
 
 }
 
 void TaskWidgetItem::saveTask()
 {
-    qDebug() << taskEditor.dateEdit->dateTime().toString(KDateTime::LocalDate);
-
-    m_todo->setDtDue(taskEditor.dateEdit->dateTime());
+    
+    if (taskEditor.dateTime->isChecked()) {
+	
+	KDateTime time;
+	
+	if (taskEditor.allDay->isChecked()) {
+	    
+	    time = KDateTime(taskEditor.dateEdit->date());
+	    
+	} else {
+	 
+	    time = KDateTime(taskEditor.dateEdit->date(),taskEditor.timeEdit->time());
+	    
+	}
+	
+	m_todo->setAllDay(taskEditor.allDay->isChecked());
+	m_todo->setDtDue(time);
+	
+    } else {
+	
+	m_todo->setHasDueDate(false);
+	
+    }
+    
     m_todo->setSummary(taskEditor.nameEdit->text());
     m_todo->setDescription(taskEditor.descriptionEdit->toPlainText());
 
