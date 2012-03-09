@@ -19,8 +19,8 @@
 
 #include "tasklayout.h"
 
-TaskLayout::TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent):
-    QGraphicsLinearLayout(orientation, parent)
+TaskLayout::TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent)
+   : QGraphicsLinearLayout(orientation, parent)
 {
 
 }
