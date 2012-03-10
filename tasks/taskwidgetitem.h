@@ -62,11 +62,17 @@ class TaskWidgetItem : public Plasma::Frame {
 
     public slots:
 
-        void setCompleted(bool completed);
 	void setAllDayEnabled();
+	void setTimeDisabled(bool disabled);
+	void setDateTimeStart(bool enabled);
+	void setDateTimeDue(bool enabled);
+	
+        void setCompleted(bool completed);
         void editTask();
         void saveTask();
 
+	
+	
     private slots:
     
         void modifyFinished(KJob * job);

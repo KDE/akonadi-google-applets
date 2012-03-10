@@ -44,12 +44,13 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
     m_layout = new QGraphicsGridLayout(this);
-
+    
     setLayout(m_layout);
 
     setFrameShadow(Plasma::Frame::Raised);
 
     setItemInfo();
+
 }
 
 void TaskWidgetItem::setItemInfo()
@@ -82,11 +83,6 @@ void TaskWidgetItem::setItemInfo()
 
     m_name->setText(m_todo->summary());
     m_name->setOrientation(Qt::Horizontal);
-
-    /* TODO
-    QFontMetrics * metrics = new QFontMetrics(m_name->font());
-    m_name->setText(metrics->elidedText(m_todo->summary(),Qt::ElideRight,m_name->geometry().width()));
-    */
 
     m_name->setMaximumHeight(15);
 
@@ -183,13 +179,10 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     } 
     
     connect(taskEditor.dateTimeDue,SIGNAL(clicked(bool)),SLOT(setAllDayEnabled()));
-    connect(taskEditor.dateTimeDue,SIGNAL(clicked(bool)),taskEditor.dateEditDue,SLOT(setEnabled(bool)));
-    connect(taskEditor.dateTimeDue,SIGNAL(clicked(bool)),taskEditor.timeEditDue,SLOT(setEnabled(bool)));
-    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)), SLOT(setAllDayEnabled()));
-    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)),taskEditor.dateEditStart,SLOT(setEnabled(bool)));
-    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)),taskEditor.timeEditStart,SLOT(setEnabled(bool)));
-    connect(taskEditor.allDay,SIGNAL(clicked(bool)),taskEditor.timeEditDue,SLOT(setDisabled(bool)));
-    connect(taskEditor.allDay,SIGNAL(clicked(bool)),taskEditor.timeEditStart,SLOT(setDisabled(bool)));
+    connect(taskEditor.dateTimeDue,SIGNAL(clicked(bool)),SLOT(setDateTimeDue(bool)));
+    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)),SLOT(setAllDayEnabled()));
+    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)),SLOT(setDateTimeStart(bool)));
+    connect(taskEditor.allDay,SIGNAL(clicked(bool)), SLOT(setTimeDisabled(bool)));
     
     taskEditor.nameEdit->setText(m_todo->summary());
     taskEditor.descriptionEdit->setText(m_todo->description());
@@ -223,6 +216,50 @@ void TaskWidgetItem::setAllDayEnabled()
     }
     
 }
+
+void TaskWidgetItem::setTimeDisabled(bool disabled)
+{
+
+    if (taskEditor.dateTimeStart->isChecked()) {
+	
+	taskEditor.timeEditStart->setDisabled(disabled);
+	
+    }
+   
+    if (taskEditor.dateTimeDue->isChecked()) {
+	
+	taskEditor.timeEditDue->setDisabled(disabled);
+	
+    }
+   
+}
+
+void TaskWidgetItem::setDateTimeStart(bool enabled)
+{
+
+    taskEditor.dateEditStart->setEnabled(enabled);
+    
+    if (!taskEditor.allDay->isChecked()) {
+	
+	taskEditor.timeEditStart->setEnabled(enabled);
+	
+    }
+    
+}
+
+void TaskWidgetItem::setDateTimeDue(bool enabled)
+{
+
+    taskEditor.dateEditDue->setEnabled(enabled);
+    
+    if (!taskEditor.allDay->isChecked()) {
+	
+	taskEditor.timeEditDue->setEnabled(enabled);
+	
+    }
+    
+}
+
 
 void TaskWidgetItem::saveTask()
 {

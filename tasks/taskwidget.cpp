@@ -28,7 +28,6 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
 {
 
     m_layout = new TaskLayout(Qt::Vertical, this);
-    m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     setLayout(m_layout);
 

@@ -39,7 +39,7 @@ PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
-
+    
 }
 
 QGraphicsWidget * PlasmaTasks::graphicsWidget()
@@ -49,7 +49,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 
         m_widget = new QGraphicsWidget(this);
 
-        m_widget->setMinimumSize(300, 500);
+	m_widget->setMinimumSize(300, 500);
 
         m_tasksList = new TaskWidget(m_widget);
 
@@ -64,7 +64,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
         m_widget->setLayout(m_mainLayout);
 
         configChanged();
-
+	
     }
 
     return m_widget;
