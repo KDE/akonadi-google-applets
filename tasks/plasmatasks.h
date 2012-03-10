@@ -44,7 +44,7 @@ class PlasmaTasks : public Plasma::PopupApplet {
         PlasmaTasks(QObject * parent, const QVariantList & args);
 	
         ~PlasmaTasks();
-
+	
         void createConfigurationInterface(KConfigDialog * parent);
 
     private slots:

@@ -44,18 +44,16 @@ PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
 
 QGraphicsWidget * PlasmaTasks::graphicsWidget()
 {
-
     if (!m_widget) {
 
         m_widget = new QGraphicsWidget(this);
 
 	m_widget->setMinimumSize(300, 500);
 
-        m_tasksList = new TaskWidget(m_widget);
-
-        m_scroll = new Plasma::ScrollWidget(m_widget);
+	m_tasksList = new TaskWidget(m_widget);
+	
+        m_scroll = new Plasma::ScrollWidget(m_widget);	
         m_scroll->setWidget(m_tasksList);
-        m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
 
@@ -66,7 +64,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
         configChanged();
 	
     }
-
+    
     return m_widget;
 }
 

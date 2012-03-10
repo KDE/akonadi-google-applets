@@ -28,7 +28,7 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
 {
 
     m_layout = new TaskLayout(Qt::Vertical, this);
-
+    
     setLayout(m_layout);
 
     m_monitor = new Akonadi::Monitor();
@@ -41,6 +41,8 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             SLOT(itemRemoved(Akonadi::Item)));
 
+    //qDebug() << "task - " << (int)geometry().width();
+    
 }
 
 void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)

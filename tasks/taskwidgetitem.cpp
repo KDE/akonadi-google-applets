@@ -198,6 +198,8 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
     connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
         
+    qDebug() << (int)geometry().width();
+    
     dialog->show();
 
 }
