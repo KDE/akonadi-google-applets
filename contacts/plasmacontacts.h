@@ -26,11 +26,12 @@
 #include <Plasma/ScrollWidget>
 #include <Plasma/LineEdit>
 
-#include <QGraphicsLinearLayout>
+#include <QList>
 #include <QGraphicsWidget>
+#include <QGraphicsLinearLayout>
 
-#include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
 
 #include "contactwidget.h"
 #include "ui_config.h"
@@ -46,6 +47,16 @@ class PlasmaContacts : public Plasma::PopupApplet {
 
         void createConfigurationInterface(KConfigDialog * parent);
 
+    private slots:
+
+        void configAccepted();
+
+        void fetchCollections();
+        void fetchCollectionsFinished(KJob * job);
+
+        void lineChanged(const QString & text);
+        void lineFocusChanged(bool change);	
+	
     private:
 
         void configChanged();
@@ -64,22 +75,12 @@ class PlasmaContacts : public Plasma::PopupApplet {
 
         Plasma::LineEdit * m_find;
 
-        Akonadi::Collection::Id m_id;
+        QList<Akonadi::Collection::Id> m_idList;
 
         bool m_findData;
         bool m_showEmails;
         bool m_showNumbers;
         bool m_showEmptyContacts;
-
-    private slots:
-
-        void configAccepted();
-
-        void fetchCollections();
-        void fetchCollectionsFinished(KJob * job);
-
-        void lineChanged(const QString & text);
-        void lineFocusChanged(bool change);
 
 };
 

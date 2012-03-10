@@ -44,7 +44,7 @@ class ContactWidget : public QGraphicsWidget {
 	
         virtual ~ContactWidget();
 
-        void setCollection(Akonadi::Collection::Id id);
+        void setCollections(QList<Akonadi::Collection::Id> ids);
         void setFilterData(bool filter = true);
         void setShowEmptyContacts(bool show = true);
         void showContactsContains(const QString & text);
@@ -72,7 +72,7 @@ class ContactWidget : public QGraphicsWidget {
         QList<QGraphicsLayoutItem *> m_listFilterText;
         QList<QGraphicsLayoutItem *> m_listFilterEmpty;
 
-        Akonadi::Collection::Id m_id;
+        QList<Akonadi::Collection::Id> m_idList;
         Akonadi::Monitor * m_monitor;
 
         bool m_findData;

@@ -19,40 +19,24 @@
   <property name="windowTitle">
    <string>Configuration</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>311</width>
-     <height>76</height>
+     <height>181</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="0" column="0" alignment="Qt::AlignLeft|Qt::AlignTop">
      <widget class="QLabel" name="label_4">
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="collectionBox">
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="editable">
-       <bool>false</bool>
-      </property>
-      <property name="currentIndex">
-       <number>-1</number>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
+    <item row="0" column="2" alignment="Qt::AlignHCenter|Qt::AlignTop">
      <widget class="QPushButton" name="loadCollections">
       <property name="maximumSize">
        <size>
@@ -101,6 +85,9 @@
        <bool>true</bool>
       </property>
      </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QListWidget" name="collectionsList"/>
     </item>
    </layout>
   </widget>

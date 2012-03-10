@@ -46,14 +46,14 @@ ContactWidget::ContactWidget(QGraphicsWidget * parent)
 
 }
 
-void ContactWidget::setCollection(Akonadi::Collection::Id id)
+void ContactWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 {
 
     clear();
 
-    m_id = id;
-
-    if (m_id != -1)
+    m_idList = ids;
+    
+    if (!m_idList.isEmpty())
 
         fetchCollections();
 
@@ -142,9 +142,9 @@ void ContactWidget::fetchCollectionsFinished(KJob * job)
 
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach(const Akonadi::Collection & collection, collections) {
-
-        if (collection.id() == m_id) {
+    foreach (const Akonadi::Collection & collection, collections) {
+	
+        if (m_idList.contains(collection.id())) {
 
             m_monitor->setCollectionMonitored(collection, true);
 
@@ -283,13 +283,17 @@ void ContactWidget::updateContacts()
 void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection  & collection)
 {
 
-    if (collection.id() == m_id) {
+    for (int i = 0; i < m_idList.count(); i++) {
 
-        ContactWidgetItem * contact;
+        if (m_idList.at(i) == collection.id()) {
 
-        contact = new ContactWidgetItem(item, this);
+	    ContactWidgetItem * contact;
 
-        addItem(contact);
+	    contact = new ContactWidgetItem(item, this);
+
+	    addItem(contact);
+	    
+	}
 
     }
 
