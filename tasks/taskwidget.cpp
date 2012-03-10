@@ -40,8 +40,6 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
             SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             SLOT(itemRemoved(Akonadi::Item)));
-
-    //qDebug() << "task - " << (int)geometry().width();
     
 }
 

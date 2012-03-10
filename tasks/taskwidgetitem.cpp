@@ -197,9 +197,7 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     
     connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
     connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
-        
-    qDebug() << (int)geometry().width();
-    
+            
     dialog->show();
 
 }
@@ -331,21 +329,17 @@ void TaskWidgetItem::setColorForDate()
 
         if (days < 0) {
 
-            m_date->setTextBackgroundColor(Qt::red);
+            m_date->setTextBackgroundColor(QColor(200,0,0));
 
         } else if (days == 0) {
 
-            m_date->setTextBackgroundColor(Qt::red);
+            m_date->setTextBackgroundColor(QColor(230,70,0));
 
         } else if (days < 8) {
 
-            m_date->setTextBackgroundColor(Qt::yellow);
+            m_date->setTextBackgroundColor(QColor(230,240,0));
 
-        } else {
-
-            m_date->setTextBackgroundColor(Qt::blue);
-
-        }
+        } 
 
     }
 
