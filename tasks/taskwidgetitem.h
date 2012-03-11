@@ -76,7 +76,9 @@ class TaskWidgetItem : public Plasma::Frame {
         void setItemInfo();
         void setColorForDate();
 
-	//TaskWidget * parentTaskList();
+	bool orderByName(const TaskWidgetItem * item, bool completedFirst = false);
+	bool orderByDate(const TaskWidgetItem * item, bool completedFirst = false);
+	
 	TaskEditor * m_editor;
 	
         QGraphicsGridLayout * m_layout;

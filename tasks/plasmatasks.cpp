@@ -92,6 +92,8 @@ void PlasmaTasks::configChanged()
     m_tasksList->setWeekColor(conf.readEntry("weekColor","#e6f000"));
     m_tasksList->setOtherColor(conf.readEntry("otherColor",""));
     
+    m_tasksList->setOrderBy((TaskWidget::OrderBy)conf.readEntry("orderMode",0));
+    
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
     if (list.isEmpty()) {
@@ -135,8 +137,8 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
     appearanceconfigDialog.weekColor->setColor(QColor(m_tasksList->weekColor()));
     appearanceconfigDialog.otherColor->setColor(QColor(m_tasksList->otherColor()));
     
-    // TODO: sort by
-    
+    appearanceconfigDialog.orderBy->setCurrentIndex(m_tasksList->orderBy());
+        
     parent->addPage(widget1, i18n("Appearance"), "preferences-desktop");
     
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
@@ -180,6 +182,11 @@ void PlasmaTasks::configAccepted()
     if (appearanceconfigDialog.otherColor->color().name() != m_tasksList->otherColor()) {
 	
 	conf.writeEntry("otherColor", appearanceconfigDialog.otherColor->color().name());
+    }
+    
+    if (appearanceconfigDialog.orderBy->currentIndex() != m_tasksList->orderBy()) {
+	
+	conf.writeEntry("orderMode", appearanceconfigDialog.orderBy->currentIndex());
     }
     
     emit configNeedsSaving();

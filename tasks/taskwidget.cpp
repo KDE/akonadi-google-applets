@@ -28,7 +28,8 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
       m_expiredColor("#c80000"),
       m_todayColor("#e64600"),
       m_weekColor("#e6f000"),
-      m_otherColor("")
+      m_otherColor(""),
+      m_order(DNC)
 {
 
     m_layout = new TaskLayout(Qt::Vertical, this);
@@ -71,8 +72,11 @@ void TaskWidget::setOtherColor(QString color)
     m_otherColor = color;
 }
 
+void TaskWidget::setOrderBy(TaskWidget::OrderBy order)
+{
 
-
+    m_order = order;
+}
 
 void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 {

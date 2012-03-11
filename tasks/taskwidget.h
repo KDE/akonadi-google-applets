@@ -33,9 +33,15 @@
 class TaskWidget : public QGraphicsWidget {
         
     Q_OBJECT
-
+    
     public:
 
+	enum OrderBy {
+	
+	    DNC = 0, NDC = 1, CDN = 2, CND = 3
+	
+        };
+	
         TaskWidget(QGraphicsWidget * parent = 0);
 
 	QString expiredColor() { 
@@ -58,10 +64,15 @@ class TaskWidget : public QGraphicsWidget {
 	        return m_idList;   
 	}
 	
+	OrderBy orderBy() {
+	        return m_order;
+	}
+	
 	void setExpiredColor(QString color);
 	void setTodayColor(QString color);
 	void setWeekColor(QString color);
 	void setOtherColor(QString color);
+	void setOrderBy(OrderBy order);
 	
 	void setCollections(QList<Akonadi::Collection::Id> ids);
 	
@@ -93,6 +104,7 @@ class TaskWidget : public QGraphicsWidget {
 
         Akonadi::Monitor * m_monitor;
 
+	OrderBy m_order;
 
 };
 

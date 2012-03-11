@@ -47,7 +47,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
     m_layout = new QGraphicsGridLayout(this);
-       
+
     setLayout(m_layout);
 
     setFrameShadow(Plasma::Frame::Raised);
@@ -117,39 +117,39 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
 {
 
     m_editor = new TaskEditor();
-    
+
     m_editor->setAllDay(m_todo->allDay());
-    
+
     if (m_todo->hasStartDate()) {
-	
-	m_editor->setStartDate(m_todo->dtStart());
-	
+
+        m_editor->setStartDate(m_todo->dtStart());
+
     } else {
-		
-	m_editor->disableStartDate();
-	
-	if (m_todo->hasDueDate()) {
-	
-	    if (m_todo->dtDue().date() < QDate::currentDate()) {
-	    
-		m_editor->setStartDate(m_todo->dtDue());
-		
-	    } 
-	    
-	}
-	    
+
+        m_editor->disableStartDate();
+
+        if (m_todo->hasDueDate()) {
+
+            if (m_todo->dtDue().date() < QDate::currentDate()) {
+
+                m_editor->setStartDate(m_todo->dtDue());
+
+            }
+
+        }
+
     }
-    
+
     if (m_todo->hasDueDate()) {
-	
-	m_editor->setDueDate(m_todo->dtDue());
-	
+
+        m_editor->setDueDate(m_todo->dtDue());
+
     } else {
-	
-	m_editor->disableDueDate();
-	
+
+        m_editor->disableDueDate();
+
     }
-    
+
     m_editor->setName(m_todo->summary());
     m_editor->setDescription(m_todo->description());
 
@@ -160,24 +160,24 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     dialog->setMainWidget(m_editor);
 
     connect(dialog, SIGNAL(okClicked()), SLOT(saveTask()));
-    
+
     connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
     connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
-            
+
     dialog->show();
 
 }
 
 void TaskWidgetItem::saveTask()
 {
-    
+
     m_editor->updateTodo(m_todo);
 
     m_item.setPayload<KCalCore::Todo::Ptr>(m_todo);
 
     Akonadi::ItemModifyJob * job = new Akonadi::ItemModifyJob(m_item);
     connect(job, SIGNAL(result(KJob *)), SLOT(modifyFinished(KJob *)));
-    
+
 }
 
 
@@ -190,20 +190,20 @@ void TaskWidgetItem::setColorForDate()
 
         if (days < 0) {
 
-            m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->expiredColor()));
+            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->expiredColor()));
 
         } else if (days == 0) {
 
-            m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->todayColor()));
+            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->todayColor()));
 
         } else if (days < 8) {
 
-            m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->weekColor()));
+            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->weekColor()));
 
         } else {
-	    
-	    m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->otherColor()));
-	    
+
+            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->otherColor()));
+
         }
 
     }
@@ -288,12 +288,24 @@ void TaskWidgetItem::updateTask(const Akonadi::Item & item)
 
 }
 
-
-bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
+bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, bool completedFirst)
 {
 
-    if ((this->m_todo->isCompleted() && item->m_todo->isCompleted()) ||
-            (!this->m_todo->isCompleted() && !item->m_todo->isCompleted())) {
+    if (this->m_todo->isCompleted() && !item->m_todo->isCompleted()) {
+
+        if (completedFirst)
+            return true;
+
+        return false;
+
+    } else if (!this->m_todo->isCompleted() && item->m_todo->isCompleted()) {
+
+        if (completedFirst)
+            return false;
+
+        return true;
+
+    } else {
 
         if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
 
@@ -307,26 +319,100 @@ bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 
         } else if (this->m_todo->hasDueDate()) {
 
+            if (completedFirst)
+                return false;
+
             return true;
 
         } else if (item->m_todo->hasDueDate()) {
+
+            if (completedFirst)
+                return true;
 
             return false;
 
         }
 
-    } else if (this->m_todo->isCompleted()) {
+    }
+
+    return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
+
+}
+
+bool TaskWidgetItem::orderByDate(const TaskWidgetItem * item, bool completedFirst)
+{
+
+    if (this->m_todo->isCompleted() && !item->m_todo->isCompleted()) {
+
+        if (completedFirst)
+            return true;
 
         return false;
 
-    } else if (item->m_todo->isCompleted()) {
+    } else if (!this->m_todo->isCompleted() && item->m_todo->isCompleted()) {
 
+        if (completedFirst)
+            return false;
+	
         return true;
+
+    } else {
+
+        if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
+
+            if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
+
+                return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
+
+            }
+
+            return (this->m_todo->dtDue() <= item->m_todo->dtDue());
+
+        } else if (this->m_todo->hasDueDate()) {
+
+            if (completedFirst)
+                return true;
+
+            return false;
+
+        } else if (item->m_todo->hasDueDate()) {
+
+            if (completedFirst)
+                return false;
+
+            return true;
+
+        }
 
     }
 
     return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
 
+}
+
+
+bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
+{
+    switch(((TaskWidget *)parentWidget())->orderBy()) {
+
+	case(0):
+
+	    return orderByName(item);
+    
+	case(1):
+
+	    return orderByDate(item);
+
+	case(2):
+
+	    return orderByDate(item, true);
+
+	case(3):
+
+	    return orderByName(item, true);
+    }
+    
+    return false;
 }
 
 bool TaskWidgetItem::operator<<(const TaskWidgetItem * item)
@@ -343,25 +429,21 @@ bool TaskWidgetItem::operator==(const Akonadi::Item & item)
 
 }
 
-/*TaskWidget * TaskWidgetItem::parentTaskList()
-{
-
-    return static_cast<TaskWidget*>(parentWidget());
-}*/
-
-
 void TaskWidgetItem::modifyFinished(KJob * job)
 {
 
     if (job->error()) {
 
         qDebug() << "Error occurred";
-	
+
     } else {
 
         qDebug() << "Item modified successfully";
-	
+
     }
 
 }
+
+
+
 
