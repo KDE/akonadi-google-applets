@@ -33,7 +33,7 @@
 
 #include <KJob>
 
-#include "ui_taskedit.h"
+#include "taskeditor.h"
 
 class TaskWidgetItem : public Plasma::Frame {
        
@@ -42,7 +42,7 @@ class TaskWidgetItem : public Plasma::Frame {
     public:
 
         TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
-
+	
         void setRelated(TaskWidgetItem * item);
         void setUnrelated();
 
@@ -61,17 +61,10 @@ class TaskWidgetItem : public Plasma::Frame {
         }
 
     public slots:
-
-	void setAllDayEnabled();
-	void setTimeDisabled(bool disabled);
-	void setDateTimeStart(bool enabled);
-	void setDateTimeDue(bool enabled);
 	
         void setCompleted(bool completed);
         void editTask();
         void saveTask();
-
-	
 	
     private slots:
     
@@ -82,8 +75,8 @@ class TaskWidgetItem : public Plasma::Frame {
         void setItemInfo();
         void setColorForDate();
 
-        Ui::taskedit taskEditor;
-
+	TaskEditor * m_editor;
+	
         QGraphicsGridLayout * m_layout;
 
         Plasma::CheckBox * m_completed;

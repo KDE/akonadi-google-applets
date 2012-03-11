@@ -21,6 +21,7 @@
 #include <Plasma/Theme>
 
 #include <KIcon>
+#include <KJob>
 
 #include <QListWidgetItem>
 #include <QCheckBox>
@@ -28,6 +29,7 @@
 #include <Akonadi/Entity>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/ItemCreateJob>
 
 #include <KCalCore/Todo>
 
@@ -59,8 +61,26 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 
         m_mainLayout->addItem(m_scroll);
 
+	m_add = new Plasma::PushButton(m_widget);
+	m_add->setText(i18n("Add task"));
+	m_add->setMaximumHeight(25);
+	
+	//m_del = new Plasma::PushButton(m_widget);
+	//m_del->setText(i18n("Delete completed"));
+	//m_del->setMaximumHeight(25);
+	
+	m_buttonLayout = new QGraphicsLinearLayout(Qt::Horizontal,m_mainLayout);
+	
+	m_buttonLayout->addItem(m_add);
+	//m_buttonLayout->addItem(m_del);
+	
+	connect(m_add, SIGNAL(clicked()), SLOT(addTask()));
+	//connect(m_del, SIGNAL(clicked()), SLOT(delCompletedTask()));
+	
+	m_mainLayout->addItem(m_buttonLayout);
+	
         m_widget->setLayout(m_mainLayout);
-
+	
         configChanged();
 	
     }
@@ -72,17 +92,17 @@ void PlasmaTasks::configChanged()
 {
 
     KConfigGroup conf = config();
-
+    
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
     if (list.isEmpty()) {
 
-        setConfigurationRequired(true);
-
+        setConfigurationRequired(true);	
+	
     } else {
 
         setConfigurationRequired(false);
-
+	
     }
 
     m_idList = list;
@@ -209,6 +229,120 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
     }
 
 }
+
+void PlasmaTasks::fetchCollectionsForEditor()
+{
+
+    m_collections.clear();
+    
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
+
+    job->fetchScope();
+
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsForEditorFinished(KJob *)));
+    
+}
+
+void PlasmaTasks::fetchCollectionsForEditorFinished(KJob * job)
+{
+
+    Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+    const Akonadi::Collection::List collections = fetchJob->collections();
+
+    foreach(const Akonadi::Collection & collection, collections) {
+
+        if (((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) &&
+            collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+
+           m_collections.push_back(collection);
+
+        }
+
+    }
+    
+    m_editor->setCollections(m_collections);
+    
+}
+
+
+void PlasmaTasks::addTask()
+{
+
+    fetchCollectionsForEditor();
+    
+    if (!m_idList.isEmpty()) {
+	
+	m_editor = new TaskEditor();
+
+	m_editor->setAllDay(true);
+	m_editor->setStartDate(KDateTime::currentLocalDateTime());
+	m_editor->setDueDate(KDateTime::currentLocalDateTime().addDays(7));
+    
+	KDialog * dialog = new KDialog();
+	dialog->setCaption(i18n("New task"));
+	dialog->setButtons(KDialog::Ok | KDialog::Cancel);
+
+	dialog->setMainWidget(m_editor);
+
+	connect(dialog, SIGNAL(okClicked()), SLOT(createTask()));
+	connect(dialog, SIGNAL(okClicked()), dialog, SLOT(delayedDestruct()));
+	connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
+            
+	dialog->show();
+    
+    }
+    
+}
+
+void PlasmaTasks::createTask()
+{
+
+    KCalCore::Todo::Ptr todo(new KCalCore::Todo);
+    
+    m_editor->updateTodo(todo);
+    
+    Akonadi::Item item;
+    
+    item.setMimeType(KCalCore::Todo::todoMimeType());
+    item.setPayload<KCalCore::Todo::Ptr>(todo);
+
+    for (int i = 0; i < m_collections.count(); i++) {
+	
+	if (m_collections.at(i).id() == m_editor->selectedCollection()) {
+	 
+	    Akonadi::ItemCreateJob * job = new Akonadi::ItemCreateJob(item, m_collections.at(i));
+	    connect(job, SIGNAL(result(KJob*)), SLOT(addFinished(KJob*)));
+	   
+	    break;
+	}
+	
+    }
+    
+}
+
+void PlasmaTasks::addFinished(KJob * job)
+{
+    if (job->error()) {
+
+        qDebug() << "Error occurred";
+	
+    } else {
+
+        qDebug() << "Item added successfully";
+	
+    }
+    
+    
+}
+
+
+/*void PlasmaTasks::delCompletedTask()
+{
+    
+    qDebug() << "del";
+
+}*/
+
 
 PlasmaTasks::~PlasmaTasks()
 {

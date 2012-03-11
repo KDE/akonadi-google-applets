@@ -34,6 +34,7 @@
 
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
+      m_editor(0),
       m_completed(0),
       m_date(0),
       m_name(0),
@@ -44,7 +45,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
     m_layout = new QGraphicsGridLayout(this);
-    
+       
     setLayout(m_layout);
 
     setFrameShadow(Plasma::Frame::Raised);
@@ -61,7 +62,6 @@ void TaskWidgetItem::setItemInfo()
     m_completed->setMaximumSize(25, 25);
 
     m_layout->addItem(m_completed, 0, 0);
-    m_layout->setColumnAlignment(0, Qt::AlignVCenter);
 
     connect(m_completed, SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
 
@@ -114,84 +114,48 @@ void TaskWidgetItem::setItemInfo()
 void TaskWidgetItem::TaskWidgetItem::editTask()
 {
 
-    QWidget * widget = new QWidget(0);
-
-    taskEditor.setupUi(widget);
-
+    m_editor = new TaskEditor();
+    
+    m_editor->setAllDay(m_todo->allDay());
+    
     if (m_todo->hasStartDate()) {
 	
-	taskEditor.dateEditStart->setDate(m_todo->dtStart().date());
-	
-	if (taskEditor.allDay->isChecked()) {
-	    
-	    taskEditor.timeEditStart->setEnabled(false);
-	    
-	} else {
-	    
-	    taskEditor.timeEditStart->setTime(m_todo->dtStart().time());
-	    
-	}
+	m_editor->setStartDate(m_todo->dtStart());
 	
     } else {
-	
-	taskEditor.dateEditStart->setDate(QDate::currentDate());
+		
+	m_editor->disableStartDate();
 	
 	if (m_todo->hasDueDate()) {
 	
 	    if (m_todo->dtDue().date() < QDate::currentDate()) {
 	    
-		taskEditor.dateEditStart->setDate(m_todo->dtDue().date());
+		m_editor->setStartDate(m_todo->dtDue());
 		
 	    } 
 	    
 	}
 	    
-	taskEditor.dateTimeStart->setChecked(false);
-	taskEditor.dateEditStart->setDisabled(true);
-	taskEditor.timeEditStart->setDisabled(true);
-	
     }
     
     if (m_todo->hasDueDate()) {
 	
-	taskEditor.allDay->setChecked(m_todo->allDay());
-	taskEditor.dateEditDue->setDate(m_todo->dtDue().date());
-	
-	if (taskEditor.allDay->isChecked()) {
-	
-	    taskEditor.timeEditDue->setEnabled(false);
-	    
-	} else {
-	 
-	    taskEditor.timeEditDue->setTime(m_todo->dtDue().time());
-	    
-	}
+	m_editor->setDueDate(m_todo->dtDue());
 	
     } else {
 	
-	taskEditor.dateEditDue->setDate(QDate::currentDate());
+	m_editor->disableDueDate();
 	
-	taskEditor.dateTimeDue->setChecked(false);
-	taskEditor.allDay->setDisabled(true);
-	taskEditor.dateEditDue->setDisabled(true);
-	taskEditor.timeEditDue->setDisabled(true);
-
-    } 
+    }
     
-    connect(taskEditor.dateTimeDue,SIGNAL(clicked(bool)),SLOT(setAllDayEnabled()));
-    connect(taskEditor.dateTimeDue,SIGNAL(clicked(bool)),SLOT(setDateTimeDue(bool)));
-    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)),SLOT(setAllDayEnabled()));
-    connect(taskEditor.dateTimeStart,SIGNAL(clicked(bool)),SLOT(setDateTimeStart(bool)));
-    connect(taskEditor.allDay,SIGNAL(clicked(bool)), SLOT(setTimeDisabled(bool)));
-    
-    taskEditor.nameEdit->setText(m_todo->summary());
-    taskEditor.descriptionEdit->setText(m_todo->description());
+    m_editor->setName(m_todo->summary());
+    m_editor->setDescription(m_todo->description());
 
     KDialog * dialog = new KDialog();
     dialog->setCaption(m_todo->summary());
     dialog->setButtons(KDialog::Ok | KDialog::Cancel);
 
-    dialog->setMainWidget(widget);
+    dialog->setMainWidget(m_editor);
 
     connect(dialog, SIGNAL(okClicked()), SLOT(saveTask()));
     
@@ -202,121 +166,16 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
 
 }
 
-void TaskWidgetItem::setAllDayEnabled()
-{
-
-    if (!taskEditor.dateTimeDue->isChecked() && !taskEditor.dateTimeStart->isChecked()) {
-	
-	taskEditor.allDay->setDisabled(true);
-	
-    } else {
-	
-	taskEditor.allDay->setEnabled(true);
-	
-    }
-    
-}
-
-void TaskWidgetItem::setTimeDisabled(bool disabled)
-{
-
-    if (taskEditor.dateTimeStart->isChecked()) {
-	
-	taskEditor.timeEditStart->setDisabled(disabled);
-	
-    }
-   
-    if (taskEditor.dateTimeDue->isChecked()) {
-	
-	taskEditor.timeEditDue->setDisabled(disabled);
-	
-    }
-   
-}
-
-void TaskWidgetItem::setDateTimeStart(bool enabled)
-{
-
-    taskEditor.dateEditStart->setEnabled(enabled);
-    
-    if (!taskEditor.allDay->isChecked()) {
-	
-	taskEditor.timeEditStart->setEnabled(enabled);
-	
-    }
-    
-}
-
-void TaskWidgetItem::setDateTimeDue(bool enabled)
-{
-
-    taskEditor.dateEditDue->setEnabled(enabled);
-    
-    if (!taskEditor.allDay->isChecked()) {
-	
-	taskEditor.timeEditDue->setEnabled(enabled);
-	
-    }
-    
-}
-
-
 void TaskWidgetItem::saveTask()
 {
     
-    if (taskEditor.dateTimeStart->isChecked()) {
-	
-	KDateTime time;
-	
-	if (taskEditor.allDay->isChecked()) {
-	    
-	    time = KDateTime(taskEditor.dateEditStart->date());
-	    
-	} else {
-	 
-	    time = KDateTime(taskEditor.dateEditStart->date(),taskEditor.timeEditStart->time());
-	    
-	}
-	
-	m_todo->setAllDay(taskEditor.allDay->isChecked());
-	m_todo->setDtStart(time);
-	
-    } else {
-	
-	m_todo->setHasStartDate(false);
-	
-    }
-    
-    if (taskEditor.dateTimeDue->isChecked()) {
-	
-	KDateTime time;
-	
-	if (taskEditor.allDay->isChecked()) {
-	    
-	    time = KDateTime(taskEditor.dateEditDue->date());
-	    
-	} else {
-	 
-	    time = KDateTime(taskEditor.dateEditDue->date(),taskEditor.timeEditDue->time());
-	    
-	}
-	
-	m_todo->setAllDay(taskEditor.allDay->isChecked());
-	m_todo->setDtDue(time);
-	
-    } else {
-	
-	m_todo->setHasDueDate(false);
-	
-    }
-    
-    m_todo->setSummary(taskEditor.nameEdit->text());
-    m_todo->setDescription(taskEditor.descriptionEdit->toPlainText());
+    m_editor->updateTodo(m_todo);
 
     m_item.setPayload<KCalCore::Todo::Ptr>(m_todo);
 
     Akonadi::ItemModifyJob * job = new Akonadi::ItemModifyJob(m_item);
     connect(job, SIGNAL(result(KJob *)), SLOT(modifyFinished(KJob *)));
+    
 }
 
 
@@ -368,13 +227,13 @@ void TaskWidgetItem::setRelated(TaskWidgetItem * item)
 
     m_indent = item->indent() + 1;
 
-    m_layout->setContentsMargins((m_indent * 25) + 5, 0, 0, 0);
+    m_layout->setContentsMargins((m_indent * 25) + 5, 2, 2, 2);
 
 }
 
 void TaskWidgetItem::setUnrelated()
 {
-    m_layout->setContentsMargins(5, 0, 0, 0);
+    m_layout->setContentsMargins(5, 2, 2, 2);
 
     m_indent = 0;
 }
@@ -493,3 +352,4 @@ void TaskWidgetItem::modifyFinished(KJob * job)
     }
 
 }
+

@@ -26,12 +26,14 @@
 #include <KConfigDialog>
 #include <KIcon>
 
+#include <Plasma/PushButton>
 #include <Plasma/PopupApplet>
 #include <Plasma/ScrollWidget>
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 
+#include "taskeditor.h"
 #include "taskwidget.h"
 #include "ui_config.h"
 
@@ -47,12 +49,23 @@ class PlasmaTasks : public Plasma::PopupApplet {
 	
         void createConfigurationInterface(KConfigDialog * parent);
 
+    public slots:
+	
+	void addTask();
+	//void delCompletedTask();
+	
     private slots:
 
         void configAccepted();
 
+	void createTask();
+	
         void fetchCollections();
+	void fetchCollectionsForEditor();
         void fetchCollectionsFinished(KJob * job);
+	void fetchCollectionsForEditorFinished(KJob * job);
+	
+	void addFinished(KJob * job);
 
     private:
 
@@ -62,16 +75,20 @@ class PlasmaTasks : public Plasma::PopupApplet {
 
         QGraphicsWidget * m_widget;
         QGraphicsLinearLayout * m_mainLayout;
-
-        TaskWidget * m_tasksList;
+	QGraphicsLinearLayout * m_buttonLayout;
 	
+        TaskWidget * m_tasksList;
+	TaskEditor * m_editor;
+	
+	Plasma::PushButton * m_add;
+	Plasma::PushButton * m_del;
         Plasma::ScrollWidget * m_scroll;
 
         Ui::config configDialog;
-
+	
         QList<Akonadi::Collection::Id> m_idList;
-
-
+        QList<Akonadi::Collection> m_collections;
+	
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_tasks, PlasmaTasks)
