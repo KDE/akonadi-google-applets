@@ -24,7 +24,11 @@
 #include <Akonadi/ItemFetchJob>
 
 TaskWidget::TaskWidget(QGraphicsWidget * parent)
-    : QGraphicsWidget(parent)
+    : QGraphicsWidget(parent),
+      m_expiredColor("#c80000"),
+      m_todayColor("#e64600"),
+      m_weekColor("#e6f000"),
+      m_otherColor("")
 {
 
     m_layout = new TaskLayout(Qt::Vertical, this);
@@ -42,6 +46,33 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
             SLOT(itemRemoved(Akonadi::Item)));
     
 }
+
+void TaskWidget::setExpiredColor(QString color)
+{
+
+    m_expiredColor = color;
+}
+
+void TaskWidget::setTodayColor(QString color)
+{
+
+    m_todayColor = color;
+}
+
+void TaskWidget::setWeekColor(QString color)
+{
+
+    m_weekColor = color;
+}
+
+void TaskWidget::setOtherColor(QString color)
+{
+
+    m_otherColor = color;
+}
+
+
+
 
 void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 {

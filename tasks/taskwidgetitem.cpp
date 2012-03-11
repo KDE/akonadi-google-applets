@@ -32,6 +32,8 @@
 #include <Plasma/ToolTipContent>
 #include <Plasma/ToolTipManager>
 
+#include "taskwidget.h"
+
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_editor(0),
@@ -188,17 +190,21 @@ void TaskWidgetItem::setColorForDate()
 
         if (days < 0) {
 
-            m_date->setTextBackgroundColor(QColor(200,0,0));
+            m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->expiredColor()));
 
         } else if (days == 0) {
 
-            m_date->setTextBackgroundColor(QColor(230,70,0));
+            m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->todayColor()));
 
         } else if (days < 8) {
 
-            m_date->setTextBackgroundColor(QColor(230,240,0));
+            m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->weekColor()));
 
-        } 
+        } else {
+	    
+	    m_date->setTextBackgroundColor(QColor(((TaskWidget*)parentWidget())->otherColor()));
+	    
+        }
 
     }
 
@@ -336,6 +342,12 @@ bool TaskWidgetItem::operator==(const Akonadi::Item & item)
     return (this->m_item.id() == item.id());
 
 }
+
+/*TaskWidget * TaskWidgetItem::parentTaskList()
+{
+
+    return static_cast<TaskWidget*>(parentWidget());
+}*/
 
 
 void TaskWidgetItem::modifyFinished(KJob * job)

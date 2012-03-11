@@ -33,6 +33,7 @@
 
 #include <KJob>
 
+//#include "taskwidget.h"
 #include "taskeditor.h"
 
 class TaskWidgetItem : public Plasma::Frame {
@@ -75,6 +76,7 @@ class TaskWidgetItem : public Plasma::Frame {
         void setItemInfo();
         void setColorForDate();
 
+	//TaskWidget * parentTaskList();
 	TaskEditor * m_editor;
 	
         QGraphicsGridLayout * m_layout;

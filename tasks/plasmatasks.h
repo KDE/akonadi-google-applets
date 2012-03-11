@@ -36,6 +36,7 @@
 #include "taskeditor.h"
 #include "taskwidget.h"
 #include "ui_config.h"
+#include "ui_appearanceconfig.h"
 
 class PlasmaTasks : public Plasma::PopupApplet {
     
@@ -52,7 +53,6 @@ class PlasmaTasks : public Plasma::PopupApplet {
     public slots:
 	
 	void addTask();
-	//void delCompletedTask();
 	
     private slots:
 
@@ -85,8 +85,8 @@ class PlasmaTasks : public Plasma::PopupApplet {
         Plasma::ScrollWidget * m_scroll;
 
         Ui::config configDialog;
+	Ui::appearanceconfig appearanceconfigDialog;
 	
-        QList<Akonadi::Collection::Id> m_idList;
         QList<Akonadi::Collection> m_collections;
 	
 };

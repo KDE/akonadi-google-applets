@@ -65,17 +65,11 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 	m_add->setText(i18n("Add task"));
 	m_add->setMaximumHeight(25);
 	
-	//m_del = new Plasma::PushButton(m_widget);
-	//m_del->setText(i18n("Delete completed"));
-	//m_del->setMaximumHeight(25);
-	
-	m_buttonLayout = new QGraphicsLinearLayout(Qt::Horizontal,m_mainLayout);
+	m_buttonLayout = new QGraphicsLinearLayout(m_mainLayout);
 	
 	m_buttonLayout->addItem(m_add);
-	//m_buttonLayout->addItem(m_del);
 	
 	connect(m_add, SIGNAL(clicked()), SLOT(addTask()));
-	//connect(m_del, SIGNAL(clicked()), SLOT(delCompletedTask()));
 	
 	m_mainLayout->addItem(m_buttonLayout);
 	
@@ -93,6 +87,11 @@ void PlasmaTasks::configChanged()
 
     KConfigGroup conf = config();
     
+    m_tasksList->setExpiredColor(conf.readEntry("expiredColor","#c80000"));
+    m_tasksList->setTodayColor(conf.readEntry("todayColor","#e64600"));
+    m_tasksList->setWeekColor(conf.readEntry("weekColor","#e6f000"));
+    m_tasksList->setOtherColor(conf.readEntry("otherColor",""));
+    
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
     if (list.isEmpty()) {
@@ -105,9 +104,9 @@ void PlasmaTasks::configChanged()
 	
     }
 
-    m_idList = list;
-
-    m_tasksList->setCollections(m_idList);
+    m_tasksList->setCollections(list);
+    
+    
 
 }
 
@@ -123,11 +122,26 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     fetchCollections();
 
+    // TODO: completed tasks
+    
+    parent->addPage(widget, i18n("General"), icon());
+    
+    QWidget * widget1 = new QWidget(0);
+
+    appearanceconfigDialog.setupUi(widget1);
+
+    appearanceconfigDialog.expiredColor->setColor(QColor(m_tasksList->expiredColor()));
+    appearanceconfigDialog.todayColor->setColor(QColor(m_tasksList->todayColor()));
+    appearanceconfigDialog.weekColor->setColor(QColor(m_tasksList->weekColor()));
+    appearanceconfigDialog.otherColor->setColor(QColor(m_tasksList->otherColor()));
+    
+    // TODO: sort by
+    
+    parent->addPage(widget1, i18n("Appearance"), "preferences-desktop");
+    
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
-
-    parent->addPage(widget, "General", icon());
 }
 
 void PlasmaTasks::configAccepted()
@@ -148,6 +162,26 @@ void PlasmaTasks::configAccepted()
 
     conf.writeEntry("collections", list);
 
+    if (appearanceconfigDialog.expiredColor->color().name() != m_tasksList->expiredColor()) {
+	
+	conf.writeEntry("expiredColor", appearanceconfigDialog.expiredColor->color().name());
+    }
+    
+    if (appearanceconfigDialog.todayColor->color().name() != m_tasksList->todayColor()) {
+	
+	conf.writeEntry("todayColor", appearanceconfigDialog.todayColor->color().name());
+    }
+    
+    if (appearanceconfigDialog.weekColor->color().name() != m_tasksList->weekColor()) {
+	
+	conf.writeEntry("weekColor", appearanceconfigDialog.weekColor->color().name());
+    }
+    
+    if (appearanceconfigDialog.otherColor->color().name() != m_tasksList->otherColor()) {
+	
+	conf.writeEntry("otherColor", appearanceconfigDialog.otherColor->color().name());
+    }
+    
     emit configNeedsSaving();
 
 }
@@ -210,13 +244,13 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
 
     }
 
-    if (!m_idList.isEmpty()) {
+    if (!m_tasksList->idList().isEmpty()) {
 
-        for (int i = 0; i < m_idList.count(); i++) {
+        for (int i = 0; i < m_tasksList->idList().count(); i++) {
 
             for (int j = 0; j < configDialog.collectionsList->count(); j++) {
 
-                if (m_idList.at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
+                if (m_tasksList->idList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
 
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
 
@@ -270,7 +304,7 @@ void PlasmaTasks::addTask()
 
     fetchCollectionsForEditor();
     
-    if (!m_idList.isEmpty()) {
+    if (!m_tasksList->idList().isEmpty()) {
 	
 	m_editor = new TaskEditor();
 
@@ -334,15 +368,6 @@ void PlasmaTasks::addFinished(KJob * job)
     
     
 }
-
-
-/*void PlasmaTasks::delCompletedTask()
-{
-    
-    qDebug() << "del";
-
-}*/
-
 
 PlasmaTasks::~PlasmaTasks()
 {

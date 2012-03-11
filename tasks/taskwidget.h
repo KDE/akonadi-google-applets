@@ -38,8 +38,33 @@ class TaskWidget : public QGraphicsWidget {
 
         TaskWidget(QGraphicsWidget * parent = 0);
 
-        void setCollections(QList<Akonadi::Collection::Id> ids);
-
+	QString expiredColor() { 
+	        return m_expiredColor;
+	}
+	
+	QString todayColor() {
+	        return m_todayColor;
+	}
+	
+	QString weekColor() {
+	        return m_weekColor;
+	}
+	
+	QString otherColor() {
+	        return m_otherColor;   
+	}
+	
+	QList<Akonadi::Collection::Id> idList() {
+	        return m_idList;   
+	}
+	
+	void setExpiredColor(QString color);
+	void setTodayColor(QString color);
+	void setWeekColor(QString color);
+	void setOtherColor(QString color);
+	
+	void setCollections(QList<Akonadi::Collection::Id> ids);
+	
     private slots:
 
         void fetchCollectionsFinished(KJob * job);
@@ -59,6 +84,11 @@ class TaskWidget : public QGraphicsWidget {
 
         TaskLayout * m_layout;
 
+	QString m_expiredColor;
+	QString m_todayColor;
+	QString m_weekColor;
+	QString m_otherColor;
+	
         QList<Akonadi::Collection::Id> m_idList;
 
         Akonadi::Monitor * m_monitor;
