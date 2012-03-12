@@ -51,7 +51,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
         m_widget = new QGraphicsWidget(this);
 
 	m_widget->setMinimumSize(300, 500);
-
+	
 	m_tasksList = new TaskWidget(m_widget);
 	
         m_scroll = new Plasma::ScrollWidget(m_widget);	
@@ -77,10 +77,19 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 	
         configChanged();
 	
+	connect(m_widget,SIGNAL(geometryChanged()),SLOT(updateTaskListWidth()));
     }
     
     return m_widget;
 }
+
+void PlasmaTasks::updateTaskListWidth()
+{
+
+    m_tasksList->updateTasksWidth((int)geometry().width());
+    
+}
+
 
 void PlasmaTasks::configChanged()
 {

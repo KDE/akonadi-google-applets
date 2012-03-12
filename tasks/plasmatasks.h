@@ -59,6 +59,8 @@ class PlasmaTasks : public Plasma::PopupApplet {
 	
     private slots:
 
+	void updateTaskListWidth();
+	
         void configAccepted();
 
 	void createTask();

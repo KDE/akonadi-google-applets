@@ -103,19 +103,39 @@ void TaskWidgetItem::setItemInfo()
 
     }
 
+    Plasma::ToolTipContent content(m_todo->summary(), m_todo->description());
+    
+    if (m_todo->isCompleted()) {
+	
+	content.setImage(KIcon("dialog-ok"));
+	
+    } else {
+	
+	content.setImage(KIcon("edit-delete"));
+	
+    }
+    
+    Plasma::ToolTipManager::self()->setContent(m_name, content);
+    
     connect(m_name, SIGNAL(clicked()), SLOT(editTask()));
 
     if (m_date) {
 
+	Plasma::ToolTipManager::self()->setContent(m_date, content);
+	
         connect(m_date, SIGNAL(clicked()), SLOT(editTask()));
 
     }
+    
+    setMaxWidth(((TaskWidget*)parentWidget())->taskWidth());
 
 }
 
 void TaskWidgetItem::TaskWidgetItem::editTask()
 {
 
+    qDebug() << (int)parentWidget()->geometry().width();
+    
     m_editor = new TaskEditor();
 
     m_editor->setAllDay(m_todo->allDay());
@@ -243,6 +263,14 @@ void TaskWidgetItem::setUnrelated()
 
     m_indent = 0;
 }
+
+void TaskWidgetItem::setMaxWidth(int width)
+{
+
+    m_name->setMaximumWidth(width-(m_indent*25)-5-70);
+    
+}
+
 
 void TaskWidgetItem::updateTask(const Akonadi::Item & item)
 {

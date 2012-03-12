@@ -73,6 +73,8 @@ class TaskWidgetItem : public Plasma::Frame {
 	    return m_item;
         }
 
+        void setMaxWidth(int width);
+        
     public slots:
 	
         void setCompleted(bool completed);

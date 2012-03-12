@@ -30,6 +30,7 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
       m_todayColor("#e64600"),
       m_weekColor("#e6f000"),
       m_otherColor(""),
+      m_taskWidth(300),
       m_autoHide(false),
       m_autoDel(false),
       m_order(DNC)
@@ -104,6 +105,22 @@ void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 
         fetchCollections();
 
+}
+
+void TaskWidget::updateTasksWidth(int width)
+{
+
+    m_taskWidth = width;
+    
+    TaskWidgetItem * item;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+	
+	item = static_cast<TaskWidgetItem*>(m_layout->itemAt(i));
+	
+	item->setMaxWidth(width);
+    }
+    
 }
 
 void TaskWidget::fetchCollections()

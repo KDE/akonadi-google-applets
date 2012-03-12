@@ -76,6 +76,10 @@ class TaskWidget : public QGraphicsWidget {
 	        return m_autoDel;
 	}
 	
+	int taskWidth() {
+	        return m_taskWidth;
+	}
+	
 	void setExpiredColor(QString color);
 	void setTodayColor(QString color);
 	void setWeekColor(QString color);
@@ -86,6 +90,10 @@ class TaskWidget : public QGraphicsWidget {
 	void setAutoDeleteCompleted(bool del);
 	
 	void setCollections(QList<Akonadi::Collection::Id> ids);
+	
+public slots:
+    
+        void updateTasksWidth(int width);
 	
     private slots:
 
@@ -113,6 +121,8 @@ class TaskWidget : public QGraphicsWidget {
 	QString m_todayColor;
 	QString m_weekColor;
 	QString m_otherColor;
+	
+	int m_taskWidth;
 	
 	bool m_autoHide;
 	bool m_autoDel;
