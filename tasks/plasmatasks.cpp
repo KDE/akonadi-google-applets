@@ -87,6 +87,9 @@ void PlasmaTasks::configChanged()
 
     KConfigGroup conf = config();
     
+    m_tasksList->setAutoDeleteCompleted(conf.readEntry("autoDel",false));
+    m_tasksList->setAutoHideCompleted(conf.readEntry("autoHide",false));
+    
     m_tasksList->setExpiredColor(conf.readEntry("expiredColor","#c80000"));
     m_tasksList->setTodayColor(conf.readEntry("todayColor","#e64600"));
     m_tasksList->setWeekColor(conf.readEntry("weekColor","#e6f000"));
@@ -126,6 +129,12 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     // TODO: completed tasks
     
+    configDialog.autoDel->setChecked(m_tasksList->autoDeleteCompleted());
+    configDialog.autoHide->setChecked(m_tasksList->autoHideCompleted());
+    
+    connect(configDialog.autoDel,SIGNAL(clicked(bool)),SLOT(uncheckHideTasks()));
+    connect(configDialog.autoHide,SIGNAL(clicked(bool)),SLOT(uncheckDelTasks()));
+    
     parent->addPage(widget, i18n("General"), icon());
     
     QWidget * widget1 = new QWidget(0);
@@ -138,7 +147,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
     appearanceconfigDialog.otherColor->setColor(QColor(m_tasksList->otherColor()));
     
     appearanceconfigDialog.orderBy->setCurrentIndex(m_tasksList->orderBy());
-        
+    
     parent->addPage(widget1, i18n("Appearance"), "preferences-desktop");
     
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
@@ -162,6 +171,9 @@ void PlasmaTasks::configAccepted()
 
     }
 
+    conf.writeEntry("autoHide",configDialog.autoHide->isChecked());
+    conf.writeEntry("autoDel",configDialog.autoDel->isChecked());
+    
     conf.writeEntry("collections", list);
 
     if (appearanceconfigDialog.expiredColor->color().name() != m_tasksList->expiredColor()) {
@@ -334,6 +346,19 @@ void PlasmaTasks::addTask()
     }
     
 }
+
+void PlasmaTasks::uncheckDelTasks()
+{
+
+    configDialog.autoDel->setChecked(false);
+    
+}
+void PlasmaTasks::uncheckHideTasks()
+{
+
+    configDialog.autoHide->setChecked(false);
+}
+
 
 void PlasmaTasks::createTask()
 {

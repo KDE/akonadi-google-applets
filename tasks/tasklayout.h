@@ -37,8 +37,10 @@ class TaskLayout : public QGraphicsLinearLayout {
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 
         void addItem(TaskWidgetItem * item);
+	void clear();
         void updateItem(TaskWidgetItem * item);
-        void clear();
+	
+	QList<TaskWidgetItem*> updateCompletedTasks();
 
     private:
 

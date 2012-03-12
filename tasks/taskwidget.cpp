@@ -22,6 +22,7 @@
 #include <Akonadi/Entity>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemDeleteJob>
 
 TaskWidget::TaskWidget(QGraphicsWidget * parent)
     : QGraphicsWidget(parent),
@@ -29,6 +30,8 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
       m_todayColor("#e64600"),
       m_weekColor("#e6f000"),
       m_otherColor(""),
+      m_autoHide(false),
+      m_autoDel(false),
       m_order(DNC)
 {
 
@@ -76,6 +79,19 @@ void TaskWidget::setOrderBy(TaskWidget::OrderBy order)
 {
 
     m_order = order;
+}
+
+void TaskWidget::setAutoHideCompleted(bool hide)
+{
+
+    m_autoHide = hide;
+    
+}
+
+void TaskWidget::setAutoDeleteCompleted(bool del)
+{
+    
+    m_autoDel = del;
 }
 
 void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
@@ -166,11 +182,27 @@ void TaskWidget::fetchItemsFinished(KJob * job)
 
 }
 
+void TaskWidget::itemDeleted(KJob * job)
+{
+    if (job->error()) {
+
+        qDebug() << "Error occurred";
+	
+    } else {
+
+        qDebug() << "Item removed successfully";
+	
+    }
+    
+}
+
+
 void TaskWidget::addItem(TaskWidgetItem * item)
 {
 
     m_layout->addItem(item);
 
+    updateCompletedTasks();
 }
 
 
@@ -180,6 +212,35 @@ void TaskWidget::clear()
     m_layout->clear();
 
 }
+
+void TaskWidget::updateCompletedTasks()
+{
+
+    if (!m_autoDel && !m_autoHide) {
+	
+	return;
+	
+    }
+    
+    QList<TaskWidgetItem*> list = m_layout->updateCompletedTasks();
+    
+    for (int i = 0; i < list.count(); i++) {
+	
+	m_layout->removeItem(list.at(i));
+	list.at(i)->hide();
+	
+	if (m_autoDel) {
+	 
+	    Akonadi::ItemDeleteJob * job = new Akonadi::ItemDeleteJob(list.at(i)->item());
+	    connect(job, SIGNAL(result(KJob*)), this, SLOT(itemDeleted(KJob*)));
+	    
+	    list.at(i)->deleteLater();
+	    
+	}
+	
+    }
+}
+
 
 void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
@@ -193,7 +254,7 @@ void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection
             task = new TaskWidgetItem(item, this);
 
             addItem(task);
-
+	    
         }
 
     }
@@ -216,7 +277,9 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
             task->updateTask(item);
 
             m_layout->updateItem(task);
-
+	    
+	    updateCompletedTasks();
+	    
             return;
         }
 

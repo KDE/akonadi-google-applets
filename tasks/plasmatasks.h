@@ -54,6 +54,9 @@ class PlasmaTasks : public Plasma::PopupApplet {
 	
 	void addTask();
 	
+	void uncheckHideTasks();
+	void uncheckDelTasks();
+	
     private slots:
 
         void configAccepted();

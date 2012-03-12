@@ -1,5 +1,5 @@
 /*
-    Akonadi google tasks plasmoid - taskwidgetitem.cpp
+    Akonadi google tasks plasmoid - tasklayout.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -214,7 +214,7 @@ void TaskLayout::updateItem(TaskWidgetItem * item)
         }
 
     }
-
+    
     QGraphicsLinearLayout::removeItem(item);
 
     addItem(item);
@@ -261,6 +261,37 @@ void TaskLayout::clear()
 
     }
 
+}
+
+QList<TaskWidgetItem*> TaskLayout::updateCompletedTasks()
+{
+    QList<TaskWidgetItem*> returnedList;
+    QList<QString> list;
+    TaskWidgetItem * item;
+    
+    for (int i = count()-1; i >= 0; i--) {
+	
+	item = static_cast<TaskWidgetItem *>(itemAt(i));
+	
+	if (item->isCompleted()) {
+	 
+	    if (!list.contains(item->uid())) {
+		
+		returnedList.push_back(item);
+		
+	    } else {
+		
+		list.push_back(item->relatedTo());
+	    }
+	    
+	} else {
+	 
+	    list.push_back(item->relatedTo());
+	    
+	}
+    }
+    
+    return returnedList;
 }
 
 TaskLayout::~TaskLayout()

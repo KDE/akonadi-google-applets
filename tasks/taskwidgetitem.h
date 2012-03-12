@@ -61,6 +61,18 @@ class TaskWidgetItem : public Plasma::Frame {
             return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent);
         }
 
+        QString uid() {
+	    return m_todo->uid();
+        }
+        
+        bool isCompleted() {
+	    return m_todo->isCompleted();
+        }
+        
+        Akonadi::Item item() {
+	    return m_item;
+        }
+
     public slots:
 	
         void setCompleted(bool completed);

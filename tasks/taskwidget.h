@@ -68,11 +68,22 @@ class TaskWidget : public QGraphicsWidget {
 	        return m_order;
 	}
 	
+	bool autoHideCompleted() {
+	        return m_autoHide;
+	}
+	
+	bool autoDeleteCompleted() {
+	        return m_autoDel;
+	}
+	
 	void setExpiredColor(QString color);
 	void setTodayColor(QString color);
 	void setWeekColor(QString color);
 	void setOtherColor(QString color);
 	void setOrderBy(OrderBy order);
+	
+	void setAutoHideCompleted(bool hide);
+	void setAutoDeleteCompleted(bool del);
 	
 	void setCollections(QList<Akonadi::Collection::Id> ids);
 	
@@ -81,6 +92,8 @@ class TaskWidget : public QGraphicsWidget {
         void fetchCollectionsFinished(KJob * job);
         void fetchItemsFinished(KJob * job);
 
+	void itemDeleted(KJob * job);
+	
         void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
         void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
         void itemRemoved(const Akonadi::Item & item);
@@ -89,6 +102,7 @@ class TaskWidget : public QGraphicsWidget {
 
         void addItem(TaskWidgetItem * item);
         void clear();
+	void updateCompletedTasks();
 
         void fetchCollections();
         void fetchItems(const Akonadi::Collection & collections);
@@ -99,6 +113,9 @@ class TaskWidget : public QGraphicsWidget {
 	QString m_todayColor;
 	QString m_weekColor;
 	QString m_otherColor;
+	
+	bool m_autoHide;
+	bool m_autoDel;
 	
         QList<Akonadi::Collection::Id> m_idList;
 
