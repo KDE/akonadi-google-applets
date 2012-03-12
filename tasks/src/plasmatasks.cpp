@@ -55,6 +55,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 	m_tasksList = new TaskWidget(m_widget);
 	
         m_scroll = new Plasma::ScrollWidget(m_widget);	
+	m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         m_scroll->setWidget(m_tasksList);
 
         m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);

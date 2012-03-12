@@ -78,8 +78,6 @@ class PlasmaContacts : public Plasma::PopupApplet {
         QList<Akonadi::Collection::Id> m_idList;
 
         bool m_findData;
-        bool m_showEmails;
-        bool m_showNumbers;
         bool m_showEmptyContacts;
 
 };

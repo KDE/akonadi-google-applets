@@ -32,8 +32,6 @@ PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
     : Plasma::PopupApplet(parent, args),
       m_widget(0),
       m_findData(true),
-      m_showEmails(true),
-      m_showNumbers(true),
       m_showEmptyContacts(true)
 {
     setConfigurationRequired(true);
@@ -139,7 +137,7 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog * parent)
     connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
-    parent->addPage(widget, "General", icon());
+    parent->addPage(widget, i18n("General"), icon());
 }
 
 void PlasmaContacts::configAccepted()
