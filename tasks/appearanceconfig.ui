@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>appearanceconfig</class>
+ <widget class="QWidget" name="appearanceconfig">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>313</width>
+    <height>231</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>311</width>
+     <height>138</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Expired tasks color</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Today's tasks color</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Other tasks color</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Order by</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="KColorButton" name="expiredColor">
+      <property name="color">
+       <color>
+        <red>200</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="alphaChannelEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="KColorButton" name="todayColor">
+      <property name="color">
+       <color>
+        <red>230</red>
+        <green>70</green>
+        <blue>0</blue>
+       </color>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="KColorButton" name="otherColor"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Tasks of the week</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="KColorButton" name="weekColor">
+      <property name="color">
+       <color>
+        <red>230</red>
+        <green>240</green>
+        <blue>0</blue>
+       </color>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="orderBy">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QComboBox::AdjustToContents</enum>
+      </property>
+      <item>
+       <property name="text">
+        <string>Date, Name, Completed</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Name, Date, Completed</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Completed, Date, Name</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Completed, Name, Date</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KColorButton</class>
+   <extends>QPushButton</extends>
+   <header>kcolorbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

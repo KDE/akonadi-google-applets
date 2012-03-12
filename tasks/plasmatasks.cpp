@@ -126,8 +126,6 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
 
     fetchCollections();
-
-    // TODO: completed tasks
     
     configDialog.autoDel->setChecked(m_tasksList->autoDeleteCompleted());
     configDialog.autoHide->setChecked(m_tasksList->autoHideCompleted());
