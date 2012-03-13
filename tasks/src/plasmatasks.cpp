@@ -80,14 +80,16 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 	
 	connect(m_widget,SIGNAL(geometryChanged()),SLOT(updateTaskListWidth()));
     }
-    
+        
     return m_widget;
 }
 
 void PlasmaTasks::updateTaskListWidth()
 {
 
-    m_tasksList->updateTasksWidth((int)m_widget->geometry().width());
+    int width = (int)m_widget->geometry().width();
+        
+    m_tasksList->updateTasksWidth(width);
     
 }
 
@@ -245,31 +247,37 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
 
     foreach(const Akonadi::Collection & collection, collections) {
 
-        if (((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) &&
-            collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+#ifndef ALL_COLLECTIONS
+        
+        if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
+        
+#endif 		
+	    if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
-            Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+		Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
-            QListWidgetItem * item = new QListWidgetItem();
+		QListWidgetItem * item = new QListWidgetItem();
 
-            if (!attribute) {
+		if (!attribute) {
 
-                item->setText(collection.name());
+		    item->setText(collection.name());
 
-            } else {
+		} else {
 
-                item->setText(attribute->displayName());
+		    item->setText(attribute->displayName());
 
-            }
+		}
 
-            item->setData(Qt::UserRole, collection.id());
-            item->setCheckState(Qt::Unchecked);
+		item->setData(Qt::UserRole, collection.id());
+		item->setCheckState(Qt::Unchecked);
 
-            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
+		configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
 
-        }
+	    }
 
-    }
+	}
+	
+    
 
     if (!m_tasksList->idList().isEmpty()) {
 

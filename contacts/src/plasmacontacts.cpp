@@ -207,31 +207,37 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 
     foreach(const Akonadi::Collection & collection, collections) {
 
-        if (collection.resource().contains("akonadi_googlecontacts_resource") &&
-                collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
+#ifndef ALL_COLLECTIONS
+        
+        if (collection.resource().contains("akonadi_googlecontacts_resource")) {
+        
+#endif 	
+	    if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
-            Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+		Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
-            QListWidgetItem * item = new QListWidgetItem();
+		QListWidgetItem * item = new QListWidgetItem();
 
-            if (!attribute) {
+		if (!attribute) {
 
-                item->setText(collection.name());
+		    item->setText(collection.name());
 
-            } else {
+		} else {
 
-                item->setText(attribute->displayName());
+		    item->setText(attribute->displayName());
 
-            }
+		}
 
-            item->setData(Qt::UserRole, collection.id());
-            item->setCheckState(Qt::Unchecked);
+		item->setData(Qt::UserRole, collection.id());
+		item->setCheckState(Qt::Unchecked);
 
-            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
+		configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
 
-        }
+	    }
 
-    }
+	}
+    
+    
 
     if (!m_idList.isEmpty()) {
 

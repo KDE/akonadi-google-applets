@@ -86,8 +86,6 @@ void TaskWidgetItem::setItemInfo()
     m_name->setText(m_todo->summary());
     m_name->setOrientation(Qt::Horizontal);
 
-    m_name->setMaximumHeight(15);
-
     if (m_completed->isChecked()) {
 
         m_name->setIcon(KIcon("dialog-ok"));
@@ -267,7 +265,7 @@ void TaskWidgetItem::setUnrelated()
 void TaskWidgetItem::setMaxWidth(int width)
 {
 
-    m_name->setMaximumWidth(width-(m_indent*25)-5-70);
+    m_name->setMaximumWidth(width-(m_indent*25)-80);
     
 }
 

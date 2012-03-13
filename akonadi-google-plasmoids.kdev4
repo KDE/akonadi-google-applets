@@ -1,4 +1,4 @@
 [Project]
-Name=akonadi-google-plasmoids
 Manager=KDevCMakeManager
+Name=akonadi-google-applets
 VersionControl=
