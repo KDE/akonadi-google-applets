@@ -1,0 +1,24 @@
+##############
+Installation
+##############
+
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+make
+make install (as root)
+
+kbuildsycoca4
+
+and maybe you must quit plasma-desktop
+
+kquitapp plasma-desktop
+kstart plasma-desktop
+
+################
+Required
+################
+Qt4 
+KDE4
+KdepimLibs
+Akonadi-google - https://projects.kde.org/projects/playground/pim/akonadi-google/repository
