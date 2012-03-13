@@ -267,7 +267,7 @@ void TaskWidgetItem::setUnrelated()
 void TaskWidgetItem::setMaxWidth(int width)
 {
 
-    m_name->setMaximumWidth(width-(m_indent*25)-5-200);
+    m_name->setMaximumWidth(width-(m_indent*25)-5-70);
     
 }
 
