@@ -87,7 +87,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 void PlasmaTasks::updateTaskListWidth()
 {
 
-    m_tasksList->updateTasksWidth((int)geometry().width());
+    m_tasksList->updateTasksWidth((int)m_widget->geometry().width());
     
 }
 
