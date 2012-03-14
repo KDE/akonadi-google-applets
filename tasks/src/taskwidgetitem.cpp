@@ -265,7 +265,21 @@ void TaskWidgetItem::setUnrelated()
 void TaskWidgetItem::setMaxWidth(int width)
 {
 
-    m_name->setMaximumWidth(width-(m_indent*25)-80);
+    int maxWidth = width-(m_indent*25)-80;
+    
+    if (!m_date) {
+
+	if (maxWidth < m_name->geometry().width()) {
+	    
+	    m_name->setMaximumWidth(width-(m_indent*25)-80);
+	    
+	}
+	
+    } else {
+	
+	m_name->setMaximumWidth(width-(m_indent*25)-80);
+	
+    }
     
 }
 

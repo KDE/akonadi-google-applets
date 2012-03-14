@@ -234,9 +234,15 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 		configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
 
 	    }
+	    
+#ifndef ALL_COLLECTIONS	  
 
 	}
-    
+	
+#endif	
+
+	
+    }
     
 
     if (!m_idList.isEmpty()) {

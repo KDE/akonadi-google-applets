@@ -275,9 +275,13 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
 
 	    }
 
+#ifndef ALL_COLLECTIONS	  
+
 	}
 	
-    
+#endif	
+
+    }
 
     if (!m_tasksList->idList().isEmpty()) {
 
