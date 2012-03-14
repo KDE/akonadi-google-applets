@@ -1,12 +1,10 @@
 [Desktop Entry]
-Name=Google contacts 
-Name[cs]=Google kontakty
+Name=Google contacts
 Comment=Contacts plasmoid for akonadi google resources
-Comment[cs]=Kontakty plasmoid pro akonadi google zdroje
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=plasma_google_contacts
- 
+
 X-KDE-Library=plasma_applet_google_contacts
 X-KDE-PluginInfo-Name=plasma_google_contacts
 X-KDE-PluginInfo-Category=Online Services
@@ -17,4 +15,4 @@ X-KDE-PluginInfo-Website=http://phoenix.inf.upol.cz/~grulichj
 X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
- 
+

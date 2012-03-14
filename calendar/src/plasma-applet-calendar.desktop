@@ -3,7 +3,7 @@ Name=Calendar plasmoid
 Comment=Calendar plasmoid for akonadi google resources
 Type=Service
 ServiceTypes=Plasma/Applet
- 
+
 X-KDE-Library=plasma_applet_calendar
 X-KDE-PluginInfo-Name=plasma_calendar
 X-KDE-PluginInfo-Category=Online Services
