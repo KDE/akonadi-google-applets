@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Calendar plasmoid
+Name[pt]=Plasmóide de calendário
+Name[sv]=Kalender-plasmoid
+Name[uk]=Плазмоїд календаря
+Name[x-test]=xxCalendar plasmoidxx
 Comment=Calendar plasmoid for akonadi google resources
+Comment[pt]=Um plasmóide de calendário para os recursos do Google no Akonadi
+Comment[sv]=Kalender-plasmoid för Akonadis Google-resurser
+Comment[uk]=Плазмоїд календаря для ресурсів Google у akonadi
+Comment[x-test]=xxCalendar plasmoid for akonadi google resourcesxx
 Type=Service
 ServiceTypes=Plasma/Applet
 
