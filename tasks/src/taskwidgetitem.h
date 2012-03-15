@@ -33,7 +33,6 @@
 
 #include <KJob>
 
-//#include "taskwidget.h"
 #include "taskeditor.h"
 
 class TaskWidgetItem : public Plasma::Frame {
@@ -72,8 +71,6 @@ class TaskWidgetItem : public Plasma::Frame {
         Akonadi::Item item() {
 	    return m_item;
         }
-
-        void setMaxWidth(int width);
         
     public slots:
 	

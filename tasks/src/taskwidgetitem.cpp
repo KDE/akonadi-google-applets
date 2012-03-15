@@ -76,7 +76,7 @@ void TaskWidgetItem::setItemInfo()
     }
 
     m_name = new Plasma::IconWidget(this);
-    m_name->setMinimumWidth(200);
+    m_name->setMinimumWidth(50);
     m_name->setMaximumHeight(15);
     m_name->setText(m_todo->summary());
     m_name->setOrientation(Qt::Horizontal);
