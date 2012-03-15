@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Google tasks
+Name[pt]=Tarefas do Google
+Name[sv]=Google-uppgifter
+Name[uk]=Завдання Google
+Name[x-test]=xxGoogle tasksxx
 Comment=Tasks plasmoid for akonadi google resources
+Comment[pt]=Plasmóide de tarefas para os recursos do Google no Akonadi
+Comment[sv]=Uppgifts-plasmoid för Akonadis Google-resurser
+Comment[uk]=Плазмоїд завдань для ресурсів Google у akonadi
+Comment[x-test]=xxTasks plasmoid for akonadi google resourcesxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=plasma_google_tasks
