@@ -27,8 +27,6 @@
 
 #include <Akonadi/ItemModifyJob>
 
-#include <QFontMetrics>
-
 #include <Plasma/ToolTipContent>
 #include <Plasma/ToolTipManager>
 
@@ -46,10 +44,6 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
-    m_layout = new QGraphicsGridLayout(this);
-
-    setLayout(m_layout);
-
     setFrameShadow(Plasma::Frame::Raised);
 
     setItemInfo();
@@ -59,22 +53,22 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 void TaskWidgetItem::setItemInfo()
 {
 
+    m_layout = new QGraphicsGridLayout(this);
+    
     m_completed = new Plasma::CheckBox(this);
     m_completed->setChecked(m_todo->isCompleted());
     m_completed->setMaximumSize(25, 25);
-
+    
+    connect(m_completed, SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));    
     m_layout->addItem(m_completed, 0, 0);
-
-    connect(m_completed, SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
 
     if (m_todo->hasDueDate()) {
 
         m_date = new Plasma::IconWidget(this);
         m_date->setOrientation(Qt::Horizontal);
-
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
         m_date->setMaximumHeight(15);
-
+        	
         setColorForDate();
 
         m_layout->addItem(m_date, 0, 1);
@@ -82,11 +76,14 @@ void TaskWidgetItem::setItemInfo()
     }
 
     m_name = new Plasma::IconWidget(this);
-
+    m_name->setMinimumWidth(200);
+    m_name->setMaximumHeight(15);
     m_name->setText(m_todo->summary());
     m_name->setOrientation(Qt::Horizontal);
 
-    if (m_completed->isChecked()) {
+    connect(m_name, SIGNAL(clicked()), SLOT(editTask()));
+    
+    if (m_todo->isCompleted()) {
 
         m_name->setIcon(KIcon("dialog-ok"));
     }
@@ -115,8 +112,6 @@ void TaskWidgetItem::setItemInfo()
     
     Plasma::ToolTipManager::self()->setContent(m_name, content);
     
-    connect(m_name, SIGNAL(clicked()), SLOT(editTask()));
-
     if (m_date) {
 
 	Plasma::ToolTipManager::self()->setContent(m_date, content);
@@ -125,14 +120,11 @@ void TaskWidgetItem::setItemInfo()
 
     }
     
-    setMaxWidth(((TaskWidget*)parentWidget())->taskWidth());
-
+    setLayout(m_layout);
 }
 
 void TaskWidgetItem::TaskWidgetItem::editTask()
 {
-
-    qDebug() << (int)parentWidget()->geometry().width();
     
     m_editor = new TaskEditor();
 
@@ -261,28 +253,6 @@ void TaskWidgetItem::setUnrelated()
 
     m_indent = 0;
 }
-
-void TaskWidgetItem::setMaxWidth(int width)
-{
-
-    int maxWidth = width-(m_indent*25)-80;
-    
-    if (!m_date) {
-
-	if (maxWidth < m_name->geometry().width()) {
-	    
-	    m_name->setMaximumWidth(width-(m_indent*25)-80);
-	    
-	}
-	
-    } else {
-	
-	m_name->setMaximumWidth(width-(m_indent*25)-80);
-	
-    }
-    
-}
-
 
 void TaskWidgetItem::updateTask(const Akonadi::Item & item)
 {

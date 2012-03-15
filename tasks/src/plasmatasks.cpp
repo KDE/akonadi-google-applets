@@ -24,7 +24,6 @@
 #include <KJob>
 
 #include <QListWidgetItem>
-#include <QCheckBox>
 
 #include <Akonadi/Entity>
 #include <Akonadi/EntityDisplayAttribute>
@@ -42,6 +41,7 @@ PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
     
+    graphicsWidget();
 }
 
 QGraphicsWidget * PlasmaTasks::graphicsWidget()
@@ -78,25 +78,14 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 	
         configChanged();
 	
-	connect(m_widget,SIGNAL(geometryChanged()),SLOT(updateTaskListWidth()));
     }
         
     return m_widget;
 }
 
-void PlasmaTasks::updateTaskListWidth()
-{
-
-    int width = (int)m_widget->geometry().width();
-        
-    m_tasksList->updateTasksWidth(width);
-    
-}
-
-
 void PlasmaTasks::configChanged()
 {
-
+    
     KConfigGroup conf = config();
     
     m_tasksList->setAutoDeleteCompleted(conf.readEntry("autoDel",false));

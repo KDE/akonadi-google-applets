@@ -58,8 +58,6 @@ class PlasmaTasks : public Plasma::PopupApplet {
 	void uncheckDelTasks();
 	
     private slots:
-
-	void updateTaskListWidth();
 	
         void configAccepted();
 
