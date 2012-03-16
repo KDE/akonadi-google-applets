@@ -48,7 +48,7 @@ QGraphicsWidget * PlasmaContacts::graphicsWidget()
 
         m_find = new Plasma::LineEdit(m_widget);
         m_find->setClearButtonShown(true);
-        m_find->setText(i18n(" Find contact "));
+        m_find->setText(i18n("Find contact"));
 
         m_contactList = new ContactWidget(m_widget);
 
