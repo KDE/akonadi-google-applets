@@ -77,13 +77,13 @@ void PlasmaContacts::configChanged()
 
     m_find->setText("");
 
-    if(conf.readEntry("findData", true) != m_contactList->findData()) {
+    if (conf.readEntry("findData", true) != m_contactList->findData()) {
 
         m_contactList->setFilterData(conf.readEntry("findData", true));
 
     }
 
-    if(conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts()) {
+    if (conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts()) {
 
         m_contactList->setShowEmptyContacts(conf.readEntry("showEmptyContacts", true));
 
@@ -91,7 +91,7 @@ void PlasmaContacts::configChanged()
 
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
-    if(list.isEmpty()) {
+    if (list.isEmpty()) {
 
         setConfigurationRequired(true);
 
@@ -223,6 +223,7 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 #ifndef ALL_COLLECTIONS
         }
 #endif
+
     }
 
     if (!m_contactList->collectionsList().isEmpty()) {

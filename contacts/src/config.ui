@@ -51,7 +51,7 @@
        </size>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Collections</string>
       </property>
      </widget>
     </item>
