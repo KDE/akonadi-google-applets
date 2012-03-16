@@ -73,8 +73,6 @@ void ContactWidget::setShowEmptyContacts(bool show)
 
         m_showEmptyContacts = show;
 
-        updateContacts();
-
     }
 
 }
@@ -113,8 +111,8 @@ void ContactWidget::showContactsContains(const QString & text)
             item->show();
 
         }
+        
     }
-
 
 }
 
@@ -198,86 +196,21 @@ void ContactWidget::addItem(ContactWidgetItem * item)
 
     if (!m_showEmptyContacts && item->isEmpty()) {
 
-        item->setVisible(false);
-        m_listFilterEmpty.push_back(item);
-
-        return;
-    }
-
-    ContactWidgetItem * tmpItem;
-
-    for(int i = 0; i < m_layout->count(); i++) {
-
-        tmpItem = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
-
-        if (item->operator<(tmpItem)) {
-
-            m_layout->insertItem(i, item);
-
-            return;
-
-        }
-
+        item->hide();
+	item->deleteLater();
+	
+	return;
     }
 
     m_layout->addItem(item);
-    item->show();
-
+    
 }
 
 void ContactWidget::clear()
 {
-
-    ContactWidgetItem * item;
-
-    while (m_layout->count() > 0) {
-
-        item = static_cast<ContactWidgetItem *>(m_layout->itemAt(0));
-
-        m_layout->removeItem(item);
-
-        item->deleteLater();
-
-    }
-
-}
-
-void ContactWidget::updateContacts()
-{
-
-    while (!m_listFilterEmpty.isEmpty()) {
-
-        addItem(static_cast<ContactWidgetItem *>(m_listFilterEmpty.first()));
-
-        static_cast<ContactWidgetItem *>(m_listFilterEmpty.first())->show();
-
-        m_listFilterEmpty.pop_front();
-
-    }
-
-    ContactWidgetItem * item;
-
-    if (!m_showEmptyContacts) {
-
-        for (int i = 0; i < m_layout->count(); i++) {
-
-            item = static_cast<ContactWidgetItem *>(m_layout->itemAt(i));
-
-            if (item->isEmpty()) {
-
-                item->hide();
-
-                m_listFilterEmpty.push_back(item);
-
-                m_layout->removeItem(item);;
-
-                i--;
-            }
-
-        }
-
-    }
-
+    
+    m_layout->clear();
+    
 }
 
 void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection  & collection)
@@ -344,7 +277,6 @@ void ContactWidget::itemRemoved(const Akonadi::Item & item)
     }
 
 }
-
 
 ContactWidget::~ContactWidget()
 {

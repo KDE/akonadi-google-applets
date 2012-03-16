@@ -30,9 +30,7 @@
 
 PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
     : Plasma::PopupApplet(parent, args),
-      m_widget(0),
-      m_findData(true),
-      m_showEmptyContacts(true)
+      m_widget(0)
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -82,17 +80,15 @@ void PlasmaContacts::configChanged()
 
     m_find->setText("");
 
-    if (conf.readEntry("findData", true) != m_findData) {
+    if (conf.readEntry("findData", true) != m_contactList->findData()) {
 
-        m_findData = conf.readEntry("findData", true);
-        m_contactList->setFilterData(m_findData);
+        m_contactList->setFilterData(conf.readEntry("findData", true));
 
     }
 
-    if (conf.readEntry("showEmptyContacts", true) != m_showEmptyContacts) {
+    if (conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts()) {
 
-        m_showEmptyContacts = conf.readEntry("showEmptyContacts", true);
-        m_contactList->setShowEmptyContacts(m_showEmptyContacts);
+        m_contactList->setShowEmptyContacts(conf.readEntry("showEmptyContacts", true));
 
     }
 
@@ -108,9 +104,7 @@ void PlasmaContacts::configChanged()
 
     }
 
-    m_idList = list;
-
-    m_contactList->setCollections(m_idList);
+    m_contactList->setCollections(list);
 
 
 }
@@ -244,13 +238,13 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     }
     
 
-    if (!m_idList.isEmpty()) {
+    if (!m_contactList->collectionsList().isEmpty()) {
 
-        for (int i = 0; i < m_idList.count(); i++) {
+        for (int i = 0; i < m_contactList->collectionsList().count(); i++) {
 
             for (int j = 0; j < configDialog.collectionsList->count(); j++) {
 
-                if (m_idList.at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
+                if (m_contactList->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
 
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
 
@@ -263,9 +257,6 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     }
 
 }
-
-
-
 
 #include "plasmacontacts.moc"
 

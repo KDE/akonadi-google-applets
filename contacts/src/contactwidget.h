@@ -44,6 +44,18 @@ class ContactWidget : public QGraphicsWidget {
 	
         virtual ~ContactWidget();
 
+	bool findData() const {
+	    return m_findData;
+	}
+	
+	bool showEmptyContacts() const {
+	    return m_showEmptyContacts;
+	}
+	
+	QList<Akonadi::Collection::Id> collectionsList() const {
+	    return m_idList;
+	}
+	
         void setCollections(QList<Akonadi::Collection::Id> ids);
         void setFilterData(bool filter = true);
         void setShowEmptyContacts(bool show = true);
@@ -62,7 +74,6 @@ class ContactWidget : public QGraphicsWidget {
 
         void addItem(ContactWidgetItem * item);
         void clear();
-        void updateContacts();
 
         void fetchCollections();
         void fetchItems(const Akonadi::Collection & collections);

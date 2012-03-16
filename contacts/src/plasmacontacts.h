@@ -75,11 +75,6 @@ class PlasmaContacts : public Plasma::PopupApplet {
 
         Plasma::LineEdit * m_find;
 
-        QList<Akonadi::Collection::Id> m_idList;
-
-        bool m_findData;
-        bool m_showEmptyContacts;
-
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_contacts, PlasmaContacts)

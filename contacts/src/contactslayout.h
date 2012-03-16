@@ -23,6 +23,7 @@
 
 #include <QGraphicsLinearLayout>
 
+#include "contactwidgetitem.h"
 
 class ContactsLayout : public QGraphicsLinearLayout {
 
@@ -33,6 +34,10 @@ class ContactsLayout : public QGraphicsLinearLayout {
         virtual ~ContactsLayout();
 
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
+
+        void addItem(ContactWidgetItem * item);
+	void clear();
+
 };
 
 #endif // CONTACTSLAYOUT_H
