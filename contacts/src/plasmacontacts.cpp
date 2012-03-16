@@ -158,7 +158,7 @@ void PlasmaContacts::lineChanged(const QString & text)
 
 void PlasmaContacts::lineFocusChanged(bool change)
 {
-    if (change && m_find->text().contains(i18n(" Find "))) {
+    if (change && m_find->text().contains(i18n("Find"))) {
 	
         m_find->setText("");
 	
@@ -219,11 +219,9 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
                 configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
 
             }
-
 #ifndef ALL_COLLECTIONS
         }
 #endif
-
     }
 
     if (!m_contactList->collectionsList().isEmpty()) {
