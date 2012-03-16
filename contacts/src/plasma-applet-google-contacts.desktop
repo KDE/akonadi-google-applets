@@ -1,11 +1,15 @@
 [Desktop Entry]
 Name=Google contacts
 Name[pt]=Contactos do Google
+Name[pt_BR]=Contatos do Google
+Name[sk]=Google kontakty
 Name[sv]=Google-kontakter
 Name[uk]=Контакти Google
 Name[x-test]=xxGoogle contactsxx
 Comment=Contacts plasmoid for akonadi google resources
 Comment[pt]=Plasmóide de contactos para os recursos do Google no Akonadi
+Comment[pt_BR]=Plasmoide de contatos para os recursos do Google no Akonadi
+Comment[sk]=Plazmoid kontaktov pre zdroje akonadi google
 Comment[sv]=Kontakt-plasmoid för Akonadis Google-resurser
 Comment[uk]=Плазмоїд контактів для ресурсів Google у akonadi
 Comment[x-test]=xxContacts plasmoid for akonadi google resourcesxx
