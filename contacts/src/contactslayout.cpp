@@ -28,12 +28,11 @@ ContactsLayout::ContactsLayout(Qt::Orientation orientation, QGraphicsLayoutItem 
     setMinimumWidth(250);
 }
 
-void ContactsLayout::addItem(ContactWidgetItem* item)
+void ContactsLayout::addItem(ContactWidgetItem * item)
 {
-
     ContactWidgetItem * tmpItem;
 
-    for(int i = 0; i < count(); i++) {
+    for (int i = 0; i < count(); i++) {
 
         tmpItem = static_cast<ContactWidgetItem *>(itemAt(i));
 
@@ -48,14 +47,12 @@ void ContactsLayout::addItem(ContactWidgetItem* item)
     }
 
     item->show();
-    
+
     QGraphicsLinearLayout::addItem(item);
-    
 }
 
 void ContactsLayout::clear()
 {
-
     ContactWidgetItem * item;
 
     while (count() > 0) {
@@ -67,7 +64,7 @@ void ContactsLayout::clear()
         item->deleteLater();
 
     }
-    
+
 }
 
 QSizeF ContactsLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
@@ -86,9 +83,4 @@ QSizeF ContactsLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) c
     }
 
     return hint;
-}
-
-ContactsLayout::~ContactsLayout()
-{
-
 }

@@ -30,35 +30,35 @@
 class ContactWidgetItemInfo : public QGraphicsWidget
 {
     Q_OBJECT
-    
+
     public:
-	
-	ContactWidgetItemInfo(QGraphicsItem* parent = 0, Qt::WindowFlags wFlags = 0);
-    
-	void show();
-	
-	void setHomeNumber(const QString number);
-	void setWorkNumber(const QString number);
-	void setCellPhone(const QString number);
-	void setEmails(const QStringList emails);
-	
+
+        ContactWidgetItemInfo(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
+
+        void show();
+
+        void setHomeNumber(const QString number);
+        void setWorkNumber(const QString number);
+        void setCellPhone(const QString number);
+        void setEmails(const QStringList emails);
+
     public slots:
-	
-	void openEmail(const QString & mail);
-	    
+
+        void openEmail(const QString & mail);
+
     private:
-	
-	QGraphicsGridLayout * m_layout;
-	
-	Plasma::IconWidget * m_homeIcon;
-	Plasma::IconWidget * m_workIcon;
-	Plasma::IconWidget * m_cellIcon;
-	Plasma::IconWidget * m_emailsIcon;
-   
-	Plasma::Label * m_homeLabel;
-	Plasma::Label * m_workLabel;
-	Plasma::Label * m_cellLabel;
-	QList<Plasma::Label*> m_emailLabels;
+
+        QGraphicsGridLayout * m_layout;
+
+        Plasma::IconWidget * m_homeIcon;
+        Plasma::IconWidget * m_workIcon;
+        Plasma::IconWidget * m_cellIcon;
+        Plasma::IconWidget * m_emailsIcon;
+
+        Plasma::Label * m_homeLabel;
+        Plasma::Label * m_workLabel;
+        Plasma::Label * m_cellLabel;
+        QList<Plasma::Label *> m_emailLabels;
 };
 
 #endif // CONTACTWIDGETITEMINFO_H

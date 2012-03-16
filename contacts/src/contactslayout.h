@@ -25,18 +25,18 @@
 
 #include "contactwidgetitem.h"
 
-class ContactsLayout : public QGraphicsLinearLayout {
-
+class ContactsLayout : public QGraphicsLinearLayout
+{
     public:
-	
+
         ContactsLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
-	
-        virtual ~ContactsLayout();
+
+        virtual ~ContactsLayout(){};
 
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 
         void addItem(ContactWidgetItem * item);
-	void clear();
+        void clear();
 
 };
 

@@ -34,28 +34,28 @@
 #include "contactwidgetitem.h"
 #include "contactslayout.h"
 
-class ContactWidget : public QGraphicsWidget {
-    
+class ContactWidget : public QGraphicsWidget
+{
     Q_OBJECT
 
     public:
 
         ContactWidget(QGraphicsWidget * parent = 0);
-	
+
         virtual ~ContactWidget();
 
-	bool findData() const {
-	    return m_findData;
-	}
-	
-	bool showEmptyContacts() const {
-	    return m_showEmptyContacts;
-	}
-	
-	QList<Akonadi::Collection::Id> collectionsList() const {
-	    return m_idList;
-	}
-	
+        bool findData() const {
+            return m_findData;
+        }
+
+        bool showEmptyContacts() const {
+            return m_showEmptyContacts;
+        }
+
+        QList<Akonadi::Collection::Id> collectionsList() const {
+            return m_idList;
+        }
+
         void setCollections(QList<Akonadi::Collection::Id> ids);
         void setFilterData(bool filter = true);
         void setShowEmptyContacts(bool show = true);
@@ -81,15 +81,12 @@ class ContactWidget : public QGraphicsWidget {
         ContactsLayout * m_layout;
 
         QList<QGraphicsLayoutItem *> m_listFilterText;
-        QList<QGraphicsLayoutItem *> m_listFilterEmpty;
 
         QList<Akonadi::Collection::Id> m_idList;
         Akonadi::Monitor * m_monitor;
 
         bool m_findData;
         bool m_showEmptyContacts;
-
-
 
 };
 

@@ -80,9 +80,9 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 void ContactWidgetItem::hide()
 {
     if (!isVisible()) {
-
+	
         return;
-
+	
     }
 
     if (m_animation->state() == QAbstractAnimation::Running) {
@@ -144,7 +144,6 @@ void ContactWidgetItem::show()
 
 void ContactWidgetItem::setContactIcon()
 {
-
     if (m_addressee->photo().isEmpty()) {
 
         m_icon->setIcon(KIcon("user-identity"));
@@ -193,9 +192,9 @@ void ContactWidgetItem::setContactIcon()
 
 
 void ContactWidgetItem::setContactInfo()
-{ 
+{
     m_contactInfo = new ContactWidgetItemInfo(this);
-    
+
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
         m_contactInfo->setHomeNumber(m_addressee->phoneNumber(KABC::PhoneNumber::Home).number());
@@ -218,12 +217,11 @@ void ContactWidgetItem::setContactInfo()
         m_contactInfo->setEmails(m_addressee->emails());
 
     }
-    
+
 }
 
 void ContactWidgetItem::showContactInfo()
 {
-
     if (!m_info) {
 
         setContactInfo();
@@ -238,7 +236,7 @@ void ContactWidgetItem::showContactInfo()
         if (!isEmpty()) {
 
             m_mainLayout->removeItem(m_contactInfo);
-	    m_contactInfo->hide();
+            m_contactInfo->hide();
 
         }
 
@@ -254,29 +252,26 @@ void ContactWidgetItem::showContactInfo()
         if (!isEmpty()) {
 
             m_mainLayout->addItem(m_contactInfo);
-	    m_contactInfo->show();
+            m_contactInfo->show();
 
         }
-	
+
         m_mainLayout->addItem(m_edit);
         m_edit->show();
 
         m_show = true;
-
+	
     }
 
 }
 
 bool ContactWidgetItem::hasStringInName(const QString & string)
 {
-
     return m_icon->text().toLower().contains(string.toLower());
-
 }
 
 bool ContactWidgetItem::hasStringInData(const QString & string)
 {
-
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
         if (m_addressee->phoneNumber(KABC::PhoneNumber::Home).number().contains(string))
@@ -315,7 +310,6 @@ bool ContactWidgetItem::hasStringInData(const QString & string)
 
 bool ContactWidgetItem::isEmpty()
 {
-
     if (m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty() &&
             m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() &&
             m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty() &&
@@ -326,20 +320,16 @@ bool ContactWidgetItem::isEmpty()
     }
 
     return false;
-
 }
 
 bool ContactWidgetItem::operator<(const ContactWidgetItem * item)
 {
     return (this->m_icon->text().toLower() < item->m_icon->text().toLower());
-
 }
 
 bool ContactWidgetItem::operator= (const Akonadi::Item & item)
 {
-
     return (this->m_item.id() == item.id());
-
 }
 
 void ContactWidgetItem::editContact()
@@ -357,14 +347,11 @@ void ContactWidgetItem::editContact()
 
 void ContactWidgetItem::openEmail(const QString & string)
 {
-
     KToolInvocation::invokeMailer(string);
-
 }
 
 void ContactWidgetItem::updateContact(const Akonadi::Item & item)
 {
-
     if (m_show) {
 
         if (!isEmpty())
@@ -393,14 +380,11 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
     setContactIcon();
 
     m_info = false;
-
 }
 
 ContactWidgetItem::~ContactWidgetItem()
 {
-
     delete m_addressee;
-
 }
 
 

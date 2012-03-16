@@ -36,8 +36,8 @@
 #include "contactwidget.h"
 #include "ui_config.h"
 
-class PlasmaContacts : public Plasma::PopupApplet {
-    
+class PlasmaContacts : public Plasma::PopupApplet
+{
     Q_OBJECT
 
     public:
@@ -55,24 +55,21 @@ class PlasmaContacts : public Plasma::PopupApplet {
         void fetchCollectionsFinished(KJob * job);
 
         void lineChanged(const QString & text);
-        void lineFocusChanged(bool change);	
-	
+        void lineFocusChanged(bool change);
+
     private:
 
-        void configChanged();
-
         virtual QGraphicsWidget * graphicsWidget();
+	
+        void configChanged();
 
         Ui::config configDialog;
 
         ContactWidget * m_contactList;
-
         QGraphicsWidget * m_widget;
-
         QGraphicsLinearLayout * m_mainLayout;
 
         Plasma::ScrollWidget * m_scroll;
-
         Plasma::LineEdit * m_find;
 
 };

@@ -36,12 +36,10 @@ PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
-
 }
 
 QGraphicsWidget * PlasmaContacts::graphicsWidget()
 {
-
     if (!m_widget) {
 
         m_widget = new QGraphicsWidget(this);
@@ -75,18 +73,17 @@ QGraphicsWidget * PlasmaContacts::graphicsWidget()
 
 void PlasmaContacts::configChanged()
 {
-
     KConfigGroup conf = config();
 
     m_find->setText("");
 
-    if (conf.readEntry("findData", true) != m_contactList->findData()) {
+    if(conf.readEntry("findData", true) != m_contactList->findData()) {
 
         m_contactList->setFilterData(conf.readEntry("findData", true));
 
     }
 
-    if (conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts()) {
+    if(conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts()) {
 
         m_contactList->setShowEmptyContacts(conf.readEntry("showEmptyContacts", true));
 
@@ -94,7 +91,7 @@ void PlasmaContacts::configChanged()
 
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
-    if (list.isEmpty()) {
+    if(list.isEmpty()) {
 
         setConfigurationRequired(true);
 
@@ -105,8 +102,6 @@ void PlasmaContacts::configChanged()
     }
 
     m_contactList->setCollections(list);
-
-
 }
 
 void PlasmaContacts::createConfigurationInterface(KConfigDialog * parent)
@@ -154,20 +149,20 @@ void PlasmaContacts::configAccepted()
     conf.writeEntry("showEmptyContacts", configDialog.showEmptyContacts->isChecked());
 
     emit configNeedsSaving();
-
 }
 
 void PlasmaContacts::lineChanged(const QString & text)
 {
     m_contactList->showContactsContains(text);
-
 }
 
 void PlasmaContacts::lineFocusChanged(bool change)
 {
-    if(change && m_find->text().contains(i18n(" Find ")))
+    if (change && m_find->text().contains(i18n(" Find "))) {
+	
         m_find->setText("");
-
+	
+    }
 }
 
 void PlasmaContacts::fetchCollections()
@@ -187,7 +182,6 @@ void PlasmaContacts::fetchCollections()
 
 void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 {
-
     if (job->error()) {
 
         qDebug() << "fetchCollections failed";
@@ -198,45 +192,38 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *> (job);
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach(const Akonadi::Collection & collection, collections) {
+    foreach (const Akonadi::Collection & collection, collections) {
 
 #ifndef ALL_COLLECTIONS
-        
         if (collection.resource().contains("akonadi_googlecontacts_resource")) {
-        
-#endif 	
-	    if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
+#endif
+            if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
-		Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+                Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
-		QListWidgetItem * item = new QListWidgetItem();
+                QListWidgetItem * item = new QListWidgetItem();
 
-		if (!attribute) {
+                if (!attribute) {
 
-		    item->setText(collection.name());
+                    item->setText(collection.name());
 
-		} else {
+                } else {
 
-		    item->setText(attribute->displayName());
+                    item->setText(attribute->displayName());
 
-		}
+                }
 
-		item->setData(Qt::UserRole, collection.id());
-		item->setCheckState(Qt::Unchecked);
+                item->setData(Qt::UserRole, collection.id());
+                item->setCheckState(Qt::Unchecked);
 
-		configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
+                configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
 
-	    }
-	    
-#ifndef ALL_COLLECTIONS	  
+            }
 
-	}
-	
-#endif	
-
-	
+#ifndef ALL_COLLECTIONS
+        }
+#endif
     }
-    
 
     if (!m_contactList->collectionsList().isEmpty()) {
 
@@ -259,5 +246,6 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 }
 
 #include "plasmacontacts.moc"
+
 
 

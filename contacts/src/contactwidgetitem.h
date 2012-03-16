@@ -34,27 +34,27 @@
 
 #include "contactwidgetiteminfo.h"
 
-class ContactWidgetItem : public Plasma::Frame {
-    
+class ContactWidgetItem : public Plasma::Frame
+{
     Q_OBJECT
 
     public:
 
         ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
-	
+
         virtual ~ContactWidgetItem();
 
-	void hide();
+        void hide();
         void show();
         void updateContact(const Akonadi::Item & item);
-	
+
         bool isEmpty();
         bool hasStringInName(const QString & string);
         bool hasStringInData(const QString & string);
 
-	bool operator<(const ContactWidgetItem * item);
+        bool operator<(const ContactWidgetItem * item);
         bool operator=(const Akonadi::Item & item);
-	
+
     public slots:
 
         void editContact();
@@ -62,7 +62,7 @@ class ContactWidgetItem : public Plasma::Frame {
         void openEmail(const QString & string);
 
     private slots:
-	
+
         void doHide();
 
     private:
@@ -71,14 +71,12 @@ class ContactWidgetItem : public Plasma::Frame {
         void setContactIcon();
 
         QGraphicsLinearLayout * m_mainLayout;
-
-	QPropertyAnimation * m_animation;
-	
+        QPropertyAnimation * m_animation;
         ContactWidgetItemInfo * m_contactInfo;
 
         Plasma::IconWidget * m_icon;
-	Plasma::PushButton * m_edit;
-	
+        Plasma::PushButton * m_edit;
+
         Akonadi::Item m_item;
         KABC::Addressee * m_addressee;
 
