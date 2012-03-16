@@ -20,14 +20,12 @@
 #include "tasklayout.h"
 
 TaskLayout::TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent)
-   : QGraphicsLinearLayout(orientation, parent)
+    : QGraphicsLinearLayout(orientation, parent)
 {
-
 }
 
 void TaskLayout::addItem(TaskWidgetItem * item)
 {
-
     TaskWidgetItem * item2;
 
     if (!item->relatedTo().isEmpty()) {
@@ -76,7 +74,6 @@ void TaskLayout::addItem(TaskWidgetItem * item)
     updateHierarchy();
 
     return;
-
 }
 
 void TaskLayout::updateHierarchy()
@@ -103,7 +100,6 @@ void TaskLayout::updateHierarchy()
 
 bool TaskLayout::hasParent(TaskWidgetItem * item)
 {
-
     TaskWidgetItem * item2;
 
     for (int i = 0; i < count(); i++) {
@@ -123,7 +119,6 @@ bool TaskLayout::hasParent(TaskWidgetItem * item)
 
 QList< int > TaskLayout::neighborsIndexes(TaskWidgetItem * item)
 {
-
     TaskWidgetItem * item2;
     QList<int> indexes;
     QString parent = item->relatedTo();
@@ -141,12 +136,10 @@ QList< int > TaskLayout::neighborsIndexes(TaskWidgetItem * item)
     }
 
     return indexes;
-
 }
 
 int TaskLayout::lastIndex(TaskWidgetItem * item)
 {
-
     int i = 0;
 
     TaskWidgetItem * item2;
@@ -177,7 +170,6 @@ int TaskLayout::lastIndex(TaskWidgetItem * item)
 
         }
 
-
     }
 
     return i;
@@ -185,7 +177,6 @@ int TaskLayout::lastIndex(TaskWidgetItem * item)
 
 void TaskLayout::updateItem(TaskWidgetItem * item)
 {
-
     TaskWidgetItem * item2;
     TaskWidgetItem * item3;
 
@@ -214,11 +205,10 @@ void TaskLayout::updateItem(TaskWidgetItem * item)
         }
 
     }
-    
+
     QGraphicsLinearLayout::removeItem(item);
 
     addItem(item);
-
 }
 
 
@@ -242,7 +232,6 @@ QSizeF TaskLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
 
 void TaskLayout::clear()
 {
-
     TaskWidgetItem * item;
 
     while (count() > 0) {
@@ -263,38 +252,37 @@ void TaskLayout::clear()
 
 }
 
-QList<TaskWidgetItem*> TaskLayout::updateCompletedTasks()
+QList<TaskWidgetItem *> TaskLayout::updateCompletedTasks()
 {
-    QList<TaskWidgetItem*> returnedList;
+    QList<TaskWidgetItem *> returnedList;
     QList<QString> list;
     TaskWidgetItem * item;
-    
-    for (int i = count()-1; i >= 0; i--) {
-	
-	item = static_cast<TaskWidgetItem *>(itemAt(i));
-	
-	if (item->isCompleted()) {
-	 
-	    if (!list.contains(item->uid())) {
-		
-		returnedList.push_back(item);
-		
-	    } else {
-		
-		list.push_back(item->relatedTo());
-	    }
-	    
-	} else {
-	 
-	    list.push_back(item->relatedTo());
-	    
-	}
+
+    for (int i = count() - 1; i >= 0; i--) {
+
+        item = static_cast<TaskWidgetItem *>(itemAt(i));
+
+        if (item->isCompleted()) {
+
+            if (!list.contains(item->uid())) {
+
+                returnedList.push_back(item);
+
+            } else {
+
+                list.push_back(item->relatedTo());
+            }
+
+        } else {
+
+            list.push_back(item->relatedTo());
+
+        }
     }
-    
+
     return returnedList;
 }
 
 TaskLayout::~TaskLayout()
 {
-
 }

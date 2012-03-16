@@ -46,50 +46,41 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
     connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
             SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
-            SLOT(itemRemoved(Akonadi::Item)));
-    
+            SLOT(itemRemoved(Akonadi::Item))); 
 }
 
 void TaskWidget::setExpiredColor(QString color)
 {
-
     m_expiredColor = color;
 }
 
 void TaskWidget::setTodayColor(QString color)
 {
-
     m_todayColor = color;
 }
 
 void TaskWidget::setWeekColor(QString color)
 {
-
     m_weekColor = color;
 }
 
 void TaskWidget::setOtherColor(QString color)
 {
-
     m_otherColor = color;
 }
 
 void TaskWidget::setOrderBy(TaskWidget::OrderBy order)
 {
-
     m_order = order;
 }
 
 void TaskWidget::setAutoHideCompleted(bool hide)
 {
-
     m_autoHide = hide;
-    
 }
 
 void TaskWidget::setAutoDeleteCompleted(bool del)
 {
-    
     m_autoDel = del;
 }
 
@@ -99,21 +90,21 @@ void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 
     m_idList = ids;
     
-    if (!m_idList.isEmpty())
+    if (!m_idList.isEmpty()) {
 
         fetchCollections();
-
+	
+    }
+    
 }
 
 void TaskWidget::fetchCollections()
 {
-
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
 
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
-
 }
 
 void TaskWidget::fetchCollectionsFinished(KJob * job)
@@ -145,14 +136,11 @@ void TaskWidget::fetchCollectionsFinished(KJob * job)
 
 void TaskWidget::fetchItems(const Akonadi::Collection & collection)
 {
-
     Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob(collection);
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchItemsFinished(KJob *)));
 
     job->fetchScope().fetchFullPayload(true);
-
-
 }
 
 void TaskWidget::fetchItemsFinished(KJob * job)
@@ -178,7 +166,6 @@ void TaskWidget::fetchItemsFinished(KJob * job)
 
     }
 
-
 }
 
 void TaskWidget::itemDeleted(KJob * job)
@@ -198,7 +185,6 @@ void TaskWidget::itemDeleted(KJob * job)
 
 void TaskWidget::addItem(TaskWidgetItem * item)
 {
-
     m_layout->addItem(item);
 
     updateCompletedTasks();
@@ -207,14 +193,11 @@ void TaskWidget::addItem(TaskWidgetItem * item)
 
 void TaskWidget::clear()
 {
-
     m_layout->clear();
-
 }
 
 void TaskWidget::updateCompletedTasks()
 {
-
     if (!m_autoDel && !m_autoHide) {
 	
 	return;
@@ -238,12 +221,11 @@ void TaskWidget::updateCompletedTasks()
 	}
 	
     }
+    
 }
-
 
 void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
-
     for (int i = 0; i < m_idList.count(); i++) {
 
         if (m_idList.at(i) == collection.id()) {
@@ -262,7 +244,6 @@ void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection
 
 void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
 {
-
     Q_UNUSED(array);
 
     TaskWidgetItem * task;
@@ -288,7 +269,6 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
 
 void TaskWidget::itemRemoved(const Akonadi::Item & item)
 {
-
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {

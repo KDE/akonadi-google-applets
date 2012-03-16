@@ -52,14 +52,13 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 
 void TaskWidgetItem::setItemInfo()
 {
-
     m_layout = new QGraphicsGridLayout(this);
-    
+
     m_completed = new Plasma::CheckBox(this);
     m_completed->setChecked(m_todo->isCompleted());
     m_completed->setMaximumSize(25, 25);
-    
-    connect(m_completed, SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));    
+
+    connect(m_completed, SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
     m_layout->addItem(m_completed, 0, 0);
 
     if (m_todo->hasDueDate()) {
@@ -68,7 +67,7 @@ void TaskWidgetItem::setItemInfo()
         m_date->setOrientation(Qt::Horizontal);
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
         m_date->setMaximumHeight(15);
-        	
+
         setColorForDate();
 
         m_layout->addItem(m_date, 0, 1);
@@ -82,7 +81,7 @@ void TaskWidgetItem::setItemInfo()
     m_name->setOrientation(Qt::Horizontal);
 
     connect(m_name, SIGNAL(clicked()), SLOT(editTask()));
-    
+
     if (m_todo->isCompleted()) {
 
         m_name->setIcon(KIcon("dialog-ok"));
@@ -99,33 +98,32 @@ void TaskWidgetItem::setItemInfo()
     }
 
     Plasma::ToolTipContent content(m_todo->summary(), m_todo->description());
-    
+
     if (m_todo->isCompleted()) {
-	
-	content.setImage(KIcon("dialog-ok"));
-	
+
+        content.setImage(KIcon("dialog-ok"));
+
     } else {
-	
-	content.setImage(KIcon("edit-delete"));
-	
+
+        content.setImage(KIcon("edit-delete"));
+
     }
-    
+
     Plasma::ToolTipManager::self()->setContent(m_name, content);
-    
+
     if (m_date) {
 
-	Plasma::ToolTipManager::self()->setContent(m_date, content);
-	
+        Plasma::ToolTipManager::self()->setContent(m_date, content);
+
         connect(m_date, SIGNAL(clicked()), SLOT(editTask()));
 
     }
-    
+
     setLayout(m_layout);
 }
 
 void TaskWidgetItem::TaskWidgetItem::editTask()
 {
-    
     m_editor = new TaskEditor();
 
     m_editor->setAllDay(m_todo->allDay());
@@ -175,25 +173,21 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
 
     dialog->show();
-
 }
 
 void TaskWidgetItem::saveTask()
 {
-
     m_editor->updateTodo(m_todo);
 
     m_item.setPayload<KCalCore::Todo::Ptr>(m_todo);
 
     Akonadi::ItemModifyJob * job = new Akonadi::ItemModifyJob(m_item);
     connect(job, SIGNAL(result(KJob *)), SLOT(modifyFinished(KJob *)));
-
 }
 
 
 void TaskWidgetItem::setColorForDate()
 {
-
     int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
 
     if (!m_completed->isChecked()) {
@@ -222,7 +216,6 @@ void TaskWidgetItem::setColorForDate()
 
 void TaskWidgetItem::setCompleted(bool completed)
 {
-
     if (completed) {
 
         m_todo->setCompleted(true);
@@ -256,7 +249,6 @@ void TaskWidgetItem::setUnrelated()
 
 void TaskWidgetItem::updateTask(const Akonadi::Item & item)
 {
-
     m_item = item;
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
@@ -295,12 +287,10 @@ void TaskWidgetItem::updateTask(const Akonadi::Item & item)
     }
 
     setItemInfo();
-
 }
 
 bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, bool completedFirst)
 {
-
     if (this->m_todo->isCompleted() && !item->m_todo->isCompleted()) {
 
         if (completedFirst)
@@ -318,7 +308,7 @@ bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, bool completedFirs
     } else {
 
         if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
-
+ 
             if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
 
                 return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
@@ -346,12 +336,10 @@ bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, bool completedFirs
     }
 
     return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
-
 }
 
 bool TaskWidgetItem::orderByDate(const TaskWidgetItem * item, bool completedFirst)
 {
-
     if (this->m_todo->isCompleted() && !item->m_todo->isCompleted()) {
 
         if (completedFirst)
@@ -363,7 +351,7 @@ bool TaskWidgetItem::orderByDate(const TaskWidgetItem * item, bool completedFirs
 
         if (completedFirst)
             return false;
-	
+
         return true;
 
     } else {
@@ -397,51 +385,45 @@ bool TaskWidgetItem::orderByDate(const TaskWidgetItem * item, bool completedFirs
     }
 
     return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
-
 }
 
 
 bool TaskWidgetItem::operator<(const TaskWidgetItem * item)
 {
-    switch(((TaskWidget *)parentWidget())->orderBy()) {
+    switch (((TaskWidget *)parentWidget())->orderBy()) {
 
-	case(0):
+    case(0):
 
-	    return orderByName(item);
-    
-	case(1):
+        return orderByName(item);
 
-	    return orderByDate(item);
+    case(1):
 
-	case(2):
+        return orderByDate(item);
 
-	    return orderByDate(item, true);
+    case(2):
 
-	case(3):
+        return orderByDate(item, true);
 
-	    return orderByName(item, true);
+    case(3):
+
+        return orderByName(item, true);
     }
-    
+
     return false;
 }
 
 bool TaskWidgetItem::operator<<(const TaskWidgetItem * item)
 {
-
     return (this->m_todo->relatedTo(KCalCore::Incidence::RelTypeParent) == item->m_todo->uid());
-
 }
 
 bool TaskWidgetItem::operator==(const Akonadi::Item & item)
 {
-
     return (this->m_item.id() == item.id());
-
 }
 
 void TaskWidgetItem::modifyFinished(KJob * job)
 {
-
     if (job->error()) {
 
         qDebug() << "Error occurred";
@@ -453,7 +435,3 @@ void TaskWidgetItem::modifyFinished(KJob * job)
     }
 
 }
-
-
-
-

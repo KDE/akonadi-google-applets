@@ -35,14 +35,14 @@
 
 #include "taskeditor.h"
 
-class TaskWidgetItem : public Plasma::Frame {
-       
+class TaskWidgetItem : public Plasma::Frame
+{
     Q_OBJECT
 
     public:
 
         TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
-	
+
         void setRelated(TaskWidgetItem * item);
         void setUnrelated();
 
@@ -52,46 +52,46 @@ class TaskWidgetItem : public Plasma::Frame {
         bool operator<<(const TaskWidgetItem * item);
         bool operator==(const Akonadi::Item & item);
 
-	int indent() const {
+        int indent() const {
             return m_indent;
         }
-	
+
         QString relatedTo() {
             return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent);
         }
 
         QString uid() {
-	    return m_todo->uid();
+            return m_todo->uid();
         }
-        
+
         bool isCompleted() {
-	    return m_todo->isCompleted();
+            return m_todo->isCompleted();
         }
-        
+
         Akonadi::Item item() {
-	    return m_item;
+            return m_item;
         }
-        
+
     public slots:
-	
+
         void setCompleted(bool completed);
         void editTask();
         void saveTask();
-	
+
     private slots:
-    
+
         void modifyFinished(KJob * job);
-	
+
     private:
 
         void setItemInfo();
         void setColorForDate();
 
-	bool orderByName(const TaskWidgetItem * item, bool completedFirst = false);
-	bool orderByDate(const TaskWidgetItem * item, bool completedFirst = false);
-	
-	TaskEditor * m_editor;
-	
+        bool orderByName(const TaskWidgetItem * item, bool completedFirst = false);
+        bool orderByDate(const TaskWidgetItem * item, bool completedFirst = false);
+
+        TaskEditor * m_editor;
+
         QGraphicsGridLayout * m_layout;
 
         Plasma::CheckBox * m_completed;

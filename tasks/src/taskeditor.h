@@ -31,39 +31,37 @@
 
 #include "ui_taskedit.h"
 
-class TaskEditor : public QWidget {
-    
+class TaskEditor : public QWidget
+{
     Q_OBJECT
-    
-    public:
-    
-	explicit TaskEditor(QWidget *parent = 0);
 
-	void disableStartDate();
-	void disableDueDate();
-	void setCollections(QList<Akonadi::Collection> collections);
-	void setAllDay(bool checked);
-	void setStartDate(KDateTime dateTime);
-	void setDueDate(KDateTime dateTime);
-	void setName(QString name);
-	void setDescription(QString description);
-	
-	void updateTodo(KCalCore::Todo::Ptr todo);
-	
-	Akonadi::Item::Id selectedCollection();
-	
+    public:
+
+        explicit TaskEditor(QWidget * parent = 0);
+
+        void disableStartDate();
+        void disableDueDate();
+        void setCollections(QList<Akonadi::Collection> collections);
+        void setAllDay(bool checked);
+        void setStartDate(KDateTime dateTime);
+        void setDueDate(KDateTime dateTime);
+        void setName(QString name);
+        void setDescription(QString description);
+
+        void updateTodo(KCalCore::Todo::Ptr todo);
+
+        Akonadi::Item::Id selectedCollection();
+
     public slots:
 
-	void setAllDayEnabled();
-	void setTimeDisabled(bool disabled);
-	void setDateTimeStart(bool enabled);
-	void setDateTimeDue(bool enabled);
-	
-    private:
-    
-	Ui::taskedit * m_taskEditor;
+        void setAllDayEnabled();
+        void setTimeDisabled(bool disabled);
+        void setDateTimeStart(bool enabled);
+        void setDateTimeDue(bool enabled);
 
-    
+    private:
+
+        Ui::taskedit * m_taskEditor;
 };
 
 #endif // TASKEDITOR_H

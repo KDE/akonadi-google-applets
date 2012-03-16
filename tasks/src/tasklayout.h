@@ -26,21 +26,21 @@
 
 #include "taskwidgetitem.h"
 
-class TaskLayout : public QGraphicsLinearLayout {
-
+class TaskLayout : public QGraphicsLinearLayout
+{
     public:
 
         TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
-	
+
         virtual ~TaskLayout();
 
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 
         void addItem(TaskWidgetItem * item);
-	void clear();
+        void clear();
         void updateItem(TaskWidgetItem * item);
-	
-	QList<TaskWidgetItem*> updateCompletedTasks();
+
+        QList<TaskWidgetItem *> updateCompletedTasks();
 
     private:
 
