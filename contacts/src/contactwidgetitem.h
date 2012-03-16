@@ -32,6 +32,8 @@
 
 #include <QPropertyAnimation>
 
+#include "contactwidgetiteminfo.h"
+
 class ContactWidgetItem : public Plasma::Frame {
     
     Q_OBJECT
@@ -72,10 +74,11 @@ class ContactWidgetItem : public Plasma::Frame {
 
 	QPropertyAnimation * m_animation;
 	
-        Plasma::IconWidget * m_icon;
-        Plasma::Label * m_infoText;
-        Plasma::PushButton * m_edit;
+        ContactWidgetItemInfo * m_contactInfo;
 
+        Plasma::IconWidget * m_icon;
+	Plasma::PushButton * m_edit;
+	
         Akonadi::Item m_item;
         KABC::Addressee * m_addressee;
 

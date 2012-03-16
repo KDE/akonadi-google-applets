@@ -58,7 +58,6 @@ QGraphicsWidget * PlasmaContacts::graphicsWidget()
 
         m_scroll = new Plasma::ScrollWidget(m_widget);
         m_scroll->setWidget(m_contactList);
-        m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
 

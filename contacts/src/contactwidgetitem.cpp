@@ -29,6 +29,7 @@
 
 ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
+      m_contactInfo(0),
       m_edit(0),
       m_show(false),
       m_info(false)
@@ -192,55 +193,32 @@ void ContactWidgetItem::setContactIcon()
 
 
 void ContactWidgetItem::setContactInfo()
-{
-
-    QString text;
-
-    text += "<table cellpadding=2>";
-
+{ 
+    m_contactInfo = new ContactWidgetItemInfo(this);
+    
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
-        text += "<tr><td><strong>" + i18n("Home number") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Home).number() + "</td></tr>";
+        m_contactInfo->setHomeNumber(m_addressee->phoneNumber(KABC::PhoneNumber::Home).number());
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
 
-        text += "<tr><td><strong>" + i18n("Office number") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Work).number() + "</td></tr>";
+        m_contactInfo->setWorkNumber(m_addressee->phoneNumber(KABC::PhoneNumber::Work).number());
 
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
 
-        text += "<tr><td><strong>" + i18n("Cell phone") + ": </strong></td><td>" + m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number() + "</td></tr>";
+        m_contactInfo->setCellPhone(m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number());
 
     }
 
     if (!m_addressee->emails().isEmpty()) {
 
-        for(int i = 0; i < m_addressee->emails().count(); i++) {
-
-            text += "<tr><td>";
-
-            if (i == 0) {
-
-                text += "<strong>" + i18n("Email") + ": </strong>";
-
-            }
-
-            text += "</td><td><a href=\"" + m_addressee->emails().at(i) + "\">" + m_addressee->emails().at(i) + "</a></td></tr>";
-
-        }
+        m_contactInfo->setEmails(m_addressee->emails());
 
     }
-
-    text += "</table>";
-
-    m_infoText = new Plasma::Label(this);
-    m_infoText->setText(text);
-    m_infoText->nativeWidget()->setIndent(10);
-    m_infoText->setTextSelectable(true);
-    m_infoText->setMaximumHeight(m_infoText->size().height());
-    connect(m_infoText, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
+    
 }
 
 void ContactWidgetItem::showContactInfo()
@@ -259,8 +237,8 @@ void ContactWidgetItem::showContactInfo()
 
         if (!isEmpty()) {
 
-            m_mainLayout->removeItem(m_infoText);
-            m_infoText->hide();
+            m_mainLayout->removeItem(m_contactInfo);
+	    m_contactInfo->hide();
 
         }
 
@@ -275,11 +253,11 @@ void ContactWidgetItem::showContactInfo()
 
         if (!isEmpty()) {
 
-            m_mainLayout->addItem(m_infoText);
-            m_infoText->show();
+            m_mainLayout->addItem(m_contactInfo);
+	    m_contactInfo->show();
 
         }
-
+	
         m_mainLayout->addItem(m_edit);
         m_edit->show();
 
@@ -351,7 +329,7 @@ bool ContactWidgetItem::isEmpty()
 
 }
 
-bool ContactWidgetItem::operator< (const ContactWidgetItem * item)
+bool ContactWidgetItem::operator<(const ContactWidgetItem * item)
 {
     return (this->m_icon->text().toLower() < item->m_icon->text().toLower());
 
@@ -405,10 +383,10 @@ void ContactWidgetItem::updateContact(const Akonadi::Item & item)
 
     m_addressee = new KABC::Addressee(addressee);
 
-    if (!m_infoText) {
+    if (!m_contactInfo) {
 
-        delete m_infoText;
-        m_infoText = 0;
+        delete m_contactInfo;
+        m_contactInfo = 0;
 
     }
 
