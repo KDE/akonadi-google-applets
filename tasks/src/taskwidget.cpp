@@ -158,11 +158,15 @@ void TaskWidget::fetchItemsFinished(KJob * job)
 
     foreach (const Akonadi::Item & item, items) {
 
-        TaskWidgetItem * contact;
+	if (item.hasPayload<KCalCore::Todo::Ptr>()) {
+	
+	    TaskWidgetItem * contact;
 
-        contact = new TaskWidgetItem(item, this);
+	    contact = new TaskWidgetItem(item, this);
 
-        addItem(contact);
+	    addItem(contact);
+	    
+	}
 
     }
 
