@@ -21,16 +21,128 @@
 
 #include <Plasma/Label>
 
+#include <Akonadi/Entity>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemFetchJob>
+
+#include <KCalCore/Event>
+
 AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags)
 {
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
-    
-    Plasma::Label * label = new Plasma::Label(this);
-    label->setText("Agenda widget test");
-    
-    m_layout->addItem(label);
-    m_layout->setAlignment(label,Qt::AlignTop);
-    
+	
     setLayout(m_layout);
+
+}
+
+void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
+{
+
+    clear();
+    
+    m_idList = ids;
+    
+    if (!m_idList.isEmpty()) {
+
+        fetchCollections();
+	
+    }
+    
+}
+
+void AgendaWidget::fetchCollections()
+{
+
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
+
+    job->fetchScope();
+
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
+    
+}
+
+void AgendaWidget::fetchCollectionsFinished(KJob * job)
+{
+    
+    if (job->error()) {
+
+        qDebug() << "fetchCollections failed";
+
+        return;
+    }
+
+    Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+
+    const Akonadi::Collection::List collections = fetchJob->collections();
+
+    foreach (const Akonadi::Collection & collection, collections) {
+
+        if (m_idList.contains(collection.id())) {
+
+            fetchItems(collection);
+
+        }
+
+    }
+
+}
+
+void AgendaWidget::fetchItems(const Akonadi::Collection & collection)
+{
+
+    Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob(collection);
+
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchItemsFinished(KJob *)));
+
+    job->fetchScope().fetchFullPayload(true);
+    
+}
+
+void AgendaWidget::fetchItemsFinished(KJob * job)
+{
+
+    if (job->error()) {
+
+        qDebug() << "fetchItems failed";
+
+        return;
+    }
+
+    Akonadi::ItemFetchJob * fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+
+    const Akonadi::Item::List items = fetchJob->items();
+
+    foreach (const Akonadi::Item & item, items) {
+
+        addItem(item);
+
+    }
+    
+}
+
+void AgendaWidget::addItem(const Akonadi::Item & item)
+{
+
+    KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
+    
+    qDebug() << event->summary();
+    
+}
+
+void AgendaWidget::clear()
+{
+
+    AgendaWidgetDateItem * item;
+
+    while (m_layout->count() > 0) {
+
+        item = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(0));
+
+        m_layout->removeItem(item);
+
+        item->deleteLater();
+
+    }
+    
 }

@@ -22,6 +22,13 @@
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Collection>
+#include <Akonadi/Monitor>
+
+#include "agendawidgetdateitem.h"
+#include "agendawidgeteventitem.h"
+
 class AgendaWidget : public QGraphicsWidget
 {
     Q_OBJECT
@@ -29,11 +36,31 @@ class AgendaWidget : public QGraphicsWidget
     public:
 	
         AgendaWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
+	
         virtual ~AgendaWidget(){};
+	
+	QList<Akonadi::Collection::Id> collectionsList() const {
+            return m_idList;
+        }
+        
+        void setCollections(QList<Akonadi::Collection::Id> ids);
+
+    public slots:
+	
+	void fetchCollectionsFinished(KJob * job);
+        void fetchItemsFinished(KJob * job);
 	
     private:
 	
+	void addItem(const Akonadi::Item & item);
+        void clear();
+	
+	void fetchCollections();
+        void fetchItems(const Akonadi::Collection & collections);
+	
 	QGraphicsLinearLayout * m_layout;
-};
+	
+	QList<Akonadi::Item::Id> m_idList;
+};      
 
 #endif // AGENDAWIDGET_H

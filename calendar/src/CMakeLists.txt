@@ -7,6 +7,8 @@ find_package(KDE4 REQUIRED)
 find_package(KdepimLibs REQUIRED)
 include(KDE4Defaults)
  
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}") 
+ 
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 include_directories(
    ${CMAKE_SOURCE_DIR}
@@ -15,9 +17,9 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(calendar_SRCS agendawidget.cpp plasmacalendar.cpp)
+set(calendar_SRCS agendawidgeteventitem.cpp agendawidgetdateitem.cpp agendawidget.cpp plasmacalendar.cpp)
 
-#kde4_add_ui_files(calendar_SRCS config.ui)
+kde4_add_ui_files(calendar_SRCS config.ui)
  
 kde4_add_plugin(plasma_applet_google_calendar ${calendar_SRCS})
 target_link_libraries(plasma_applet_google_calendar

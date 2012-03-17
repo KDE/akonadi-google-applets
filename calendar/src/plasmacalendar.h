@@ -21,12 +21,17 @@
 #define PLASMA_CALENDAR_HEADER
  
 #include <Plasma/PopupApplet>
+#include <Plasma/ScrollWidget>
 #include <Plasma/TabBar>
  
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
  
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob> 
+ 
 #include "agendawidget.h"
+#include "ui_config.h"
  
 class PlasmaCalendar : public Plasma::PopupApplet
 {
@@ -37,17 +42,30 @@ class PlasmaCalendar : public Plasma::PopupApplet
         PlasmaCalendar(QObject *parent, const QVariantList &args);
         ~PlasmaCalendar(){};
  
+        void createConfigurationInterface(KConfigDialog * parent);
+	
+    public slots:
+    
+	void configAccepted();
+	
+	void fetchCollections();
+        void fetchCollectionsFinished(KJob * job);
+	
     private:
 	
         virtual QGraphicsWidget * graphicsWidget();  
  
+	void configChanged();
+
+        Ui::config configDialog;
+	
 	QGraphicsWidget * m_widget;
 	QGraphicsLinearLayout * m_layout;
 	
 	AgendaWidget * m_agenda;
 	
+	Plasma::ScrollWidget * m_scroll;
 	Plasma::TabBar * m_tab;
-
 };
  
 K_EXPORT_PLASMA_APPLET(plasma_google_calendar, PlasmaCalendar)
