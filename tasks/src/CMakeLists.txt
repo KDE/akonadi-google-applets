@@ -2,7 +2,7 @@ project(plasma-tasks)
 
 cmake_minimum_required(VERSION 2.6)
 
-find_package(Qt4 4.7.0 REQUIRED) 
+find_package(Qt4 4.8.0 REQUIRED) 
 find_package(KDE4 4.6.0 REQUIRED)
 find_package(KdepimLibs REQUIRED)
 include(KDE4Defaults)
