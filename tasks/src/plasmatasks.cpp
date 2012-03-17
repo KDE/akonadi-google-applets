@@ -299,13 +299,17 @@ void PlasmaTasks::fetchCollectionsForEditorFinished(KJob * job)
 
     foreach (const Akonadi::Collection & collection, collections) {
 
-        if (((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) &&
-                collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
-
-            m_collections.push_back(collection);
-
+#ifndef ALL_COLLECTIONS
+        if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource")))
+#endif
+	    if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+	
+		m_collections.push_back(collection);
+		
+	    }
+#ifndef ALL_COLLECTIONS
         }
-
+#endif
     }
 
     m_editor->setCollections(m_collections);
