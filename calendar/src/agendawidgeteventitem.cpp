@@ -22,11 +22,11 @@
 AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent)
     : IconWidget(parent)
 {
-
     m_item = item;
     
     m_event = item.payload<KCalCore::Event::Ptr>();
     
+    setOrientation(Qt::Horizontal);
     setMinimumWidth(50);
     setMaximumHeight(15);
     setText(m_event->summary());

@@ -19,6 +19,8 @@
 
 #include "agendawidgetdateitem.h"
 
+#include <KIcon>
+
 AgendaWidgetDateItem::AgendaWidgetDateItem(KDateTime date, QGraphicsWidget * parent)
     : Plasma::Frame(parent)
 {
@@ -28,15 +30,25 @@ AgendaWidgetDateItem::AgendaWidgetDateItem(KDateTime date, QGraphicsWidget * par
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
     
     m_dateIcon = new Plasma::IconWidget(this);
+    m_dateIcon->setIcon(KIcon("view-calendar-day"));
     m_dateIcon->setOrientation(Qt::Horizontal);
     m_dateIcon->setMinimumWidth(50);
-    m_dateIcon->setMaximumHeight(15);
+    m_dateIcon->setMaximumHeight(20);
+    m_dateIcon->setTextBackgroundColor(Qt::red);
     m_dateIcon->setText(m_date.toString(KDateTime::LocalDate));
     
     m_layout->addItem(m_dateIcon);
     
     setLayout(m_layout);
 }
+
+void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
+{
+
+    m_layout->addItem(event);
+    
+}
+
 
 void AgendaWidgetDateItem::setDate(KDateTime date)
 {

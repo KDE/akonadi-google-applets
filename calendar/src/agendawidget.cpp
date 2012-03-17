@@ -126,8 +126,31 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
-    qDebug() << event->summary();
+    AgendaWidgetDateItem * dateItem;
+    AgendaWidgetEventItem * newEvent; 
     
+    for (int i = 0; i < m_layout->count(); i++) {
+	
+	dateItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
+	
+	if (dateItem->date() == event->dtEnd()) {
+	 
+	    newEvent = new AgendaWidgetEventItem(item,this);
+	    
+	    dateItem->addEvent(newEvent);
+	    
+	    return;
+	}
+	
+    }
+    
+    dateItem = new AgendaWidgetDateItem(event->dtEnd(),this);
+    
+    newEvent = new AgendaWidgetEventItem(item,this);
+	    
+    dateItem->addEvent(newEvent);
+    
+    m_layout->addItem(dateItem);
 }
 
 void AgendaWidget::clear()
