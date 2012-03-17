@@ -23,7 +23,6 @@
 
 #include <KIcon>
 #include <KDateTime>
-#include <KDateTimeEdit>
 
 #include <Akonadi/ItemModifyJob>
 
@@ -47,7 +46,6 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     setFrameShadow(Plasma::Frame::Raised);
 
     setItemInfo();
-
 }
 
 void TaskWidgetItem::setItemInfo()
