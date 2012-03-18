@@ -115,7 +115,11 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 
     foreach (const Akonadi::Item & item, items) {
 
-        addItem(item);
+	if (item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	    addItem(item);
+	    
+	}
 
     }
     
@@ -123,9 +127,47 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 
 void AgendaWidget::addItem(const Akonadi::Item & item)
 {
-
+    
+    KDateTime min = KDateTime::currentLocalDateTime();
+    KDateTime max = min.addDays(30);
+    KDateTime eventDay;
+    
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
+    eventDay = event->dtEnd();
+    
+    if (eventDay > max) {
+
+	return;
+	
+    } else if (eventDay < min && !event->recurs()) {
+
+	return;
+	
+    } else if (eventDay < min && event->recurs()) {
+	
+	KDateTime dt = eventDay;
+		
+	while (true) {
+	    
+	    dt = event->recurrence()->getNextDateTime(dt);
+	    
+	    if (!dt.isValid() || dt > max) {
+
+		return;
+		
+	    } else if (dt.isValid() && dt >= min) {
+		
+		eventDay = dt;
+		
+		break;
+		
+	    }
+	    
+	}
+	
+    }
+   
     AgendaWidgetDateItem * dateItem;
     AgendaWidgetEventItem * newEvent; 
     
@@ -133,7 +175,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
 	dateItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
 	
-	if (dateItem->date() == event->dtEnd()) {
+	if (dateItem->date() == eventDay) {
 	 
 	    newEvent = new AgendaWidgetEventItem(item,this);
 	    
@@ -144,11 +186,26 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
     }
     
-    dateItem = new AgendaWidgetDateItem(event->dtEnd(),this);
+    dateItem = new AgendaWidgetDateItem(eventDay,this);
     
     newEvent = new AgendaWidgetEventItem(item,this);
 	    
     dateItem->addEvent(newEvent);
+    
+    AgendaWidgetDateItem * dtItem;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+	
+	dtItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
+	
+	if (dtItem->date() > dateItem->date()) {
+	 
+	    m_layout->insertItem(i,dateItem);
+	    return;
+	    
+	}
+	
+    }
     
     m_layout->addItem(dateItem);
 }
