@@ -32,7 +32,7 @@
 #include "taskwidget.h"
 
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
-    : Plasma::Frame(parent),
+    : QGraphicsWidget(parent),
       m_editor(0),
       m_completed(0),
       m_date(0),
@@ -43,8 +43,15 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
-    setFrameShadow(Plasma::Frame::Raised);
-
+    setAutoFillBackground(true);
+    
+    QColor color = QColor(((TaskWidget *)parentWidget())->backgroundColor());
+    color.setAlphaF(0.5);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window,color);
+    this->setPalette(palette);
+    
     setItemInfo();
 }
 
@@ -52,19 +59,30 @@ void TaskWidgetItem::setItemInfo()
 {
     m_layout = new QGraphicsGridLayout(this);
 
-    m_completed = new Plasma::CheckBox(this);
-    m_completed->setChecked(m_todo->isCompleted());
-    m_completed->setMaximumSize(25, 25);
+    m_completed = new Plasma::IconWidget(this);
+    
+    if (m_todo->isCompleted()) {
+	
+	m_completed->setIcon(KIcon("task-complete"));
+	
+    } else {
+	
+	m_completed->setIcon(KIcon("task-reject"));
+	
+    }
+    m_completed->setMinimumSize(20,20);
+    m_completed->setMaximumSize(20,20);
 
-    connect(m_completed, SIGNAL(toggled(bool)), SLOT(setCompleted(bool)));
+    connect(m_completed, SIGNAL(clicked()), SLOT(setCompleted()));
     m_layout->addItem(m_completed, 0, 0);
 
     if (m_todo->hasDueDate()) {
 
         m_date = new Plasma::IconWidget(this);
-        m_date->setOrientation(Qt::Horizontal);
+	m_date->setOrientation(Qt::Horizontal);
+	m_date->setMinimumWidth(50);
+	m_date->setMinimumHeight(20);
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
-        m_date->setMaximumHeight(15);
 
         setColorForDate();
 
@@ -74,7 +92,8 @@ void TaskWidgetItem::setItemInfo()
 
     m_name = new Plasma::IconWidget(this);
     m_name->setMinimumWidth(50);
-    m_name->setMaximumHeight(15);
+    m_name->setMinimumHeight(20);
+    m_name->setMaximumHeight(20);
     m_name->setText(m_todo->summary());
     m_name->setOrientation(Qt::Horizontal);
 
@@ -188,7 +207,7 @@ void TaskWidgetItem::setColorForDate()
 {
     int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
 
-    if (!m_completed->isChecked()) {
+    if (!m_todo->isCompleted()) {
 
         if (days < 0) {
 
@@ -212,15 +231,15 @@ void TaskWidgetItem::setColorForDate()
 
 }
 
-void TaskWidgetItem::setCompleted(bool completed)
+void TaskWidgetItem::setCompleted()
 {
-    if (completed) {
+    if (m_todo->isCompleted()) {
 
-        m_todo->setCompleted(true);
+        m_todo->setCompleted(false);
 
     } else {
 
-        m_todo->setCompleted(false);
+        m_todo->setCompleted(true);
     }
 
     m_item.setPayload<KCalCore::Todo::Ptr>(m_todo);

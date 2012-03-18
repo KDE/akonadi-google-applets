@@ -26,6 +26,7 @@
 
 TaskWidget::TaskWidget(QGraphicsWidget * parent)
     : QGraphicsWidget(parent),
+      m_backgroundColor("#303030"),
       m_expiredColor("#c80000"),
       m_todayColor("#e64600"),
       m_weekColor("#e6f000"),
@@ -47,6 +48,11 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
             SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             SLOT(itemRemoved(Akonadi::Item))); 
+}
+
+void TaskWidget::setBackgroundColor(QString color)
+{
+    m_backgroundColor = color;
 }
 
 void TaskWidget::setExpiredColor(QString color)

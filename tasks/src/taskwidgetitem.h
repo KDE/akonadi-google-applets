@@ -35,7 +35,7 @@
 
 #include "taskeditor.h"
 
-class TaskWidgetItem : public Plasma::Frame
+class TaskWidgetItem : public QGraphicsWidget
 {
     Q_OBJECT
 
@@ -74,7 +74,7 @@ class TaskWidgetItem : public Plasma::Frame
 
     public slots:
 
-        void setCompleted(bool completed);
+        void setCompleted();
         void editTask();
         void saveTask();
 
@@ -94,7 +94,7 @@ class TaskWidgetItem : public Plasma::Frame
 
         QGraphicsGridLayout * m_layout;
 
-        Plasma::CheckBox * m_completed;
+        Plasma::IconWidget * m_completed;
         Plasma::IconWidget * m_date;
         Plasma::IconWidget * m_name;
 

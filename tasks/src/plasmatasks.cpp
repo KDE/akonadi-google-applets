@@ -90,6 +90,7 @@ void PlasmaTasks::configChanged()
     m_tasksList->setAutoDeleteCompleted(conf.readEntry("autoDel", false));
     m_tasksList->setAutoHideCompleted(conf.readEntry("autoHide", false));
 
+    m_tasksList->setBackgroundColor(conf.readEntry("backgroundColor", "#303030"));
     m_tasksList->setExpiredColor(conf.readEntry("expiredColor", "#c80000"));
     m_tasksList->setTodayColor(conf.readEntry("todayColor", "#e64600"));
     m_tasksList->setWeekColor(conf.readEntry("weekColor", "#e6f000"));
@@ -139,6 +140,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     appearanceconfigDialog.setupUi(widget1);
 
+    appearanceconfigDialog.backgroundColor->setColor(QColor(m_tasksList->backgroundColor()));
     appearanceconfigDialog.expiredColor->setColor(QColor(m_tasksList->expiredColor()));
     appearanceconfigDialog.todayColor->setColor(QColor(m_tasksList->todayColor()));
     appearanceconfigDialog.weekColor->setColor(QColor(m_tasksList->weekColor()));
@@ -174,6 +176,11 @@ void PlasmaTasks::configAccepted()
 
     conf.writeEntry("collections", list);
 
+    if (appearanceconfigDialog.backgroundColor->color().name() != m_tasksList->backgroundColor()) {
+
+        conf.writeEntry("backgroundColor", appearanceconfigDialog.backgroundColor->color().name());
+    }
+    
     if (appearanceconfigDialog.expiredColor->color().name() != m_tasksList->expiredColor()) {
 
         conf.writeEntry("expiredColor", appearanceconfigDialog.expiredColor->color().name());

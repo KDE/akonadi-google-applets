@@ -42,6 +42,10 @@ class TaskWidget : public QGraphicsWidget
 
         TaskWidget(QGraphicsWidget * parent = 0);
 
+	QString backgroundColor() {
+            return m_backgroundColor;
+        }
+	
         QString expiredColor() {
             return m_expiredColor;
         }
@@ -74,6 +78,7 @@ class TaskWidget : public QGraphicsWidget
             return m_autoDel;
         }
 
+        void setBackgroundColor(QString color);
         void setExpiredColor(QString color);
         void setTodayColor(QString color);
         void setWeekColor(QString color);
@@ -107,6 +112,7 @@ class TaskWidget : public QGraphicsWidget
 
         TaskLayout * m_layout;
 
+	QString m_backgroundColor;
         QString m_expiredColor;
         QString m_todayColor;
         QString m_weekColor;
