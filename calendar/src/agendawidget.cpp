@@ -30,7 +30,7 @@
 AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags)
 {
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    m_layout = new AgendaWidgetLayout(Qt::Vertical,this);
 	
     setLayout(m_layout);
 
@@ -166,7 +166,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     for (int i = 0; i < m_layout->count(); i++) {
 	
 	dateItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
-	qDebug() << dateItem->date() << " == " << eventDay;
+
 	if (dateItem->date() == eventDay) {
 	 
 	    newEvent = new AgendaWidgetEventItem(item,this);

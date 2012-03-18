@@ -26,6 +26,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Monitor>
 
+#include "agendawidgetlayout.h"
 #include "agendawidgetdateitem.h"
 #include "agendawidgeteventitem.h"
 
@@ -58,7 +59,7 @@ class AgendaWidget : public QGraphicsWidget
 	void fetchCollections();
         void fetchItems(const Akonadi::Collection & collections);
 	
-	QGraphicsLinearLayout * m_layout;
+	AgendaWidgetLayout * m_layout;
 	
 	QList<Akonadi::Item::Id> m_idList;
 };      

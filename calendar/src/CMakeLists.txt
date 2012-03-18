@@ -17,7 +17,7 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(calendar_SRCS agendawidgeteventitem.cpp agendawidgetdateitem.cpp agendawidget.cpp plasmacalendar.cpp)
+set(calendar_SRCS agendawidgetlayout.cpp agendawidgeteventitem.cpp agendawidgetdateitem.cpp agendawidget.cpp plasmacalendar.cpp)
 
 kde4_add_ui_files(calendar_SRCS config.ui)
  
