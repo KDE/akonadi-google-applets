@@ -135,6 +135,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
     eventDay = event->dtEnd();
+    eventDay.setDateOnly(true);
     
     if (eventDay > max) {
 
@@ -146,25 +147,16 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
     } else if (eventDay < min && event->recurs()) {
 	
-	KDateTime dt = eventDay;
-		
-	while (true) {
+	KDateTime dt = event->recurrence()->getPreviousDateTime(max);
+	dt.setDateOnly(true);
+	
+	if (dt < min || dt > max) {
 	    
-	    dt = event->recurrence()->getNextDateTime(dt);
-	    
-	    if (!dt.isValid() || dt > max) {
-
-		return;
-		
-	    } else if (dt.isValid() && dt >= min) {
-		
-		eventDay = dt;
-		
-		break;
-		
-	    }
+	    return;
 	    
 	}
+	
+	eventDay = dt;
 	
     }
    
@@ -174,7 +166,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     for (int i = 0; i < m_layout->count(); i++) {
 	
 	dateItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
-	
+	qDebug() << dateItem->date() << " == " << eventDay;
 	if (dateItem->date() == eventDay) {
 	 
 	    newEvent = new AgendaWidgetEventItem(item,this);

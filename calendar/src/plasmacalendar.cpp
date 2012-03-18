@@ -32,6 +32,7 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args)
       m_widget(0),
       m_agenda(0)
 {
+    setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());

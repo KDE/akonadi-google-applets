@@ -45,6 +45,20 @@ AgendaWidgetDateItem::AgendaWidgetDateItem(KDateTime date, QGraphicsWidget * par
 void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
 {
 
+    AgendaWidgetEventItem * item;
+    
+    for (int i = 0; i < m_layout->count(); i++) {
+	
+	item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
+	
+	if (item->eventName().toLower() > event->eventName().toLower()) {
+	 
+	    m_layout->insertItem(i,event);
+	    return;
+	}
+	
+    }
+    
     m_layout->addItem(event);
     
 }

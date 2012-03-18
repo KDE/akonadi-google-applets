@@ -34,6 +34,10 @@ class AgendaWidgetEventItem : public Plasma::IconWidget
         explicit AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent = 0);
         virtual ~AgendaWidgetEventItem(){};
 	
+	QString eventName() const {
+	    return this->text();
+	}
+	
     private:
 	
 	Akonadi::Item m_item;
