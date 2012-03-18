@@ -1,5 +1,5 @@
 /*
-    Akonadi google calendar plasmoid - agendawidgeteventitem.cpp
+    Akonadi google calendar plasmoid - agendawidgeteventitem.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -17,18 +17,29 @@
 */
 
 
-#include "agendawidgeteventitem.h"
+#ifndef AGENDAWIDGETEVENTITEM_H
+#define AGENDAWIDGETEVENTITEM_H
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent)
-    : IconWidget(parent)
+#include <Plasma/IconWidget>
+
+#include <Akonadi/Item>
+#include <KCalCore/Event>
+
+class AgendaWidgetEventItem : public Plasma::IconWidget
 {
-    m_item = item;
+    Q_OBJECT
     
-    m_event = item.payload<KCalCore::Event::Ptr>();
-    
-    setOrientation(Qt::Horizontal);
-    setMinimumWidth(50);
-    setMaximumHeight(15);
-    setText(m_event->summary());
-    
-}
+    public:
+	
+        explicit AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent = 0);
+        virtual ~AgendaWidgetEventItem(){};
+	
+    private:
+	
+	Akonadi::Item m_item;
+	
+	KCalCore::Event::Ptr m_event;
+	
+};
+
+#endif // AGENDAWIDGETEVENTITEM_H

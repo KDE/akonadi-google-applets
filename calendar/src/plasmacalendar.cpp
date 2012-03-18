@@ -52,8 +52,8 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 	m_scroll->setWidget(m_agenda);
 	
 	m_tab = new Plasma::TabBar(m_widget);
-	m_tab->addTab(i18n("Agenda"),m_scroll);
-	m_tab->addTab(i18n("Calendar view"),new Plasma::IconWidget(m_widget));
+	m_tab->addTab(KIcon("view-calendar-agenda"),i18n("Agenda"),m_scroll);
+	m_tab->addTab(KIcon("view-calendar-month"),i18n("Calendar view"),new Plasma::IconWidget(m_widget));
 	
         m_layout->addItem(m_tab);
 	
