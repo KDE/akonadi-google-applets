@@ -25,29 +25,23 @@ AgendaWidgetDateItem::AgendaWidgetDateItem(KDateTime date, QGraphicsWidget * par
     : Plasma::Frame(parent)
 {
     date.setDateOnly(true);
-    m_date = date;
     
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
     
-    m_dateIcon = new Plasma::IconWidget(this);
-    m_dateIcon->setIcon(KIcon("view-calendar-day"));
-    m_dateIcon->setOrientation(Qt::Horizontal);
-    m_dateIcon->setMinimumWidth(50);
-    m_dateIcon->setMaximumHeight(20);
-    m_dateIcon->setTextBackgroundColor(Qt::red);
-    m_dateIcon->setText(m_date.toString(KDateTime::LocalDate));
+    m_dateLabel = new AgendaWidgetDateLabel(this);
     
-    m_layout->addItem(m_dateIcon);
+    m_layout->addItem(m_dateLabel);
+    
+    setDate(date);
     
     setLayout(m_layout);
 }
 
 void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
 {
-
     AgendaWidgetEventItem * item;
     
-    for (int i = 0; i < m_layout->count(); i++) {
+    for (int i = 1; i < m_layout->count(); i++) {
 	
 	item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
 	
@@ -63,10 +57,24 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
     
 }
 
-
 void AgendaWidgetDateItem::setDate(KDateTime date)
 {
     m_date = date;
+
+    KDateTime dt = KDateTime::currentLocalDateTime();
+    dt.setDateOnly(true);
     
-    m_dateIcon->setText(m_date.toString(KDateTime::LocalDate));
+    if (m_date == dt) {
+	
+	m_dateLabel->setText(i18n("Today"));
+	
+    } else if (m_date == dt.addDays(1)) {
+	
+	m_dateLabel->setText(i18n("Tomorrow"));
+	
+    } else {
+    
+	m_dateLabel->setText(m_date.toString(KDateTime::LocalDate));
+	
+    }
 }

@@ -1,5 +1,5 @@
 /*
-    Akonadi google calendar plasmoid - agendawidgeteventitem.cpp
+    Akonadi google calendar plasmoid - agendawidgetdatelabel.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -17,40 +17,32 @@
 */
 
 
-#include "agendawidgeteventitem.h"
+#include "agendawidgetdatelabel.h"
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent)
+AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsItem * parent)
     : QGraphicsWidget(parent)
 {
-    m_item = item;
-    
-    m_event = item.payload<KCalCore::Event::Ptr>();
-    
-    m_mainLayout = new QGraphicsLinearLayout(this);
-    m_textLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
+    m_layout = new QGraphicsLinearLayout(this);
     
     m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumWidth(50);
-    m_icon->setMaximumHeight(15);
-    m_icon->setText(m_event->summary());
+    m_icon->setMaximumHeight(20);
     
-    QGraphicsWidget * line = new QGraphicsWidget();
-    line->setMaximumHeight(20);
-    line->setMaximumWidth(5);
+    m_layout->addItem(m_icon);
     
-    line->setAutoFillBackground(true);
+    setLayout(m_layout);
+    setAutoFillBackground(true);
     
-    QColor color = Qt::green;
+    QColor color("#343e88");
     color.setAlphaF(0.3);
     QPalette palette;
-    palette = line->palette();
+    palette = this->palette();
     palette.setColor(QPalette::Window,color);
-    line->setPalette(palette);
-    
-    m_textLayout->addItem(m_icon);
-    
-    m_mainLayout->addItem(line);
-    m_mainLayout->addItem(m_textLayout);
-    
+    this->setPalette(palette);
+}
+
+void AgendaWidgetDateLabel::setText(QString date)
+{
+    m_icon->setText(date);   
 }

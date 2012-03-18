@@ -1,5 +1,5 @@
 /*
-    Akonadi google calendar plasmoid - agendawidgeteventitem.h
+    Akonadi google calendar plasmoid - agendawidgetdatelabel.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -17,41 +17,31 @@
 */
 
 
-#ifndef AGENDAWIDGETEVENTITEM_H
-#define AGENDAWIDGETEVENTITEM_H
+#ifndef AGENDAWIDGETDATELABEL_H
+#define AGENDAWIDGETDATELABEL_H
 
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
 #include <Plasma/IconWidget>
 
-#include <Akonadi/Item>
-#include <KCalCore/Event>
-
-class AgendaWidgetEventItem : public QGraphicsWidget
+class AgendaWidgetDateLabel : public QGraphicsWidget
 {
     Q_OBJECT
     
     public:
 	
-        explicit AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent = 0);
-        virtual ~AgendaWidgetEventItem(){};
+        AgendaWidgetDateLabel(QGraphicsItem * parent = 0);
+        virtual ~AgendaWidgetDateLabel(){};
 	
-	QString eventName() const {
-	    return m_icon->text();
-	}
+	void setText(QString date);
 	
     private:
 	
-	QGraphicsLinearLayout * m_mainLayout;
-	QGraphicsLinearLayout * m_textLayout;
-	
-	Akonadi::Item m_item;
+	QGraphicsLinearLayout * m_layout;
 	
 	Plasma::IconWidget * m_icon;
-	
-	KCalCore::Event::Ptr m_event;
-	
+    
 };
 
-#endif // AGENDAWIDGETEVENTITEM_H
+#endif // AGENDAWIDGETDATELABEL_H
