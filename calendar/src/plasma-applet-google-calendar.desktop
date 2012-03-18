@@ -16,6 +16,7 @@ Comment[uk]=Плазмоїд календаря для ресурсів Google �
 Comment[x-test]=xxCalendar plasmoid for Akonadi Google resourcesxx
 Type=Service
 ServiceTypes=Plasma/Applet
+Icon=plasma_google_calendar
 
 X-KDE-Library=plasma_applet_google_calendar
 X-KDE-PluginInfo-Name=plasma_google_calendar
