@@ -24,6 +24,71 @@ AgendaWidgetLayout::AgendaWidgetLayout(Qt::Orientation orientation, QGraphicsLay
 {
 }
 
+bool AgendaWidgetLayout::existDateItem(QDate date)
+{
+
+    AgendaWidgetDateItem * dateItem;
+
+    for (int i = 0; i < count(); i++) {
+
+        dateItem = static_cast<AgendaWidgetDateItem *>(itemAt(i));
+
+        if (dateItem->date() == date) {
+
+            return true;
+        }
+
+    }
+    
+    return false;
+    
+}
+
+
+void AgendaWidgetLayout::addDateItem(AgendaWidgetDateItem * item)
+{
+    AgendaWidgetDateItem * dtItem;
+
+    for (int i = 0; i < count(); i++) {
+
+        dtItem = static_cast<AgendaWidgetDateItem *>(itemAt(i));
+
+        if (dtItem->date() > item->date()) {
+
+            insertItem(i, item);
+            return;
+
+        }
+
+    }
+
+    addItem(item);
+
+}
+
+
+void AgendaWidgetLayout::addEventItem(QDate date, AgendaWidgetEventItem * item)
+{
+
+    AgendaWidgetDateItem * dateItem;
+
+    for (int i = 0; i < count(); i++) {
+
+        dateItem = static_cast<AgendaWidgetDateItem *>(itemAt(i));
+
+        if (dateItem->date() == date) {
+
+            item->setParentItem(dateItem);
+            dateItem->addEvent(item);
+
+            return;
+        }
+
+    }
+    
+}
+
+
 QSizeF AgendaWidgetLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
 {
     QSizeF hint;

@@ -21,11 +21,9 @@
 
 #include <KIcon>
 
-AgendaWidgetDateItem::AgendaWidgetDateItem(KDateTime date, QGraphicsWidget * parent)
+AgendaWidgetDateItem::AgendaWidgetDateItem(QDate date, QGraphicsWidget * parent)
     : Plasma::Frame(parent)
-{
-    date.setDateOnly(true);
-    
+{    
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
     
     m_dateLabel = new AgendaWidgetDateLabel(this);
@@ -45,7 +43,7 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
 	
 	item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
 	
-	if (item->eventName().toLower() > event->eventName().toLower()) {
+	if (item->operator<(event)) {
 	 
 	    m_layout->insertItem(i,event);
 	    return;
@@ -57,12 +55,11 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
     
 }
 
-void AgendaWidgetDateItem::setDate(KDateTime date)
+void AgendaWidgetDateItem::setDate(QDate date)
 {
     m_date = date;
 
-    KDateTime dt = KDateTime::currentLocalDateTime();
-    dt.setDateOnly(true);
+    QDate dt = KDateTime::currentLocalDateTime().date();
     
     if (m_date == dt) {
 	
@@ -74,7 +71,7 @@ void AgendaWidgetDateItem::setDate(KDateTime date)
 	
     } else {
     
-	m_dateLabel->setText(m_date.toString(KDateTime::LocalDate));
+	m_dateLabel->setText(m_date.toString(Qt::DefaultLocaleLongDate));
 	
     }
 }

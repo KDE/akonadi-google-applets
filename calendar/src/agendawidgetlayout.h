@@ -22,6 +22,9 @@
 
 #include <QGraphicsLinearLayout>
 
+#include "agendawidgetdateitem.h"
+#include "agendawidgeteventitem.h"
+
 class AgendaWidgetLayout : public QGraphicsLinearLayout
 {
     public:
@@ -32,6 +35,10 @@ class AgendaWidgetLayout : public QGraphicsLinearLayout
 
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 	
+	bool existDateItem(QDate date);
+	
+	void addDateItem(AgendaWidgetDateItem * item);
+	void addEventItem(QDate date, AgendaWidgetEventItem * item);
 };
 
 #endif // AGENDAWIDGETLAYOUT_H

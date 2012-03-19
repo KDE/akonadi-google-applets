@@ -34,24 +34,29 @@ class AgendaWidgetEventItem : public QGraphicsWidget
     
     public:
 	
-        explicit AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent = 0);
+        explicit AgendaWidgetEventItem(QGraphicsItem * parent = 0);
         virtual ~AgendaWidgetEventItem(){};
 	
-	QString eventName() const {
-	    return m_icon->text();
-	}
+	bool operator<(AgendaWidgetEventItem * item);
+	
+	void setEventName(QString name);
+	void setEventTime(QTime start, QTime end);
+	void setEventStartTime(QTime start);
+	void setEventEndTime(QTime end);
 	
     private:
 	
 	QGraphicsLinearLayout * m_mainLayout;
 	QGraphicsLinearLayout * m_textLayout;
 	
-	Akonadi::Item m_item;
+	Plasma::IconWidget * m_eventName;
+	Plasma::IconWidget * m_timeText;
+		
+	QTime m_startTime;
+	QTime m_endTime;
 	
-	Plasma::IconWidget * m_icon;
-	
-	KCalCore::Event::Ptr m_event;
-	
+	bool m_hasStartTime;
+	bool m_hasEndTime;
 };
 
 #endif // AGENDAWIDGETEVENTITEM_H

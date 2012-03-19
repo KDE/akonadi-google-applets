@@ -19,38 +19,196 @@
 
 #include "agendawidgeteventitem.h"
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Item & item, QGraphicsItem * parent)
-    : QGraphicsWidget(parent)
+AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsItem * parent)
+    : QGraphicsWidget(parent),
+      m_eventName(0),
+      m_timeText(0),
+      m_hasStartTime(false),
+      m_hasEndTime(false)
 {
-    m_item = item;
-    
-    m_event = item.payload<KCalCore::Event::Ptr>();
-    
     m_mainLayout = new QGraphicsLinearLayout(this);
-    m_textLayout = new QGraphicsLinearLayout(Qt::Vertical,m_mainLayout);
-    
-    m_icon = new Plasma::IconWidget(this);
-    m_icon->setOrientation(Qt::Horizontal);
-    m_icon->setMinimumWidth(50);
-    m_icon->setMaximumHeight(15);
-    m_icon->setText(m_event->summary());
-    
+    m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
+
     QGraphicsWidget * line = new QGraphicsWidget();
-    line->setMaximumHeight(20);
+
+    line->setMaximumHeight(35);
     line->setMaximumWidth(5);
-    
     line->setAutoFillBackground(true);
-    
+
     QColor color = Qt::green;
     color.setAlphaF(0.3);
     QPalette palette;
     palette = line->palette();
-    palette.setColor(QPalette::Window,color);
+    palette.setColor(QPalette::Window, color);
     line->setPalette(palette);
-    
-    m_textLayout->addItem(m_icon);
-    
+
     m_mainLayout->addItem(line);
+    m_mainLayout->setAlignment(line,Qt::AlignCenter);
     m_mainLayout->addItem(m_textLayout);
+
+}
+
+void AgendaWidgetEventItem::setEventName(QString name)
+{
+    if (m_eventName) {
+	
+	delete m_eventName;
+	m_eventName = 0;
+	
+    }
+    
+    m_eventName = new Plasma::IconWidget(this);
+    m_eventName->setOrientation(Qt::Horizontal);
+    m_eventName->setMinimumWidth(50);
+    m_eventName->setMaximumHeight(15);
+    m_eventName->setText(name);
+
+    if (!m_timeText) {
+
+        m_textLayout->addItem(m_eventName);
+	
+    } else {
+	
+	m_textLayout->insertItem(0,m_eventName);
+	
+    }
     
 }
+
+void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
+{
+    QString time;
+
+    m_startTime = start;
+    m_endTime = end;
+    m_hasStartTime = true;
+    m_hasEndTime = true;
+    
+    time += m_startTime.toString("hh:mm");
+    time += " - ";
+    time += m_endTime.toString("hh:mm");
+
+    QFont font = this->font();
+    font.setPointSize(font.pointSize()-2);
+    
+    if (m_timeText) {
+	
+	delete m_timeText;
+	m_timeText = 0;
+	
+    }
+    
+    m_timeText = new Plasma::IconWidget(this);
+    m_timeText->setOrientation(Qt::Horizontal);
+    m_timeText->setMinimumWidth(50);
+    m_timeText->setMaximumHeight(15);
+    m_timeText->setText(time);
+    m_timeText->setFont(font);
+    
+    m_textLayout->addItem(m_timeText);
+
+}
+
+void AgendaWidgetEventItem::setEventStartTime(QTime start)
+{
+
+    QString time;
+    
+    m_startTime = start;
+    m_hasEndTime = false;
+    m_hasStartTime = true;
+    
+    time += i18n("From");
+    time += " " + m_startTime.toString("hh:mm");
+    
+    QFont font = this->font();
+    font.setPointSize(font.pointSize()-2);
+    
+    if (m_timeText) {
+	
+	delete m_timeText;
+	m_timeText = 0;
+	
+    }
+    
+    m_timeText = new Plasma::IconWidget(this);
+    m_timeText->setOrientation(Qt::Horizontal);
+    m_timeText->setMinimumWidth(50);
+    m_timeText->setMaximumHeight(15);
+    m_timeText->setText(time);
+    m_timeText->setFont(font);
+    
+    m_textLayout->addItem(m_timeText);
+
+}
+
+void AgendaWidgetEventItem::setEventEndTime(QTime end)
+{
+
+    QString time;
+    
+    m_endTime = end;
+    m_hasEndTime = true;
+    m_hasStartTime = false;
+    
+    time += i18n("Till");
+    time += " " + m_endTime.toString("hh:mm");
+    
+    if (m_timeText) {
+	
+	delete m_timeText;
+	m_timeText = 0;
+	
+    }
+    
+    QFont font = this->font();
+    font.setPointSize(font.pointSize()-2);
+    
+    m_timeText = new Plasma::IconWidget(this);
+    m_timeText->setOrientation(Qt::Horizontal);
+    m_timeText->setMinimumWidth(50);
+    m_timeText->setMaximumHeight(15);
+    m_timeText->setText(time);
+    m_timeText->setFont(font);
+    
+    m_textLayout->addItem(m_timeText);
+
+}
+
+bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
+{
+
+    if (m_hasStartTime || m_hasEndTime) {
+
+        if (m_hasStartTime && item->m_hasStartTime) {
+
+            return (m_startTime > item->m_startTime);
+
+        } else if (m_hasStartTime && !item->m_hasStartTime) {
+
+            return false;
+
+        } else if (!m_hasStartTime && item->m_hasStartTime) {
+
+            return true;
+
+        } else if (m_hasEndTime && item->m_hasEndTime) {
+
+            return (m_endTime > item->m_endTime);
+
+        } else if (m_hasEndTime && !item->m_hasEndTime) {
+
+            return false;
+
+        } else if (!m_hasEndTime && item->m_hasEndTime) {
+
+            return true;
+
+        }
+
+    }
+
+    return (m_eventName->text().toLower() > item->m_eventName->text().toLower());
+
+}
+

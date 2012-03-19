@@ -128,78 +128,116 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 void AgendaWidget::addItem(const Akonadi::Item & item)
 {
     
-    KDateTime min = KDateTime::currentLocalDateTime();
-    KDateTime max = min.addDays(30);
-    KDateTime eventDay;
+    QDate min = KDateTime::currentLocalDateTime().date();
+    QDate max = min.addDays(30); // TODO: add option for that
     
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
-    eventDay = event->dtEnd();
-    eventDay.setDateOnly(true);
+    QDate dateStart = event->dtStart().date(); 
+    QDate dateEnd = event->dtEnd().date();
+    QDate date = dateStart;
     
-    if (eventDay > max) {
-
+    if (dateStart > max) {
+	
 	return;
 	
-    } else if (eventDay < min && !event->recurs()) {
-
+    } else if (dateStart < min && !event->recurs()) {
+	
 	return;
 	
-    } else if (eventDay < min && event->recurs()) {
+    } else if (dateStart < min && event->recurs()) {
 	
-	KDateTime dt = event->recurrence()->getPreviousDateTime(max);
-	dt.setDateOnly(true);
+	date = event->recurrence()->getPreviousDateTime(KDateTime(min)).date();
 	
-	if (dt < min || dt > max) {
-	    
+	date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
+	
+	if (date < min || date > max) {
+	 
 	    return;
 	    
 	}
 	
-	eventDay = dt;
+    } 
+      
+    AgendaWidgetEventItem * newEvent;   
+    AgendaWidgetDateItem * dateItem;
+      
+    int daysTo = dateStart.daysTo(dateEnd);
+    
+    for (int i = 1; i < daysTo; i++) {
 	
+	newEvent = new AgendaWidgetEventItem();
+	newEvent->setEventName(event->summary());
+	
+	if (!m_layout->existDateItem(date.addDays(i))) {
+	   
+	    dateItem = new AgendaWidgetDateItem(date.addDays(i),this);
+	    m_layout->addDateItem(dateItem);
+	    
+	}
+	
+	m_layout->addEventItem(date.addDays(i),newEvent);
+    }
+    
+    if (dateStart == dateEnd) {
+	
+	newEvent = new AgendaWidgetEventItem();
+	newEvent->setEventName(event->summary());
+	
+	if (!event->allDay()) {
+	
+	    newEvent->setEventTime(event->dtStart().time(),event->dtEnd().time());
+	    
+	}
+	
+	if (!m_layout->existDateItem(date)) {
+	   
+	    dateItem = new AgendaWidgetDateItem(date,this);
+	    m_layout->addDateItem(dateItem);
+	    
+	}
+	
+	m_layout->addEventItem(date,newEvent);
+	
+	return;
     }
    
-    AgendaWidgetDateItem * dateItem;
-    AgendaWidgetEventItem * newEvent; 
+    newEvent = new AgendaWidgetEventItem();
+    newEvent->setEventName(event->summary());
     
-    for (int i = 0; i < m_layout->count(); i++) {
-	
-	dateItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
-
-	if (dateItem->date() == eventDay) {
-	 
-	    newEvent = new AgendaWidgetEventItem(item,this);
-	    
-	    dateItem->addEvent(newEvent);
-	    
-	    return;
-	}
+    if (!event->allDay()) {
+    
+	newEvent->setEventStartTime(event->dtStart().time());
 	
     }
     
-    dateItem = new AgendaWidgetDateItem(eventDay,this);
-    
-    newEvent = new AgendaWidgetEventItem(item,this);
+    if (!m_layout->existDateItem(date)) {
+	   
+	 dateItem = new AgendaWidgetDateItem(date,this);
+	 m_layout->addDateItem(dateItem);
 	    
-    dateItem->addEvent(newEvent);
+    }
     
-    AgendaWidgetDateItem * dtItem;
+    m_layout->addEventItem(date,newEvent);
     
-    for (int i = 0; i < m_layout->count(); i++) {
-	
-	dtItem = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(i));
-	
-	if (dtItem->date() > dateItem->date()) {
-	 
-	    m_layout->insertItem(i,dateItem);
-	    return;
-	    
-	}
+    newEvent = new AgendaWidgetEventItem();
+    newEvent->setEventName(event->summary());
+    
+    if (!event->allDay()) {
+   
+	newEvent->setEventEndTime(event->dtEnd().time());
 	
     }
     
-    m_layout->addItem(dateItem);
+    if (!m_layout->existDateItem(date.addDays(daysTo))) {
+	   
+	dateItem = new AgendaWidgetDateItem(date.addDays(daysTo),this);
+	m_layout->addDateItem(dateItem);
+	    
+    }
+    
+    m_layout->addEventItem(date.addDays(daysTo),newEvent);
+      
 }
 
 void AgendaWidget::clear()
