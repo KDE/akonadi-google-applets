@@ -74,4 +74,12 @@ void AgendaWidgetDateItem::setDate(QDate date)
 	m_dateLabel->setText(m_date.toString(Qt::DefaultLocaleLongDate));
 	
     }
+    
+}
+
+void AgendaWidgetDateItem::setDateColor(QString color)
+{
+
+    m_dateLabel->setColor(color);
+    
 }

@@ -46,3 +46,14 @@ void AgendaWidgetDateLabel::setText(QString date)
 {
     m_icon->setText(date);   
 }
+
+void AgendaWidgetDateLabel::setColor(QString color)
+{
+    QColor clr(color);
+    clr.setAlphaF(0.3);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window,clr);
+    this->setPalette(palette);
+    
+}

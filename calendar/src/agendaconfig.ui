@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>agendaConfig</class>
+ <widget class="QWidget" name="agendaConfig">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>307</width>
+    <height>233</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>301</width>
+     <height>53</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Show events up to</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="weeks">
+      <item>
+       <property name="text">
+        <string>1 week</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2 weeks</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3 weeks</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4 weeks</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Date background color</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="KColorButton" name="dateColor">
+      <property name="defaultColor">
+       <color>
+        <red>52</red>
+        <green>62</green>
+        <blue>136</blue>
+       </color>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KColorButton</class>
+   <extends>QPushButton</extends>
+   <header>kcolorbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

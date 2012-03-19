@@ -28,13 +28,30 @@
 #include <KCalCore/Event>
 
 AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
-    : QGraphicsWidget(parent, wFlags)
+    : QGraphicsWidget(parent, wFlags),
+      m_dateColor("#343E88"),
+      m_weeks(1)
 {
     m_layout = new AgendaWidgetLayout(Qt::Vertical,this);
 	
     setLayout(m_layout);
 
 }
+
+void AgendaWidget::setDateColor(QString color)
+{
+
+    m_dateColor = color;
+    
+}
+
+void AgendaWidget::setWeeks(int weeks)
+{
+ 
+    m_weeks = weeks;
+    
+}
+
 
 void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {
@@ -129,7 +146,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 {
     
     QDate min = KDateTime::currentLocalDateTime().date();
-    QDate max = min.addDays(30); // TODO: add option for that
+    QDate max = min.addDays(7 * m_weeks); 
     
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
@@ -172,6 +189,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	if (!m_layout->existDateItem(date.addDays(i))) {
 	   
 	    dateItem = new AgendaWidgetDateItem(date.addDays(i),this);
+	    dateItem->setDateColor(m_dateColor);
 	    m_layout->addDateItem(dateItem);
 	    
 	}
@@ -193,6 +211,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	if (!m_layout->existDateItem(date)) {
 	   
 	    dateItem = new AgendaWidgetDateItem(date,this);
+	    dateItem->setDateColor(m_dateColor);
 	    m_layout->addDateItem(dateItem);
 	    
 	}
@@ -214,6 +233,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     if (!m_layout->existDateItem(date)) {
 	   
 	 dateItem = new AgendaWidgetDateItem(date,this);
+	 dateItem->setDateColor(m_dateColor);
 	 m_layout->addDateItem(dateItem);
 	    
     }
@@ -232,6 +252,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     if (!m_layout->existDateItem(date.addDays(daysTo))) {
 	   
 	dateItem = new AgendaWidgetDateItem(date.addDays(daysTo),this);
+	dateItem->setDateColor(m_dateColor);
 	m_layout->addDateItem(dateItem);
 	    
     }

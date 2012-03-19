@@ -34,6 +34,7 @@ class AgendaWidgetDateLabel : public QGraphicsWidget
         AgendaWidgetDateLabel(QGraphicsItem * parent = 0);
         virtual ~AgendaWidgetDateLabel(){};
 	
+	void setColor(QString color);
 	void setText(QString date);
 	
     private:

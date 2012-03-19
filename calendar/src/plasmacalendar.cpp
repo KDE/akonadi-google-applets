@@ -71,6 +71,9 @@ void PlasmaCalendar::configChanged()
     
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
+    m_agenda->setDateColor(conf.readEntry("dateColor","#343E88"));
+    m_agenda->setWeeks(conf.readEntry("weeks",1));
+    
     if (list.isEmpty()) {
 
         setConfigurationRequired(true);
@@ -96,11 +99,21 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
 
     fetchCollections();
 
-    connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
-    connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
     parent->addPage(widget, i18n("General"), icon());
+    
+    QWidget * widget1 = new QWidget(0);
+    
+    agendaConfigDialog.setupUi(widget1);
+    
+    agendaConfigDialog.dateColor->setColor(QColor(m_agenda->dateColor()));
+    agendaConfigDialog.weeks->setCurrentIndex(m_agenda->weeks()-1);
+    
+    parent->addPage(widget1, i18n("Agenda"), "view-calendar-agenda");
+
+    connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
+    connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
 }
 
 void PlasmaCalendar::configAccepted()
@@ -119,6 +132,16 @@ void PlasmaCalendar::configAccepted()
 
     }
 
+    if (agendaConfigDialog.dateColor->color().name() != m_agenda->dateColor()) {
+
+        conf.writeEntry("dateColor", agendaConfigDialog.dateColor->color().name());
+    }
+    
+    if (agendaConfigDialog.weeks->currentIndex()+1 != m_agenda->weeks()) {
+
+        conf.writeEntry("weeks", agendaConfigDialog.weeks->currentIndex()+1);
+    }
+    
     conf.writeEntry("collections", list);
     
     emit configNeedsSaving();

@@ -44,8 +44,18 @@ class AgendaWidget : public QGraphicsWidget
             return m_idList;
         }
         
+        QString dateColor() const {
+	    return m_dateColor;
+        }
+        
+        int weeks() const {
+	    return m_weeks;
+        }
+        
         void setCollections(QList<Akonadi::Collection::Id> ids);
-
+        void setDateColor(QString color);
+	void setWeeks(int weeks);
+	
     public slots:
 	
 	void fetchCollectionsFinished(KJob * job);
@@ -62,6 +72,10 @@ class AgendaWidget : public QGraphicsWidget
 	AgendaWidgetLayout * m_layout;
 	
 	QList<Akonadi::Item::Id> m_idList;
+	
+	QString m_dateColor;
+	
+	int m_weeks;
 };      
 
 #endif // AGENDAWIDGET_H
