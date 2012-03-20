@@ -307,7 +307,7 @@ void PlasmaTasks::fetchCollectionsForEditorFinished(KJob * job)
     foreach (const Akonadi::Collection & collection, collections) {
 
 #ifndef ALL_COLLECTIONS
-        if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource")))
+        if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
 #endif
 	    if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 	
