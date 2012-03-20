@@ -19,8 +19,8 @@
 
 #include "agendawidgeteventitem.h"
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsItem * parent)
-    : QGraphicsWidget(parent),
+AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsWidget * parent)
+    : Plasma::Frame(parent),
       m_eventName(0),
       m_timeText(0),
       m_hasStartTime(false),
@@ -28,11 +28,13 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsItem * parent)
 {
     m_mainLayout = new QGraphicsLinearLayout(this);
     m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
+    m_textLayout->setContentsMargins(5,2,2,2);
 
     QGraphicsWidget * line = new QGraphicsWidget();
 
+    line->setMinimumHeight(35);
     line->setMaximumHeight(35);
-    line->setMaximumWidth(5);
+    line->setMaximumWidth(7);
     line->setAutoFillBackground(true);
 
     QColor color = Qt::green;
@@ -43,9 +45,11 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsItem * parent)
     line->setPalette(palette);
 
     m_mainLayout->addItem(line);
-    m_mainLayout->setAlignment(line,Qt::AlignCenter);
+    m_mainLayout->setAlignment(line,Qt::AlignHCenter);
     m_mainLayout->addItem(m_textLayout);
+    m_mainLayout->setAlignment(m_textLayout,Qt::AlignCenter);
 
+    setFrameShadow(Raised);
 }
 
 void AgendaWidgetEventItem::setEventName(QString name)
@@ -56,6 +60,9 @@ void AgendaWidgetEventItem::setEventName(QString name)
 	m_eventName = 0;
 	
     }
+    
+    QFont font = this->font();
+    font.setBold(true);
     
     m_eventName = new Plasma::IconWidget(this);
     m_eventName->setOrientation(Qt::Horizontal);
@@ -72,6 +79,8 @@ void AgendaWidgetEventItem::setEventName(QString name)
 	m_textLayout->insertItem(0,m_eventName);
 	
     }
+    
+    m_textLayout->setAlignment(m_eventName,Qt::AlignCenter);
     
 }
 

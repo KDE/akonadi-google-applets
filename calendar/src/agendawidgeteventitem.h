@@ -23,18 +23,19 @@
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
+#include <Plasma/Frame>
 #include <Plasma/IconWidget>
 
 #include <Akonadi/Item>
 #include <KCalCore/Event>
 
-class AgendaWidgetEventItem : public QGraphicsWidget
+class AgendaWidgetEventItem : public Plasma::Frame
 {
     Q_OBJECT
     
     public:
 	
-        explicit AgendaWidgetEventItem(QGraphicsItem * parent = 0);
+        explicit AgendaWidgetEventItem(QGraphicsWidget * parent = 0);
         virtual ~AgendaWidgetEventItem(){};
 	
 	bool operator<(AgendaWidgetEventItem * item);

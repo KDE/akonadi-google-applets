@@ -7,4 +7,5 @@ option(ALL_COLLECTIONS "Support for all Akonadi collections" FALSE)
 
 add_subdirectory(contacts)
 add_subdirectory(tasks)
+add_subdirectory(calendar)
 

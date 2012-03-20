@@ -23,15 +23,16 @@
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
+#include <Plasma/Frame>
 #include <Plasma/IconWidget>
 
-class AgendaWidgetDateLabel : public QGraphicsWidget
+class AgendaWidgetDateLabel : public Plasma::Frame
 {
     Q_OBJECT
     
     public:
 	
-        AgendaWidgetDateLabel(QGraphicsItem * parent = 0);
+        AgendaWidgetDateLabel(QGraphicsWidget * parent = 0);
         virtual ~AgendaWidgetDateLabel(){};
 	
 	void setColor(QString color);

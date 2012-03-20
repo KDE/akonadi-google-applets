@@ -19,8 +19,8 @@
 
 #include "agendawidgetdatelabel.h"
 
-AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsItem * parent)
-    : QGraphicsWidget(parent)
+AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent)
+    : Plasma::Frame(parent)
 {
     m_layout = new QGraphicsLinearLayout(this);
     
@@ -40,6 +40,8 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsItem * parent)
     palette = this->palette();
     palette.setColor(QPalette::Window,color);
     this->setPalette(palette);
+    
+    setFrameShadow(Raised);
 }
 
 void AgendaWidgetDateLabel::setText(QString date)
