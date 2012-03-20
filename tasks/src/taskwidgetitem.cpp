@@ -82,6 +82,7 @@ void TaskWidgetItem::setItemInfo()
 	m_date->setOrientation(Qt::Horizontal);
 	m_date->setMinimumWidth(50);
 	m_date->setMinimumHeight(20);
+	m_date->setMaximumHeight(20);
         m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
 
         setColorForDate();
