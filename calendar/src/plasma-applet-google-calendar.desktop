@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Calendar plasmoid
+Name[es]=Plasmoide de calendario
 Name[it]=Plasmoide del calendario
 Name[nds]=Plasma-Lüttprogramm
 Name[nl]=Agenda-plasmoid
@@ -10,6 +11,7 @@ Name[sv]=Kalender-plasmoid
 Name[uk]=Плазмоїд календаря
 Name[x-test]=xxCalendar plasmoidxx
 Comment=Calendar plasmoid for Akonadi Google resources
+Comment[es]=Plasmoide de calendario para recursos Google de Akonadi
 Comment[it]=Plasmoide del calendario per le risorse Google di Akonadi
 Comment[nl]=Agenda-plasmoid voor Google-hulpbronnen in Akonadi
 Comment[pt]=Um plasmóide de calendário para os recursos do Google no Akonadi
