@@ -32,7 +32,7 @@
 #include "taskwidget.h"
 
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
-    : QGraphicsWidget(parent),
+    : Plasma::Frame(parent),
       m_editor(0),
       m_completed(0),
       m_date(0),
@@ -44,7 +44,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
     setAutoFillBackground(true);
-    
+        
     QColor color = QColor(((TaskWidget *)parentWidget())->backgroundColor());
     color.setAlphaF(0.5);
     QPalette palette;

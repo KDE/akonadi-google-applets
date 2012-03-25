@@ -35,7 +35,7 @@
 
 #include "taskeditor.h"
 
-class TaskWidgetItem : public QGraphicsWidget
+class TaskWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
 
