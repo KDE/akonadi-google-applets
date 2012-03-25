@@ -243,10 +243,14 @@ void TaskLayout::clear()
         item->deleteLater();
 
     }
-
+    
     while (!m_list.isEmpty()) {
 
-        delete m_list.at(0);
+        item = static_cast<TaskWidgetItem *>(m_list.at(0));
+        
+        item->deleteLater();
+        
+        m_list.removeAt(0);
 
     }
 
