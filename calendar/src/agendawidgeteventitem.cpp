@@ -30,7 +30,7 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsWidget * parent)
     m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
     m_textLayout->setContentsMargins(5,2,2,2);
 
-    QGraphicsWidget * line = new QGraphicsWidget();
+    line = new QGraphicsWidget();
 
     line->setMinimumHeight(35);
     line->setMaximumHeight(35);
@@ -38,7 +38,7 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsWidget * parent)
     line->setAutoFillBackground(true);
 
     QColor color = Qt::green;
-    color.setAlphaF(0.3);
+    color.setAlphaF(0.5);
     QPalette palette;
     palette = line->palette();
     palette.setColor(QPalette::Window, color);
@@ -51,6 +51,16 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsWidget * parent)
 
     setFrameShadow(Raised);
 }
+void AgendaWidgetEventItem::setColor(QString color)
+{
+    QColor clr = QColor(color);
+    clr.setAlphaF(0.5);
+    QPalette palette;
+    palette = line->palette();
+    palette.setColor(QPalette::Window, clr);
+    line->setPalette(palette);
+}
+
 
 void AgendaWidgetEventItem::setEventName(QString name)
 {

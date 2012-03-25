@@ -55,6 +55,7 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 	m_tab = new Plasma::TabBar(m_widget);
 	m_tab->addTab(i18n("Agenda"),m_scroll);
 	m_tab->addTab(i18n("Calendar view"),new Plasma::IconWidget(m_widget));
+        m_tab->setTabBarShown(false);
 	
         m_layout->addItem(m_tab);
 	
@@ -68,6 +69,8 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 void PlasmaCalendar::configChanged()
 {
     KConfigGroup conf = config();
+    
+    QMap<Akonadi::Entity::Id,QString> map;
     
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
@@ -85,6 +88,15 @@ void PlasmaCalendar::configChanged()
     }
 
     m_agenda->setCollections(list);
+    
+    foreach (Akonadi::Entity::Id id, m_agenda->collectionsList()) {
+        
+        map.insert(id,conf.readEntry(QString::number(id),"#00C000"));
+        
+    }
+    
+    m_agenda->setCalendarsColors(map);
+
 }
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
@@ -97,23 +109,24 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
 
-    fetchCollections();
-
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
     parent->addPage(widget, i18n("General"), icon());
     
-    QWidget * widget1 = new QWidget(0);
+    agendaConfigDialog = new AgendaConfig(0);
     
-    agendaConfigDialog.setupUi(widget1);
+    agendaConfigDialog->setCalendarsColors(m_agenda->calendarsColors());
+    agendaConfigDialog->setDateColor(QColor(m_agenda->dateColor()));
+    agendaConfigDialog->setWeeks(m_agenda->weeks()-1);
     
-    agendaConfigDialog.dateColor->setColor(QColor(m_agenda->dateColor()));
-    agendaConfigDialog.weeks->setCurrentIndex(m_agenda->weeks()-1);
-    
-    parent->addPage(widget1, i18n("Agenda"), "view-calendar-agenda");
+    parent->addPage(agendaConfigDialog, i18n("Agenda"), "view-calendar-agenda");
 
+    connect(agendaConfigDialog, SIGNAL(updateCalendars()), SLOT(updateCalendars()));
+    
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
+    
+    fetchCollections();
 }
 
 void PlasmaCalendar::configAccepted()
@@ -132,17 +145,23 @@ void PlasmaCalendar::configAccepted()
 
     }
 
-    if (agendaConfigDialog.dateColor->color().name() != m_agenda->dateColor()) {
+    if (agendaConfigDialog->dateColor() != m_agenda->dateColor()) {
 
-        conf.writeEntry("dateColor", agendaConfigDialog.dateColor->color().name());
+        conf.writeEntry("dateColor", agendaConfigDialog->dateColor());
     }
     
-    if (agendaConfigDialog.weeks->currentIndex()+1 != m_agenda->weeks()) {
+    if (agendaConfigDialog->weeks() != m_agenda->weeks()) {
 
-        conf.writeEntry("weeks", agendaConfigDialog.weeks->currentIndex()+1);
+        conf.writeEntry("weeks", agendaConfigDialog->weeks());
     }
     
     conf.writeEntry("collections", list);
+    
+    foreach (Akonadi::Entity::Id id, agendaConfigDialog->calendarsColors().keys()) {
+        
+        conf.writeEntry(QString::number(id),agendaConfigDialog->calendarsColors()[id]);
+        
+    }
     
     emit configNeedsSaving();
    
@@ -162,6 +181,25 @@ void PlasmaCalendar::fetchCollections()
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
+
+void PlasmaCalendar::updateCalendars()
+{
+
+    agendaConfigDialog->clear();
+    
+    for (int i = 0; i < configDialog.collectionsList->count(); i++) {
+        
+        if (configDialog.collectionsList->item(i)->checkState() == Qt::Checked) {
+            
+            agendaConfigDialog->addItem(configDialog.collectionsList->item(i)->text(), 
+                                        configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
+            
+        }
+        
+    }
+    
+}
+
 
 void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
 {
@@ -224,6 +262,8 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
         }
 
     }
+    
+    updateCalendars();
 
 }
  

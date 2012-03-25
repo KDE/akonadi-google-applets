@@ -10,13 +10,13 @@
     <height>233</height>
    </rect>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>301</width>
-     <height>53</height>
+     <height>73</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -68,6 +68,69 @@
        </color>
       </property>
      </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>80</y>
+     <width>301</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Calendar color</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="loadCalendars">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="calendarsList"/>
+      </item>
+      <item>
+       <widget class="KColorButton" name="calendarColor">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>192</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="defaultColor">
+         <color>
+          <red>0</red>
+          <green>192</green>
+          <blue>0</blue>
+         </color>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

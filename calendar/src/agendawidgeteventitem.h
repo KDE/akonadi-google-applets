@@ -40,6 +40,7 @@ class AgendaWidgetEventItem : public Plasma::Frame
 	
 	bool operator<(AgendaWidgetEventItem * item);
 	
+        void setColor(QString color);
 	void setEventName(QString name);
 	void setEventTime(QTime start, QTime end);
 	void setEventStartTime(QTime start);
@@ -50,6 +51,8 @@ class AgendaWidgetEventItem : public Plasma::Frame
 	QGraphicsLinearLayout * m_mainLayout;
 	QGraphicsLinearLayout * m_textLayout;
 	
+        QGraphicsWidget * line;
+        
 	Plasma::IconWidget * m_eventName;
 	Plasma::IconWidget * m_timeText;
 		

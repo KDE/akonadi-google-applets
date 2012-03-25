@@ -52,6 +52,13 @@ void AgendaWidget::setWeeks(int weeks)
     
 }
 
+void AgendaWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
+{
+
+    m_calendarsColors = colors;
+    
+}
+
 
 void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {
@@ -175,7 +182,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	}
 	
     } 
-      
+            
     AgendaWidgetEventItem * newEvent;   
     AgendaWidgetDateItem * dateItem;
       
@@ -185,6 +192,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
 	newEvent = new AgendaWidgetEventItem();
 	newEvent->setEventName(event->summary());
+        newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
 	if (!m_layout->existDateItem(date.addDays(i))) {
 	   
@@ -201,6 +209,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
 	newEvent = new AgendaWidgetEventItem();
 	newEvent->setEventName(event->summary());
+        newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
 	if (!event->allDay()) {
 	
@@ -223,6 +232,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
    
     newEvent = new AgendaWidgetEventItem();
     newEvent->setEventName(event->summary());
+    newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
     if (!event->allDay()) {
     
@@ -242,6 +252,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     
     newEvent = new AgendaWidgetEventItem();
     newEvent->setEventName(event->summary());
+    newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
     if (!event->allDay()) {
    

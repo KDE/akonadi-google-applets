@@ -31,8 +31,8 @@
 #include <Akonadi/CollectionFetchJob> 
  
 #include "agendawidget.h"
+#include "agendaconfig.h"
 #include "ui_config.h"
-#include "ui_agendaconfig.h"
  
 class PlasmaCalendar : public Plasma::PopupApplet
 {
@@ -51,6 +51,8 @@ class PlasmaCalendar : public Plasma::PopupApplet
 	
 	void fetchCollections();
         void fetchCollectionsFinished(KJob * job);
+        
+        void updateCalendars();
 	
     private:
 	
@@ -59,8 +61,9 @@ class PlasmaCalendar : public Plasma::PopupApplet
 	void configChanged();
 
         Ui::config configDialog;
-	Ui::agendaConfig agendaConfigDialog;
 	
+        AgendaConfig * agendaConfigDialog;
+        
 	QGraphicsWidget * m_widget;
 	QGraphicsLinearLayout * m_layout;
 	
