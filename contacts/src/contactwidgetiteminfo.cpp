@@ -166,7 +166,6 @@ void ContactWidgetItemInfo::setEmails(const QStringList emails)
         m_emailLabels.push_back(email);
 	
     }
-
 }
 
 void ContactWidgetItemInfo::openEmail(const QString & string)

@@ -23,7 +23,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>99</y>
+     <y>150</y>
      <width>301</width>
      <height>41</height>
     </rect>
@@ -36,7 +36,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>130</y>
+     <y>181</y>
      <width>311</width>
      <height>48</height>
     </rect>
@@ -87,28 +87,48 @@
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>6</x>
-     <y>1</y>
-     <width>301</width>
-     <height>121</height>
+     <x>0</x>
+     <y>2</y>
+     <width>311</width>
+     <height>161</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadCollections">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QListWidget" name="collectionsList">
       <property name="maximumSize">
        <size>
-        <width>180</width>
+        <width>16777215</width>
         <height>16777215</height>
        </size>
       </property>
@@ -129,22 +149,6 @@
       </property>
       <property name="sortingEnabled">
        <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item alignment="Qt::AlignTop">
-     <widget class="QPushButton" name="loadCollections">
-      <property name="maximumSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:transparent</string>
-      </property>
-      <property name="text">
-       <string/>
       </property>
      </widget>
     </item>

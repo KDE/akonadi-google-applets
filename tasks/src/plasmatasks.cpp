@@ -400,3 +400,4 @@ void PlasmaTasks::addFinished(KJob * job)
 
 #include "plasmatasks.moc"
 
+

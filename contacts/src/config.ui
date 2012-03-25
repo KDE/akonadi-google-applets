@@ -23,7 +23,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>125</y>
+     <y>155</y>
      <width>301</width>
      <height>31</height>
     </rect>
@@ -32,55 +32,11 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>311</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item alignment="Qt::AlignTop">
-     <widget class="QLabel" name="label_4">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Collections</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QListWidget" name="collectionsList"/>
-    </item>
-    <item alignment="Qt::AlignTop">
-     <widget class="QPushButton" name="loadCollections">
-      <property name="maximumSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:transparent</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>150</y>
+     <y>180</y>
      <width>211</width>
      <height>48</height>
     </rect>
@@ -119,6 +75,54 @@
        <bool>true</bool>
       </property>
      </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>1</y>
+     <width>311</width>
+     <height>161</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Collections</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadCollections">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QListWidget" name="collectionsList"/>
     </item>
    </layout>
   </widget>
