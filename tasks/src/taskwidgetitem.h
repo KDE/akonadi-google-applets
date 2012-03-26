@@ -34,6 +34,8 @@
 #include <KJob>
 
 #include "taskeditor.h"
+#include "taskwidgetitemdate.h"
+#include "taskwidgetiteminfo.h"
 
 class TaskWidgetItem : public Plasma::Frame
 {
@@ -92,11 +94,10 @@ class TaskWidgetItem : public Plasma::Frame
 
         TaskEditor * m_editor;
 
-        QGraphicsGridLayout * m_layout;
-
-        Plasma::IconWidget * m_completed;
-        Plasma::IconWidget * m_date;
-        Plasma::IconWidget * m_name;
+        QGraphicsLinearLayout * m_layout;
+        
+        TaskWidgetItemDate * m_date;
+        TaskWidgetItemInfo * m_name;
 
         Akonadi::Item m_item;
         KCalCore::Todo::Ptr m_todo;

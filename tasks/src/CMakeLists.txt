@@ -17,7 +17,7 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(tasks_SRCS taskeditor.cpp tasklayout.cpp taskwidget.cpp taskwidgetitem.cpp plasmatasks.cpp)
+set(tasks_SRCS taskwidgetiteminfo.cpp taskwidgetitemdate.cpp taskeditor.cpp tasklayout.cpp taskwidget.cpp taskwidgetitem.cpp plasmatasks.cpp)
 
 kde4_add_ui_files(tasks_SRCS config.ui)
 kde4_add_ui_files(tasks_SRCS taskedit.ui)

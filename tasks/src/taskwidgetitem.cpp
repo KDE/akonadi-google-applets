@@ -34,7 +34,6 @@
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_editor(0),
-      m_completed(0),
       m_date(0),
       m_name(0),
       m_indent(0)
@@ -43,6 +42,8 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
+    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
+    
     setAutoFillBackground(true);
         
     QColor color = QColor(((TaskWidget *)parentWidget())->backgroundColor());
@@ -53,65 +54,39 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     this->setPalette(palette);
     
     setItemInfo();
+    
 }
 
 void TaskWidgetItem::setItemInfo()
 {
-    m_layout = new QGraphicsGridLayout(this);
-
-    m_completed = new Plasma::IconWidget(this);
+    m_name = new TaskWidgetItemInfo(this);
     
     if (m_todo->isCompleted()) {
-	
-	m_completed->setIcon(KIcon("task-complete"));
-	
+        
+        m_name->setIcon("task-complete");
+        
     } else {
-	
-	m_completed->setIcon(KIcon("task-reject"));
-	
+        
+        m_name->setIcon("task-reject");
+        
     }
-    m_completed->setMinimumSize(20,20);
-    m_completed->setMaximumSize(20,20);
 
-    connect(m_completed, SIGNAL(clicked()), SLOT(setCompleted()));
-    m_layout->addItem(m_completed, 0, 0);
+    m_name->setText(m_todo->summary());
+    
+    connect(m_name, SIGNAL(changeCheckstate()), SLOT(setCompleted()));
+    connect(m_name, SIGNAL(textClicked()),SLOT(editTask()));
 
+    m_layout->addItem(m_name);
+    
     if (m_todo->hasDueDate()) {
 
-        m_date = new Plasma::IconWidget(this);
-	m_date->setOrientation(Qt::Horizontal);
-	m_date->setMinimumWidth(50);
-	m_date->setMinimumHeight(20);
-	m_date->setMaximumHeight(20);
-        m_date->setText(m_todo->dtDue().toString(KDateTime::LocalDate));
+        m_date = new TaskWidgetItemDate(this);
+        
+        m_date->setText(m_todo->dtDue().date().toString(Qt::DefaultLocaleLongDate));
 
         setColorForDate();
 
-        m_layout->addItem(m_date, 0, 1);
-
-    }
-
-    m_name = new Plasma::IconWidget(this);
-    m_name->setMinimumWidth(50);
-    m_name->setMinimumHeight(20);
-    m_name->setMaximumHeight(20);
-    m_name->setText(m_todo->summary());
-    m_name->setOrientation(Qt::Horizontal);
-
-    connect(m_name, SIGNAL(clicked()), SLOT(editTask()));
-
-    if (m_todo->isCompleted()) {
-
-        m_name->setIcon(KIcon("dialog-ok"));
-    }
-
-    if (m_date) {
-
-        m_layout->addItem(m_name, 1, 1);
-
-    } else {
-
-        m_layout->addItem(m_name, 0, 1);
+        m_layout->addItem(m_date);
 
     }
 
@@ -133,7 +108,7 @@ void TaskWidgetItem::setItemInfo()
 
         Plasma::ToolTipManager::self()->setContent(m_date, content);
 
-        connect(m_date, SIGNAL(clicked()), SLOT(editTask()));
+        connect(m_date, SIGNAL(dateClicked()), SLOT(editTask()));
 
     }
 
@@ -212,19 +187,19 @@ void TaskWidgetItem::setColorForDate()
 
         if (days < 0) {
 
-            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->expiredColor()));
+            m_date->setColor(((TaskWidget *)parentWidget())->expiredColor());
 
         } else if (days == 0) {
-
-            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->todayColor()));
+            
+            m_date->setColor(((TaskWidget *)parentWidget())->todayColor());
 
         } else if (days < 8) {
 
-            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->weekColor()));
+            m_date->setColor(((TaskWidget *)parentWidget())->weekColor());
 
         } else {
 
-            m_date->setTextBackgroundColor(QColor(((TaskWidget *)parentWidget())->otherColor()));
+            m_date->setColor(((TaskWidget *)parentWidget())->otherColor());
 
         }
 
@@ -251,17 +226,15 @@ void TaskWidgetItem::setCompleted()
 
 void TaskWidgetItem::setRelated(TaskWidgetItem * item)
 {
-
     m_indent = item->indent() + 1;
 
     m_layout->setContentsMargins((m_indent * 25) + 5, 2, 2, 2);
-
 }
 
 void TaskWidgetItem::setUnrelated()
 {
     m_layout->setContentsMargins(5, 2, 2, 2);
-
+    
     m_indent = 0;
 }
 
@@ -274,15 +247,6 @@ void TaskWidgetItem::updateTask(const Akonadi::Item & item)
     if (m_indent != 0) {
 
         setUnrelated();
-
-    }
-
-    if (m_completed) {
-
-        m_layout->removeItem(m_completed);
-
-        delete m_completed;
-        m_completed = 0;
 
     }
 
