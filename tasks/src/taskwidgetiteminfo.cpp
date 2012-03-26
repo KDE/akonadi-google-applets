@@ -1,5 +1,5 @@
 /*
-    <one line to give the program's name and a brief idea of what it does.>
+    Akonadi google tasks plasmoid - taskwidgetiteminfo.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -55,11 +55,4 @@ void TaskWidgetItemInfo::setIcon(QString icon)
 void TaskWidgetItemInfo::setText(QString text)
 {
     m_name->setText(text);
-}
-
-void TaskWidgetItemInfo::indentContent(int indent)
-{
-
-    m_layout->setContentsMargins(indent,2,2,2);
-    
 }

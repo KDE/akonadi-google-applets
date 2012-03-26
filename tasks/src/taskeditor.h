@@ -43,10 +43,10 @@ class TaskEditor : public QWidget
         void disableDueDate();
         void setCollections(QList<Akonadi::Collection> collections);
         void setAllDay(bool checked);
-        void setStartDate(KDateTime dateTime);
-        void setDueDate(KDateTime dateTime);
-        void setName(QString name);
-        void setDescription(QString description);
+        void setStartDate(const KDateTime dateTime);
+        void setDueDate(const KDateTime dateTime);
+        void setName(const QString name);
+        void setDescription(const QString description);
 
         void updateTodo(KCalCore::Todo::Ptr todo);
 

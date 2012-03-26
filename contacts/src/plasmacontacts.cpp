@@ -245,6 +245,3 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 }
 
 #include "plasmacontacts.moc"
-
-
-

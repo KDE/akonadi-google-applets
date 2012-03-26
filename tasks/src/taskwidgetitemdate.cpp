@@ -1,5 +1,5 @@
 /*
-    <one line to give the program's name and a brief idea of what it does.>
+    Akonadi google tasks plasmoid - taskwidgetiteminfo.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -59,12 +59,5 @@ void TaskWidgetItemDate::setColor(QString color)
     palette = this->palette();
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
-    
-}
-
-void TaskWidgetItemDate::indentContent(int indent)
-{
-
-    m_layout->setContentsMargins(indent,2,2,2);
     
 }

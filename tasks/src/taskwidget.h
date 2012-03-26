@@ -42,48 +42,53 @@ class TaskWidget : public QGraphicsWidget
 
         TaskWidget(QGraphicsWidget * parent = 0);
 
-	QString backgroundColor() {
+	QString backgroundColor() const {
             return m_backgroundColor;
         }
 	
-        QString expiredColor() {
+        QString expiredColor() const {
             return m_expiredColor;
         }
 
-        QString todayColor() {
+        QString todayColor() const {
             return m_todayColor;
         }
 
-        QString weekColor() {
+        QString weekColor() const {
             return m_weekColor;
         }
 
-        QString otherColor() {
+        QString otherColor() const {
             return m_otherColor;
         }
+        
+        QString completedColor() const {
+	    return m_completedColor;
+        }
 
-        QList<Akonadi::Collection::Id> idList() {
+        QList<Akonadi::Collection::Id> idList() const {
             return m_idList;
         }
 
-        OrderBy orderBy() {
+        OrderBy orderBy() const {
             return m_order;
         }
 
-        bool autoHideCompleted() {
+        bool autoHideCompleted() const {
             return m_autoHide;
         }
 
-        bool autoDeleteCompleted() {
+        bool autoDeleteCompleted() const {
             return m_autoDel;
         }
 
-        void setBackgroundColor(QString color);
-        void setExpiredColor(QString color);
-        void setTodayColor(QString color);
-        void setWeekColor(QString color);
-        void setOtherColor(QString color);
-        void setOrderBy(OrderBy order);
+        void setBackgroundColor(const QString color);
+        void setExpiredColor(const QString color);
+        void setTodayColor(const QString color);
+        void setWeekColor(const QString color);
+        void setOtherColor(const QString color);
+	void setCompletedColor(const QString color);
+        void setOrderBy(const OrderBy order);
 
         void setAutoHideCompleted(bool hide);
         void setAutoDeleteCompleted(bool del);
@@ -117,6 +122,7 @@ class TaskWidget : public QGraphicsWidget
         QString m_todayColor;
         QString m_weekColor;
         QString m_otherColor;
+	QString m_completedColor;
 
         bool m_autoHide;
         bool m_autoDel;
@@ -126,7 +132,6 @@ class TaskWidget : public QGraphicsWidget
         Akonadi::Monitor * m_monitor;
 
         OrderBy m_order;
-
 };
 
 

@@ -71,10 +71,8 @@ class PlasmaContacts : public Plasma::PopupApplet
 
         Plasma::ScrollWidget * m_scroll;
         Plasma::LineEdit * m_find;
-
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_contacts, PlasmaContacts)
-
 
 #endif

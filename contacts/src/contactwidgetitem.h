@@ -82,7 +82,6 @@ class ContactWidgetItem : public Plasma::Frame
 
         bool m_show;
         bool m_info;
-
 };
 
 #endif // CONTACTWIDGETITEM_H

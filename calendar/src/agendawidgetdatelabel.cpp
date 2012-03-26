@@ -27,19 +27,13 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent)
     m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumWidth(50);
+    m_icon->setMinimumHeight(20);
     m_icon->setMaximumHeight(20);
     
     m_layout->addItem(m_icon);
     
     setLayout(m_layout);
     setAutoFillBackground(true);
-    
-    QColor color("#343e88");
-    color.setAlphaF(0.3);
-    QPalette palette;
-    palette = this->palette();
-    palette.setColor(QPalette::Window,color);
-    this->setPalette(palette);
     
     setFrameShadow(Raised);
 }

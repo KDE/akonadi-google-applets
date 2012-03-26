@@ -1,5 +1,5 @@
 /*
-    <one line to give the program's name and a brief idea of what it does.>
+    Akonadi google tasks plasmoid - taskwidgetitemdate.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -33,11 +33,9 @@ class TaskWidgetItemDate : public Plasma::Frame
         
         explicit TaskWidgetItemDate(QGraphicsWidget * parent = 0);
         virtual ~TaskWidgetItemDate() {};
-        
-        void indentContent(int indent);
-        
-        void setColor(QString color);
-        void setText(QString date);
+                
+        void setColor(const QString color);
+        void setText(const QString date);
         
     signals:
         

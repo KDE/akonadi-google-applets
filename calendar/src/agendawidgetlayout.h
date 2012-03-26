@@ -35,7 +35,7 @@ class AgendaWidgetLayout : public QGraphicsLinearLayout
 
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 	
-	bool existDateItem(QDate date);
+	bool existDateItem(const QDate date);
 	
 	void addDateItem(AgendaWidgetDateItem * item);
 	void addEventItem(QDate date, AgendaWidgetEventItem * item);

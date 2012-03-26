@@ -95,6 +95,7 @@ void PlasmaTasks::configChanged()
     m_tasksList->setTodayColor(conf.readEntry("todayColor", "#e64600"));
     m_tasksList->setWeekColor(conf.readEntry("weekColor", "#e6f000"));
     m_tasksList->setOtherColor(conf.readEntry("otherColor", ""));
+    m_tasksList->setCompletedColor(conf.readEntry("completedColor","#343e88"));
 
     m_tasksList->setOrderBy((TaskWidget::OrderBy)conf.readEntry("orderMode", 0));
 
@@ -111,9 +112,6 @@ void PlasmaTasks::configChanged()
     }
 
     m_tasksList->setCollections(list);
-
-
-
 }
 
 void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
@@ -145,6 +143,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
     appearanceconfigDialog.todayColor->setColor(QColor(m_tasksList->todayColor()));
     appearanceconfigDialog.weekColor->setColor(QColor(m_tasksList->weekColor()));
     appearanceconfigDialog.otherColor->setColor(QColor(m_tasksList->otherColor()));
+    appearanceconfigDialog.completedColor->setColor(QColor(m_tasksList->completedColor()));
 
     appearanceconfigDialog.orderBy->setCurrentIndex(m_tasksList->orderBy());
 
@@ -199,6 +198,11 @@ void PlasmaTasks::configAccepted()
     if (appearanceconfigDialog.otherColor->color().name() != m_tasksList->otherColor()) {
 
         conf.writeEntry("otherColor", appearanceconfigDialog.otherColor->color().name());
+    }
+    
+    if (appearanceconfigDialog.completedColor->color().name() != m_tasksList->completedColor()) {
+
+        conf.writeEntry("completedColor", appearanceconfigDialog.completedColor->color().name());
     }
 
     if (appearanceconfigDialog.orderBy->currentIndex() != m_tasksList->orderBy()) {

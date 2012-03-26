@@ -40,11 +40,11 @@ class AgendaWidgetEventItem : public Plasma::Frame
 	
 	bool operator<(AgendaWidgetEventItem * item);
 	
-        void setColor(QString color);
-	void setEventName(QString name);
-	void setEventTime(QTime start, QTime end);
-	void setEventStartTime(QTime start);
-	void setEventEndTime(QTime end);
+        void setColor(const QString color);
+	void setEventName(const QString name);
+	void setEventTime(const QTime start, const QTime end);
+	void setEventStartTime(const QTime start);
+	void setEventEndTime(const QTime end);
 	
     private:
 	

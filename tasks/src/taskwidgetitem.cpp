@@ -54,7 +54,6 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     this->setPalette(palette);
     
     setItemInfo();
-    
 }
 
 void TaskWidgetItem::setItemInfo()
@@ -203,6 +202,10 @@ void TaskWidgetItem::setColorForDate()
 
         }
 
+    } else {
+	
+	m_date->setColor(((TaskWidget *)parentWidget())->completedColor());
+	
     }
 
 }

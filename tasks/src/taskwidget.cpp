@@ -90,6 +90,11 @@ void TaskWidget::setAutoDeleteCompleted(bool del)
     m_autoDel = del;
 }
 
+void TaskWidget::setCompletedColor(QString color)
+{
+    m_completedColor = color;
+}
+
 void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
 {
     clear();

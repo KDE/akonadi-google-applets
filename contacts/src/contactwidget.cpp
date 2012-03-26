@@ -28,7 +28,6 @@ ContactWidget::ContactWidget(QGraphicsWidget * parent)
     : QGraphicsWidget(parent),
       m_findData(true),
       m_showEmptyContacts(true)
-
 {
     m_layout = new ContactsLayout(Qt::Vertical, this);
     m_layout->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -43,7 +42,6 @@ ContactWidget::ContactWidget(QGraphicsWidget * parent)
             SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             SLOT(itemRemoved(Akonadi::Item)));
-
 }
 
 void ContactWidget::setCollections(QList<Akonadi::Entity::Id> ids)
@@ -149,14 +147,11 @@ void ContactWidget::fetchCollectionsFinished(KJob * job)
 
 void ContactWidget::fetchItems(const Akonadi::Collection & collection)
 {
-
     Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob(collection);
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchItemsFinished(KJob *)));
 
     job->fetchScope().fetchFullPayload(true);
-
-
 }
 
 void ContactWidget::fetchItemsFinished(KJob * job)
@@ -204,7 +199,6 @@ void ContactWidget::clear()
 
 void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection  & collection)
 {
-
     for (int i = 0; i < m_idList.count(); i++) {
 
         if (m_idList.at(i) == collection.id()) {

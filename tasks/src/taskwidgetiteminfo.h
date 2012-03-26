@@ -1,5 +1,5 @@
 /*
-    <one line to give the program's name and a brief idea of what it does.>
+    Akonadi google tasks plasmoid - taskwidgetiteminfo.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -33,12 +33,9 @@ class TaskWidgetItemInfo : public Plasma::Frame
         
         explicit TaskWidgetItemInfo(QGraphicsWidget * parent = 0);
         virtual ~TaskWidgetItemInfo(){};
-        
-        void indentContent(int indent);
-        
-        void setIcon(QString icon);
-        void setText(QString text);
-        
+                
+        void setIcon(const QString icon);
+        void setText(const QString text);
         
     signals:        
     
@@ -53,4 +50,4 @@ class TaskWidgetItemInfo : public Plasma::Frame
         Plasma::IconWidget * m_name;
 };
 
-#endif // TASKWIDGETITEMCHECKBOX_H
+#endif // TASKWIDGETITEMINFO_H

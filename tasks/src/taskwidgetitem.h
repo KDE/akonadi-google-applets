@@ -58,19 +58,19 @@ class TaskWidgetItem : public Plasma::Frame
             return m_indent;
         }
 
-        QString relatedTo() {
+        QString relatedTo() const {
             return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent);
         }
 
-        QString uid() {
+        QString uid() const {
             return m_todo->uid();
         }
 
-        bool isCompleted() {
+        bool isCompleted() const {
             return m_todo->isCompleted();
         }
 
-        Akonadi::Item item() {
+        Akonadi::Item item() const {
             return m_item;
         }
 

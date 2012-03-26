@@ -58,8 +58,8 @@ class AgendaWidget : public QGraphicsWidget
         
         void setCollections(QList<Akonadi::Collection::Id> ids);
         void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
-        void setDateColor(QString color);
-	void setWeeks(int weeks);
+        void setDateColor(const QString color);
+	void setWeeks(const int weeks);
 	
     public slots:
 	
