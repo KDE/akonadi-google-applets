@@ -104,13 +104,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="calendarsList"/>
+       <widget class="QComboBox" name="calendarsList">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="KColorButton" name="calendarColor">
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>75</width>
           <height>16777215</height>
          </size>
         </property>

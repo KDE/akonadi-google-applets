@@ -200,18 +200,40 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
             if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
-
+	    
                 QListWidgetItem * item = new QListWidgetItem();
+	        
+	        QString name;
 
+	        if (collections.contains(collection.parentCollection())) {
+		 
+		    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
+		    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
+		    
+		    if (!attribute) {
+			
+			name = col.name();
+			
+		    } else {
+			
+			name = attr->displayName();
+			
+		    }
+		    
+		    name += " / ";
+		}
+	     
                 if (!attribute) {
 
-                    item->setText(collection.name());
-
+		    name += collection.name();
+		    
                 } else {
 
-                    item->setText(attribute->displayName());
+                   name += attribute->displayName();
 
-                }
+		}
+                
+                item->setText(name);
 
                 item->setData(Qt::UserRole, collection.id());
                 item->setCheckState(Qt::Unchecked);

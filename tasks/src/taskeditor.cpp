@@ -60,17 +60,37 @@ void TaskEditor::setCollections(QList< Akonadi::Collection > collections)
 
         Akonadi::EntityDisplayAttribute * attribute = collections.at(i).attribute< Akonadi::EntityDisplayAttribute > ();
 
+        QString name;
+
+        if (collections.contains(collections.at(i).parentCollection())) {
+
+            Akonadi::Collection col = collections.at(collections.indexOf(collections.at(i).parentCollection()));
+            Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
+
+            if (!attribute) {
+
+                name = col.name();
+
+            } else {
+
+                name = attr->displayName();
+
+            }
+
+            name += " / ";
+        }
+
         if (!attribute) {
 
-            qDebug() << "add";
-            m_taskEditor->comboBox->addItem(collections.at(i).name(), collections.at(i).id());
+            name += collections.at(i).name();
 
         } else {
 
-            qDebug() << "add";
-            m_taskEditor->comboBox->addItem(attribute->displayName(), collections.at(i).id());
+            name += attribute->displayName();
 
         }
+
+        m_taskEditor->comboBox->addItem(name, collections.at(i).id()) ;
 
     }
 

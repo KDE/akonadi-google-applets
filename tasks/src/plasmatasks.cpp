@@ -223,7 +223,7 @@ void PlasmaTasks::fetchCollections()
 
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
 
-    job->fetchScope();
+    job->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
@@ -248,18 +248,40 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
             if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
-
+	    
                 QListWidgetItem * item = new QListWidgetItem();
+	        
+	        QString name;
 
+	        if (collections.contains(collection.parentCollection())) {
+		 
+		    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
+		    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
+		    
+		    if (!attribute) {
+			
+			name = col.name();
+			
+		    } else {
+			
+			name = attr->displayName();
+			
+		    }
+		    
+		    name += " / ";
+		}
+	     
                 if (!attribute) {
 
-                    item->setText(collection.name());
-
+		    name += collection.name();
+		    
                 } else {
 
-                    item->setText(attribute->displayName());
+                   name += attribute->displayName();
 
-                }
+		}
+                
+                item->setText(name);
 
                 item->setData(Qt::UserRole, collection.id());
                 item->setCheckState(Qt::Unchecked);
