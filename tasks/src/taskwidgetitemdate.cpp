@@ -29,6 +29,11 @@ TaskWidgetItemDate::TaskWidgetItemDate(QGraphicsWidget * parent)
     m_icon->setMinimumWidth(50);
     m_icon->setMaximumHeight(15);
     
+    QFont font = m_icon->font();
+    font.setPointSize(font.pointSize()-1);
+    
+    m_icon->setFont(font);
+    
     m_layout->addItem(m_icon);
     
     setLayout(m_layout);
