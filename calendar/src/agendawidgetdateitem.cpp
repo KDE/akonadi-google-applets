@@ -59,21 +59,7 @@ void AgendaWidgetDateItem::setDate(QDate date)
 {
     m_date = date;
 
-    QDate dt = KDateTime::currentLocalDateTime().date();
-    
-    if (m_date == dt) {
-	
-	m_dateLabel->setText(i18n("Today"));
-	
-    } else if (m_date == dt.addDays(1)) {
-	
-	m_dateLabel->setText(i18n("Tomorrow"));
-	
-    } else {
-    
-	m_dateLabel->setText(KGlobal::locale()->formatDate(date,KLocale::LongDate));
-	
-    }
+    m_dateLabel->setText(KGlobal::locale()->formatDate(date,KLocale::FancyLongDate));
     
 }
 

@@ -81,7 +81,7 @@ void TaskWidgetItem::setItemInfo()
 
         m_date = new TaskWidgetItemDate(this);
 	
-	m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(),KLocale::LongDate));
+	m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(),KLocale::FancyLongDate));
 
         setColorForDate();
 
