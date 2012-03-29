@@ -50,7 +50,7 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
 
         m_widget = new QGraphicsWidget(this);
 
-        m_widget->setMinimumSize(300, 500);
+        m_widget->setPreferredSize(300, 500);
 
         m_tasksList = new TaskWidget(m_widget);
 

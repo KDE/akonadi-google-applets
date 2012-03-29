@@ -43,7 +43,8 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
      if (!m_widget) {
 	 
         m_widget = new QGraphicsWidget(this);
-        m_widget->setMinimumSize(300, 400);
+                
+	m_widget->setPreferredSize(300, 500);
 
 	m_agenda = new AgendaWidget(m_widget);
 	

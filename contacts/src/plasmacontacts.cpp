@@ -44,7 +44,7 @@ QGraphicsWidget * PlasmaContacts::graphicsWidget()
 
         m_widget = new QGraphicsWidget(this);
 
-        m_widget->setMinimumSize(300, 500);
+        m_widget->setPreferredSize(300, 500);
 
         m_find = new Plasma::LineEdit(m_widget);
         m_find->setClearButtonShown(true);
