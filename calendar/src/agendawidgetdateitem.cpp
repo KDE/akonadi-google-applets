@@ -71,7 +71,7 @@ void AgendaWidgetDateItem::setDate(QDate date)
 	
     } else {
     
-	m_dateLabel->setText(m_date.toString(Qt::DefaultLocaleLongDate));
+	m_dateLabel->setText(KGlobal::locale()->formatDate(date,KLocale::LongDate));
 	
     }
     

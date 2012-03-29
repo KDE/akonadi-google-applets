@@ -80,16 +80,8 @@ void TaskWidgetItem::setItemInfo()
     if (m_todo->hasDueDate()) {
 
         m_date = new TaskWidgetItemDate(this);
-        
-	QString date = m_todo->dtDue().date().toString(Qt::SystemLocaleLongDate);
 	
-	if (!m_todo->allDay()) {
-	 
-	    date += ", " + m_todo->dtDue().time().toString(Qt::DefaultLocaleShortDate);
-	    
-	}
-	
-        m_date->setText(date);
+	m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(),KLocale::LongDate));
 
         setColorForDate();
 
