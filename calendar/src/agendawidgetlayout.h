@@ -39,6 +39,8 @@ class AgendaWidgetLayout : public QGraphicsLinearLayout
 	
 	void addDateItem(AgendaWidgetDateItem * item);
 	void addEventItem(QDate date, AgendaWidgetEventItem * item);
+        
+        void clear();
 };
 
 #endif // AGENDAWIDGETLAYOUT_H

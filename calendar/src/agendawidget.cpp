@@ -63,7 +63,7 @@ void AgendaWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > color
 void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {
 
-    clear();
+    m_layout->clear();
     
     m_idList = ids;
     
@@ -270,21 +270,4 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     
     m_layout->addEventItem(date.addDays(daysTo),newEvent);
       
-}
-
-void AgendaWidget::clear()
-{
-
-    AgendaWidgetDateItem * item;
-
-    while (m_layout->count() > 0) {
-
-        item = static_cast<AgendaWidgetDateItem*>(m_layout->itemAt(0));
-
-        m_layout->removeItem(item);
-
-        item->deleteLater();
-
-    }
-    
 }

@@ -88,6 +88,21 @@ void AgendaWidgetLayout::addEventItem(QDate date, AgendaWidgetEventItem * item)
     
 }
 
+void AgendaWidgetLayout::clear()
+{
+    AgendaWidgetDateItem * item;
+
+    while (count() > 0) {
+
+        item = static_cast<AgendaWidgetDateItem*>(itemAt(0));
+
+        removeItem(item);
+
+        item->deleteLater();
+
+    }
+    
+}
 
 QSizeF AgendaWidgetLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
 {

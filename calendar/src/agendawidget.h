@@ -69,7 +69,6 @@ class AgendaWidget : public QGraphicsWidget
     private:
 	
 	void addItem(const Akonadi::Item & item);
-        void clear();
 	
 	void fetchCollections();
         void fetchItems(const Akonadi::Collection & collections);
