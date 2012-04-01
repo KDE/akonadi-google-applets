@@ -162,17 +162,18 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 }
 
 void AgendaWidget::addItem(const Akonadi::Item & item)
-{
-    
-    QDate min = KDateTime::currentLocalDateTime().date();
-    QDate max = min.addDays(7 * m_weeks); 
+{  
+    KDateTime min = KDateTime::currentLocalDateTime();
+    KDateTime max = min.addDays(7 * m_weeks); 
     
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
-    QDate dateStart = event->dtStart().date(); 
-    QDate dateEnd = event->dtEnd().date();
-    QDate date = dateStart;
+    KDateTime dateStart = event->dtStart(); 
+    KDateTime dateEnd = event->dtEnd();
+    KDateTime date = dateStart;
     
+    int daysTo = dateStart.date().daysTo(dateEnd.date());
+         
     if (dateStart > max) {
 	
 	return;
@@ -182,14 +183,18 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	return;
 	
     } else if (dateStart < min && event->recurs()) {
+
+        date = event->recurrence()->getPreviousDateTime(KDateTime(min));
+
+        if (date.addDays(daysTo) < min) {
+        
+            date = event->recurrence()->getNextDateTime(KDateTime(date));
+        
+        }
 	
-	date = event->recurrence()->getPreviousDateTime(KDateTime(min)).date();
-	
-	date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
-	
-	if (date < min || date > max) {
-	 
-	    return;
+	if (date.addDays(daysTo) < min || date > max) {
+            
+            return;
 	    
 	}
 	
@@ -197,29 +202,31 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
             
     AgendaWidgetEventItem * newEvent;   
     AgendaWidgetDateItem * dateItem;
-      
-    int daysTo = dateStart.daysTo(dateEnd);
-    
+          
     for (int i = 1; i < daysTo; i++) {
 	
-	newEvent = new AgendaWidgetEventItem(item.id());
-	newEvent->setEventName(event->summary());
-        newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
+        if (date.date().addDays(i) >= min.date() && date.date().addDays(i) <= max.date()) {
+
+            newEvent = new AgendaWidgetEventItem(item.id());
+            newEvent->setEventName(event->summary());
+            newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
-	if (!m_layout->existDateItem(date.addDays(i))) {
+            if (!m_layout->existDateItem(date.addDays(i).date())) {
 	   
-	    dateItem = new AgendaWidgetDateItem(date.addDays(i),this);
-	    dateItem->setDateColor(m_dateColor);
-	    m_layout->addDateItem(dateItem);
+                dateItem = new AgendaWidgetDateItem(date.addDays(i).date(),this);
+                dateItem->setDateColor(m_dateColor);
+                m_layout->addDateItem(dateItem);
 	    
-	}
+            }
 	
-	m_layout->addEventItem(date.addDays(i),newEvent);
+            m_layout->addEventItem(date.addDays(i).date(),newEvent);
+            
+        }
     }
     
-    if (dateStart == dateEnd) {
-	
-	newEvent = new AgendaWidgetEventItem(item.id());
+    if (dateStart.date() == dateEnd.date()) {
+
+        newEvent = new AgendaWidgetEventItem(item.id());
 	newEvent->setEventName(event->summary());
         newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
@@ -229,58 +236,66 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	    
 	}
 	
-	if (!m_layout->existDateItem(date)) {
+	if (!m_layout->existDateItem(date.date())) {
 	   
-	    dateItem = new AgendaWidgetDateItem(date,this);
+	    dateItem = new AgendaWidgetDateItem(date.date(),this);
 	    dateItem->setDateColor(m_dateColor);
 	    m_layout->addDateItem(dateItem);
 	    
 	}
 	
-	m_layout->addEventItem(date,newEvent);
+	m_layout->addEventItem(date.date(),newEvent);
 	
 	return;
     }
-   
-    newEvent = new AgendaWidgetEventItem(item.id());
-    newEvent->setEventName(event->summary());
-    newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
-    if (!event->allDay()) {
+    if (date.date() >= min.date()) { 
+         
+        newEvent = new AgendaWidgetEventItem(item.id());
+        newEvent->setEventName(event->summary());
+        newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
-	newEvent->setEventStartTime(event->dtStart().time());
+        if (!event->allDay()) {
+    
+            newEvent->setEventStartTime(event->dtStart().time());
 	
-    }
+        }
     
-    if (!m_layout->existDateItem(date)) {
+        if (!m_layout->existDateItem(date.date())) {
 	   
-	 dateItem = new AgendaWidgetDateItem(date,this);
-	 dateItem->setDateColor(m_dateColor);
-	 m_layout->addDateItem(dateItem);
+            dateItem = new AgendaWidgetDateItem(date.date(),this);
+            dateItem->setDateColor(m_dateColor);
+            m_layout->addDateItem(dateItem);
 	    
-    }
+        }
     
-    m_layout->addEventItem(date,newEvent);
+        m_layout->addEventItem(date.date(),newEvent);
+        
+    } 
+
+    if (dateEnd.date() <= max.date()) {
     
-    newEvent = new AgendaWidgetEventItem(item.id());
-    newEvent->setEventName(event->summary());
-    newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
+        newEvent = new AgendaWidgetEventItem(item.id());
+        newEvent->setEventName(event->summary());
+        newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
-    if (!event->allDay()) {
+        if (!event->allDay()) {
    
-	newEvent->setEventEndTime(event->dtEnd().time());
-	
-    }
+            newEvent->setEventEndTime(event->dtEnd().time());
+            
+        }
     
-    if (!m_layout->existDateItem(date.addDays(daysTo))) {
+        if (!m_layout->existDateItem(date.addDays(daysTo).date())) {
 	   
-	dateItem = new AgendaWidgetDateItem(date.addDays(daysTo),this);
-	dateItem->setDateColor(m_dateColor);
-	m_layout->addDateItem(dateItem);
+            dateItem = new AgendaWidgetDateItem(date.addDays(daysTo).date(),this);
+            dateItem->setDateColor(m_dateColor);
+            m_layout->addDateItem(dateItem);
 	    
-    }
+        }
     
-    m_layout->addEventItem(date.addDays(daysTo),newEvent);
+        m_layout->addEventItem(date.addDays(daysTo).date(),newEvent);
+        
+    }
       
 }
 

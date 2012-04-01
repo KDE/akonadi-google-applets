@@ -198,7 +198,7 @@ void AgendaWidgetEventItem::setEventEndTime(QTime end)
 
 bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
 {
-
+    // TODO: FIX SORTING
     if (m_hasStartTime || m_hasEndTime) {
 
         if (m_hasStartTime && item->m_hasStartTime) {
