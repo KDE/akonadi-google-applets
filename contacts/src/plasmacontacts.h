@@ -45,6 +45,7 @@ class PlasmaContacts : public Plasma::PopupApplet
         PlasmaContacts(QObject * parent, const QVariantList & args);
         ~PlasmaContacts() {};
 
+        void init();
         void createConfigurationInterface(KConfigDialog * parent);
 
     private slots:

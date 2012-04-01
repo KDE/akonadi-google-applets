@@ -40,46 +40,43 @@ PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
     setPopupIcon(icon());
+}
 
-    graphicsWidget();
+void PlasmaTasks::init()
+{
+     configChanged();
 }
 
 QGraphicsWidget * PlasmaTasks::graphicsWidget()
 {
     if (!m_widget) {
 
-        m_widget = new QGraphicsWidget(this);
+        m_tasksList = new TaskWidget(this);
 
-        m_widget->setPreferredSize(300, 500);
-
-        m_tasksList = new TaskWidget(m_widget);
-
-        m_scroll = new Plasma::ScrollWidget(m_widget);
+        m_scroll = new Plasma::ScrollWidget(this);
         m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         m_scroll->setWidget(m_tasksList);
 
-        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
-
+        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical);
         m_mainLayout->addItem(m_scroll);
 
-        m_add = new Plasma::PushButton(m_widget);
+        m_add = new Plasma::PushButton(this);
         m_add->setText(i18n("Add task"));
         m_add->setMaximumHeight(25);
 
-        m_buttonLayout = new QGraphicsLinearLayout(m_mainLayout);
-
+        m_buttonLayout = new QGraphicsLinearLayout();
         m_buttonLayout->addItem(m_add);
 
         connect(m_add, SIGNAL(clicked()), SLOT(addTask()));
 
         m_mainLayout->addItem(m_buttonLayout);
-
+        
+        m_widget = new QGraphicsWidget(this);
+        m_widget->setPreferredSize(300, 500);
         m_widget->setLayout(m_mainLayout);
-
-        configChanged();
-
+        
     }
-
+    
     return m_widget;
 }
 

@@ -47,6 +47,8 @@ class PlasmaTasks : public Plasma::PopupApplet
         PlasmaTasks(QObject * parent, const QVariantList & args);
 
         ~PlasmaTasks(){};
+        
+        void init();
 
         void createConfigurationInterface(KConfigDialog * parent);
 

@@ -43,6 +43,7 @@ class PlasmaCalendar : public Plasma::PopupApplet
         PlasmaCalendar(QObject *parent, const QVariantList &args);
         ~PlasmaCalendar(){};
  
+        void init();
         void createConfigurationInterface(KConfigDialog * parent);
 	
     public slots:

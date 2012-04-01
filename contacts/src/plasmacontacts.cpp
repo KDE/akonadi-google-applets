@@ -38,34 +38,36 @@ PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
     setPopupIcon(icon());
 }
 
+void PlasmaContacts::init()
+{
+     configChanged();
+}
+
 QGraphicsWidget * PlasmaContacts::graphicsWidget()
 {
     if (!m_widget) {
 
-        m_widget = new QGraphicsWidget(this);
-
-        m_widget->setPreferredSize(300, 500);
-
-        m_find = new Plasma::LineEdit(m_widget);
+        m_find = new Plasma::LineEdit(this);
         m_find->setClearButtonShown(true);
         m_find->setText(i18n("Find contact"));
 
-        m_contactList = new ContactWidget(m_widget);
+        connect(m_find, SIGNAL(textChanged(QString)), SLOT(lineChanged(QString)));
+        connect(m_find, SIGNAL(focusChanged(bool)), SLOT(lineFocusChanged(bool)));
+        
+        m_contactList = new ContactWidget(this);
 
-        m_scroll = new Plasma::ScrollWidget(m_widget);
+        m_scroll = new Plasma::ScrollWidget(this);
         m_scroll->setWidget(m_contactList);
 
-        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
+        m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical);
 
         m_mainLayout->addItem(m_find);
         m_mainLayout->addItem(m_scroll);
 
+        m_widget = new QGraphicsWidget(this);
+        m_widget->setPreferredSize(300, 500);
         m_widget->setLayout(m_mainLayout);
 
-        connect(m_find, SIGNAL(textChanged(QString)), SLOT(lineChanged(QString)));
-        connect(m_find, SIGNAL(focusChanged(bool)), SLOT(lineFocusChanged(bool)));
-
-        configChanged();
     }
 
     return m_widget;

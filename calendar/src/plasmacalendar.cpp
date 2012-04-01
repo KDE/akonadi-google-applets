@@ -38,28 +38,32 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args)
     setPopupIcon(icon());
 }
 
+void PlasmaCalendar::init()
+{
+    configChanged();
+}
+
+
 QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 {
      if (!m_widget) {
 	 
-        m_widget = new QGraphicsWidget(this);
-                
-	m_widget->setPreferredSize(300, 500);
-
-	m_agenda = new AgendaWidget(m_widget);
+	m_agenda = new AgendaWidget(this);
 	
-        m_layout = new QGraphicsLinearLayout(Qt::Vertical,m_widget); 
+        m_layout = new QGraphicsLinearLayout(Qt::Vertical); 
 
 	m_scroll = new Plasma::ScrollWidget(this);
 	m_scroll->setWidget(m_agenda);
 	
-	m_tab = new Plasma::TabBar(m_widget);
+	m_tab = new Plasma::TabBar(this);
 	m_tab->addTab(i18n("Agenda"),m_scroll);
-	m_tab->addTab(i18n("Calendar view"),new Plasma::IconWidget(m_widget));
+	m_tab->addTab(i18n("Calendar view"),new Plasma::IconWidget(this));
         m_tab->setTabBarShown(false);
 	
         m_layout->addItem(m_tab);
 	
+        m_widget = new QGraphicsWidget(this);
+        m_widget->setPreferredSize(300, 500);
 	m_widget->setLayout(m_layout);
     }
 
