@@ -44,8 +44,6 @@ class ContactWidgetItem : public Plasma::Frame
 
         virtual ~ContactWidgetItem();
 
-        void hide();
-        void show();
         void updateContact(const Akonadi::Item & item);
 
         bool isEmpty();
@@ -60,10 +58,6 @@ class ContactWidgetItem : public Plasma::Frame
         void editContact();
         void showContactInfo();
         void openEmail(const QString & string);
-
-    private slots:
-
-        void doHide();
 
     private:
 

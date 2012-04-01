@@ -52,7 +52,7 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
     m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setDrawBackground(true);
-    m_icon->setMinimumSize(250, 50);
+    m_icon->setMinimumSize(50, 50);
     m_icon->setMaximumHeight(50);
 
     setContactIcon();
@@ -63,83 +63,8 @@ ContactWidgetItem::ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget
 
     setLayout(m_mainLayout);
 
-    QGraphicsOpacityEffect * effect = new QGraphicsOpacityEffect(this);
-    effect->setOpacity(1);
-    setGraphicsEffect(effect);
-
-    m_animation = new QPropertyAnimation(effect, "opacity", effect);
-    m_animation->setStartValue(0);
-    m_animation->setEndValue(1);
-    m_animation->setDuration(300);
-
-    connect(m_animation, SIGNAL(finished()), this, SLOT(doHide()));
     connect(m_icon, SIGNAL(clicked()), SLOT(showContactInfo()));
     connect(m_edit, SIGNAL(clicked()), SLOT(editContact()));
-}
-
-void ContactWidgetItem::hide()
-{
-    if (!isVisible()) {
-	
-        return;
-	
-    }
-
-    if (m_animation->state() == QAbstractAnimation::Running) {
-
-        m_animation->pause();
-
-    }
-
-    m_animation->setDirection(QAbstractAnimation::Backward);
-
-    if (m_animation->state() == QAbstractAnimation::Paused) {
-
-        m_animation->resume();
-
-    } else {
-
-        m_animation->start();
-
-    }
-}
-
-void ContactWidgetItem::doHide()
-{
-    if (m_animation->direction() == QAbstractAnimation::Backward) {
-
-        QGraphicsWidget::hide();
-
-    }
-}
-
-void ContactWidgetItem::show()
-{
-    if (isVisible() && m_animation->currentValue() == 1) {
-
-        return;
-
-    }
-
-    QGraphicsWidget::show();
-
-    if (m_animation->state() == QAbstractAnimation::Running) {
-
-        m_animation->pause();
-
-    }
-
-    m_animation->setDirection(QAbstractAnimation::Forward);
-
-    if (m_animation->state() == QAbstractAnimation::Paused) {
-
-        m_animation->resume();
-
-    } else {
-
-        m_animation->start();
-
-    }
 }
 
 void ContactWidgetItem::setContactIcon()
@@ -189,7 +114,6 @@ void ContactWidgetItem::setContactIcon()
     }
 
 }
-
 
 void ContactWidgetItem::setContactInfo()
 {

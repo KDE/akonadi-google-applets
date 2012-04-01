@@ -25,7 +25,7 @@
 ContactsLayout::ContactsLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent):
     QGraphicsLinearLayout(orientation, parent)
 {
-    setMinimumWidth(250);
+    setMinimumWidth(50);
 }
 
 void ContactsLayout::addItem(ContactWidgetItem * item)
