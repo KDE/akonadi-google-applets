@@ -26,7 +26,7 @@
 #include <Plasma/Frame>
 #include <Plasma/IconWidget>
 
-#include <Akonadi/Item>
+#include <Akonadi/Entity>
 #include <KCalCore/Event>
 
 class AgendaWidgetEventItem : public Plasma::Frame
@@ -35,10 +35,15 @@ class AgendaWidgetEventItem : public Plasma::Frame
     
     public:
 	
-        explicit AgendaWidgetEventItem(QGraphicsWidget * parent = 0);
+        explicit AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWidget * parent = 0);
         virtual ~AgendaWidgetEventItem(){};
 	
+        Akonadi::Entity::Id id() const {
+            return m_id;
+        }
+        
 	bool operator<(AgendaWidgetEventItem * item);
+        bool operator==(Akonadi::Entity::Id id);
 	
         void setColor(const QString color);
 	void setEventName(const QString name);
@@ -61,6 +66,8 @@ class AgendaWidgetEventItem : public Plasma::Frame
 	
 	bool m_hasStartTime;
 	bool m_hasEndTime;
+        
+        Akonadi::Entity::Id m_id;
 };
 
 #endif // AGENDAWIDGETEVENTITEM_H

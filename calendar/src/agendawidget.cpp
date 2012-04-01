@@ -35,6 +35,16 @@ AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_layout = new AgendaWidgetLayout(Qt::Vertical,this);
 	
     setLayout(m_layout);
+    
+    m_monitor = new Akonadi::Monitor();
+    m_monitor->itemFetchScope().fetchFullPayload(true);
+
+    connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
+            SLOT(itemAdded(Akonadi::Item, Akonadi::Collection)));
+    connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
+            SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
+    connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
+            SLOT(itemRemoved(Akonadi::Item))); 
 
 }
 
@@ -104,6 +114,8 @@ void AgendaWidget::fetchCollectionsFinished(KJob * job)
 
         if (m_idList.contains(collection.id())) {
 
+            m_monitor->setCollectionMonitored(collection);
+            
             fetchItems(collection);
 
         }
@@ -165,7 +177,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
 	return;
 	
-    } else if (dateStart < min && !event->recurs()) {
+    } else if (dateStart < min && dateEnd < min && !event->recurs()) {
 	
 	return;
 	
@@ -190,7 +202,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     
     for (int i = 1; i < daysTo; i++) {
 	
-	newEvent = new AgendaWidgetEventItem();
+	newEvent = new AgendaWidgetEventItem(item.id());
 	newEvent->setEventName(event->summary());
         newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
@@ -207,7 +219,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     
     if (dateStart == dateEnd) {
 	
-	newEvent = new AgendaWidgetEventItem();
+	newEvent = new AgendaWidgetEventItem(item.id());
 	newEvent->setEventName(event->summary());
         newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
@@ -230,7 +242,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	return;
     }
    
-    newEvent = new AgendaWidgetEventItem();
+    newEvent = new AgendaWidgetEventItem(item.id());
     newEvent->setEventName(event->summary());
     newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
@@ -250,7 +262,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     
     m_layout->addEventItem(date,newEvent);
     
-    newEvent = new AgendaWidgetEventItem();
+    newEvent = new AgendaWidgetEventItem(item.id());
     newEvent->setEventName(event->summary());
     newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
     
@@ -271,3 +283,26 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     m_layout->addEventItem(date.addDays(daysTo),newEvent);
       
 }
+
+void AgendaWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
+{
+    if (m_idList.contains(collection.id())) {
+     
+        addItem(item);
+        
+    }
+}
+
+void AgendaWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
+{
+    Q_UNUSED(array);
+    
+    itemRemoved(item);
+    itemAdded(item,item.parentCollection());
+}
+
+void AgendaWidget::itemRemoved(const Akonadi::Item & item)
+{
+    m_layout->removeEvent(item.id());
+}
+

@@ -104,6 +104,32 @@ void AgendaWidgetLayout::clear()
     
 }
 
+void AgendaWidgetLayout::removeEvent(Akonadi::Entity::Id eventId)
+{
+
+    AgendaWidgetDateItem * dateItem;
+    
+    for (int i = 0; i < count(); i++) {
+        
+        dateItem = static_cast<AgendaWidgetDateItem*>(itemAt(i));
+        
+        dateItem->removeEvent(eventId);
+        
+        if (dateItem->isEmpty()) {
+            
+            removeItem(dateItem);
+            
+            dateItem->deleteLater();
+            
+            i--;
+            
+        }
+        
+    }
+    
+}
+
+
 QSizeF AgendaWidgetLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
 {
     QSizeF hint;

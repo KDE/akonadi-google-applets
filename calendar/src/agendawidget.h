@@ -65,6 +65,10 @@ class AgendaWidget : public QGraphicsWidget
 	
 	void fetchCollectionsFinished(KJob * job);
         void fetchItemsFinished(KJob * job);
+        
+        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+        void itemRemoved(const Akonadi::Item & item);
 	
     private:
 	
@@ -81,6 +85,9 @@ class AgendaWidget : public QGraphicsWidget
 	QString m_dateColor;
 	
 	int m_weeks;
+        
+        Akonadi::Monitor * m_monitor;
+
 };      
 
 #endif // AGENDAWIDGET_H

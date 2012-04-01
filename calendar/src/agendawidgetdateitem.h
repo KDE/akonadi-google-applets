@@ -42,10 +42,14 @@ class AgendaWidgetDateItem : public Plasma::Frame
 	    return m_date;
 	}
 	
+	bool isEmpty() const {
+            return (m_layout->count() == 1);
+	}
 	
 	void addEvent(AgendaWidgetEventItem * event);
 	void setDate(const QDate date);
 	void setDateColor(const QString color);
+        void removeEvent(Akonadi::Entity::Id eventId);
 	
     private:
 	

@@ -19,13 +19,15 @@
 
 #include "agendawidgeteventitem.h"
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(QGraphicsWidget * parent)
+AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_eventName(0),
       m_timeText(0),
       m_hasStartTime(false),
       m_hasEndTime(false)
 {
+    m_id = id;
+    
     m_mainLayout = new QGraphicsLinearLayout(this);
     m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
     m_textLayout->setContentsMargins(5,2,2,2);
@@ -231,3 +233,7 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
 
 }
 
+bool AgendaWidgetEventItem::operator==(Akonadi::Entity::Id id)
+{
+    return (m_id == id);
+}

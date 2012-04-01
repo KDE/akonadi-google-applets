@@ -69,3 +69,27 @@ void AgendaWidgetDateItem::setDateColor(QString color)
     m_dateLabel->setColor(color);
     
 }
+
+void AgendaWidgetDateItem::removeEvent(Akonadi::Entity::Id eventId)
+{
+
+    AgendaWidgetEventItem * item;
+    
+    for (int i = 1; i < m_layout->count(); i++) {
+        
+        item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
+        
+        if (item->operator==(eventId)) {
+         
+            m_layout->removeItem(item);
+            
+            item->deleteLater();
+            
+            i--;
+            
+        }
+        
+    }
+    
+}
+
