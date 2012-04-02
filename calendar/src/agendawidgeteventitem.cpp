@@ -230,9 +230,21 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
     
     if (m_hasStartTime && !item->m_hasStartTime) {
         
+        if (!m_hasEndTime && item->m_hasEndTime) {
+            
+            return (m_startTime > item->m_endTime);
+            
+        }
+        
         return false;
         
     } else if (!m_hasStartTime && item->m_hasStartTime) {
+        
+        if (m_hasEndTime && !item->m_hasEndTime) {
+                    
+            return (m_endTime > item->m_startTime);
+            
+        }
         
         return true;
         
@@ -268,7 +280,7 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
         
     }
     
-    if (m_hasEndTime && !item->m_hasEndTime) {
+    if (m_hasEndTime && !item->m_hasEndTime) {    
         
         return false;
         
@@ -277,9 +289,7 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
         return true;
         
     }
-    
-    qDebug() << "no";
-    
+        
     return (m_eventName->text().toLower() > item->m_eventName->text().toLower());
 
 }
