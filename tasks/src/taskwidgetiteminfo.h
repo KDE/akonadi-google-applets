@@ -36,6 +36,7 @@ class TaskWidgetItemInfo : public Plasma::Frame
                 
         void setIcon(const QString icon);
         void setText(const QString text);
+        void setCheckboxOrientation(bool orientation = false);
         
     signals:        
     

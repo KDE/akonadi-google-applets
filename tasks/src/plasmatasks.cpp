@@ -93,6 +93,7 @@ void PlasmaTasks::configChanged()
     m_tasksList->setWeekColor(conf.readEntry("weekColor", "#e6f000"));
     m_tasksList->setOtherColor(conf.readEntry("otherColor", ""));
     m_tasksList->setCompletedColor(conf.readEntry("completedColor","#343e88"));
+    m_tasksList->setCheckboxesOrientation(conf.readEntry("orientation",0));
 
     m_tasksList->setOrderBy((TaskWidget::OrderBy)conf.readEntry("orderMode", 0));
 
@@ -143,6 +144,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
     appearanceconfigDialog.completedColor->setColor(QColor(m_tasksList->completedColor()));
 
     appearanceconfigDialog.orderBy->setCurrentIndex(m_tasksList->orderBy());
+    appearanceconfigDialog.orientation->setCurrentIndex(m_tasksList->checkboxesOrientation());
 
     parent->addPage(widget1, i18n("Appearance"), "preferences-desktop");
 
@@ -205,6 +207,11 @@ void PlasmaTasks::configAccepted()
     if (appearanceconfigDialog.orderBy->currentIndex() != m_tasksList->orderBy()) {
 
         conf.writeEntry("orderMode", appearanceconfigDialog.orderBy->currentIndex());
+    }
+    
+    if (appearanceconfigDialog.orientation->currentIndex() != m_tasksList->checkboxesOrientation()) {
+        
+        conf.writeEntry("orientation", appearanceconfigDialog.orientation->currentIndex());
     }
 
     emit configNeedsSaving();

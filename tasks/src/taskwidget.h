@@ -81,6 +81,10 @@ class TaskWidget : public QGraphicsWidget
         bool autoDeleteCompleted() const {
             return m_autoDel;
         }
+        
+        bool checkboxesOrientation() const {
+            return m_orientation;
+        }
 
         void setBackgroundColor(const QString color);
         void setExpiredColor(const QString color);
@@ -89,6 +93,7 @@ class TaskWidget : public QGraphicsWidget
         void setOtherColor(const QString color);
 	void setCompletedColor(const QString color);
         void setOrderBy(const OrderBy order);
+        void setCheckboxesOrientation(const bool orientation);
 
         void setAutoHideCompleted(bool hide);
         void setAutoDeleteCompleted(bool del);
@@ -126,6 +131,7 @@ class TaskWidget : public QGraphicsWidget
 
         bool m_autoHide;
         bool m_autoDel;
+        bool m_orientation;
 
         QList<Akonadi::Collection::Id> m_idList;
 

@@ -69,6 +69,8 @@ void TaskWidgetItem::setItemInfo()
         m_name->setIcon("task-reject");
         
     }
+    
+    m_name->setCheckboxOrientation((((TaskWidget *)parentWidget())->checkboxesOrientation()));
 
     m_name->setText(m_todo->summary());
     
@@ -183,8 +185,8 @@ void TaskWidgetItem::setColorForDate()
     int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
 
     if (!m_todo->isCompleted()) {
-
-        if (days < 0) {
+        
+        if (days < 0 || m_todo->dtDue() < KDateTime::currentLocalDateTime()) {
 
             m_date->setColor(((TaskWidget *)parentWidget())->expiredColor());
 

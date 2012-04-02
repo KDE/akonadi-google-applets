@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>352</width>
-    <height>228</height>
+    <height>244</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -21,63 +21,20 @@
     <rect>
      <x>0</x>
      <y>10</y>
-     <width>345</width>
-     <height>194</height>
+     <width>349</width>
+     <height>222</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="label">
+    <item row="5" column="0" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label_7">
       <property name="text">
-       <string>Expired tasks color</string>
+       <string>Completed tasks color</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="0" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Today's tasks color</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Other tasks color</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>Order by</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="KColorButton" name="expiredColor">
-      <property name="color">
-       <color>
-        <red>200</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </property>
-      <property name="alphaChannelEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="KColorButton" name="todayColor">
-      <property name="color">
-       <color>
-        <red>230</red>
-        <green>70</green>
-        <blue>0</blue>
-       </color>
-      </property>
-     </widget>
+    <item row="5" column="1">
+     <widget class="KColorButton" name="completedColor"/>
     </item>
     <item row="4" column="1">
      <widget class="KColorButton" name="otherColor"/>
@@ -148,15 +105,82 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="label_7">
+    <item row="1" column="0" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>Completed tasks color</string>
+       <string>Expired tasks color</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="KColorButton" name="completedColor"/>
+    <item row="2" column="0" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Today's tasks color</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Other tasks color</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Order by</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="KColorButton" name="expiredColor">
+      <property name="color">
+       <color>
+        <red>200</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </property>
+      <property name="alphaChannelEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="KColorButton" name="todayColor">
+      <property name="color">
+       <color>
+        <red>230</red>
+        <green>70</green>
+        <blue>0</blue>
+       </color>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Checkboxes orientation</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QComboBox" name="orientation">
+      <property name="minimumContentsLength">
+       <number>1</number>
+      </property>
+      <item>
+       <property name="text">
+        <string>Left</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Right</string>
+       </property>
+      </item>
+     </widget>
     </item>
    </layout>
   </widget>

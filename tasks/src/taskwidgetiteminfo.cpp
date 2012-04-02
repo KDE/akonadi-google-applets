@@ -56,3 +56,21 @@ void TaskWidgetItemInfo::setText(QString text)
 {
     m_name->setText(text);
 }
+
+void TaskWidgetItemInfo::setCheckboxOrientation(bool orientation)
+{
+    m_layout->removeItem(m_icon);
+    m_layout->removeItem(m_name);
+    
+    if (orientation) {
+        
+        m_layout->addItem(m_name);
+        m_layout->addItem(m_icon);
+        
+    } else {
+       
+        m_layout->addItem(m_icon);
+        m_layout->addItem(m_name); 
+        
+    }
+}

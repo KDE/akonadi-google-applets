@@ -33,6 +33,7 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
       m_otherColor(""),
       m_autoHide(false),
       m_autoDel(false),
+      m_orientation(false),
       m_order(DNC)
 {
     m_layout = new TaskLayout(Qt::Vertical, this);
@@ -93,6 +94,11 @@ void TaskWidget::setAutoDeleteCompleted(bool del)
 void TaskWidget::setCompletedColor(QString color)
 {
     m_completedColor = color;
+}
+
+void TaskWidget::setCheckboxesOrientation(const bool orientation)
+{
+    m_orientation = orientation;
 }
 
 void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
