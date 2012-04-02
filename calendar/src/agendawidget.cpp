@@ -163,37 +163,42 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 
 void AgendaWidget::addItem(const Akonadi::Item & item)
 {  
-    KDateTime min = KDateTime::currentLocalDateTime();
-    KDateTime max = min.addDays(7 * m_weeks); 
+    QTime time = KDateTime::currentLocalTime();
+    QDate min = KDateTime::currentLocalDate();
+    QDate max = min.addDays(7 * m_weeks); 
     
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
-    KDateTime dateStart = event->dtStart(); 
-    KDateTime dateEnd = event->dtEnd();
-    KDateTime date = dateStart;
+    QDate dateStart = event->dtStart().date(); 
+    QDate dateEnd = event->dtEnd().date();
+    QDate date = dateStart;
     
-    int daysTo = dateStart.date().daysTo(dateEnd.date());
+    int daysTo = dateStart.daysTo(dateEnd );
          
     if (dateStart > max) {
 	
 	return;
 	
+    } else if (dateEnd == min && event->dtEnd().time() < time) {
+        
+        return;
+        
     } else if (dateStart < min && dateEnd < min && !event->recurs()) {
 	
 	return;
 	
     } else if (dateStart < min && event->recurs()) {
 
-        date = event->recurrence()->getPreviousDateTime(KDateTime(min));
+        date = event->recurrence()->getPreviousDateTime(KDateTime(min)).date();
 
         if (date.addDays(daysTo) < min) {
         
-            date = event->recurrence()->getNextDateTime(KDateTime(date));
+            date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
         
         }
 	
 	if (date.addDays(daysTo) < min || date > max) {
-            
+
             return;
 	    
 	}
@@ -205,26 +210,26 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
           
     for (int i = 1; i < daysTo; i++) {
 	
-        if (date.date().addDays(i) >= min.date() && date.date().addDays(i) <= max.date()) {
+        if (date.addDays(i) >= min  && date.addDays(i) <= max ) {
 
             newEvent = new AgendaWidgetEventItem(item.id());
             newEvent->setEventName(event->summary());
             newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 	
-            if (!m_layout->existDateItem(date.addDays(i).date())) {
+            if (!m_layout->existDateItem(date.addDays(i) )) {
 	   
-                dateItem = new AgendaWidgetDateItem(date.addDays(i).date(),this);
+                dateItem = new AgendaWidgetDateItem(date.addDays(i) ,this);
                 dateItem->setDateColor(m_dateColor);
                 m_layout->addDateItem(dateItem);
 	    
             }
 	
-            m_layout->addEventItem(date.addDays(i).date(),newEvent);
+            m_layout->addEventItem(date.addDays(i) ,newEvent);
             
         }
     }
     
-    if (dateStart.date() == dateEnd.date()) {
+    if (dateStart == dateEnd ) {
 
         newEvent = new AgendaWidgetEventItem(item.id());
 	newEvent->setEventName(event->summary());
@@ -236,20 +241,20 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	    
 	}
 	
-	if (!m_layout->existDateItem(date.date())) {
+	if (!m_layout->existDateItem(date)) {
 	   
-	    dateItem = new AgendaWidgetDateItem(date.date(),this);
+	    dateItem = new AgendaWidgetDateItem(date,this);
 	    dateItem->setDateColor(m_dateColor);
 	    m_layout->addDateItem(dateItem);
 	    
 	}
 	
-	m_layout->addEventItem(date.date(),newEvent);
+	m_layout->addEventItem(date,newEvent);
 	
 	return;
     }
     
-    if (date.date() >= min.date()) { 
+    if (date >= min ) { 
          
         newEvent = new AgendaWidgetEventItem(item.id());
         newEvent->setEventName(event->summary());
@@ -261,19 +266,19 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
         }
     
-        if (!m_layout->existDateItem(date.date())) {
+        if (!m_layout->existDateItem(date )) {
 	   
-            dateItem = new AgendaWidgetDateItem(date.date(),this);
+            dateItem = new AgendaWidgetDateItem(date ,this);
             dateItem->setDateColor(m_dateColor);
             m_layout->addDateItem(dateItem);
 	    
         }
     
-        m_layout->addEventItem(date.date(),newEvent);
+        m_layout->addEventItem(date,newEvent);
         
     } 
 
-    if (dateEnd.date() <= max.date()) {
+    if (dateEnd <= max ) {
     
         newEvent = new AgendaWidgetEventItem(item.id());
         newEvent->setEventName(event->summary());
@@ -285,15 +290,15 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
             
         }
     
-        if (!m_layout->existDateItem(date.addDays(daysTo).date())) {
+        if (!m_layout->existDateItem(date.addDays(daysTo) )) {
 	   
-            dateItem = new AgendaWidgetDateItem(date.addDays(daysTo).date(),this);
+            dateItem = new AgendaWidgetDateItem(date.addDays(daysTo) ,this);
             dateItem->setDateColor(m_dateColor);
             m_layout->addDateItem(dateItem);
 	    
         }
     
-        m_layout->addEventItem(date.addDays(daysTo).date(),newEvent);
+        m_layout->addEventItem(date.addDays(daysTo),newEvent);
         
     }
       
