@@ -179,7 +179,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	
 	return;
 	
-    } else if (dateEnd == min && event->dtEnd().time() < time) {
+    } else if (dateEnd == min && event->dtEnd().time() < time && !event->allDay()) {
         
         return;
         
