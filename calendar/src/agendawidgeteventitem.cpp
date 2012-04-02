@@ -63,7 +63,6 @@ void AgendaWidgetEventItem::setColor(QString color)
     line->setPalette(palette);
 }
 
-
 void AgendaWidgetEventItem::setEventName(QString name)
 {
     if (m_eventName) {

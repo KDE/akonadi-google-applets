@@ -100,6 +100,13 @@ void AgendaConfig::setUpcomingColor(QColor color)
     
 }
 
+void AgendaConfig::setEventBackgroundColor(QColor color)
+{
+
+    m_agendaConfig->eventBackground->setColor(color);
+    
+}
+
 void AgendaConfig::setWeeks(int weeks)
 {
     

@@ -47,6 +47,7 @@ class AgendaWidgetDateItem : public Plasma::Frame
 	}
 	
 	void addEvent(AgendaWidgetEventItem * event);
+        void setBackgroundColor(const QString color);
 	void setDate(const QDate date);
 	void setDateColor(const QString color);
         void removeEvent(Akonadi::Entity::Id eventId);

@@ -56,6 +56,10 @@ class AgendaWidget : public QGraphicsWidget
             return m_upcomingDateColor;
         }
         
+        QString eventBackgroundColor() const {
+            return m_eventBackgroundColor;
+        }
+        
         int weeks() const {
 	    return m_weeks;
         }
@@ -68,6 +72,7 @@ class AgendaWidget : public QGraphicsWidget
         void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
         void setDateColor(const QString color);
         void setUpcomingDateColor(const QString color);
+        void setEventBackgroundColor(const QString color);
 	void setWeeks(const int weeks);
         void setUpcomingDays(const int days);
 	
@@ -94,6 +99,7 @@ class AgendaWidget : public QGraphicsWidget
         
 	QString m_dateColor;
         QString m_upcomingDateColor;
+        QString m_eventBackgroundColor;
 	
 	int m_weeks;
         int m_upcomingDays;

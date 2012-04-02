@@ -33,6 +33,16 @@ AgendaWidgetDateItem::AgendaWidgetDateItem(QDate date, QGraphicsWidget * parent)
     setDate(date);
     
     setLayout(m_layout);
+    
+    setAutoFillBackground(true);
+    
+    QColor color = QColor("#303030");
+    color.setAlphaF(0.5);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window,color);
+    this->setPalette(palette);
+    
 }
 
 void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
@@ -52,6 +62,18 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
     }
     
     m_layout->addItem(event);
+    
+}
+
+void AgendaWidgetDateItem::setBackgroundColor(const QString color)
+{
+
+    QColor clr = QColor(color);
+    clr.setAlphaF(0.5);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window,clr);
+    this->setPalette(palette);
     
 }
 

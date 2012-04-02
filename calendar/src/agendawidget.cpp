@@ -30,7 +30,10 @@
 AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags),
       m_dateColor("#343E88"),
-      m_weeks(1)
+      m_upcomingDateColor("#C00000"),
+      m_eventBackgroundColor("#303030"),
+      m_weeks(1),
+      m_upcomingDays(3)
 {
     m_layout = new AgendaWidgetLayout(Qt::Vertical,this);
 	
@@ -68,6 +71,14 @@ void AgendaWidget::setUpcomingDateColor(const QString color)
     m_upcomingDateColor = color;
     
 }
+
+void AgendaWidget::setEventBackgroundColor(const QString color)
+{
+
+    m_eventBackgroundColor = color;
+    
+}
+
 void AgendaWidget::setWeeks(int weeks)
 {
  
@@ -231,6 +242,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
             if (!m_layout->existDateItem(date.addDays(i) )) {
 	   
                 dateItem = new AgendaWidgetDateItem(date.addDays(i) ,this);
+                dateItem->setBackgroundColor(m_eventBackgroundColor);
                 
                 if (min.daysTo(date.addDays(i)) < m_upcomingDays) {
                     
@@ -266,6 +278,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	if (!m_layout->existDateItem(date)) {
 	   
 	    dateItem = new AgendaWidgetDateItem(date,this);
+            dateItem->setBackgroundColor(m_eventBackgroundColor);
             
             if (min.daysTo(date) < m_upcomingDays) {
                     
@@ -301,6 +314,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
         if (!m_layout->existDateItem(date )) {
 	   
             dateItem = new AgendaWidgetDateItem(date ,this);
+            dateItem->setBackgroundColor(m_eventBackgroundColor);
             
             if (min.daysTo(date) < m_upcomingDays) {
                     
@@ -335,6 +349,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
         if (!m_layout->existDateItem(date.addDays(daysTo) )) {
 	   
             dateItem = new AgendaWidgetDateItem(date.addDays(daysTo) ,this);
+            dateItem->setBackgroundColor(m_eventBackgroundColor);
                         
             if (min.daysTo(date.addDays(daysTo)) < m_upcomingDays) {
                     

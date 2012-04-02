@@ -43,7 +43,6 @@ void PlasmaCalendar::init()
     configChanged();
 }
 
-
 QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 {
      if (!m_widget) {
@@ -81,6 +80,7 @@ void PlasmaCalendar::configChanged()
 
     m_agenda->setDateColor(conf.readEntry("dateColor","#343E88"));
     m_agenda->setUpcomingDateColor(conf.readEntry("upcomingDateColor","#C00000"));
+    m_agenda->setEventBackgroundColor(conf.readEntry("eventBackgroundColor","#303030"));
     m_agenda->setWeeks(conf.readEntry("weeks",1));
     m_agenda->setUpcomingDays(conf.readEntry("upcomingDays",3));
     
@@ -107,7 +107,8 @@ void PlasmaCalendar::configChanged()
 }
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
-{
+{ 
+    // TODO: connect to apply
     QWidget * widget = new QWidget(0);
 
     configDialog.setupUi(widget);
@@ -125,6 +126,7 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     agendaConfigDialog->setCalendarsColors(m_agenda->calendarsColors());
     agendaConfigDialog->setDateColor(QColor(m_agenda->dateColor()));
     agendaConfigDialog->setUpcomingColor(QColor(m_agenda->upcomingDateColor()));
+    agendaConfigDialog->setEventBackgroundColor(QColor(m_agenda->eventBackgroundColor()));
     agendaConfigDialog->setWeeks(m_agenda->weeks()-1);
     agendaConfigDialog->setUpcomingDays(m_agenda->upcomingDays());
     
@@ -162,6 +164,11 @@ void PlasmaCalendar::configAccepted()
     if (agendaConfigDialog->upcomingDateColor() != m_agenda->upcomingDateColor()) {
         
         conf.writeEntry("upcomingDateColor", agendaConfigDialog->upcomingDateColor());
+    }
+    
+    if (agendaConfigDialog->eventBackgroundColor() != m_agenda->eventBackgroundColor()) {
+        
+        conf.writeEntry("eventBackgroundColor", agendaConfigDialog->eventBackgroundColor());
     }
     
     if (agendaConfigDialog->weeks() != m_agenda->weeks()) {
