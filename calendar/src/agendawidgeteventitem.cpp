@@ -198,37 +198,88 @@ void AgendaWidgetEventItem::setEventEndTime(QTime end)
 
 bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
 {
-    // TODO: FIX SORTING
-    if (m_hasStartTime || m_hasEndTime) {
-
-        if (m_hasStartTime && item->m_hasStartTime) {
-
+    if (m_hasStartTime && item->m_hasStartTime) {
+        
+        if (m_startTime == item->m_startTime) {
+            
+            if (m_hasEndTime && item->m_hasEndTime) {
+                
+                return (m_endTime > item->m_endTime);
+                
+            } else {
+                
+                if (m_hasEndTime) {
+                    
+                    return false;
+                    
+                } else {
+                    
+                    return true;
+                    
+                }
+                
+            }
+            
+        } else {
+            
             return (m_startTime > item->m_startTime);
-
-        } else if (m_hasStartTime && !item->m_hasStartTime) {
-
-            return false;
-
-        } else if (!m_hasStartTime && item->m_hasStartTime) {
-
-            return true;
-
-        } else if (m_hasEndTime && item->m_hasEndTime) {
-
-            return (m_endTime > item->m_endTime);
-
-        } else if (m_hasEndTime && !item->m_hasEndTime) {
-
-            return false;
-
-        } else if (!m_hasEndTime && item->m_hasEndTime) {
-
-            return true;
-
+            
         }
-
+        
     }
-
+    
+    if (m_hasStartTime && !item->m_hasStartTime) {
+        
+        return false;
+        
+    } else if (!m_hasStartTime && item->m_hasStartTime) {
+        
+        return true;
+        
+    }
+    
+    if (m_hasEndTime && item->m_hasEndTime) {
+        
+        if (m_endTime == item->m_endTime) {
+            
+            if (m_hasEndTime && item->m_hasEndTime) {
+                
+                return (m_endTime > item->m_endTime);
+                
+            } else {
+                
+                if (m_hasEndTime) {
+                    
+                    return false;
+                    
+                } else {
+                    
+                    return true;
+                    
+                }
+                
+            }
+            
+        } else {
+            
+            return (m_endTime < item->m_endTime);
+            
+        }
+        
+    }
+    
+    if (m_hasEndTime && !item->m_hasEndTime) {
+        
+        return false;
+        
+    } else if (!m_hasEndTime && item->m_hasEndTime) {
+        
+        return true;
+        
+    }
+    
+    qDebug() << "no";
+    
     return (m_eventName->text().toLower() > item->m_eventName->text().toLower());
 
 }
