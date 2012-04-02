@@ -42,14 +42,24 @@ class AgendaConfig : public QWidget
             return m_agendaConfig->dateColor->color().name();
         }
         
+        QString upcomingDateColor() const {
+            return m_agendaConfig->upcomingDateColor->color().name();
+        }
+        
         int weeks() const {
             return m_agendaConfig->weeks->currentIndex()+1;
+        }
+        
+        int upcomingDays() const {
+            return m_agendaConfig->upcomingDays->currentIndex();
         }
 
         void clear();
         void addItem(QString text, int id);
         void setDateColor(QColor color);
+        void setUpcomingColor(QColor color);
         void setWeeks(int weeks);
+        void setUpcomingDays(int days);
         void setCalendarsColors(QMap<Akonadi::Entity::Id,QString> colors);
 
     public slots:

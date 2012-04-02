@@ -80,7 +80,9 @@ void PlasmaCalendar::configChanged()
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
     m_agenda->setDateColor(conf.readEntry("dateColor","#343E88"));
+    m_agenda->setUpcomingDateColor(conf.readEntry("upcomingDateColor","#C00000"));
     m_agenda->setWeeks(conf.readEntry("weeks",1));
+    m_agenda->setUpcomingDays(conf.readEntry("upcomingDays",3));
     
     if (list.isEmpty()) {
 
@@ -122,7 +124,9 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     
     agendaConfigDialog->setCalendarsColors(m_agenda->calendarsColors());
     agendaConfigDialog->setDateColor(QColor(m_agenda->dateColor()));
+    agendaConfigDialog->setUpcomingColor(QColor(m_agenda->upcomingDateColor()));
     agendaConfigDialog->setWeeks(m_agenda->weeks()-1);
+    agendaConfigDialog->setUpcomingDays(m_agenda->upcomingDays());
     
     parent->addPage(agendaConfigDialog, i18n("Agenda"), "view-calendar-agenda");
 
@@ -155,9 +159,20 @@ void PlasmaCalendar::configAccepted()
         conf.writeEntry("dateColor", agendaConfigDialog->dateColor());
     }
     
+    if (agendaConfigDialog->upcomingDateColor() != m_agenda->upcomingDateColor()) {
+        
+        conf.writeEntry("upcomingDateColor", agendaConfigDialog->upcomingDateColor());
+    }
+    
     if (agendaConfigDialog->weeks() != m_agenda->weeks()) {
 
         conf.writeEntry("weeks", agendaConfigDialog->weeks());
+    }
+    
+    if (agendaConfigDialog->upcomingDays() != m_agenda->upcomingDays()) {
+     
+        conf.writeEntry("upcomingDays", agendaConfigDialog->upcomingDays());
+        
     }
     
     conf.writeEntry("collections", list);

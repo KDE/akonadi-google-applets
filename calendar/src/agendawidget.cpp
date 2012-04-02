@@ -55,13 +55,6 @@ void AgendaWidget::setDateColor(QString color)
     
 }
 
-void AgendaWidget::setWeeks(int weeks)
-{
- 
-    m_weeks = weeks;
-    
-}
-
 void AgendaWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
 {
 
@@ -69,6 +62,25 @@ void AgendaWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > color
     
 }
 
+void AgendaWidget::setUpcomingDateColor(const QString color)
+{
+
+    m_upcomingDateColor = color;
+    
+}
+void AgendaWidget::setWeeks(int weeks)
+{
+ 
+    m_weeks = weeks;
+    
+}
+
+void AgendaWidget::setUpcomingDays(const int days)
+{
+    
+    m_upcomingDays = days;
+    
+}
 
 void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {
@@ -219,7 +231,17 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
             if (!m_layout->existDateItem(date.addDays(i) )) {
 	   
                 dateItem = new AgendaWidgetDateItem(date.addDays(i) ,this);
-                dateItem->setDateColor(m_dateColor);
+                
+                if (min.daysTo(date.addDays(i)) < m_upcomingDays) {
+                    
+                    dateItem->setDateColor(m_upcomingDateColor);
+                    
+                } else {
+                    
+                    dateItem->setDateColor(m_dateColor);
+                    
+                }
+                
                 m_layout->addDateItem(dateItem);
 	    
             }
@@ -244,8 +266,18 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	if (!m_layout->existDateItem(date)) {
 	   
 	    dateItem = new AgendaWidgetDateItem(date,this);
-	    dateItem->setDateColor(m_dateColor);
-	    m_layout->addDateItem(dateItem);
+            
+            if (min.daysTo(date) < m_upcomingDays) {
+                    
+                dateItem->setDateColor(m_upcomingDateColor);
+                    
+            } else {
+                    
+                 dateItem->setDateColor(m_dateColor);
+                    
+            }	
+            
+            m_layout->addDateItem(dateItem);
 	    
 	}
 	
@@ -269,7 +301,17 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
         if (!m_layout->existDateItem(date )) {
 	   
             dateItem = new AgendaWidgetDateItem(date ,this);
-            dateItem->setDateColor(m_dateColor);
+            
+            if (min.daysTo(date) < m_upcomingDays) {
+                    
+                dateItem->setDateColor(m_upcomingDateColor);
+                    
+            } else {
+                    
+                 dateItem->setDateColor(m_dateColor);
+                    
+            }   
+                        
             m_layout->addDateItem(dateItem);
 	    
         }
@@ -293,7 +335,17 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
         if (!m_layout->existDateItem(date.addDays(daysTo) )) {
 	   
             dateItem = new AgendaWidgetDateItem(date.addDays(daysTo) ,this);
-            dateItem->setDateColor(m_dateColor);
+                        
+            if (min.daysTo(date.addDays(daysTo)) < m_upcomingDays) {
+                    
+                dateItem->setDateColor(m_upcomingDateColor);
+                    
+            } else {
+                    
+                 dateItem->setDateColor(m_dateColor);
+                    
+            }   
+            
             m_layout->addDateItem(dateItem);
 	    
         }

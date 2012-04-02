@@ -93,12 +93,27 @@ void AgendaConfig::setDateColor(QColor color)
     
 }
 
+void AgendaConfig::setUpcomingColor(QColor color)
+{
+
+    m_agendaConfig->upcomingDateColor->setColor(color);
+    
+}
+
 void AgendaConfig::setWeeks(int weeks)
 {
     
     m_agendaConfig->weeks->setCurrentIndex(weeks);
 
 }
+
+void AgendaConfig::setUpcomingDays(int days)
+{
+
+    m_agendaConfig->upcomingDays->setCurrentIndex(days);
+    
+}
+
 
 void AgendaConfig::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
 {

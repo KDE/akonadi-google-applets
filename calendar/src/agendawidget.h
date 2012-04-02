@@ -52,14 +52,24 @@ class AgendaWidget : public QGraphicsWidget
 	    return m_dateColor;
         }
         
+        QString upcomingDateColor() const {
+            return m_upcomingDateColor;
+        }
+        
         int weeks() const {
 	    return m_weeks;
+        }
+        
+        int upcomingDays() const {
+            return m_upcomingDays;
         }
         
         void setCollections(QList<Akonadi::Collection::Id> ids);
         void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
         void setDateColor(const QString color);
+        void setUpcomingDateColor(const QString color);
 	void setWeeks(const int weeks);
+        void setUpcomingDays(const int days);
 	
     public slots:
 	
@@ -83,8 +93,10 @@ class AgendaWidget : public QGraphicsWidget
 	QMap<Akonadi::Item::Id, QString> m_calendarsColors;
         
 	QString m_dateColor;
+        QString m_upcomingDateColor;
 	
 	int m_weeks;
+        int m_upcomingDays;
         
         Akonadi::Monitor * m_monitor;
 
