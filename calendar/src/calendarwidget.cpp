@@ -35,7 +35,6 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     
     m_spin = new Plasma::SpinBox(this);
     m_spin->nativeWidget()->setMaximum(2099);
-    m_spin->setValue(QDate::currentDate().year());
     
     connect(m_spin,SIGNAL(valueChanged(int)),SLOT(yearChanged(int)));
     
@@ -52,7 +51,6 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_combo->addItem(i18n("October"));
     m_combo->addItem(i18n("November"));
     m_combo->addItem(i18n("December"));
-    m_combo->setCurrentIndex(QDate::currentDate().month()-1);
     
     connect(m_combo,SIGNAL(currentIndexChanged(int)),SLOT(monthChanged(int)));
     
@@ -112,6 +110,9 @@ void CalendarWidget::setDay(QDate date)
     // TODO: better solution
     
     m_date = date;
+    
+    m_spin->setValue(m_date.year());
+    m_combo->setCurrentIndex(m_date.month()-1);
     
     QDate dateActual(m_date.year(),m_date.month(),1);
 
