@@ -31,6 +31,7 @@
 #include <Akonadi/CollectionFetchJob> 
  
 #include "agendawidget.h"
+#include "calendarwidget.h"
 #include "agendaconfig.h"
 #include "ui_config.h"
  
@@ -69,6 +70,7 @@ class PlasmaCalendar : public Plasma::PopupApplet
 	QGraphicsLinearLayout * m_layout;
 	
 	AgendaWidget * m_agenda;
+        CalendarWidget * m_calendar;
 	
 	Plasma::ScrollWidget * m_scroll;
 	Plasma::TabBar * m_tab;

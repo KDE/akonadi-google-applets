@@ -48,7 +48,9 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
      if (!m_widget) {
 	 
 	m_agenda = new AgendaWidget(this);
-	
+	m_calendar = new CalendarWidget(this);
+        m_calendar->setDay(QDate::currentDate());
+        
         m_layout = new QGraphicsLinearLayout(Qt::Vertical); 
 
 	m_scroll = new Plasma::ScrollWidget(this);
@@ -56,8 +58,8 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 	
 	m_tab = new Plasma::TabBar(this);
 	m_tab->addTab(i18n("Agenda"),m_scroll);
-	m_tab->addTab(i18n("Calendar view"),new Plasma::IconWidget(this));
-        m_tab->setTabBarShown(false);
+	m_tab->addTab(i18n("Calendar"),m_calendar);
+        m_tab->setTabBarShown(true);
 	
         m_layout->addItem(m_tab);
 	
