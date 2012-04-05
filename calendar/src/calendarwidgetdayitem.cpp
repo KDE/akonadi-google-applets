@@ -33,6 +33,8 @@ void CalendarWidgetDayItem::setDay(QDate date)
     day = date;
     
     setText(QString::number(date.day()));
+    
+    update();
 }
 
 void CalendarWidgetDayItem::setActual(bool actual)
