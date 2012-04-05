@@ -25,6 +25,8 @@
 #include <QGraphicsGridLayout>
 
 #include <Plasma/IconWidget>
+#include <Plasma/SpinBox>
+#include <Plasma/ComboBox>
 
 #include "calendarwidgetdayitem.h"
 
@@ -39,10 +41,19 @@ class CalendarWidget : public QGraphicsWidget
         
         void setDay(QDate date);
         
+    public slots:
+    
+        void yearChanged(int year);
+        void monthChanged(int month);
+        
     private:
     
         QGraphicsLinearLayout * m_mainLayout;
+        QGraphicsLinearLayout * m_changeLayout;
         QGraphicsGridLayout * m_daysLayout;
+        
+        Plasma::SpinBox * m_spin;
+        Plasma::ComboBox * m_combo;
         
         QDate m_date;
         

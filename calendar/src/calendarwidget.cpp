@@ -19,14 +19,47 @@
 
 #include "calendarwidget.h"
 
+#include <KIntSpinBox>
+
 CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags),
     m_mainLayout(0),
-    m_daysLayout(0)
+    m_changeLayout(0),
+    m_daysLayout(0),
+    m_spin(0),
+    m_combo(0)
 {
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_daysLayout = new QGraphicsGridLayout(m_mainLayout);
-        
+    m_changeLayout = new QGraphicsLinearLayout(m_mainLayout);
+    
+    m_spin = new Plasma::SpinBox(this);
+    m_spin->nativeWidget()->setMaximum(2099);
+    m_spin->setValue(QDate::currentDate().year());
+    
+    connect(m_spin,SIGNAL(valueChanged(int)),SLOT(yearChanged(int)));
+    
+    m_combo = new Plasma::ComboBox(this);
+    m_combo->addItem(i18n("January"));
+    m_combo->addItem(i18n("February"));
+    m_combo->addItem(i18n("March"));
+    m_combo->addItem(i18n("April"));
+    m_combo->addItem(i18n("May"));
+    m_combo->addItem(i18n("June"));
+    m_combo->addItem(i18n("July"));
+    m_combo->addItem(i18n("August"));
+    m_combo->addItem(i18n("September"));
+    m_combo->addItem(i18n("October"));
+    m_combo->addItem(i18n("November"));
+    m_combo->addItem(i18n("December"));
+    m_combo->setCurrentIndex(QDate::currentDate().month()-1);
+    
+    connect(m_combo,SIGNAL(currentIndexChanged(int)),SLOT(monthChanged(int)));
+    
+    m_changeLayout->addItem(m_combo);
+    m_changeLayout->addItem(m_spin);
+
+    
     QFont fnt = font();
     fnt.setPointSize(fnt.pointSize()-3);
     
@@ -61,6 +94,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
         
     }
     
+    m_mainLayout->addItem(m_changeLayout);
     m_mainLayout->addItem(m_daysLayout);
     
     setLayout(m_mainLayout);
@@ -68,6 +102,15 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
 
 void CalendarWidget::setDay(QDate date)
 {
+    
+    if (!date.isValid()) {
+        
+        return;
+        
+    }
+    
+    // TODO: better solution
+    
     m_date = date;
     
     QDate dateActual(m_date.year(),m_date.month(),1);
@@ -75,7 +118,7 @@ void CalendarWidget::setDay(QDate date)
     int daysInMonth = dateActual.daysInMonth();
     int weekDay = dateActual.dayOfWeek();
     int weekNumber = 1;
-
+    
     CalendarWidgetDayItem * day;
    
     QDate dateBefore = dateActual;
@@ -147,6 +190,56 @@ void CalendarWidget::setDay(QDate date)
         day->setActual(false);
         
         dateActual = dateActual.addDays(1);
+        
+    }
+    
+    if (weekNumber == 5) {
+    
+        weekNumber++;
+        
+        for (int i = 0; i < 7; i++) {
+        
+            day = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(weekNumber,i));
+            day->setDay(dateActual);
+            day->setActual(false);
+        
+            dateActual = dateActual.addDays(1);
+ 
+        }
+        
+    }
+}
+
+void CalendarWidget::yearChanged(int year)
+{
+
+    QDate dt(year,m_date.month(),m_date.day());
+    
+    if (dt.isValid()) {
+        
+        setDay(dt);
+        
+    } else {
+        
+        dt.setDate(year,m_date.month(),1);
+        setDay(dt);
+        
+    }
+    
+}
+
+void CalendarWidget::monthChanged(int month)
+{
+    QDate dt(m_date.year(),month+1,m_date.day());
+    
+    if (dt.isValid()) {
+        
+        setDay(dt);
+        
+    } else {
+        
+        dt.setDate(m_date.year(),month+1,1);
+        setDay(dt);
         
     }
 }
