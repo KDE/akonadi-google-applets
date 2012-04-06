@@ -70,6 +70,30 @@ void CalendarWidgetDayItem::setActualDay()
     
 }
 
+void CalendarWidgetDayItem::setEvent(bool actualMonth)
+{
+    Q_UNUSED(actualMonth);
+    
+    QColor clr(Qt::red);
+    
+    /*if (actualMonth) {
+    
+        clr.setAlphaF(0.3);
+        
+    } else {
+        
+        clr.setAlphaF(0.5);
+        
+    }*/
+    
+    clr.setAlphaF(0.3);
+    
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window,clr);
+    this->setPalette(palette);
+}
+
 void CalendarWidgetDayItem::clicked()
 {
     emit clicked(m_date);

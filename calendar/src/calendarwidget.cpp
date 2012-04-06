@@ -19,6 +19,13 @@
 
 #include "calendarwidget.h"
 
+#include <Akonadi/Entity>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemFetchJob>
+
+#include <KCalCore/Event>
+
+#include <KDateTime>
 #include <KIntSpinBox>
 
 CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
@@ -93,12 +100,231 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_mainLayout->addItem(m_daysLayout);
     
     setLayout(m_mainLayout);
+    
+    setDate(QDate::currentDate());
+}
+
+void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
+{  
+    clearEvents();
+    
+    m_idList = ids;
+    
+    if (!m_idList.isEmpty()) {
+
+        fetchCollections();
+        
+    }
+    
+}
+
+void CalendarWidget::fetchCollections()
+{
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
+
+    job->fetchScope();
+
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
+}
+
+void CalendarWidget::fetchCollectionsFinished(KJob * job)
+{
+    if (job->error()) {
+
+        qDebug() << "fetchCollections failed";
+
+        return;
+    }
+
+    Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+
+    const Akonadi::Collection::List collections = fetchJob->collections();
+
+    foreach (const Akonadi::Collection & collection, collections) {
+
+        if (m_idList.contains(collection.id())) {
+            
+            fetchItems(collection);
+
+        }
+
+    }
+    
+}
+
+void CalendarWidget::fetchItems(const Akonadi::Collection & collection)
+{
+    Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob(collection);
+
+    connect(job, SIGNAL(result(KJob *)), SLOT(fetchItemsFinished(KJob *)));
+
+    job->fetchScope().fetchFullPayload(true);
+    
+}
+
+void CalendarWidget::fetchItemsFinished(KJob * job)
+{
+    if (job->error()) {
+
+        qDebug() << "fetchItems failed";
+
+        return;
+    }
+
+    Akonadi::ItemFetchJob * fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+
+    const Akonadi::Item::List items = fetchJob->items();
+
+    foreach (const Akonadi::Item & item, items) {
+
+        if (item.hasPayload<KCalCore::Event::Ptr>()) {
+        
+            addItem(item);
+            
+        }
+
+    }
+    
+}
+
+void CalendarWidget::addItem(const Akonadi::Item & item)
+{
+    QDate min = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(1,0))->date();
+    QDate max = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(6,6))->date();
+        
+    KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
+    
+    QDate dateStart = event->dtStart().date(); 
+    QDate dateEnd = event->dtEnd().date();
+    QDate date = dateStart;
+    
+    int daysTo = dateStart.daysTo(dateEnd );
+            
+    if (dateStart > max) {
+
+        return;
+        
+    } else if (dateEnd == min && !event->allDay()) {
+        
+        return;
+        
+    } else if (dateStart < min && dateEnd < min && !event->recurs()) {
+        
+        return;
+        
+    } else if (dateStart < min && event->recurs()) {
+
+        date = event->recurrence()->getPreviousDateTime(KDateTime(min)).date();
+
+        if (date.addDays(daysTo) < min) {
+        
+            date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
+        
+        }
+        
+        if (date.addDays(daysTo) < min || date > max) {
+
+            return;
+            
+        }
+        
+    } 
+                              
+    for (int i = 1; i < daysTo; i++) {
+        
+        if (date.addDays(i) >= min  && date.addDays(i) <= max ) {
+
+            setColored(date.addDays(i));
+            
+        }
+    }
+    
+    if (dateStart == dateEnd ) {
+
+        setColored(date);
+        
+        return;
+    }
+    
+    if (date >= min ) { 
+        
+         setColored(date);
+        
+    } 
+
+    if (dateEnd <= max ) {
+    
+        setColored(date.addDays(daysTo));
+        
+    }
+    
+}
+
+void CalendarWidget::setColored(QDate date)
+{    
+    CalendarWidgetDayItem * dayItem;
+    
+    for (int i = 0; i < 7; i++) {
+        
+        for (int j = 1; j < 7; j++) {
+            
+            dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(j,i));
+            
+            if (dayItem->date() == date && date != m_date) {
+            
+                if (m_date.month() == date.month()) {
+                
+                    dayItem->setEvent(true);
+                    
+                } else {
+                    
+                    dayItem->setEvent(false);
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+}
+
+
+void CalendarWidget::clearEvents()
+{
+    CalendarWidgetDayItem * dayItem;
+    
+    for (int i = 0; i < 7; i++) {
+        
+        for (int j = 1; j < 7; j++) {
+            
+            dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(j,i));
+            
+            if (dayItem->date() == m_date) {
+                
+                dayItem->setActualDay();
+                
+            } else if (dayItem->date().month() == m_date.month()) {
+                
+                dayItem->setActualMonth(true);
+                
+            } else {
+                
+                dayItem->setActualMonth(false);
+               
+            }
+            
+                       
+        }
+        
+    }
+    
 }
 
 void CalendarWidget::setFirstDay(int day)
 {
     m_firstDay = day;
-        
+
     QStringList daysList;
     
     if (m_firstDay == 1) {
@@ -209,11 +435,12 @@ void CalendarWidget::setDate(QDate date)
         
     }
     
+    setCollections(m_idList);
+    
 }
 
 void CalendarWidget::yearChanged(int year)
 {
-    // TODO
     QDate dt(year,m_date.month(),m_date.day());
     
     if (dt.isValid()) {
@@ -226,12 +453,10 @@ void CalendarWidget::yearChanged(int year)
         setDate(dt);
         
     }
-    
 }
 
 void CalendarWidget::monthChanged(int month)
 {
-    // TODO
     QDate dt(m_date.year(),month+1,m_date.day());
     
     if (dt.isValid()) {

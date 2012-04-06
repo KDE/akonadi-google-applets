@@ -34,9 +34,14 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
         explicit CalendarWidgetDayItem(QGraphicsItem * parent = 0);
         virtual ~CalendarWidgetDayItem(){};
  
+        QDate date() const {
+            return m_date;
+        }
+        
         void setDay(QDate date);
         void setActualMonth(bool actual = true);
         void setActualDay();
+        void setEvent(bool actualMonth);
         
     public slots:
     

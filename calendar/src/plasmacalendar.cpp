@@ -49,7 +49,6 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 	 
 	m_agenda = new AgendaWidget(this);
 	m_calendar = new CalendarWidget(this);
-        m_calendar->setDate(QDate::currentDate());
         
         m_layout = new QGraphicsLinearLayout(Qt::Vertical); 
 
@@ -107,6 +106,7 @@ void PlasmaCalendar::configChanged()
     m_agenda->setCalendarsColors(map);
     
     m_calendar->setFirstDay(conf.readEntry("firstDay",1));
+    m_calendar->setCollections(list);
 }
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)

@@ -28,6 +28,10 @@
 #include <Plasma/SpinBox>
 #include <Plasma/ComboBox>
 
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Collection>
+#include <Akonadi/Monitor>
+
 #include "calendarwidgetdayitem.h"
 
 class CalendarWidget : public QGraphicsWidget
@@ -39,28 +43,45 @@ class CalendarWidget : public QGraphicsWidget
         CalendarWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
         virtual ~CalendarWidget(){};
 
+        QList<Akonadi::Collection::Id> collectionsList() const {
+            return m_idList;
+        }
+        
         int firstDay() const {
             return m_firstDay;
         }
         
+        void setCollections(QList<Akonadi::Collection::Id> ids);
         void setFirstDay(int day);
         
     public slots:
     
+        void fetchCollectionsFinished(KJob * job);
+        void fetchItemsFinished(KJob * job);
+        
         void yearChanged(int year);
         void monthChanged(int month);
         void setDate(QDate date);
         
     private:
     
+        void fetchCollections();
+        void fetchItems(const Akonadi::Collection & collection);
+        
+        void addItem(const Akonadi::Item & item);
+        void clearEvents();
+        void setColored(QDate date);
+        
         QGraphicsLinearLayout * m_mainLayout;
         QGraphicsLinearLayout * m_changeLayout;
         QGraphicsGridLayout * m_daysLayout;
         
+        QList<Akonadi::Item::Id> m_idList;
+        
         Plasma::SpinBox * m_spin;
         Plasma::ComboBox * m_combo;
         
-        bool m_firstDay;
+        int m_firstDay;
         
         QDate m_date;
         
