@@ -23,7 +23,6 @@
 
 AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent), m_agendaConfig(new Ui::agendaConfig)
 {
-    
     m_agendaConfig->setupUi(this);
 
     m_agendaConfig->loadCalendars->setIcon(KIcon("view-refresh"));

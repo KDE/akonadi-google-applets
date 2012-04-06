@@ -38,7 +38,12 @@ class CalendarWidget : public QGraphicsWidget
         
         CalendarWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
         virtual ~CalendarWidget(){};
+
+        int firstDay() const {
+            return m_firstDay;
+        }
         
+        void setFirstDay(int day);
         void setDay(QDate date);
         
     public slots:
@@ -54,6 +59,8 @@ class CalendarWidget : public QGraphicsWidget
         
         Plasma::SpinBox * m_spin;
         Plasma::ComboBox * m_combo;
+        
+        int m_firstDay;
         
         QDate m_date;
         

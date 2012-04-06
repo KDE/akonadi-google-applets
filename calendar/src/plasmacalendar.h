@@ -33,6 +33,7 @@
 #include "agendawidget.h"
 #include "calendarwidget.h"
 #include "agendaconfig.h"
+#include "calendarconfig.h"
 #include "ui_config.h"
  
 class PlasmaCalendar : public Plasma::PopupApplet
@@ -65,6 +66,7 @@ class PlasmaCalendar : public Plasma::PopupApplet
         Ui::config configDialog;
 	
         AgendaConfig * agendaConfigDialog;
+        CalendarConfig * calendarConfigDialog;
         
 	QGraphicsWidget * m_widget;
 	QGraphicsLinearLayout * m_layout;

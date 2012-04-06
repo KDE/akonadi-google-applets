@@ -27,7 +27,8 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_changeLayout(0),
     m_daysLayout(0),
     m_spin(0),
-    m_combo(0)
+    m_combo(0),
+    m_firstDay(1)
 {
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_daysLayout = new QGraphicsGridLayout(m_mainLayout);
@@ -61,18 +62,14 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     QFont fnt = font();
     fnt.setPointSize(fnt.pointSize()-3);
     
-    QStringList daysList;
-    daysList << i18n("Mon") << i18n("Tue") << i18n("Wed") << i18n("Thu")
-             << i18n("Fri") << i18n("Sat") << i18n("Sun");
-    
     Plasma::IconWidget * m_weekDay;         
              
     for (int i = 0; i < 7; i++) {
-        
+                
         m_weekDay = new Plasma::IconWidget(this);
         m_weekDay->setMinimumSize(10,10);
-        m_weekDay->setText(daysList.at(i));
         m_weekDay->setFont(fnt);
+               
         m_daysLayout->addItem(m_weekDay,0,i);
         
     }
@@ -84,7 +81,6 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
         for (int j = 1; j < 7; j++) {
             
             m_dayItem = new CalendarWidgetDayItem(this);
-            m_dayItem->setDay(QDate::currentDate());
             
             m_daysLayout->addItem(m_dayItem,j,i);
             
@@ -98,117 +94,112 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     setLayout(m_mainLayout);
 }
 
-void CalendarWidget::setDay(QDate date)
+void CalendarWidget::setFirstDay(int day)
 {
+    m_firstDay = day;
+        
+    QStringList daysList;
     
+    if (m_firstDay == 1) {
+        
+        daysList << i18n("Mon");
+        
+    } else {
+        
+        daysList << i18n("Sun");
+        daysList << i18n("Mon");
+        
+    }
+    
+    daysList << i18n("Tue") << i18n("Wed") << i18n("Thu")
+             << i18n("Fri") << i18n("Sat");
+             
+    if (m_firstDay != 7) {
+        
+        daysList << i18n("Sun");
+        
+    } 
+    
+    CalendarWidgetDayItem * dayItem;
+    
+    for (int i = 0; i < 7; i++) {
+        
+        dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(0,i));
+        dayItem->setText(daysList.at(i));
+        
+    }
+    
+    setDay(m_date);
+    
+}
+
+void CalendarWidget::setDay(QDate date)
+{ 
     if (!date.isValid()) {
         
         return;
         
     }
-    
-    // TODO: better solution
-    
+        
     m_date = date;
     
     m_spin->setValue(m_date.year());
     m_combo->setCurrentIndex(m_date.month()-1);
     
-    QDate dateActual(m_date.year(),m_date.month(),1);
-
-    int daysInMonth = dateActual.daysInMonth();
-    int weekDay = dateActual.dayOfWeek();
-    int weekNumber = 1;
+    QDate firstDate(m_date.year(),m_date.month(),1);
+    int weekDay = firstDate.dayOfWeek()-1;
     
-    CalendarWidgetDayItem * day;
-   
-    QDate dateBefore = dateActual;
+    if (m_firstDay == 1) {
     
-    // Date before
-    
-    if (dateActual.month() == 1) {
+        if (weekDay == 0) {
         
-        dateBefore.setDate(dateActual.year()-1,12,1);
+            firstDate = firstDate.addDays(-7);
         
-    } else {
-        
-        dateBefore.setDate(dateActual.year(),dateActual.month()-1,1);
-        
-    }
-    
-    dateBefore = dateBefore.addDays(dateBefore.daysInMonth()-weekDay+1);
-    
-    for (int i = 0; i < weekDay; i++) {
-        
-        day = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(weekNumber,i));
-        day->setDay(dateBefore);
-        day->setActual(false);
-        
-        dateBefore = dateBefore.addDays(1);
-    }
-    
-    // Actual date
-    
-    for (int i = 0; i < daysInMonth; i++) {
-                
-        day = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(weekNumber,weekDay-1));
-        day->setDay(dateActual);
-        day->setActual(true);
-        
-        dateActual = dateActual.addDays(1);
-        
-        if (weekDay == 7) {
-            
-            weekDay = 1;
-            weekNumber++;
-            
         } else {
-            
-            weekDay++;
-            
-        }
-                
-    }
-    
-    // Date after
-    
-    QDate dateAfter = dateActual;
-    
-    if (dateActual.month() == 12) {
         
-        dateAfter.setDate(dateActual.year()+1,1,1);
+            firstDate = firstDate.addDays(-weekDay);
+        
+        }
         
     } else {
         
-        dateAfter.setDate(dateActual.year(),dateActual.month()+1,1);
+        if (weekDay == 6) {
         
-    }
-    
-    for (int i = weekDay-1; i < 7; i++) {
+            firstDate = firstDate.addDays(-7);
         
-        day = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(weekNumber,i));
-        day->setDay(dateActual);
-        day->setActual(false);
+        } else {
         
-        dateActual = dateActual.addDays(1);
+            firstDate = firstDate.addDays(-weekDay-1);
         
-    }
-    
-    if (weekNumber == 5) {
-    
-        weekNumber++;
-        
-        for (int i = 0; i < 7; i++) {
-        
-            day = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(weekNumber,i));
-            day->setDay(dateActual);
-            day->setActual(false);
-        
-            dateActual = dateActual.addDays(1);
- 
         }
         
     }
+    
+    CalendarWidgetDayItem * dayItem;
+    
+    for (int week = 1; week < 7; week++) {
+        
+        for (int day = 0; day < 7; day++) {
+            
+            dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(week,day));
+            dayItem->setDay(firstDate);
+            
+            if (firstDate.month() == m_date.month()) {
+                
+                dayItem->setActual(true);
+                
+            } else {
+            
+                dayItem->setActual(false);
+                
+            }
+        
+            firstDate = firstDate.addDays(1);
+            
+        }
+        
+    }
+    
 }
 
 void CalendarWidget::yearChanged(int year)
