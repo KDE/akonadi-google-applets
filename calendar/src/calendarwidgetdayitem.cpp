@@ -26,18 +26,20 @@ CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
     setMinimumSize(5,5);
     setDrawBackground(true);
     setAutoFillBackground(true);
+    
+    connect(this,SIGNAL(clicked()),SLOT(clicked()));
 }
 
 void CalendarWidgetDayItem::setDay(QDate date)
 {
-    day = date;
+    m_date = date;
     
-    setText(QString::number(date.day()));
+    setText(QString::number(m_date.day()));
     
     update();
 }
 
-void CalendarWidgetDayItem::setActual(bool actual)
+void CalendarWidgetDayItem::setActualMonth(bool actual)
 {
     QColor clr(Qt::black);
     
@@ -55,4 +57,20 @@ void CalendarWidgetDayItem::setActual(bool actual)
     palette = this->palette();
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
+}
+
+void CalendarWidgetDayItem::setActualDay()
+{
+    QColor clr(Qt::blue);
+    clr.setAlphaF(0.3);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window,clr);
+    this->setPalette(palette);
+    
+}
+
+void CalendarWidgetDayItem::clicked()
+{
+    emit clicked(m_date);
 }

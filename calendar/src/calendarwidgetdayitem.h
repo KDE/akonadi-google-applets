@@ -35,13 +35,22 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
         virtual ~CalendarWidgetDayItem(){};
  
         void setDay(QDate date);
-        void setActual(bool actual = true);
+        void setActualMonth(bool actual = true);
+        void setActualDay();
+        
+    public slots:
+    
+        void clicked();
+        
+    signals:
+    
+        void clicked(QDate date);
         
     private:
                 
         QGraphicsLinearLayout * m_layout;
         
-        QDate day;
+        QDate m_date;
         
 };
 

@@ -44,12 +44,12 @@ class CalendarWidget : public QGraphicsWidget
         }
         
         void setFirstDay(int day);
-        void setDay(QDate date);
         
     public slots:
     
         void yearChanged(int year);
         void monthChanged(int month);
+        void setDate(QDate date);
         
     private:
     
@@ -60,7 +60,7 @@ class CalendarWidget : public QGraphicsWidget
         Plasma::SpinBox * m_spin;
         Plasma::ComboBox * m_combo;
         
-        int m_firstDay;
+        bool m_firstDay;
         
         QDate m_date;
         

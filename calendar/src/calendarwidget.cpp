@@ -83,6 +83,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
             m_dayItem = new CalendarWidgetDayItem(this);
             
             m_daysLayout->addItem(m_dayItem,j,i);
+            connect(m_dayItem,SIGNAL(clicked(QDate)),SLOT(setDate(QDate)));
             
         }
         
@@ -129,11 +130,11 @@ void CalendarWidget::setFirstDay(int day)
         
     }
     
-    setDay(m_date);
+    setDate(m_date);
     
 }
 
-void CalendarWidget::setDay(QDate date)
+void CalendarWidget::setDate(QDate date)
 { 
     if (!date.isValid()) {
         
@@ -184,13 +185,21 @@ void CalendarWidget::setDay(QDate date)
             dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(week,day));
             dayItem->setDay(firstDate);
             
-            if (firstDate.month() == m_date.month()) {
+            if (firstDate == m_date) {
                 
-                dayItem->setActual(true);
+                dayItem->setActualDay();
                 
             } else {
             
-                dayItem->setActual(false);
+                if (firstDate.month() == m_date.month()) {
+                
+                    dayItem->setActualMonth(true);
+                
+                } else {
+            
+                    dayItem->setActualMonth(false);
+                
+                }
                 
             }
         
@@ -204,17 +213,17 @@ void CalendarWidget::setDay(QDate date)
 
 void CalendarWidget::yearChanged(int year)
 {
-
+    // TODO
     QDate dt(year,m_date.month(),m_date.day());
     
     if (dt.isValid()) {
         
-        setDay(dt);
+        setDate(dt);
         
     } else {
         
         dt.setDate(year,m_date.month(),1);
-        setDay(dt);
+        setDate(dt);
         
     }
     
@@ -222,16 +231,17 @@ void CalendarWidget::yearChanged(int year)
 
 void CalendarWidget::monthChanged(int month)
 {
+    // TODO
     QDate dt(m_date.year(),month+1,m_date.day());
     
     if (dt.isValid()) {
         
-        setDay(dt);
+        setDate(dt);
         
     } else {
         
         dt.setDate(m_date.year(),month+1,1);
-        setDay(dt);
+        setDate(dt);
         
     }
 }

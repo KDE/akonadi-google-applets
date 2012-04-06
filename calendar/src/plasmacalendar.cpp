@@ -49,7 +49,7 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 	 
 	m_agenda = new AgendaWidget(this);
 	m_calendar = new CalendarWidget(this);
-        m_calendar->setDay(QDate::currentDate());
+        m_calendar->setDate(QDate::currentDate());
         
         m_layout = new QGraphicsLinearLayout(Qt::Vertical); 
 
