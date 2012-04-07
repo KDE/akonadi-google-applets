@@ -37,6 +37,8 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_combo(0),
     m_firstDay(1)
 {
+    m_firstDay = KGlobal::locale()->weekStartDay();
+    
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_daysLayout = new QGraphicsGridLayout(m_mainLayout);
     m_changeLayout = new QGraphicsLinearLayout(m_mainLayout);
@@ -65,25 +67,50 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_changeLayout->addItem(m_combo);
     m_changeLayout->addItem(m_spin);
 
+    createCalendar();
+           
+    m_mainLayout->addItem(m_changeLayout);
+    m_mainLayout->addItem(m_daysLayout);
     
+    setLayout(m_mainLayout);
+    
+    setDate(QDate::currentDate());
+
+}
+
+void CalendarWidget::createCalendar()
+{
     QFont fnt = font();
     fnt.setPointSize(fnt.pointSize()-3);
     
-    Plasma::IconWidget * m_weekDay;         
-             
-    for (int i = 0; i < 7; i++) {
-                
-        m_weekDay = new Plasma::IconWidget(this);
-        m_weekDay->setMinimumSize(10,10);
-        m_weekDay->setFont(fnt);
+    Plasma::IconWidget * weekNumber;
+    
+    for (int i = 1; i < 7; i++) {
+        
+        weekNumber = new Plasma::IconWidget(this);
+        weekNumber->setOrientation(Qt::Vertical);
+        weekNumber->setMinimumSize(10,10);
+        weekNumber->setFont(fnt);
                
-        m_daysLayout->addItem(m_weekDay,0,i);
+        m_daysLayout->addItem(weekNumber,i,0);
         
     }
-             
+    
+    Plasma::IconWidget * weekDay;        
+    
+    for (int i = 1; i < 8; i++) {
+                
+        weekDay = new Plasma::IconWidget(this);
+        weekDay->setMinimumSize(10,10);
+        weekDay->setFont(fnt);
+               
+        m_daysLayout->addItem(weekDay,0,i);
+        
+    }
+    
     CalendarWidgetDayItem * m_dayItem;
     
-    for (int i = 0; i < 7; i++) {
+    for (int i = 1; i < 8; i++) {
         
         for (int j = 1; j < 7; j++) {
             
@@ -96,13 +123,24 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
         
     }
     
-    m_mainLayout->addItem(m_changeLayout);
-    m_mainLayout->addItem(m_daysLayout);
+    QStringList days;
+    days << i18n("Mon") << i18n("Tue") << i18n("Wed") << i18n("Thu");
+    days << i18n("Fri") << i18n("Sat") << i18n("Sun");
+        
+    for (int i = m_firstDay; i < 8; i++) {
+        
+        weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i-m_firstDay+1));
+        weekDay->setText(days.at(i-1));
+        
+    }
     
-    setLayout(m_mainLayout);
-    
-    setDate(QDate::currentDate());
+    for (int i = 8-m_firstDay+1; i < 8; i++) {
+        
+        weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i));
+        weekDay->setText(days.at(i+m_firstDay-9));
+    }
 }
+
 
 void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {  
@@ -189,8 +227,8 @@ void CalendarWidget::fetchItemsFinished(KJob * job)
 
 void CalendarWidget::addItem(const Akonadi::Item & item)
 {
-    QDate min = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(1,0))->date();
-    QDate max = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(6,6))->date();
+    QDate min = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(1,1))->date();
+    QDate max = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(6,7))->date();
         
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
     
@@ -264,7 +302,7 @@ void CalendarWidget::setColored(QDate date)
 {    
     CalendarWidgetDayItem * dayItem;
     
-    for (int i = 0; i < 7; i++) {
+    for (int i = 1; i < 8; i++) {
         
         for (int j = 1; j < 7; j++) {
             
@@ -294,7 +332,7 @@ void CalendarWidget::clearEvents()
 {
     CalendarWidgetDayItem * dayItem;
     
-    for (int i = 0; i < 7; i++) {
+    for (int i = 1; i < 8; i++) {
         
         for (int j = 1; j < 7; j++) {
             
@@ -321,47 +359,8 @@ void CalendarWidget::clearEvents()
     
 }
 
-void CalendarWidget::setFirstDay(int day)
-{
-    m_firstDay = day;
-
-    QStringList daysList;
-    
-    if (m_firstDay == 1) {
-        
-        daysList << i18n("Mon");
-        
-    } else {
-        
-        daysList << i18n("Sun");
-        daysList << i18n("Mon");
-        
-    }
-    
-    daysList << i18n("Tue") << i18n("Wed") << i18n("Thu")
-             << i18n("Fri") << i18n("Sat");
-             
-    if (m_firstDay != 7) {
-        
-        daysList << i18n("Sun");
-        
-    } 
-    
-    CalendarWidgetDayItem * dayItem;
-    
-    for (int i = 0; i < 7; i++) {
-        
-        dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(0,i));
-        dayItem->setText(daysList.at(i));
-        
-    }
-    
-    setDate(m_date);
-    
-}
-
 void CalendarWidget::setDate(QDate date)
-{ 
+{         
     if (!date.isValid()) {
         
         return;
@@ -374,39 +373,27 @@ void CalendarWidget::setDate(QDate date)
     m_combo->setCurrentIndex(m_date.month()-1);
     
     QDate firstDate(m_date.year(),m_date.month(),1);
-    int weekDay = firstDate.dayOfWeek()-1;
-    
-    if (m_firstDay == 1) {
-    
-        if (weekDay == 0) {
+    int weekDay = firstDate.dayOfWeek();
+
+    if (m_firstDay >= weekDay) {
         
-            firstDate = firstDate.addDays(-7);
+        firstDate = firstDate.addDays(-7);
         
-        } else {
+    } 
         
-            firstDate = firstDate.addDays(-weekDay);
+    firstDate = firstDate.addDays(-weekDay+m_firstDay);   
         
-        }
-        
-    } else {
-        
-        if (weekDay == 6) {
-        
-            firstDate = firstDate.addDays(-7);
-        
-        } else {
-        
-            firstDate = firstDate.addDays(-weekDay-1);
-        
-        }
-        
-    }
-    
     CalendarWidgetDayItem * dayItem;
+    Plasma::IconWidget * weekNumber;
     
     for (int week = 1; week < 7; week++) {
         
-        for (int day = 0; day < 7; day++) {
+        weekNumber = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(week,0));
+
+        weekNumber->setText(QString::number(firstDate.weekNumber()));
+        weekNumber->update();
+        
+        for (int day = 1; day < 8; day++) {
             
             dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(week,day));
             dayItem->setDay(firstDate);
@@ -436,11 +423,17 @@ void CalendarWidget::setDate(QDate date)
     }
     
     setCollections(m_idList);
-    
+        
 }
 
 void CalendarWidget::yearChanged(int year)
 {
+    if (year == m_date.year()) {
+        
+        return;
+        
+    }
+
     QDate dt(year,m_date.month(),m_date.day());
     
     if (dt.isValid()) {
@@ -457,6 +450,12 @@ void CalendarWidget::yearChanged(int year)
 
 void CalendarWidget::monthChanged(int month)
 {
+    if (month+1 == m_date.month()) {
+        
+        return;
+        
+    }
+
     QDate dt(m_date.year(),month+1,m_date.day());
     
     if (dt.isValid()) {

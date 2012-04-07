@@ -10,6 +10,11 @@
     <height>236</height>
    </rect>
   </property>
+<<<<<<< HEAD
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+=======
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
@@ -43,6 +48,7 @@
     </item>
    </layout>
   </widget>
+>>>>>>> 73f256e9159de0fb5ac4cefbc714e3e0fe6dd93c
  </widget>
  <resources/>
  <connections/>

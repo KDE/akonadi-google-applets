@@ -63,7 +63,7 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
         m_layout->addItem(m_tab);
 	
         m_widget = new QGraphicsWidget(this);
-        m_widget->setPreferredSize(300, 500);
+        m_widget->setMinimumSize(300, 500);
 	m_widget->setLayout(m_layout);
     }
 
@@ -105,7 +105,6 @@ void PlasmaCalendar::configChanged()
     
     m_agenda->setCalendarsColors(map);
     
-    m_calendar->setFirstDay(conf.readEntry("firstDay",1));
     m_calendar->setCollections(list);
 }
 
@@ -138,9 +137,7 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     connect(agendaConfigDialog, SIGNAL(updateCalendars()), SLOT(updateCalendars()));
     
     calendarConfigDialog = new CalendarConfig(0);
-    
-    calendarConfigDialog->setFirstDay(m_calendar->firstDay());
-    
+        
     parent->addPage(calendarConfigDialog,i18n("Calendar"),"view-calendar-month");
     
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
@@ -196,12 +193,6 @@ void PlasmaCalendar::configAccepted()
     foreach (Akonadi::Entity::Id id, agendaConfigDialog->calendarsColors().keys()) {
         
         conf.writeEntry(QString::number(id),agendaConfigDialog->calendarsColors()[id]);
-        
-    }
-
-    if (calendarConfigDialog->firstDay() != m_calendar->firstDay()) {
-
-        conf.writeEntry("firstDay",calendarConfigDialog->firstDay());
         
     }
     

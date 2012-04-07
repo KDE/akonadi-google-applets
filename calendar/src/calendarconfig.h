@@ -31,15 +31,6 @@ class CalendarConfig : public QWidget
     public:
         
         explicit CalendarConfig(QWidget * parent = 0);
-        
-        int firstDay() const {
-            if (m_calendarConfig->firstDay->currentIndex() == 0) 
-                return 1;
-            else
-                return 7;
-        }
-  
-        void setFirstDay(int day);
   
     private:
     

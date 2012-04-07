@@ -25,15 +25,3 @@ CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarCon
     
 }
 
-void CalendarConfig::setFirstDay(int day)
-{
-    if (day == 1) {
-        
-        m_calendarConfig->firstDay->setCurrentIndex(0);
-        
-    } else {
-        
-        m_calendarConfig->firstDay->setCurrentIndex(1);
-        
-    }
-}

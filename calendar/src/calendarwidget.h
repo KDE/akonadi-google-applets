@@ -52,7 +52,6 @@ class CalendarWidget : public QGraphicsWidget
         }
         
         void setCollections(QList<Akonadi::Collection::Id> ids);
-        void setFirstDay(int day);
         
     public slots:
     
@@ -69,6 +68,7 @@ class CalendarWidget : public QGraphicsWidget
         void fetchItems(const Akonadi::Collection & collection);
         
         void addItem(const Akonadi::Item & item);
+        void createCalendar();
         void clearEvents();
         void setColored(QDate date);
         
