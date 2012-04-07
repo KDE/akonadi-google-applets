@@ -27,6 +27,7 @@
 
 #include <KDateTime>
 #include <KIntSpinBox>
+#include <KIcon>
 
 CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     : QGraphicsWidget(parent, wFlags),
@@ -42,6 +43,22 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_daysLayout = new QGraphicsGridLayout(m_mainLayout);
     m_changeLayout = new QGraphicsLinearLayout(m_mainLayout);
+    
+    Plasma::IconWidget * previousMonth = new Plasma::IconWidget(this);
+    previousMonth->setMinimumSize(20,20);
+    previousMonth->setMaximumSize(20,20);
+    previousMonth->setOrientation(Qt::Horizontal);
+    previousMonth->setIcon(KIcon("arrow-left"));
+    
+    connect(previousMonth,SIGNAL(clicked()),SLOT(previousMonth()));
+    
+    Plasma::IconWidget * nextMonth = new Plasma::IconWidget(this);
+    nextMonth->setMinimumSize(20,20);
+    nextMonth->setMaximumSize(20,20);
+    nextMonth->setOrientation(Qt::Horizontal);
+    nextMonth->setIcon(KIcon("arrow-right"));
+    
+    connect(nextMonth,SIGNAL(clicked()),SLOT(nextMonth()));
     
     m_spin = new Plasma::SpinBox(this);
     m_spin->nativeWidget()->setMaximum(2099);
@@ -64,8 +81,10 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     
     connect(m_combo,SIGNAL(currentIndexChanged(int)),SLOT(monthChanged(int)));
     
+    m_changeLayout->addItem(previousMonth);
     m_changeLayout->addItem(m_combo);
     m_changeLayout->addItem(m_spin);
+    m_changeLayout->addItem(nextMonth);
 
     createCalendar();
            
@@ -425,6 +444,17 @@ void CalendarWidget::setDate(QDate date)
     setCollections(m_idList);
         
 }
+
+void CalendarWidget::previousMonth()
+{
+    setDate(m_date.addMonths(-1));
+}
+
+void CalendarWidget::nextMonth()
+{
+    setDate(m_date.addMonths(1));
+}
+
 
 void CalendarWidget::yearChanged(int year)
 {

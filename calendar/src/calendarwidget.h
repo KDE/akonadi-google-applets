@@ -58,6 +58,8 @@ class CalendarWidget : public QGraphicsWidget
         void fetchCollectionsFinished(KJob * job);
         void fetchItemsFinished(KJob * job);
         
+        void previousMonth();
+        void nextMonth();
         void yearChanged(int year);
         void monthChanged(int month);
         void setDate(QDate date);
