@@ -65,6 +65,23 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
     
 }
 
+void AgendaWidgetDateItem::clear()
+{
+    AgendaWidgetEventItem * item;
+    
+    for (int i = 1; i < m_layout->count(); i++) {
+        
+        item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
+        
+        item->deleteLater();
+        m_layout->removeItem(item);
+        
+        i--;
+       
+    }
+}
+
+
 void AgendaWidgetDateItem::setBackgroundColor(const QString color)
 {
 

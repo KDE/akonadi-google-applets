@@ -27,12 +27,15 @@
 #include <Plasma/IconWidget>
 #include <Plasma/SpinBox>
 #include <Plasma/ComboBox>
+#include <Plasma/ScrollWidget>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
 #include <Akonadi/Monitor>
 
 #include "calendarwidgetdayitem.h"
+#include "calendarwidgetdayagenda.h"
+#include "agendawidgetdateitem.h"
 
 class CalendarWidget : public QGraphicsWidget
 {
@@ -47,11 +50,26 @@ class CalendarWidget : public QGraphicsWidget
             return m_idList;
         }
         
+        QMap<Akonadi::Item::Id, QString> calendarsColors() const {
+            return m_calendarsColors;
+        }
+        
+        QString dateColor() const {
+            return m_dateColor;
+        }
+        
+        QString eventBackgroundColor() const {
+            return m_eventBackgroundColor;
+        }
+        
         int firstDay() const {
             return m_firstDay;
         }
         
         void setCollections(QList<Akonadi::Collection::Id> ids);
+        void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
+        void setDateColor(const QString color);
+        void setEventBackgroundColor(const QString color);
         
     public slots:
     
@@ -79,9 +97,16 @@ class CalendarWidget : public QGraphicsWidget
         QGraphicsGridLayout * m_daysLayout;
         
         QList<Akonadi::Item::Id> m_idList;
+        QMap<Akonadi::Item::Id, QString> m_calendarsColors;
+        
+        QString m_dateColor;
+        QString m_eventBackgroundColor;
         
         Plasma::SpinBox * m_spin;
         Plasma::ComboBox * m_combo;
+        Plasma::ScrollWidget * m_scroll;
+        
+        AgendaWidgetDateItem * m_agenda;
         
         int m_firstDay;
         

@@ -34,8 +34,11 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_mainLayout(0),
     m_changeLayout(0),
     m_daysLayout(0),
+    m_dateColor("#343E88"),
+    m_eventBackgroundColor("#303030"),
     m_spin(0),
     m_combo(0),
+    m_agenda(0),
     m_firstDay(1)
 {
     m_firstDay = KGlobal::locale()->weekStartDay();
@@ -85,11 +88,21 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_changeLayout->addItem(m_combo);
     m_changeLayout->addItem(m_spin);
     m_changeLayout->addItem(nextMonth);
-
-    createCalendar();
-           
+    
+    createCalendar(); 
+    
+    m_agenda = new AgendaWidgetDateItem(QDate::currentDate(),this);
+    m_agenda->setDateColor(m_dateColor);
+    m_agenda->setBackgroundColor(m_eventBackgroundColor);
+    
+    m_scroll = new Plasma::ScrollWidget(this);
+    m_scroll->setMinimumHeight(200);
+    m_scroll->setMaximumHeight(200);
+    m_scroll->setWidget(m_agenda);
+    
     m_mainLayout->addItem(m_changeLayout);
     m_mainLayout->addItem(m_daysLayout);
+    m_mainLayout->addItem(m_scroll);
     
     setLayout(m_mainLayout);
     
@@ -107,6 +120,7 @@ void CalendarWidget::createCalendar()
     for (int i = 1; i < 7; i++) {
         
         weekNumber = new Plasma::IconWidget(this);
+        weekNumber->setAutoFillBackground(true);
         weekNumber->setOrientation(Qt::Vertical);
         weekNumber->setMinimumSize(10,10);
         weekNumber->setFont(fnt);
@@ -120,6 +134,7 @@ void CalendarWidget::createCalendar()
     for (int i = 1; i < 8; i++) {
                 
         weekDay = new Plasma::IconWidget(this);
+        weekDay->setAutoFillBackground(true);
         weekDay->setMinimumSize(10,10);
         weekDay->setFont(fnt);
                
@@ -163,6 +178,8 @@ void CalendarWidget::createCalendar()
 
 void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {  
+    m_agenda->setDate(m_date);
+    
     clearEvents();
     
     m_idList = ids;
@@ -172,6 +189,29 @@ void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
         fetchCollections();
         
     }
+    
+}
+
+void CalendarWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
+{
+
+    m_calendarsColors = colors;
+    
+}
+
+void CalendarWidget::setDateColor(QString color)
+{
+
+    m_dateColor = color;
+    m_agenda->setDateColor(m_dateColor);
+    
+}
+
+void CalendarWidget::setEventBackgroundColor(const QString color)
+{
+
+    m_eventBackgroundColor = color;
+    m_agenda->setBackgroundColor(m_eventBackgroundColor);
     
 }
 
@@ -286,18 +326,45 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
         }
         
     } 
-                              
+                                  
+    AgendaWidgetEventItem * eventItem;                   
+                       
     for (int i = 1; i < daysTo; i++) {
         
         if (date.addDays(i) >= min  && date.addDays(i) <= max ) {
 
-            setColored(date.addDays(i));
+            if (m_date == date.addDays(i)) {
             
+                eventItem = new AgendaWidgetEventItem(item.id(),m_agenda);
+                eventItem->setEventName(event->summary());
+                eventItem->setColor(m_calendarsColors[item.storageCollectionId()]);
+                m_agenda->addEvent(eventItem);
+               
+            }
+            
+            setColored(date.addDays(i));
+          
         }
     }
     
     if (dateStart == dateEnd ) {
 
+        if (m_date == date) {
+            
+                eventItem = new AgendaWidgetEventItem(item.id(),m_agenda);
+                eventItem->setEventName(event->summary());
+                eventItem->setColor(m_calendarsColors[item.storageCollectionId()]);
+                
+                if (!event->allDay()) {
+                
+                    eventItem->setEventTime(event->dtStart().time(),event->dtEnd().time());
+                    
+                }
+
+                m_agenda->addEvent(eventItem);
+               
+        }
+        
         setColored(date);
         
         return;
@@ -305,15 +372,48 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
     
     if (date >= min ) { 
         
-         setColored(date);
+        if (m_date == date) {
+            
+                eventItem = new AgendaWidgetEventItem(item.id(),m_agenda);
+                eventItem->setEventName(event->summary());
+                eventItem->setColor(m_calendarsColors[item.storageCollectionId()]);
+                
+                if (!event->allDay()) {
+                
+                    eventItem->setEventStartTime(event->dtStart().time());
+                    
+                }
+                
+                m_agenda->addEvent(eventItem);
+             
+        }
+        
+        setColored(date);
         
     } 
 
     if (dateEnd <= max ) {
     
+        if (m_date == date.addDays(daysTo)) {
+            
+                eventItem = new AgendaWidgetEventItem(item.id(),m_agenda);
+                eventItem->setEventName(event->summary());
+                eventItem->setColor(m_calendarsColors[item.storageCollectionId()]);
+                
+                if (!event->allDay()) {
+                
+                    eventItem->setEventEndTime(event->dtEnd().time());
+                    
+                }
+                
+                m_agenda->addEvent(eventItem);
+                
+        }
+        
         setColored(date.addDays(daysTo));
         
     }
+    
     
 }
 
@@ -375,6 +475,8 @@ void CalendarWidget::clearEvents()
         }
         
     }
+    
+    m_agenda->clear();
     
 }
 

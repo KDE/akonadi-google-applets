@@ -56,7 +56,7 @@ class AgendaWidgetEventItem : public Plasma::Frame
 	QGraphicsLinearLayout * m_mainLayout;
 	QGraphicsLinearLayout * m_textLayout;
 	
-        QGraphicsWidget * line;
+        QGraphicsWidget * m_line;
         
 	Plasma::IconWidget * m_eventName;
 	Plasma::IconWidget * m_timeText;

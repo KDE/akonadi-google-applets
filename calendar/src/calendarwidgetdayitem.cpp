@@ -23,7 +23,7 @@ CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
     : IconWidget(parent),
     m_layout(0)
 {
-    setMinimumSize(5,5);
+    setMinimumSize(10,10);
     setDrawBackground(true);
     setAutoFillBackground(true);
     
@@ -43,18 +43,16 @@ void CalendarWidgetDayItem::setActualMonth(bool actual)
 {
     QColor clr(Qt::black);
     
+    QPalette palette;
+    palette = this->palette();
+    
     if (actual) {
     
         clr.setAlphaF(0.5);
+        clr = clr.lighter();
         
-    } else {
-        
-        clr.setAlphaF(0.8);
-        
-    }
+    } 
     
-    QPalette palette;
-    palette = this->palette();
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
 }
@@ -76,20 +74,19 @@ void CalendarWidgetDayItem::setEvent(bool actualMonth)
     
     QColor clr(Qt::red);
     
-    /*if (actualMonth) {
+    QPalette palette;
+    palette = this->palette();
     
-        clr.setAlphaF(0.3);
+    if (actualMonth) {
+    
+        clr = clr.darker();
         
     } else {
         
-        clr.setAlphaF(0.5);
+        clr.setAlphaF(0.5);       
         
-    }*/
+    }
     
-    clr.setAlphaF(0.3);
-    
-    QPalette palette;
-    palette = this->palette();
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
 }

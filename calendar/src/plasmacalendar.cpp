@@ -105,7 +105,10 @@ void PlasmaCalendar::configChanged()
     
     m_agenda->setCalendarsColors(map);
     
+    m_calendar->setCalendarsColors(map);
     m_calendar->setCollections(list);
+    m_calendar->setDateColor(conf.readEntry("dateColor","#343E88"));
+    m_calendar->setEventBackgroundColor(conf.readEntry("eventBackgroundColor","#303030"));
 }
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)

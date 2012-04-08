@@ -21,6 +21,7 @@
 
 AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWidget * parent)
     : Plasma::Frame(parent),
+      m_line(0),
       m_eventName(0),
       m_timeText(0),
       m_hasStartTime(false),
@@ -32,35 +33,37 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWid
     m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
     m_textLayout->setContentsMargins(5,2,2,2);
 
-    line = new QGraphicsWidget();
+    m_line = new QGraphicsWidget();
 
-    line->setMinimumHeight(35);
-    line->setMaximumHeight(35);
-    line->setMaximumWidth(7);
-    line->setAutoFillBackground(true);
+    m_line->setMinimumHeight(35);
+    m_line->setMaximumHeight(35);
+    m_line->setMaximumWidth(7);
+    m_line->setAutoFillBackground(true);
 
     QColor color = Qt::green;
     color.setAlphaF(0.5);
     QPalette palette;
-    palette = line->palette();
+    palette = m_line->palette();
     palette.setColor(QPalette::Window, color);
-    line->setPalette(palette);
+    m_line->setPalette(palette);
 
-    m_mainLayout->addItem(line);
-    m_mainLayout->setAlignment(line,Qt::AlignHCenter);
+    m_mainLayout->addItem(m_line);
+    m_mainLayout->setAlignment(m_line,Qt::AlignHCenter);
     m_mainLayout->addItem(m_textLayout);
     m_mainLayout->setAlignment(m_textLayout,Qt::AlignCenter);
 
     setFrameShadow(Raised);
+    
+    setLayout(m_mainLayout);
 }
 void AgendaWidgetEventItem::setColor(QString color)
 {
     QColor clr = QColor(color);
     clr.setAlphaF(0.5);
     QPalette palette;
-    palette = line->palette();
+    palette = m_line->palette();
     palette.setColor(QPalette::Window, clr);
-    line->setPalette(palette);
+    m_line->setPalette(palette);
 }
 
 void AgendaWidgetEventItem::setEventName(QString name)

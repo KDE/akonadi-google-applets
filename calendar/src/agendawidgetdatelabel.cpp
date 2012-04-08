@@ -41,6 +41,7 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent)
 void AgendaWidgetDateLabel::setText(QString date)
 {
     m_icon->setText(date);   
+    m_icon->update();
 }
 
 void AgendaWidgetDateLabel::setColor(QString color)
