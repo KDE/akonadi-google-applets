@@ -129,6 +129,9 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     connect(configDialog.autoDel, SIGNAL(clicked(bool)), SLOT(uncheckHideTasks()));
     connect(configDialog.autoHide, SIGNAL(clicked(bool)), SLOT(uncheckDelTasks()));
+    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
+    connect(configDialog.autoDel,SIGNAL(clicked(bool)),parent,SLOT(settingsModified()));
+    connect(configDialog.autoHide,SIGNAL(clicked(bool)),parent,SLOT(settingsModified()));
 
     parent->addPage(widget, i18n("General"), icon());
 
@@ -150,6 +153,14 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
+    connect(appearanceconfigDialog.backgroundColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.expiredColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.todayColor,SIGNAL(changed(QColor)),parent,SLOT(settigsModified()));
+    connect(appearanceconfigDialog.weekColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.otherColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.completedColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.orderBy,SIGNAL(currentIndexChanged(int)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.orientation,SIGNAL(currentIndexChanged(int)),parent,SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 }
 

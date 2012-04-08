@@ -79,6 +79,7 @@ class AgendaConfig : public QWidget
     signals:
     
         void updateCalendars();
+        void changed();
         
     private:
 

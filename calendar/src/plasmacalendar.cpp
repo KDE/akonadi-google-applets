@@ -110,7 +110,6 @@ void PlasmaCalendar::configChanged()
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
 { 
-    // TODO: connect to apply
     QWidget * widget = new QWidget(0);
 
     configDialog.setupUi(widget);
@@ -142,6 +141,8 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));  
+    connect(agendaConfigDialog,SIGNAL(changed()),parent,SLOT(settingsModified()));
+    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
     
     fetchCollections();
 }

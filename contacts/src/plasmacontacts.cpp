@@ -125,6 +125,7 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog * parent)
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
+    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
     parent->addPage(widget, i18n("General"), icon());

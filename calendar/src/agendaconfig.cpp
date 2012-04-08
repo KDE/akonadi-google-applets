@@ -30,6 +30,12 @@ AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent), m_agendaConfig(ne
     connect(m_agendaConfig->loadCalendars, SIGNAL(clicked(bool)), SLOT(loadCalendarsClicked()));
     connect(m_agendaConfig->calendarsList, SIGNAL(currentIndexChanged(int)), SLOT(calendarChanged(int)));
     connect(m_agendaConfig->calendarColor, SIGNAL(changed(QColor)), SLOT(colorChanged(QColor)));
+    connect(m_agendaConfig->weeks, SIGNAL(currentIndexChanged(int)),SIGNAL(changed()));
+    connect(m_agendaConfig->upcomingDays,SIGNAL(currentIndexChanged(int)),SIGNAL(changed()));
+    connect(m_agendaConfig->dateColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_agendaConfig->upcomingDateColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_agendaConfig->eventBackground,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_agendaConfig->calendarColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
 
 }
 
