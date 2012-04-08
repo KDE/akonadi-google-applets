@@ -34,7 +34,6 @@
 #include <Akonadi/Monitor>
 
 #include "calendarwidgetdayitem.h"
-#include "calendarwidgetdayagenda.h"
 #include "agendawidgetdateitem.h"
 
 class CalendarWidget : public QGraphicsWidget
