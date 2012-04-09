@@ -61,6 +61,26 @@ class CalendarWidget : public QGraphicsWidget
             return m_eventBackgroundColor;
         }
         
+        QString selectedDayColor() const {
+            return m_selectedDayColor;
+        }
+        
+        QString currentMonthColor() const {
+            return m_currentMonthColor;
+        }
+        
+        QString outdatedMonthColor() const {
+            return m_outdatedMonthColor;
+        }
+        
+        QString currentEventColor() const {
+            return m_currentEventColor;
+        }
+        
+        QString outdatedEventColor() const {
+            return m_outdatedEventColor;
+        } 
+        
         int firstDay() const {
             return m_firstDay;
         }
@@ -69,6 +89,11 @@ class CalendarWidget : public QGraphicsWidget
         void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
         void setDateColor(const QString color);
         void setEventBackgroundColor(const QString color);
+        void setSelectedDayColor(const QString color);
+        void setCurrentMonthColor(const QString color);
+        void setOutdatedMonthColor(const QString color);
+        void setCurrentEventColor(const QString color);
+        void setOutdatedEventColor(const QString color);
         
     public slots:
         
@@ -104,6 +129,11 @@ class CalendarWidget : public QGraphicsWidget
         
         QString m_dateColor;
         QString m_eventBackgroundColor;
+        QString m_selectedDayColor;
+        QString m_currentMonthColor;
+        QString m_outdatedMonthColor;
+        QString m_currentEventColor;
+        QString m_outdatedEventColor;
         
         Plasma::SpinBox * m_spin;
         Plasma::ComboBox * m_combo;

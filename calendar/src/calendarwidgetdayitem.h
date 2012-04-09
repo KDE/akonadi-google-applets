@@ -39,10 +39,8 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
         }
         
         void setDay(QDate date);
-        void setActualMonth(bool actual = true);
-        void setActualDay();
-        void setEvent(bool actualMonth);
-        
+        void setColor(QString color);
+ 
     public slots:
     
         void clicked();

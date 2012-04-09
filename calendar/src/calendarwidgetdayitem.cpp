@@ -39,54 +39,12 @@ void CalendarWidgetDayItem::setDay(QDate date)
     update();
 }
 
-void CalendarWidgetDayItem::setActualMonth(bool actual)
+void CalendarWidgetDayItem::setColor(QString color)
 {
-    QColor clr(Qt::black);
-    
+    QColor clr = QColor(color);
+    clr.setAlphaF(0.5);
     QPalette palette;
     palette = this->palette();
-    
-    if (actual) {
-    
-        clr.setAlphaF(0.5);
-        clr = clr.lighter();
-        
-    } 
-    
-    palette.setColor(QPalette::Window,clr);
-    this->setPalette(palette);
-}
-
-void CalendarWidgetDayItem::setActualDay()
-{
-    QColor clr(Qt::blue);
-    clr.setAlphaF(0.3);
-    QPalette palette;
-    palette = this->palette();
-    palette.setColor(QPalette::Window,clr);
-    this->setPalette(palette);
-    
-}
-
-void CalendarWidgetDayItem::setEvent(bool actualMonth)
-{
-    Q_UNUSED(actualMonth);
-    
-    QColor clr(Qt::red);
-    
-    QPalette palette;
-    palette = this->palette();
-    
-    if (actualMonth) {
-    
-        clr = clr.darker();
-        
-    } else {
-        
-        clr.setAlphaF(0.5);       
-        
-    }
-    
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
 }

@@ -32,6 +32,36 @@ class CalendarConfig : public QWidget
         
         explicit CalendarConfig(QWidget * parent = 0);
   
+        QString selectedDayColor() const {
+            return m_calendarConfig->selectedDay->color().name();
+        }
+        
+        QString currentMonthColor() const {
+            return m_calendarConfig->currentMonth->color().name();
+        }
+        
+        QString outdatedMonthColor() const {
+            return m_calendarConfig->outdatedMonth->color().name();
+        }
+        
+        QString currentEventColor() const {
+            return m_calendarConfig->currentEvent->color().name();
+        }
+        
+        QString outdatedEventColor() const {
+            return m_calendarConfig->outdatedEvent->color().name();
+        }
+        
+        void setSelectedDayColor(QColor color);
+        void setCurrentMonthColor(QColor color);
+        void setOutdatedMonthColor(QColor color);
+        void setCurrentEventColor(QColor color);
+        void setOutdatedEventColor(QColor color);
+        
+    signals:
+    
+        void changed();
+        
     private:
     
         Ui::calendarConfig * m_calendarConfig;

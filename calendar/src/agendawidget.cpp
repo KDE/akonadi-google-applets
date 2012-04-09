@@ -186,7 +186,6 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 
 void AgendaWidget::addItem(const Akonadi::Item & item)
 {  
-    QTime time = KDateTime::currentLocalTime();
     QDate min = KDateTime::currentLocalDate();
     QDate max = min.addDays(7 * m_weeks); 
     
@@ -199,12 +198,8 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     int daysTo = dateStart.daysTo(dateEnd );
          
     if (dateStart > max) {
-	
+
 	return;
-	
-    } else if (dateEnd == min && event->dtEnd().time() < time && !event->allDay()) {
-        
-        return;
         
     } else if (dateStart < min && dateEnd < min && !event->recurs()) {
 	
@@ -227,7 +222,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 	}
 	
     } 
-            
+        
     AgendaWidgetEventItem * newEvent;   
     AgendaWidgetDateItem * dateItem;
           

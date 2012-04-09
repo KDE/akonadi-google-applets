@@ -23,5 +23,35 @@ CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarCon
 {
     m_calendarConfig->setupUi(this);
     
+    connect(m_calendarConfig->selectedDay, SIGNAL(changed(QColor)), SLOT(colorChanged(QColor)));
+    connect(m_calendarConfig->currentMonth,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_calendarConfig->outdatedMonth,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_calendarConfig->currentEvent,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_calendarConfig->outdatedEvent,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    
 }
 
+void CalendarConfig::setSelectedDayColor(QColor color)
+{
+    m_calendarConfig->selectedDay->setColor(color);
+}
+
+void CalendarConfig::setCurrentMonthColor(QColor color)
+{
+    m_calendarConfig->currentMonth->setColor(color);
+}
+
+void CalendarConfig::setOutdatedMonthColor(QColor color)
+{
+    m_calendarConfig->outdatedMonth->setColor(color);
+}
+
+void CalendarConfig::setCurrentEventColor(QColor color)
+{
+    m_calendarConfig->currentEvent->setColor(color);
+}
+
+void CalendarConfig::setOutdatedEventColor(QColor color)
+{
+    m_calendarConfig->outdatedEvent->setColor(color);
+}

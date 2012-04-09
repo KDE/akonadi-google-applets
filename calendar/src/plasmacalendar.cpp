@@ -114,10 +114,17 @@ void PlasmaCalendar::configChanged()
     
     m_agenda->setCalendarsColors(map);
     
-    m_calendar->setCalendarsColors(map);
-    m_calendar->setCollections(list);
+    
     m_calendar->setDateColor(conf.readEntry("dateColor","#343E88"));
     m_calendar->setEventBackgroundColor(conf.readEntry("eventBackgroundColor","#303030"));
+    m_calendar->setSelectedDayColor(conf.readEntry("selectedDayColor","#306fb5"));
+    m_calendar->setCurrentMonthColor(conf.readEntry("currentMonthColor","#45484b"));
+    m_calendar->setOutdatedMonthColor(conf.readEntry("outdatedMonthColor","#0a0b0d"));
+    m_calendar->setCurrentEventColor(conf.readEntry("currentEventColor","#831215"));
+    m_calendar->setOutdatedEventColor(conf.readEntry("outdatedEventColor","#e64600"));
+    m_calendar->setCalendarsColors(map);
+    m_calendar->setCollections(list);
+    
 }
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
@@ -128,8 +135,11 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
 
     KConfigGroup conf = config();
 
+    fetchCollections();
+    
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
 
+    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
     parent->addPage(widget, i18n("General"), icon());
@@ -149,14 +159,19 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     
     calendarConfigDialog = new CalendarConfig(0);
         
+    calendarConfigDialog->setSelectedDayColor(m_calendar->selectedDayColor());
+    calendarConfigDialog->setCurrentMonthColor(m_calendar->currentMonthColor());
+    calendarConfigDialog->setOutdatedMonthColor(m_calendar->outdatedMonthColor());
+    calendarConfigDialog->setCurrentEventColor(m_calendar->currentEventColor());
+    calendarConfigDialog->setOutdatedEventColor(m_calendar->outdatedEventColor());
+    
     parent->addPage(calendarConfigDialog,i18n("Calendar"),"view-calendar-month");
     
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));  
     connect(agendaConfigDialog,SIGNAL(changed()),parent,SLOT(settingsModified()));
-    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
+    connect(calendarConfigDialog,SIGNAL(changed()),parent,SLOT(settingsModified()));
     
-    fetchCollections();
 }
 
 void PlasmaCalendar::configAccepted()
@@ -206,6 +221,36 @@ void PlasmaCalendar::configAccepted()
     foreach (Akonadi::Entity::Id id, agendaConfigDialog->calendarsColors().keys()) {
         
         conf.writeEntry(QString::number(id),agendaConfigDialog->calendarsColors()[id]);
+        
+    }
+    
+    if (calendarConfigDialog->selectedDayColor() != m_calendar->selectedDayColor()) {
+        
+        conf.writeEntry("selectedDayColor",calendarConfigDialog->selectedDayColor());
+        
+    }
+    
+    if (calendarConfigDialog->currentMonthColor() != m_calendar->currentMonthColor()) {
+        
+        conf.writeEntry("currentMonthColor",calendarConfigDialog->currentMonthColor());
+        
+    }
+    
+    if (calendarConfigDialog->outdatedMonthColor() != m_calendar->outdatedMonthColor()) {
+        
+        conf.writeEntry("outdatedMonthColor",calendarConfigDialog->outdatedMonthColor());
+        
+    }
+    
+    if (calendarConfigDialog->currentEventColor() != m_calendar->currentEventColor()) {
+        
+        conf.writeEntry("currentEventColor",calendarConfigDialog->currentEventColor());
+        
+    }
+    
+    if (calendarConfigDialog->outdatedEventColor() != m_calendar->outdatedEventColor()) {
+        
+        conf.writeEntry("outdatedEventColor",calendarConfigDialog->outdatedEventColor());
         
     }
     

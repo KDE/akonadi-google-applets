@@ -36,6 +36,11 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_daysLayout(0),
     m_dateColor("#343E88"),
     m_eventBackgroundColor("#303030"),
+    m_selectedDayColor("#306fb5"),
+    m_currentMonthColor("#45484b"),
+    m_outdatedMonthColor("#0a0b0d"),
+    m_currentEventColor("#831215"),
+    m_outdatedEventColor("#e64600"),
     m_spin(0),
     m_combo(0),
     m_agenda(0),
@@ -225,6 +230,31 @@ void CalendarWidget::setEventBackgroundColor(const QString color)
     
 }
 
+void CalendarWidget::setSelectedDayColor(const QString color)
+{
+    m_selectedDayColor = color;
+}
+
+void CalendarWidget::setCurrentMonthColor(const QString color)
+{
+    m_currentMonthColor = color;
+}
+
+void CalendarWidget::setOutdatedMonthColor(const QString color)
+{
+    m_outdatedMonthColor = color;
+}
+
+void CalendarWidget::setCurrentEventColor(const QString color)
+{
+    m_currentEventColor = color;
+}
+
+void CalendarWidget::setOutdatedEventColor(const QString color)
+{
+    m_outdatedEventColor = color;
+}
+
 void CalendarWidget::fetchCollections()
 {
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
@@ -311,10 +341,6 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
             
     if (dateStart > max) {
 
-        return;
-        
-    } else if (dateEnd == min && !event->allDay()) {
-        
         return;
         
     } else if (dateStart < min && dateEnd < min && !event->recurs()) {
@@ -443,11 +469,11 @@ void CalendarWidget::setColored(QDate date)
             
                 if (m_date.month() == date.month()) {
                 
-                    dayItem->setEvent(true);
+                    dayItem->setColor(m_currentEventColor);
                     
                 } else {
                     
-                    dayItem->setEvent(false);
+                    dayItem->setColor(m_outdatedEventColor);
                     
                 }
                 
@@ -471,15 +497,15 @@ void CalendarWidget::clearEvents()
             
             if (dayItem->date() == m_date) {
                 
-                dayItem->setActualDay();
+                dayItem->setColor(m_selectedDayColor);
                 
             } else if (dayItem->date().month() == m_date.month()) {
                 
-                dayItem->setActualMonth(true);
+                dayItem->setColor(m_currentMonthColor);
                 
             } else {
                 
-                dayItem->setActualMonth(false);
+                dayItem->setColor(m_outdatedMonthColor);
                
             }
             
@@ -533,17 +559,17 @@ void CalendarWidget::setDate(QDate date)
             
             if (firstDate == m_date) {
                 
-                dayItem->setActualDay();
+                dayItem->setColor(m_selectedDayColor);
                 
             } else {
             
                 if (firstDate.month() == m_date.month()) {
                 
-                    dayItem->setActualMonth(true);
+                    dayItem->setColor(m_currentMonthColor);
                 
                 } else {
             
-                    dayItem->setActualMonth(false);
+                    dayItem->setColor(m_outdatedMonthColor);
                 
                 }
                 
