@@ -35,7 +35,7 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWid
 
     m_line = new QGraphicsWidget();
 
-    m_line->setMinimumHeight(35);
+    m_line->setMinimumHeight(15);
     m_line->setMaximumHeight(35);
     m_line->setMaximumWidth(7);
     m_line->setAutoFillBackground(true);
