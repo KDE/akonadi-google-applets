@@ -42,7 +42,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_firstDay(1)
 {
     m_firstDay = KGlobal::locale()->weekStartDay();
-    
+    qDebug() << m_firstDay;
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_daysLayout = new QGraphicsGridLayout(m_mainLayout);
     m_changeLayout = new QGraphicsLinearLayout(m_mainLayout);
@@ -96,8 +96,8 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_agenda->setBackgroundColor(m_eventBackgroundColor);
     
     m_scroll = new Plasma::ScrollWidget(this);
-    m_scroll->setMinimumHeight(200);
-    m_scroll->setMaximumHeight(200);
+    m_scroll->setMinimumHeight(180);
+    m_scroll->setMaximumHeight(180);
     m_scroll->setWidget(m_agenda);
     
     m_mainLayout->addItem(m_changeLayout);
@@ -107,6 +107,16 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     setLayout(m_mainLayout);
     
     setDate(QDate::currentDate());
+    
+    m_monitor = new Akonadi::Monitor();
+    m_monitor->itemFetchScope().fetchFullPayload(true);
+
+    connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
+            SLOT(itemAdded(Akonadi::Item, Akonadi::Collection)));
+    connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
+            SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
+    connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
+            SLOT(itemRemoved(Akonadi::Item))); 
 
 }
 
@@ -240,6 +250,8 @@ void CalendarWidget::fetchCollectionsFinished(KJob * job)
     foreach (const Akonadi::Collection & collection, collections) {
 
         if (m_idList.contains(collection.id())) {
+            
+            m_monitor->setCollectionMonitored(collection);
             
             fetchItems(collection);
 
@@ -602,3 +614,29 @@ void CalendarWidget::monthChanged(int month)
     }
 }
 
+void CalendarWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
+{
+    if (m_idList.contains(collection.id())) {
+     
+        addItem(item);
+        
+    }
+}
+
+void CalendarWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
+{
+    Q_UNUSED(array);
+    
+    itemRemoved(item);
+    
+    addItem(item);
+}
+
+void CalendarWidget::itemRemoved(const Akonadi::Item & item)
+{    
+    if (m_idList.contains(item.parentCollection().id())) {
+        
+        m_agenda->removeEvent(item.id());
+        
+    }
+}

@@ -71,7 +71,7 @@ class CalendarWidget : public QGraphicsWidget
         void setEventBackgroundColor(const QString color);
         
     public slots:
-    
+        
         void fetchCollectionsFinished(KJob * job);
         void fetchItemsFinished(KJob * job);
         
@@ -80,6 +80,10 @@ class CalendarWidget : public QGraphicsWidget
         void yearChanged(int year);
         void monthChanged(int month);
         void setDate(QDate date);
+        
+        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+        void itemRemoved(const Akonadi::Item & item);
         
     private:
     
@@ -110,6 +114,8 @@ class CalendarWidget : public QGraphicsWidget
         int m_firstDay;
         
         QDate m_date;
+        
+        Akonadi::Monitor * m_monitor;
         
 };
 
