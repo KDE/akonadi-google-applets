@@ -19,7 +19,7 @@ kstart plasma-desktop
 Options
 ################
 If you want use all akonadi collections you can use 
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DALL_COLLECTIONS
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DALL_COLLECTIONS=true
 
 ################
 Required
