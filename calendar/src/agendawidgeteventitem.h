@@ -51,6 +51,10 @@ class AgendaWidgetEventItem : public Plasma::Frame
 	void setEventStartTime(const QTime start);
 	void setEventEndTime(const QTime end);
 	
+    public slots:
+    
+        void edit();
+        
     private:
 	
 	QGraphicsLinearLayout * m_mainLayout;

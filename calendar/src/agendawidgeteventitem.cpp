@@ -19,6 +19,8 @@
 
 #include "agendawidgeteventitem.h"
 
+#include <KRun>
+
 AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_line(0),
@@ -96,6 +98,8 @@ void AgendaWidgetEventItem::setEventName(QString name)
     
     m_textLayout->setAlignment(m_eventName,Qt::AlignCenter);
     
+    connect(m_eventName,SIGNAL(clicked()),SLOT(edit()));
+    
 }
 
 void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
@@ -129,6 +133,8 @@ void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
     m_timeText->setFont(font);
     
     m_textLayout->addItem(m_timeText);
+    
+    connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
 
 }
 
@@ -163,6 +169,8 @@ void AgendaWidgetEventItem::setEventStartTime(QTime start)
     
     m_textLayout->addItem(m_timeText);
 
+    connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
+
 }
 
 void AgendaWidgetEventItem::setEventEndTime(QTime end)
@@ -195,6 +203,8 @@ void AgendaWidgetEventItem::setEventEndTime(QTime end)
     m_timeText->setFont(font);
     
     m_textLayout->addItem(m_timeText);
+
+    connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
 
 }
 
@@ -300,3 +310,11 @@ bool AgendaWidgetEventItem::operator==(Akonadi::Entity::Id id)
 {
     return (m_id == id);
 }
+
+void AgendaWidgetEventItem::edit()
+{
+    QString cmd = "kincidenceeditor " + QString::number(m_id);
+    
+    KRun::runCommand(cmd,0);
+}
+

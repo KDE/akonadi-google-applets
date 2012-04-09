@@ -51,7 +51,8 @@ class PlasmaCalendar : public Plasma::PopupApplet
     public slots:
     
 	void configAccepted();
-	
+	void createEvent();
+        
 	void fetchCollections();
         void fetchCollectionsFinished(KJob * job);
         

@@ -21,10 +21,12 @@
 
 #include <QListWidgetItem>
 
+#include <KRun>
 #include <KConfigDialog>
 
 #include <Akonadi/EntityDisplayAttribute>
 
+#include <Plasma/PushButton>
 #include <Plasma/IconWidget>
 
 PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args)
@@ -50,6 +52,12 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 	m_agenda = new AgendaWidget(this);
 	m_calendar = new CalendarWidget(this);
         
+        Plasma::PushButton * m_button = new Plasma::PushButton(this);
+        m_button->setMaximumHeight(25);
+        m_button->setText(i18n("Add event"));
+        
+        connect(m_button,SIGNAL(clicked()),SLOT(createEvent()));
+        
         m_layout = new QGraphicsLinearLayout(Qt::Vertical); 
 
 	m_scroll = new Plasma::ScrollWidget(this);
@@ -61,6 +69,7 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
         m_tab->setTabBarShown(true);
 	
         m_layout->addItem(m_tab);
+        m_layout->addItem(m_button);
 	
         m_widget = new QGraphicsWidget(this);
         m_widget->setMinimumSize(300, 500);
@@ -325,6 +334,11 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
     updateCalendars();
 
 }
+ 
+void PlasmaCalendar::createEvent()
+{
+    KRun::runCommand("kincidenceeditor --new-event",0);
+} 
  
 #include "plasmacalendar.moc"
 
