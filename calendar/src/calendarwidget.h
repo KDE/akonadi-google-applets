@@ -102,8 +102,9 @@ class CalendarWidget : public QGraphicsWidget
         
         void previousMonth();
         void nextMonth();
-        void yearChanged(const int & year);
+        void dayChanged(const QDate & date);
         void monthChanged(const int & month);
+        void yearChanged(const int & year);
         void setDate(const QDate & date);
         
         void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
@@ -118,6 +119,7 @@ class CalendarWidget : public QGraphicsWidget
         void addItem(const Akonadi::Item & item);
         void createCalendar();
         void clearEvents();
+	//void changeAgenda();
         void setColored(const QDate & date);
         
         QGraphicsLinearLayout * m_mainLayout;

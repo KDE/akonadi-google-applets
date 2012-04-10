@@ -166,7 +166,7 @@ void CalendarWidget::createCalendar()
             m_dayItem = new CalendarWidgetDayItem(this);
             
             m_daysLayout->addItem(m_dayItem,j,i);
-            connect(m_dayItem,SIGNAL(clicked(QDate)),SLOT(setDate(QDate)));
+            connect(m_dayItem,SIGNAL(clicked(QDate)),SLOT(dayChanged(QDate)));
             
         }
         
@@ -470,6 +470,8 @@ void CalendarWidget::setColored(const QDate & date)
                     
                 }
                 
+         	dayItem->setDayWithEvent(true);
+
             }
             
         }
@@ -502,7 +504,8 @@ void CalendarWidget::clearEvents()
                
             }
             
-                       
+             dayItem->setDayWithEvent(false);
+	     
         }
         
     }
@@ -586,6 +589,54 @@ void CalendarWidget::nextMonth()
     setDate(m_date.addMonths(1));
 }
 
+void CalendarWidget::dayChanged(const QDate & date)
+{
+    if (date.month() != m_date.month()) {
+	    
+	setDate(date);
+	
+    } else {
+	
+	CalendarWidgetDayItem * m_dayItem;
+    
+	for (int i = 1; i < 8; i++) {
+        
+	    for (int j = 1; j < 7; j++) {
+            
+		m_dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(j,i));
+            
+		if (m_dayItem->date() == m_date) {
+		 
+		    if (m_dayItem->hasEvent()) {
+			
+			m_dayItem->setColor(m_currentEventColor);
+			
+		    } else {
+			
+			m_dayItem->setColor(m_currentMonthColor);
+			
+		    }
+		    		    
+		} else if (m_dayItem->date() == date) {
+		 
+		    m_dayItem->setColor(m_selectedDayColor);
+		    
+		}
+            
+	    }
+        
+	}
+	
+	m_date = date;
+	m_agenda->setDate(m_date);
+	m_agenda->clear();
+	
+	fetchCollections();
+	
+    }
+    
+}
+
 void CalendarWidget::yearChanged(const int & year)
 {
     if (year == m_date.year()) {
@@ -645,17 +696,19 @@ void CalendarWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collec
 void CalendarWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
 {
     Q_UNUSED(array);
+    Q_UNUSED(item);
     
-    itemRemoved(item);
-    
-    addItem(item);
+    setCollections(m_idList);
+
 }
 
 void CalendarWidget::itemRemoved(const Akonadi::Item & item)
 {    
+    Q_UNUSED(item);
+    
     if (m_idList.contains(item.parentCollection().id())) {
         
-        m_agenda->removeEvent(item.id());
+        setCollections(m_idList);
         
     }
     

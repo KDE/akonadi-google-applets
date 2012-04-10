@@ -38,7 +38,12 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
             return m_date;
         }
         
+        bool hasEvent() const {
+	    return m_event;
+        }
+        
         void setDay(const QDate & date);
+	void setDayWithEvent(const bool & event);
         void setColor(const QString & color);
  
     public slots:
@@ -54,6 +59,8 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
         QGraphicsLinearLayout * m_layout;
         
         QDate m_date;
+	
+	bool m_event;
         
 };
 

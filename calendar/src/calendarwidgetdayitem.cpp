@@ -21,7 +21,8 @@
 
 CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
     : IconWidget(parent),
-    m_layout(0)
+    m_layout(0),
+    m_event(false)
 {
     setMinimumSize(10,10);
     setDrawBackground(true);
@@ -37,6 +38,11 @@ void CalendarWidgetDayItem::setDay(const QDate & date)
     setText(QString::number(m_date.day()));
     
     update();
+}
+
+void CalendarWidgetDayItem::setDayWithEvent(const bool & event)
+{
+    m_event = event;
 }
 
 void CalendarWidgetDayItem::setColor(const QString & color)
