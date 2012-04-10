@@ -188,8 +188,8 @@ void CalendarWidget::createCalendar()
         weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i));
         weekDay->setText(days.at(i+m_firstDay-9));
     }
+    
 }
-
 
 void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {  
@@ -209,25 +209,19 @@ void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 
 void CalendarWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
 {
-
     m_calendarsColors = colors;
-    
 }
 
 void CalendarWidget::setDateColor(QString color)
 {
-
     m_dateColor = color;
     m_agenda->setDateColor(m_dateColor);
-    
 }
 
 void CalendarWidget::setEventBackgroundColor(const QString color)
 {
-
     m_eventBackgroundColor = color;
     m_agenda->setBackgroundColor(m_eventBackgroundColor);
-    
 }
 
 void CalendarWidget::setSelectedDayColor(const QString color)
@@ -452,7 +446,6 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
         
     }
     
-    
 }
 
 void CalendarWidget::setColored(QDate date)
@@ -482,8 +475,8 @@ void CalendarWidget::setColored(QDate date)
         }
         
     }
+    
 }
-
 
 void CalendarWidget::clearEvents()
 {
@@ -515,7 +508,6 @@ void CalendarWidget::clearEvents()
     }
     
     m_agenda->clear();
-    
 }
 
 void CalendarWidget::setDate(QDate date)
@@ -582,7 +574,6 @@ void CalendarWidget::setDate(QDate date)
     }
     
     setCollections(m_idList);
-        
 }
 
 void CalendarWidget::previousMonth()
@@ -594,7 +585,6 @@ void CalendarWidget::nextMonth()
 {
     setDate(m_date.addMonths(1));
 }
-
 
 void CalendarWidget::yearChanged(int year)
 {
@@ -616,6 +606,7 @@ void CalendarWidget::yearChanged(int year)
         setDate(dt);
         
     }
+    
 }
 
 void CalendarWidget::monthChanged(int month)
@@ -638,6 +629,7 @@ void CalendarWidget::monthChanged(int month)
         setDate(dt);
         
     }
+    
 }
 
 void CalendarWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
@@ -647,6 +639,7 @@ void CalendarWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collec
         addItem(item);
         
     }
+    
 }
 
 void CalendarWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
@@ -665,4 +658,5 @@ void CalendarWidget::itemRemoved(const Akonadi::Item & item)
         m_agenda->removeEvent(item.id());
         
     }
+    
 }

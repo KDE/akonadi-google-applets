@@ -99,7 +99,6 @@ void AgendaWidgetEventItem::setEventName(QString name)
     m_textLayout->setAlignment(m_eventName,Qt::AlignCenter);
     
     connect(m_eventName,SIGNAL(clicked()),SLOT(edit()));
-    
 }
 
 void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
@@ -135,12 +134,10 @@ void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
     m_textLayout->addItem(m_timeText);
     
     connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
-
 }
 
 void AgendaWidgetEventItem::setEventStartTime(QTime start)
 {
-
     QString time;
     
     m_startTime = start;
@@ -170,12 +167,10 @@ void AgendaWidgetEventItem::setEventStartTime(QTime start)
     m_textLayout->addItem(m_timeText);
 
     connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
-
 }
 
 void AgendaWidgetEventItem::setEventEndTime(QTime end)
 {
-
     QString time;
     
     m_endTime = end;
@@ -205,7 +200,6 @@ void AgendaWidgetEventItem::setEventEndTime(QTime end)
     m_textLayout->addItem(m_timeText);
 
     connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
-
 }
 
 bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)

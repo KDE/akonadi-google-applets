@@ -255,7 +255,6 @@ void PlasmaCalendar::configAccepted()
     }
     
     emit configNeedsSaving();
-   
 }
 
 void PlasmaCalendar::fetchCollections()
@@ -275,7 +274,6 @@ void PlasmaCalendar::fetchCollections()
 
 void PlasmaCalendar::updateCalendars()
 {
-
     agendaConfigDialog->clear();
     
     for (int i = 0; i < configDialog.collectionsList->count(); i++) {
@@ -290,7 +288,6 @@ void PlasmaCalendar::updateCalendars()
     }
     
 }
-
 
 void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
 {
@@ -377,7 +374,6 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
     }
     
     updateCalendars();
-
 }
  
 void PlasmaCalendar::createEvent()

@@ -42,7 +42,6 @@ AgendaWidgetDateItem::AgendaWidgetDateItem(QDate date, QGraphicsWidget * parent)
     palette = this->palette();
     palette.setColor(QPalette::Window,color);
     this->setPalette(palette);
-    
 }
 
 void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
@@ -62,7 +61,6 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
     }
     
     m_layout->addItem(event);
-    
 }
 
 void AgendaWidgetDateItem::clear()
@@ -79,12 +77,12 @@ void AgendaWidgetDateItem::clear()
         i--;
        
     }
+    
 }
 
 
 void AgendaWidgetDateItem::setBackgroundColor(const QString color)
 {
-
     QColor clr = QColor(color);
     clr.setAlphaF(0.5);
     QPalette palette;
@@ -99,19 +97,15 @@ void AgendaWidgetDateItem::setDate(QDate date)
     m_date = date;
 
     m_dateLabel->setText(KGlobal::locale()->formatDate(date,KLocale::FancyLongDate));
-    
 }
 
 void AgendaWidgetDateItem::setDateColor(QString color)
 {
-
     m_dateLabel->setColor(color);
-    
 }
 
 void AgendaWidgetDateItem::removeEvent(Akonadi::Entity::Id eventId)
 {
-
     AgendaWidgetEventItem * item;
     
     for (int i = 1; i < m_layout->count(); i++) {

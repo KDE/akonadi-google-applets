@@ -48,54 +48,40 @@ AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
             SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             SLOT(itemRemoved(Akonadi::Item))); 
-
 }
 
 void AgendaWidget::setDateColor(QString color)
 {
-
     m_dateColor = color;
-    
 }
 
 void AgendaWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
 {
-
     m_calendarsColors = colors;
-    
 }
 
 void AgendaWidget::setUpcomingDateColor(const QString color)
 {
-
     m_upcomingDateColor = color;
-    
 }
 
 void AgendaWidget::setEventBackgroundColor(const QString color)
 {
-
     m_eventBackgroundColor = color;
-    
 }
 
 void AgendaWidget::setWeeks(int weeks)
 {
- 
     m_weeks = weeks;
-    
 }
 
 void AgendaWidget::setUpcomingDays(const int days)
 {
-    
     m_upcomingDays = days;
-    
 }
 
 void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 {
-
     m_layout->clear();
     
     m_idList = ids;
@@ -110,18 +96,15 @@ void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
 
 void AgendaWidget::fetchCollections()
 {
-
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
 
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
-    
 }
 
 void AgendaWidget::fetchCollectionsFinished(KJob * job)
 {
-    
     if (job->error()) {
 
         qDebug() << "fetchCollections failed";
@@ -149,18 +132,15 @@ void AgendaWidget::fetchCollectionsFinished(KJob * job)
 
 void AgendaWidget::fetchItems(const Akonadi::Collection & collection)
 {
-
     Akonadi::ItemFetchJob * job = new Akonadi::ItemFetchJob(collection);
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchItemsFinished(KJob *)));
 
     job->fetchScope().fetchFullPayload(true);
-    
 }
 
 void AgendaWidget::fetchItemsFinished(KJob * job)
 {
-
     if (job->error()) {
 
         qDebug() << "fetchItems failed";

@@ -43,7 +43,6 @@ class AgendaWidgetDateLabel : public Plasma::Frame
 	QGraphicsLinearLayout * m_layout;
 	
 	Plasma::IconWidget * m_icon;
-    
 };
 
 #endif // AGENDAWIDGETDATELABEL_H

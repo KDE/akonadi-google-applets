@@ -36,19 +36,15 @@ AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent), m_agendaConfig(ne
     connect(m_agendaConfig->upcomingDateColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
     connect(m_agendaConfig->eventBackground,SIGNAL(changed(QColor)),SIGNAL(changed()));
     connect(m_agendaConfig->calendarColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
-
 }
 
 void AgendaConfig::loadCalendarsClicked()
 {
-
     emit updateCalendars();
-    
 }
 
 void AgendaConfig::calendarChanged(int index)
 {
-
     Akonadi::Entity::Id id = m_agendaConfig->calendarsList->itemData(index).toInt();
     
     if (m_calendarsColors.contains(id)) {
@@ -60,77 +56,59 @@ void AgendaConfig::calendarChanged(int index)
         m_agendaConfig->calendarColor->setColor(QColor("#00C000"));
         
     }
-    
 }
 
 void AgendaConfig::colorChanged(QColor color)
 {
-
     Akonadi::Entity::Id id = m_agendaConfig->calendarsList->itemData(m_agendaConfig->calendarsList->currentIndex()).toInt();
 
     m_calendarsColors[id] = color.name();
-    
 }
 
 
 void AgendaConfig::clear()
 {
-
     while (m_agendaConfig->calendarsList->count() != 0) {
 
         m_agendaConfig->calendarsList->removeItem(0);
 
     }
-    
+
 }
 
 void AgendaConfig::addItem(QString text, int id)
 {
-
     m_agendaConfig->calendarsList->addItem(text,id);
-    
 }
 
 void AgendaConfig::setDateColor(QColor color)
 {
-
     m_agendaConfig->dateColor->setColor(color);
-    
 }
 
 void AgendaConfig::setUpcomingColor(QColor color)
 {
-
     m_agendaConfig->upcomingDateColor->setColor(color);
-    
 }
 
 void AgendaConfig::setEventBackgroundColor(QColor color)
 {
-
     m_agendaConfig->eventBackground->setColor(color);
-    
 }
 
 void AgendaConfig::setWeeks(int weeks)
 {
-    
     m_agendaConfig->weeks->setCurrentIndex(weeks);
-
 }
 
 void AgendaConfig::setUpcomingDays(int days)
 {
-
     m_agendaConfig->upcomingDays->setCurrentIndex(days);
-    
 }
 
 
 void AgendaConfig::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
 {
-
     m_calendarsColors = colors;
-    
 }
 
