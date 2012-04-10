@@ -276,7 +276,7 @@ void TaskWidgetItem::updateTask(const Akonadi::Item & item)
     setItemInfo();
 }
 
-bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, bool completedFirst)
+bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, const bool & completedFirst)
 {
     if (this->m_todo->isCompleted() && !item->m_todo->isCompleted()) {
 
@@ -325,7 +325,7 @@ bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, bool completedFirs
     return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());
 }
 
-bool TaskWidgetItem::orderByDate(const TaskWidgetItem * item, bool completedFirst)
+bool TaskWidgetItem::orderByDate(const TaskWidgetItem * item, const bool & completedFirst)
 {
     if (this->m_todo->isCompleted() && !item->m_todo->isCompleted()) {
 

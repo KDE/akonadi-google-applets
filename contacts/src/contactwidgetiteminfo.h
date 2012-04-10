@@ -37,10 +37,10 @@ class ContactWidgetItemInfo : public QGraphicsWidget
 
         void show();
 
-        void setHomeNumber(const QString number);
-        void setWorkNumber(const QString number);
-        void setCellPhone(const QString number);
-        void setEmails(const QStringList emails);
+        void setHomeNumber(const QString & number);
+        void setWorkNumber(const QString & number);
+        void setCellPhone(const QString & number);
+        void setEmails(const QStringList & emails);
 
     public slots:
 

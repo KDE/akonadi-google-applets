@@ -43,7 +43,7 @@ void AgendaConfig::loadCalendarsClicked()
     emit updateCalendars();
 }
 
-void AgendaConfig::calendarChanged(int index)
+void AgendaConfig::calendarChanged(const int & index)
 {
     Akonadi::Entity::Id id = m_agendaConfig->calendarsList->itemData(index).toInt();
     
@@ -58,7 +58,7 @@ void AgendaConfig::calendarChanged(int index)
     }
 }
 
-void AgendaConfig::colorChanged(QColor color)
+void AgendaConfig::colorChanged(const QColor & color)
 {
     Akonadi::Entity::Id id = m_agendaConfig->calendarsList->itemData(m_agendaConfig->calendarsList->currentIndex()).toInt();
 
@@ -76,38 +76,38 @@ void AgendaConfig::clear()
 
 }
 
-void AgendaConfig::addItem(QString text, int id)
+void AgendaConfig::addItem(const QString & text,const int & id)
 {
     m_agendaConfig->calendarsList->addItem(text,id);
 }
 
-void AgendaConfig::setDateColor(QColor color)
+void AgendaConfig::setDateColor(const QColor & color)
 {
     m_agendaConfig->dateColor->setColor(color);
 }
 
-void AgendaConfig::setUpcomingColor(QColor color)
+void AgendaConfig::setUpcomingColor(const QColor & color)
 {
     m_agendaConfig->upcomingDateColor->setColor(color);
 }
 
-void AgendaConfig::setEventBackgroundColor(QColor color)
+void AgendaConfig::setEventBackgroundColor(const QColor & color)
 {
     m_agendaConfig->eventBackground->setColor(color);
 }
 
-void AgendaConfig::setWeeks(int weeks)
+void AgendaConfig::setWeeks(const int & weeks)
 {
     m_agendaConfig->weeks->setCurrentIndex(weeks);
 }
 
-void AgendaConfig::setUpcomingDays(int days)
+void AgendaConfig::setUpcomingDays(const int & days)
 {
     m_agendaConfig->upcomingDays->setCurrentIndex(days);
 }
 
 
-void AgendaConfig::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
+void AgendaConfig::setCalendarsColors(const QMap< Akonadi::Entity::Id, QString > & colors)
 {
     m_calendarsColors = colors;
 }

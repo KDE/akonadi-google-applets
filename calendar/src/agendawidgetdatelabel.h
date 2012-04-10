@@ -35,8 +35,8 @@ class AgendaWidgetDateLabel : public Plasma::Frame
         AgendaWidgetDateLabel(QGraphicsWidget * parent = 0);
         virtual ~AgendaWidgetDateLabel(){};
 	
-	void setColor(const QString color);
-	void setText(const QString date);
+	void setColor(const QString & color);
+	void setText(const QString & date);
 	
     private:
 	

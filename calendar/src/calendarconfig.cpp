@@ -31,27 +31,27 @@ CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarCon
     
 }
 
-void CalendarConfig::setSelectedDayColor(QColor color)
+void CalendarConfig::setSelectedDayColor(const QColor & color)
 {
     m_calendarConfig->selectedDay->setColor(color);
 }
 
-void CalendarConfig::setCurrentMonthColor(QColor color)
+void CalendarConfig::setCurrentMonthColor(const QColor & color)
 {
     m_calendarConfig->currentMonth->setColor(color);
 }
 
-void CalendarConfig::setOutdatedMonthColor(QColor color)
+void CalendarConfig::setOutdatedMonthColor(const QColor & color)
 {
     m_calendarConfig->outdatedMonth->setColor(color);
 }
 
-void CalendarConfig::setCurrentEventColor(QColor color)
+void CalendarConfig::setCurrentEventColor(const QColor & color)
 {
     m_calendarConfig->currentEvent->setColor(color);
 }
 
-void CalendarConfig::setOutdatedEventColor(QColor color)
+void CalendarConfig::setOutdatedEventColor(const QColor & color)
 {
     m_calendarConfig->outdatedEvent->setColor(color);
 }

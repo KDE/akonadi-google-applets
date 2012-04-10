@@ -51,12 +51,12 @@ TaskWidgetItemDate::TaskWidgetItemDate(QGraphicsWidget * parent)
     connect(m_icon,SIGNAL(clicked()),SIGNAL(dateClicked()));
 }
 
-void TaskWidgetItemDate::setText(QString date)
+void TaskWidgetItemDate::setText(const QString & date)
 {
     m_icon->setText(date);   
 }
 
-void TaskWidgetItemDate::setColor(QString color)
+void TaskWidgetItemDate::setColor(const QString & color)
 {
     QColor clr(color);
     clr.setAlphaF(0.3);

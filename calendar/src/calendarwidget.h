@@ -85,15 +85,15 @@ class CalendarWidget : public QGraphicsWidget
             return m_firstDay;
         }
         
-        void setCollections(QList<Akonadi::Collection::Id> ids);
-        void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
-        void setDateColor(const QString color);
-        void setEventBackgroundColor(const QString color);
-        void setSelectedDayColor(const QString color);
-        void setCurrentMonthColor(const QString color);
-        void setOutdatedMonthColor(const QString color);
-        void setCurrentEventColor(const QString color);
-        void setOutdatedEventColor(const QString color);
+        void setCollections(const QList<Akonadi::Collection::Id> & ids);
+        void setCalendarsColors(const QMap<Akonadi::Collection::Id,QString> & colors);
+        void setDateColor(const QString & color);
+        void setEventBackgroundColor(const QString & color);
+        void setSelectedDayColor(const QString & color);
+        void setCurrentMonthColor(const QString & color);
+        void setOutdatedMonthColor(const QString & color);
+        void setCurrentEventColor(const QString & color);
+        void setOutdatedEventColor(const QString & color);
         
     public slots:
         
@@ -102,9 +102,9 @@ class CalendarWidget : public QGraphicsWidget
         
         void previousMonth();
         void nextMonth();
-        void yearChanged(int year);
-        void monthChanged(int month);
-        void setDate(QDate date);
+        void yearChanged(const int & year);
+        void monthChanged(const int & month);
+        void setDate(const QDate & date);
         
         void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
         void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
@@ -118,7 +118,7 @@ class CalendarWidget : public QGraphicsWidget
         void addItem(const Akonadi::Item & item);
         void createCalendar();
         void clearEvents();
-        void setColored(QDate date);
+        void setColored(const QDate & date);
         
         QGraphicsLinearLayout * m_mainLayout;
         QGraphicsLinearLayout * m_changeLayout;

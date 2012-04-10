@@ -56,7 +56,7 @@ class PlasmaContacts : public Plasma::PopupApplet
         void fetchCollectionsFinished(KJob * job);
 
         void lineChanged(const QString & text);
-        void lineFocusChanged(bool change);
+        void lineFocusChanged(const bool & change);
 
     private:
 

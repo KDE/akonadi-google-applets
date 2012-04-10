@@ -41,23 +41,23 @@ class TaskEditor : public QWidget
 
         void disableStartDate();
         void disableDueDate();
-        void setCollections(QList<Akonadi::Collection> collections);
-        void setAllDay(bool checked);
-        void setStartDate(const KDateTime dateTime);
-        void setDueDate(const KDateTime dateTime);
-        void setName(const QString name);
-        void setDescription(const QString description);
+        void setCollections(const QList<Akonadi::Collection> & collections);
+        void setAllDay(const bool & checked);
+        void setStartDate(const KDateTime & dateTime);
+        void setDueDate(const KDateTime & dateTime);
+        void setName(const QString & name);
+        void setDescription(const QString & description);
 
-        void updateTodo(KCalCore::Todo::Ptr todo);
+        void updateTodo(const KCalCore::Todo::Ptr & todo);
 
         Akonadi::Item::Id selectedCollection();
 
     public slots:
 
         void setAllDayEnabled();
-        void setTimeDisabled(bool disabled);
-        void setDateTimeStart(bool enabled);
-        void setDateTimeDue(bool enabled);
+        void setTimeDisabled(const bool & disabled);
+        void setDateTimeStart(const bool & enabled);
+        void setDateTimeDue(const bool & enabled);
 
     private:
 

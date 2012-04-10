@@ -45,16 +45,7 @@ class TaskWidgetItem : public Plasma::Frame
 
         TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
-        void setRelated(TaskWidgetItem * item);
-        void setUnrelated();
-
-        void updateTask(const Akonadi::Item & item);
-
-        bool operator<(const TaskWidgetItem * item);
-        bool operator<<(const TaskWidgetItem * item);
-        bool operator==(const Akonadi::Item & item);
-
-        int indent() const {
+	int indent() const {
             return m_indent;
         }
 
@@ -73,6 +64,15 @@ class TaskWidgetItem : public Plasma::Frame
         Akonadi::Item item() const {
             return m_item;
         }
+	
+        void setRelated(TaskWidgetItem * item);
+        void setUnrelated();
+
+        void updateTask(const Akonadi::Item & item);
+
+        bool operator<(const TaskWidgetItem * item);
+        bool operator<<(const TaskWidgetItem * item);
+        bool operator==(const Akonadi::Item & item);
 
     public slots:
 
@@ -89,8 +89,8 @@ class TaskWidgetItem : public Plasma::Frame
         void setItemInfo();
         void setColorForDate();
 
-        bool orderByName(const TaskWidgetItem * item, bool completedFirst = false);
-        bool orderByDate(const TaskWidgetItem * item, bool completedFirst = false);
+        bool orderByName(const TaskWidgetItem * item, const bool & completedFirst = false);
+        bool orderByDate(const TaskWidgetItem * item, const bool & completedFirst = false);
 
         TaskEditor * m_editor;
 

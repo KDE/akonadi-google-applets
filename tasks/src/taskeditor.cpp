@@ -52,7 +52,7 @@ void TaskEditor::disableDueDate()
     m_taskEditor->timeEditDue->setDisabled(true);
 }
 
-void TaskEditor::setCollections(QList< Akonadi::Collection > collections)
+void TaskEditor::setCollections(const QList< Akonadi::Collection > & collections)
 {
     m_taskEditor->comboBox->setEnabled(true);
 
@@ -96,12 +96,12 @@ void TaskEditor::setCollections(QList< Akonadi::Collection > collections)
 
 }
 
-void TaskEditor::setAllDay(bool checked)
+void TaskEditor::setAllDay(const bool & checked)
 {
     m_taskEditor->allDay->setChecked(checked);
 }
 
-void TaskEditor::setStartDate(KDateTime dateTime)
+void TaskEditor::setStartDate(const KDateTime & dateTime)
 {
     m_taskEditor->dateTimeStart->setChecked(true);
     m_taskEditor->dateEditStart->setEnabled(true);
@@ -120,7 +120,7 @@ void TaskEditor::setStartDate(KDateTime dateTime)
 
 }
 
-void TaskEditor::setDueDate(KDateTime dateTime)
+void TaskEditor::setDueDate(const KDateTime & dateTime)
 {
     m_taskEditor->dateEditDue->setDate(dateTime.date());
 
@@ -136,17 +136,17 @@ void TaskEditor::setDueDate(KDateTime dateTime)
 
 }
 
-void TaskEditor::setName(QString name)
+void TaskEditor::setName(const QString & name)
 {
     m_taskEditor->nameEdit->setText(name);
 }
 
-void TaskEditor::setDescription(QString description)
+void TaskEditor::setDescription(const QString & description)
 {
     m_taskEditor->descriptionEdit->setText(description);
 }
 
-void TaskEditor::updateTodo(KCalCore::Todo::Ptr todo)
+void TaskEditor::updateTodo(const KCalCore::Todo::Ptr & todo)
 {
     if (m_taskEditor->dateTimeStart->isChecked()) {
 
@@ -218,7 +218,7 @@ void TaskEditor::setAllDayEnabled()
 
 }
 
-void TaskEditor::setTimeDisabled(bool disabled)
+void TaskEditor::setTimeDisabled(const bool & disabled)
 {
     if (m_taskEditor->dateTimeStart->isChecked()) {
 
@@ -234,7 +234,7 @@ void TaskEditor::setTimeDisabled(bool disabled)
 
 }
 
-void TaskEditor::setDateTimeStart(bool enabled)
+void TaskEditor::setDateTimeStart(const bool & enabled)
 {
     m_taskEditor->dateEditStart->setEnabled(enabled);
 
@@ -246,7 +246,7 @@ void TaskEditor::setDateTimeStart(bool enabled)
 
 }
 
-void TaskEditor::setDateTimeDue(bool enabled)
+void TaskEditor::setDateTimeDue(const bool & enabled)
 {
     m_taskEditor->dateEditDue->setEnabled(enabled);
 

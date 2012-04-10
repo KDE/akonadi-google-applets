@@ -47,17 +47,17 @@ TaskWidgetItemInfo::TaskWidgetItemInfo(QGraphicsWidget * parent): Frame(parent)
     connect(m_name,SIGNAL(clicked()),SIGNAL(textClicked()));
 }
 
-void TaskWidgetItemInfo::setIcon(QString icon)
+void TaskWidgetItemInfo::setIcon(const QString & icon)
 {
     m_icon->setIcon(KIcon(icon));
 }
 
-void TaskWidgetItemInfo::setText(QString text)
+void TaskWidgetItemInfo::setText(const QString & text)
 {
     m_name->setText(text);
 }
 
-void TaskWidgetItemInfo::setCheckboxOrientation(bool orientation)
+void TaskWidgetItemInfo::setCheckboxOrientation(const bool & orientation)
 {
     m_layout->removeItem(m_icon);
     m_layout->removeItem(m_name);

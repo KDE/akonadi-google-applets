@@ -35,13 +35,13 @@ class AgendaWidgetLayout : public QGraphicsLinearLayout
 
         virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 	
-	bool existDateItem(const QDate date);
+	bool existDateItem(const QDate & date);
 	
 	void addDateItem(AgendaWidgetDateItem * item);
-	void addEventItem(QDate date, AgendaWidgetEventItem * item);
+	void addEventItem(const QDate & date, AgendaWidgetEventItem * item);
         
         void clear();
-        void removeEvent(Akonadi::Entity::Id eventId);
+        void removeEvent(const Akonadi::Entity::Id & eventId);
 };
 
 #endif // AGENDAWIDGETLAYOUT_H

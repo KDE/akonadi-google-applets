@@ -35,7 +35,7 @@ class AgendaWidgetDateItem : public Plasma::Frame
     
     public:
 	
-        AgendaWidgetDateItem(QDate date, QGraphicsWidget * parent = 0);
+        AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent = 0);
         virtual ~AgendaWidgetDateItem(){};
 
 	QDate date() const {
@@ -48,10 +48,10 @@ class AgendaWidgetDateItem : public Plasma::Frame
 	
 	void addEvent(AgendaWidgetEventItem * event);
         void clear();
-        void setBackgroundColor(const QString color);
-	void setDate(const QDate date);
-	void setDateColor(const QString color);
-        void removeEvent(Akonadi::Entity::Id eventId);
+        void setBackgroundColor(const QString & color);
+	void setDate(const QDate & date);
+	void setDateColor(const QString & color);
+        void removeEvent(const Akonadi::Entity::Id & eventId);
 	
     private:
 	

@@ -56,9 +56,9 @@ class ContactWidget : public QGraphicsWidget
             return m_idList;
         }
 
-        void setCollections(QList<Akonadi::Collection::Id> ids);
-        void setFilterData(bool filter = true);
-        void setShowEmptyContacts(bool show = true);
+        void setCollections(const QList<Akonadi::Collection::Id> & ids);
+        void setFilterData(const bool & filter = true);
+        void setShowEmptyContacts(const bool & show = true);
         void showContactsContains(const QString & text);
 
     public slots:

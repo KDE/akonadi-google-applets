@@ -21,7 +21,7 @@
 
 #include <KIcon>
 
-AgendaWidgetDateItem::AgendaWidgetDateItem(QDate date, QGraphicsWidget * parent)
+AgendaWidgetDateItem::AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent)
     : Plasma::Frame(parent)
 {    
     m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
@@ -81,7 +81,7 @@ void AgendaWidgetDateItem::clear()
 }
 
 
-void AgendaWidgetDateItem::setBackgroundColor(const QString color)
+void AgendaWidgetDateItem::setBackgroundColor(const QString & color)
 {
     QColor clr = QColor(color);
     clr.setAlphaF(0.5);
@@ -92,19 +92,19 @@ void AgendaWidgetDateItem::setBackgroundColor(const QString color)
     
 }
 
-void AgendaWidgetDateItem::setDate(QDate date)
+void AgendaWidgetDateItem::setDate(const QDate & date)
 {
     m_date = date;
 
     m_dateLabel->setText(KGlobal::locale()->formatDate(date,KLocale::FancyLongDate));
 }
 
-void AgendaWidgetDateItem::setDateColor(QString color)
+void AgendaWidgetDateItem::setDateColor(const QString & color)
 {
     m_dateLabel->setColor(color);
 }
 
-void AgendaWidgetDateItem::removeEvent(Akonadi::Entity::Id eventId)
+void AgendaWidgetDateItem::removeEvent(const Akonadi::Entity::Id & eventId)
 {
     AgendaWidgetEventItem * item;
     

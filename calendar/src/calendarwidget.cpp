@@ -191,7 +191,7 @@ void CalendarWidget::createCalendar()
     
 }
 
-void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
+void CalendarWidget::setCollections(const QList< Akonadi::Entity::Id > & ids)
 {  
     m_agenda->setDate(m_date);
     
@@ -207,44 +207,44 @@ void CalendarWidget::setCollections(QList< Akonadi::Entity::Id > ids)
     
 }
 
-void CalendarWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
+void CalendarWidget::setCalendarsColors(const QMap< Akonadi::Entity::Id, QString > & colors)
 {
     m_calendarsColors = colors;
 }
 
-void CalendarWidget::setDateColor(QString color)
+void CalendarWidget::setDateColor(const QString & color)
 {
     m_dateColor = color;
     m_agenda->setDateColor(m_dateColor);
 }
 
-void CalendarWidget::setEventBackgroundColor(const QString color)
+void CalendarWidget::setEventBackgroundColor(const QString & color)
 {
     m_eventBackgroundColor = color;
     m_agenda->setBackgroundColor(m_eventBackgroundColor);
 }
 
-void CalendarWidget::setSelectedDayColor(const QString color)
+void CalendarWidget::setSelectedDayColor(const QString & color)
 {
     m_selectedDayColor = color;
 }
 
-void CalendarWidget::setCurrentMonthColor(const QString color)
+void CalendarWidget::setCurrentMonthColor(const QString & color)
 {
     m_currentMonthColor = color;
 }
 
-void CalendarWidget::setOutdatedMonthColor(const QString color)
+void CalendarWidget::setOutdatedMonthColor(const QString & color)
 {
     m_outdatedMonthColor = color;
 }
 
-void CalendarWidget::setCurrentEventColor(const QString color)
+void CalendarWidget::setCurrentEventColor(const QString & color)
 {
     m_currentEventColor = color;
 }
 
-void CalendarWidget::setOutdatedEventColor(const QString color)
+void CalendarWidget::setOutdatedEventColor(const QString & color)
 {
     m_outdatedEventColor = color;
 }
@@ -448,7 +448,7 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
     
 }
 
-void CalendarWidget::setColored(QDate date)
+void CalendarWidget::setColored(const QDate & date)
 {    
     CalendarWidgetDayItem * dayItem;
     
@@ -510,7 +510,7 @@ void CalendarWidget::clearEvents()
     m_agenda->clear();
 }
 
-void CalendarWidget::setDate(QDate date)
+void CalendarWidget::setDate(const QDate & date)
 {         
     if (!date.isValid()) {
         
@@ -586,7 +586,7 @@ void CalendarWidget::nextMonth()
     setDate(m_date.addMonths(1));
 }
 
-void CalendarWidget::yearChanged(int year)
+void CalendarWidget::yearChanged(const int & year)
 {
     if (year == m_date.year()) {
         
@@ -609,7 +609,7 @@ void CalendarWidget::yearChanged(int year)
     
 }
 
-void CalendarWidget::monthChanged(int month)
+void CalendarWidget::monthChanged(const int & month)
 {
     if (month+1 == m_date.month()) {
         

@@ -21,7 +21,6 @@
 #define CALENDARCONFIG_H
 
 #include <QWidget>
-#include <QDebug>
 #include "ui_calendarconfig.h"
 
 class CalendarConfig : public QWidget
@@ -52,11 +51,11 @@ class CalendarConfig : public QWidget
             return m_calendarConfig->outdatedEvent->color().name();
         }
         
-        void setSelectedDayColor(QColor color);
-        void setCurrentMonthColor(QColor color);
-        void setOutdatedMonthColor(QColor color);
-        void setCurrentEventColor(QColor color);
-        void setOutdatedEventColor(QColor color);
+        void setSelectedDayColor(const QColor & color);
+        void setCurrentMonthColor(const QColor & color);
+        void setOutdatedMonthColor(const QColor & color);
+        void setCurrentEventColor(const QColor & color);
+        void setOutdatedEventColor(const QColor & color);
         
     signals:
     

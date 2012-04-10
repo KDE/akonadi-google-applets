@@ -51,57 +51,57 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
             SLOT(itemRemoved(Akonadi::Item))); 
 }
 
-void TaskWidget::setBackgroundColor(QString color)
+void TaskWidget::setBackgroundColor(const QString & color)
 {
     m_backgroundColor = color;
 }
 
-void TaskWidget::setExpiredColor(QString color)
+void TaskWidget::setExpiredColor(const QString & color)
 {
     m_expiredColor = color;
 }
 
-void TaskWidget::setTodayColor(QString color)
+void TaskWidget::setTodayColor(const QString & color)
 {
     m_todayColor = color;
 }
 
-void TaskWidget::setWeekColor(QString color)
+void TaskWidget::setWeekColor(const QString & color)
 {
     m_weekColor = color;
 }
 
-void TaskWidget::setOtherColor(QString color)
+void TaskWidget::setOtherColor(const QString & color)
 {
     m_otherColor = color;
 }
 
-void TaskWidget::setOrderBy(TaskWidget::OrderBy order)
+void TaskWidget::setOrderBy(const TaskWidget::OrderBy & order)
 {
     m_order = order;
 }
 
-void TaskWidget::setAutoHideCompleted(bool hide)
+void TaskWidget::setAutoHideCompleted(const bool & hide)
 {
     m_autoHide = hide;
 }
 
-void TaskWidget::setAutoDeleteCompleted(bool del)
+void TaskWidget::setAutoDeleteCompleted(const bool & del)
 {
     m_autoDel = del;
 }
 
-void TaskWidget::setCompletedColor(QString color)
+void TaskWidget::setCompletedColor(const QString & color)
 {
     m_completedColor = color;
 }
 
-void TaskWidget::setCheckboxesOrientation(const bool orientation)
+void TaskWidget::setCheckboxesOrientation(const bool & orientation)
 {
     m_orientation = orientation;
 }
 
-void TaskWidget::setCollections(QList<Akonadi::Entity::Id> ids)
+void TaskWidget::setCollections(const QList<Akonadi::Entity::Id> & ids)
 {
     clear();
 

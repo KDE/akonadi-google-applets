@@ -34,8 +34,8 @@ class TaskWidgetItemDate : public Plasma::Frame
         explicit TaskWidgetItemDate(QGraphicsWidget * parent = 0);
         virtual ~TaskWidgetItemDate() {};
                 
-        void setColor(const QString color);
-        void setText(const QString date);
+        void setColor(const QString & color);
+        void setText(const QString & date);
         
     signals:
         

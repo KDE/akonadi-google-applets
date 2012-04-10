@@ -38,13 +38,13 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent)
     setFrameShadow(Raised);
 }
 
-void AgendaWidgetDateLabel::setText(QString date)
+void AgendaWidgetDateLabel::setText(const QString & date)
 {
     m_icon->setText(date);   
     m_icon->update();
 }
 
-void AgendaWidgetDateLabel::setColor(QString color)
+void AgendaWidgetDateLabel::setColor(const QString & color)
 {
     QColor clr(color);
     clr.setAlphaF(0.3);

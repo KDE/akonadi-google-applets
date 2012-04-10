@@ -21,7 +21,7 @@
 
 #include <KRun>
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWidget * parent)
+AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id,QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_line(0),
       m_eventName(0),
@@ -58,7 +58,7 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWid
     
     setLayout(m_mainLayout);
 }
-void AgendaWidgetEventItem::setColor(QString color)
+void AgendaWidgetEventItem::setColor(const QString & color)
 {
     QColor clr = QColor(color);
     clr.setAlphaF(0.5);
@@ -68,7 +68,7 @@ void AgendaWidgetEventItem::setColor(QString color)
     m_line->setPalette(palette);
 }
 
-void AgendaWidgetEventItem::setEventName(QString name)
+void AgendaWidgetEventItem::setEventName(const QString & name)
 {
     if (m_eventName) {
 	
@@ -101,7 +101,7 @@ void AgendaWidgetEventItem::setEventName(QString name)
     connect(m_eventName,SIGNAL(clicked()),SLOT(edit()));
 }
 
-void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
+void AgendaWidgetEventItem::setEventTime(const QTime & start,const QTime & end)
 {
     QString time;
 
@@ -136,7 +136,7 @@ void AgendaWidgetEventItem::setEventTime(QTime start, QTime end)
     connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
 }
 
-void AgendaWidgetEventItem::setEventStartTime(QTime start)
+void AgendaWidgetEventItem::setEventStartTime(const QTime & start)
 {
     QString time;
     
@@ -169,7 +169,7 @@ void AgendaWidgetEventItem::setEventStartTime(QTime start)
     connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
 }
 
-void AgendaWidgetEventItem::setEventEndTime(QTime end)
+void AgendaWidgetEventItem::setEventEndTime(const QTime & end)
 {
     QString time;
     
@@ -300,7 +300,7 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
 
 }
 
-bool AgendaWidgetEventItem::operator==(Akonadi::Entity::Id id)
+bool AgendaWidgetEventItem::operator==(const Akonadi::Entity::Id & id)
 {
     return (m_id == id);
 }

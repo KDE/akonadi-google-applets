@@ -30,7 +30,7 @@ CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
     connect(this,SIGNAL(clicked()),SLOT(clicked()));
 }
 
-void CalendarWidgetDayItem::setDay(QDate date)
+void CalendarWidgetDayItem::setDay(const QDate & date)
 {
     m_date = date;
     
@@ -39,7 +39,7 @@ void CalendarWidgetDayItem::setDay(QDate date)
     update();
 }
 
-void CalendarWidgetDayItem::setColor(QString color)
+void CalendarWidgetDayItem::setColor(const QString & color)
 {
     QColor clr = QColor(color);
     clr.setAlphaF(0.5);

@@ -50,37 +50,37 @@ AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
             SLOT(itemRemoved(Akonadi::Item))); 
 }
 
-void AgendaWidget::setDateColor(QString color)
+void AgendaWidget::setDateColor(const QString & color)
 {
     m_dateColor = color;
 }
 
-void AgendaWidget::setCalendarsColors(QMap< Akonadi::Entity::Id, QString > colors)
+void AgendaWidget::setCalendarsColors(const QMap< Akonadi::Entity::Id, QString > & colors)
 {
     m_calendarsColors = colors;
 }
 
-void AgendaWidget::setUpcomingDateColor(const QString color)
+void AgendaWidget::setUpcomingDateColor(const QString & color)
 {
     m_upcomingDateColor = color;
 }
 
-void AgendaWidget::setEventBackgroundColor(const QString color)
+void AgendaWidget::setEventBackgroundColor(const QString & color)
 {
     m_eventBackgroundColor = color;
 }
 
-void AgendaWidget::setWeeks(int weeks)
+void AgendaWidget::setWeeks(const int & weeks)
 {
     m_weeks = weeks;
 }
 
-void AgendaWidget::setUpcomingDays(const int days)
+void AgendaWidget::setUpcomingDays(const int & days)
 {
     m_upcomingDays = days;
 }
 
-void AgendaWidget::setCollections(QList< Akonadi::Entity::Id > ids)
+void AgendaWidget::setCollections(const QList< Akonadi::Entity::Id > & ids)
 {
     m_layout->clear();
     

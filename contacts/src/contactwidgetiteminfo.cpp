@@ -86,7 +86,7 @@ void ContactWidgetItemInfo::show()
     QGraphicsWidget::show();
 }
 
-void ContactWidgetItemInfo::setHomeNumber(const QString number)
+void ContactWidgetItemInfo::setHomeNumber(const QString & number)
 {
     m_homeIcon = new Plasma::IconWidget(this);
     m_homeIcon->setIcon(KIcon("phone"));
@@ -101,7 +101,7 @@ void ContactWidgetItemInfo::setHomeNumber(const QString number)
     m_homeLabel->setText(number);
 }
 
-void ContactWidgetItemInfo::setWorkNumber(const QString number)
+void ContactWidgetItemInfo::setWorkNumber(const QString & number)
 {
     m_workIcon = new Plasma::IconWidget(this);
     m_workIcon->setIcon(KIcon("phone"));
@@ -116,7 +116,7 @@ void ContactWidgetItemInfo::setWorkNumber(const QString number)
     m_workLabel->setText(number);
 }
 
-void ContactWidgetItemInfo::setCellPhone(const QString number)
+void ContactWidgetItemInfo::setCellPhone(const QString & number)
 {
     m_cellIcon = new Plasma::IconWidget(this);
     m_cellIcon->setIcon(KIcon("phone"));
@@ -131,7 +131,7 @@ void ContactWidgetItemInfo::setCellPhone(const QString number)
     m_cellLabel->setText(number);
 }
 
-void ContactWidgetItemInfo::setEmails(const QStringList emails)
+void ContactWidgetItemInfo::setEmails(const QStringList & emails)
 {
     m_emailsIcon = new Plasma::IconWidget(this);
     m_emailsIcon->setIcon(KIcon("mail-message"));

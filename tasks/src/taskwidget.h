@@ -86,19 +86,19 @@ class TaskWidget : public QGraphicsWidget
             return m_orientation;
         }
 
-        void setBackgroundColor(const QString color);
-        void setExpiredColor(const QString color);
-        void setTodayColor(const QString color);
-        void setWeekColor(const QString color);
-        void setOtherColor(const QString color);
-	void setCompletedColor(const QString color);
-        void setOrderBy(const OrderBy order);
-        void setCheckboxesOrientation(const bool orientation);
+        void setBackgroundColor(const QString & color);
+        void setExpiredColor(const QString & color);
+        void setTodayColor(const QString & color);
+        void setWeekColor(const QString & color);
+        void setOtherColor(const QString & color);
+	void setCompletedColor(const QString & color);
+        void setOrderBy(const OrderBy & order);
+        void setCheckboxesOrientation(const bool & orientation);
 
-        void setAutoHideCompleted(bool hide);
-        void setAutoDeleteCompleted(bool del);
+        void setAutoHideCompleted(const bool & hide);
+        void setAutoDeleteCompleted(const bool & del);
 
-        void setCollections(QList<Akonadi::Collection::Id> ids);
+        void setCollections(const QList<Akonadi::Collection::Id> & ids);
 
     private slots:
 

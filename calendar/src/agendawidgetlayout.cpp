@@ -24,7 +24,7 @@ AgendaWidgetLayout::AgendaWidgetLayout(Qt::Orientation orientation, QGraphicsLay
 {
 }
 
-bool AgendaWidgetLayout::existDateItem(QDate date)
+bool AgendaWidgetLayout::existDateItem(const QDate & date)
 {
     AgendaWidgetDateItem * dateItem;
 
@@ -64,7 +64,7 @@ void AgendaWidgetLayout::addDateItem(AgendaWidgetDateItem * item)
 }
 
 
-void AgendaWidgetLayout::addEventItem(QDate date, AgendaWidgetEventItem * item)
+void AgendaWidgetLayout::addEventItem(const QDate & date, AgendaWidgetEventItem * item)
 {
     AgendaWidgetDateItem * dateItem;
 
@@ -100,7 +100,7 @@ void AgendaWidgetLayout::clear()
     
 }
 
-void AgendaWidgetLayout::removeEvent(Akonadi::Entity::Id eventId)
+void AgendaWidgetLayout::removeEvent(const Akonadi::Entity::Id & eventId)
 {
     AgendaWidgetDateItem * dateItem;
     

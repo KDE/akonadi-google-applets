@@ -44,7 +44,7 @@ ContactWidget::ContactWidget(QGraphicsWidget * parent)
             SLOT(itemRemoved(Akonadi::Item)));
 }
 
-void ContactWidget::setCollections(QList<Akonadi::Entity::Id> ids)
+void ContactWidget::setCollections(const QList<Akonadi::Entity::Id> & ids)
 {
     clear();
 
@@ -55,12 +55,12 @@ void ContactWidget::setCollections(QList<Akonadi::Entity::Id> ids)
         fetchCollections();
 }
 
-void ContactWidget::setFilterData(bool filter)
+void ContactWidget::setFilterData(const bool & filter)
 {
     m_findData = filter;
 }
 
-void ContactWidget::setShowEmptyContacts(bool show)
+void ContactWidget::setShowEmptyContacts(const bool & show)
 {
     if (m_showEmptyContacts != show) {
 

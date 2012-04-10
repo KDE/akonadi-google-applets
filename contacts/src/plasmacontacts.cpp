@@ -159,7 +159,7 @@ void PlasmaContacts::lineChanged(const QString & text)
     m_contactList->showContactsContains(text);
 }
 
-void PlasmaContacts::lineFocusChanged(bool change)
+void PlasmaContacts::lineFocusChanged(const bool & change)
 {
     if (change && m_find->text().contains(i18n("Find"))) {
 	

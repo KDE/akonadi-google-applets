@@ -38,8 +38,8 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
             return m_date;
         }
         
-        void setDay(QDate date);
-        void setColor(QString color);
+        void setDay(const QDate & date);
+        void setColor(const QString & color);
  
     public slots:
     
@@ -47,7 +47,7 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
         
     signals:
     
-        void clicked(QDate date);
+        void clicked(const QDate & date);
         
     private:
                 

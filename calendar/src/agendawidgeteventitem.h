@@ -35,7 +35,7 @@ class AgendaWidgetEventItem : public Plasma::Frame
     
     public:
 	
-        explicit AgendaWidgetEventItem(Akonadi::Entity::Id id,QGraphicsWidget * parent = 0);
+        explicit AgendaWidgetEventItem(const Akonadi::Entity::Id & id,QGraphicsWidget * parent = 0);
         virtual ~AgendaWidgetEventItem(){};
 	
         Akonadi::Entity::Id id() const {
@@ -43,13 +43,13 @@ class AgendaWidgetEventItem : public Plasma::Frame
         }
         
 	bool operator<(AgendaWidgetEventItem * item);
-        bool operator==(Akonadi::Entity::Id id);
+        bool operator==(const Akonadi::Entity::Id & id);
 	
-        void setColor(const QString color);
-	void setEventName(const QString name);
-	void setEventTime(const QTime start, const QTime end);
-	void setEventStartTime(const QTime start);
-	void setEventEndTime(const QTime end);
+        void setColor(const QString & color);
+	void setEventName(const QString & name);
+	void setEventTime(const QTime & start, const QTime & end);
+	void setEventStartTime(const QTime & start);
+	void setEventEndTime(const QTime & end);
 	
     public slots:
     

@@ -68,13 +68,13 @@ class AgendaWidget : public QGraphicsWidget
             return m_upcomingDays;
         }
         
-        void setCollections(QList<Akonadi::Collection::Id> ids);
-        void setCalendarsColors(QMap<Akonadi::Collection::Id,QString> colors);
-        void setDateColor(const QString color);
-        void setUpcomingDateColor(const QString color);
-        void setEventBackgroundColor(const QString color);
-	void setWeeks(const int weeks);
-        void setUpcomingDays(const int days);
+        void setCollections(const QList<Akonadi::Collection::Id> & ids);
+        void setCalendarsColors(const QMap<Akonadi::Collection::Id,QString> & colors);
+        void setDateColor(const QString  &color);
+        void setUpcomingDateColor(const QString & color);
+        void setEventBackgroundColor(const QString & color);
+	void setWeeks(const int & weeks);
+        void setUpcomingDays(const int & days);
 	
     public slots:
 	

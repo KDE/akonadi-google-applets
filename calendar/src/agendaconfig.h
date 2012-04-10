@@ -59,18 +59,18 @@ class AgendaConfig : public QWidget
         }
 
         void clear();
-        void addItem(QString text, int id);
-        void setDateColor(QColor color);
-        void setUpcomingColor(QColor color);
-        void setEventBackgroundColor(QColor color);
-        void setWeeks(int weeks);
-        void setUpcomingDays(int days);
-        void setCalendarsColors(QMap<Akonadi::Entity::Id,QString> colors);
+        void addItem(const QString & text, const int & id);
+        void setDateColor(const QColor & color);
+        void setUpcomingColor(const QColor & color);
+        void setEventBackgroundColor(const QColor & color);
+        void setWeeks(const int & weeks);
+        void setUpcomingDays(const int & days);
+        void setCalendarsColors(const QMap<Akonadi::Entity::Id,QString> & colors);
 
     public slots:
     
-        void calendarChanged(int index);
-        void colorChanged(QColor color);
+        void calendarChanged(const int & index);
+        void colorChanged(const QColor & color);
         
     private slots:
 
