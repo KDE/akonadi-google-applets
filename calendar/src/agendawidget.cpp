@@ -348,6 +348,12 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 
 void AgendaWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
+    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     if (m_idList.contains(collection.id())) {
      
         addItem(item);
@@ -359,12 +365,24 @@ void AgendaWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > ar
 {
     Q_UNUSED(array);
     
+    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     itemRemoved(item);
     itemAdded(item,item.parentCollection());
 }
 
 void AgendaWidget::itemRemoved(const Akonadi::Item & item)
 {
+    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     m_layout->removeEvent(item.id());
 }
 

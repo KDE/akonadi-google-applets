@@ -247,18 +247,20 @@ void TaskWidget::updateCompletedTasks()
 
 void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
-    for (int i = 0; i < m_idList.count(); i++) {
-
-        if (m_idList.at(i) == collection.id()) {
-
-            TaskWidgetItem * task;
-
-            task = new TaskWidgetItem(item, this);
-
-            addItem(task);
+    if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
+	
+	return;
 	    
-        }
+    }
+    
+    if (m_idList.contains(collection.id())) {
 
+        TaskWidgetItem * task;
+
+        task = new TaskWidgetItem(item, this);
+
+        addItem(task);
+	    
     }
 
 }
@@ -267,6 +269,12 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
 {
     Q_UNUSED(array);
 
+    if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {
@@ -290,6 +298,12 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
 
 void TaskWidget::itemRemoved(const Akonadi::Item & item)
 {
+    if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {

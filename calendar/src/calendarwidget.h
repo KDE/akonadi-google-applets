@@ -119,7 +119,6 @@ class CalendarWidget : public QGraphicsWidget
         void addItem(const Akonadi::Item & item);
         void createCalendar();
         void clearEvents();
-	//void changeAgenda();
         void setColored(const QDate & date);
         
         QGraphicsLinearLayout * m_mainLayout;

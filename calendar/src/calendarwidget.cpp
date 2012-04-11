@@ -685,6 +685,12 @@ void CalendarWidget::monthChanged(const int & month)
 
 void CalendarWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
+    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     if (m_idList.contains(collection.id())) {
      
         addItem(item);
@@ -698,6 +704,12 @@ void CalendarWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > 
     Q_UNUSED(array);
     Q_UNUSED(item);
     
+    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	return;
+	    
+    }
+    
     setCollections(m_idList);
 
 }
@@ -705,6 +717,12 @@ void CalendarWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > 
 void CalendarWidget::itemRemoved(const Akonadi::Item & item)
 {    
     Q_UNUSED(item);
+    
+    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
+	
+	return;
+	    
+    }
     
     if (m_idList.contains(item.parentCollection().id())) {
         
