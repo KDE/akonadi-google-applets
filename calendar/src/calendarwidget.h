@@ -107,6 +107,10 @@ class CalendarWidget : public QGraphicsWidget
         void yearChanged(const int & year);
         void setDate(const QDate & date);
         
+        void updateSize(QSizeF size);
+	void updateFontWeeks(QFont font);
+	void updateFontDays(QFont font);
+        
         void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
         void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
         void itemRemoved(const Akonadi::Item & item);

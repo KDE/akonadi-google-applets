@@ -23,7 +23,7 @@ CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarCon
 {
     m_calendarConfig->setupUi(this);
     
-    connect(m_calendarConfig->selectedDay, SIGNAL(changed(QColor)), SLOT(colorChanged(QColor)));
+    connect(m_calendarConfig->selectedDay, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_calendarConfig->currentMonth,SIGNAL(changed(QColor)),SIGNAL(changed()));
     connect(m_calendarConfig->outdatedMonth,SIGNAL(changed(QColor)),SIGNAL(changed()));
     connect(m_calendarConfig->currentEvent,SIGNAL(changed(QColor)),SIGNAL(changed()));

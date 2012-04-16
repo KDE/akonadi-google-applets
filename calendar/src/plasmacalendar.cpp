@@ -72,8 +72,12 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
         m_layout->addItem(m_button);
 	
         m_widget = new QGraphicsWidget(this);
-        m_widget->setMinimumSize(300, 500);
+	m_widget->setMinimumSize(250,400);
+        m_widget->setPreferredSize(300, 500);
 	m_widget->setLayout(m_layout);
+	
+	//connect(m_widget,SIGNAL(geometryChanged()),SLOT(widgetGeometryChanged()));
+	
     }
 
     return m_widget;
@@ -256,6 +260,43 @@ void PlasmaCalendar::configAccepted()
     
     emit configNeedsSaving();
 }
+
+void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
+{    
+    if (m_widget) {
+	
+	if (constraints & Plasma::FormFactorConstraint) {
+	    
+	    if (formFactor() == 2) {
+		
+		connect(m_widget,SIGNAL(geometryChanged()),SLOT(widgetGeometryChanged()));
+
+	    } else {
+		
+		m_widget->disconnect(SIGNAL(geometryChanged()));
+		
+	    }
+	    
+	}
+	
+    }
+    
+    connect(m_widget,SIGNAL(updateGeometry()),SLOT(widgetGeometryChanged()));
+    
+    if (constraints & Plasma::SizeConstraint) {
+        
+        m_calendar->updateSize(size());        
+        
+    }
+    
+}
+
+void PlasmaCalendar::widgetGeometryChanged()
+{
+    qDebug() << "widget " << m_widget->size().height();
+    m_calendar->updateSize(m_widget->size()); 
+}
+
 
 void PlasmaCalendar::fetchCollections()
 {

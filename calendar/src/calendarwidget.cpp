@@ -47,7 +47,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_firstDay(1)
 {
     m_firstDay = KGlobal::locale()->weekStartDay();
-    qDebug() << m_firstDay;
+    
     m_mainLayout = new QGraphicsLinearLayout(Qt::Vertical,this);
     m_daysLayout = new QGraphicsGridLayout(m_mainLayout);
     m_changeLayout = new QGraphicsLinearLayout(m_mainLayout);
@@ -101,8 +101,6 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_agenda->setBackgroundColor(m_eventBackgroundColor);
     
     m_scroll = new Plasma::ScrollWidget(this);
-    m_scroll->setMinimumHeight(180);
-    m_scroll->setMaximumHeight(180);
     m_scroll->setWidget(m_agenda);
     
     m_mainLayout->addItem(m_changeLayout);
@@ -577,6 +575,99 @@ void CalendarWidget::setDate(const QDate & date)
     }
     
     setCollections(m_idList);
+}
+
+void CalendarWidget::updateSize(QSizeF size)
+{    
+    if (size.height() > 700) {
+	
+	m_scroll->setMinimumHeight(size.height()/2);
+	
+    } else if (size.height() > 500) {
+	
+	m_scroll->setMinimumHeight(size.height()/2.5);
+	
+    } else {
+	
+	m_scroll->setMinimumHeight(size.height()/3);
+	
+    }
+    
+    QFont fontWeeks = font();
+    
+    fontWeeks.setPointSize(10);
+    
+    if (size.width() < 300) {
+	
+	fontWeeks.setPointSize(fontWeeks.pointSize()-5);
+	
+    } else if (size.width() < 400) {
+	
+	fontWeeks.setPointSize(fontWeeks.pointSize()-4);
+	
+    } else {
+	
+	fontWeeks.setPointSize(fontWeeks.pointSize()-3);
+	
+    }
+    
+    updateFontWeeks(fontWeeks);
+    
+    QFont fontDays = font();
+    	
+    fontDays.setPointSize(10);
+	    
+    if (size.width() < 300) {
+	
+	fontDays.setPointSize(fontDays.pointSize()-2);
+	
+    } else {
+	
+	fontDays.setPointSize(fontDays.pointSize());
+	
+    }
+    
+    updateFontDays(fontDays);
+}
+
+void CalendarWidget::updateFontWeeks(QFont font)
+{
+    Plasma::IconWidget * weekNumber;
+    
+    for (int i = 1; i < 7; i++) {
+        
+        weekNumber = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(i,0));
+        weekNumber->setMinimumSize(10,10);
+        weekNumber->setFont(font);
+                       
+    }
+    
+    Plasma::IconWidget * weekDay;        
+    
+    for (int i = 1; i < 8; i++) {
+                
+        weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i));
+        weekDay->setFont(font);
+                       
+    }
+    
+}
+
+void CalendarWidget::updateFontDays(QFont font)
+{
+    CalendarWidgetDayItem * m_dayItem;
+    
+    for (int i = 1; i < 8; i++) {
+        
+        for (int j = 1; j < 7; j++) {
+            
+            m_dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(j,i));
+            m_dayItem->setFont(font);
+            
+        }
+        
+    }
+    
 }
 
 void CalendarWidget::previousMonth()

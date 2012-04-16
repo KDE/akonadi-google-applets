@@ -57,7 +57,12 @@ class PlasmaCalendar : public Plasma::PopupApplet
         void fetchCollectionsFinished(KJob * job);
         
         void updateCalendars();
+	void widgetGeometryChanged();
 	
+    protected:
+    
+        void constraintsEvent(Plasma::Constraints constraints);
+        
     private:
 	
         virtual QGraphicsWidget * graphicsWidget();  
