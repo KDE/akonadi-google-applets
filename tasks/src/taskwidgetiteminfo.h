@@ -34,7 +34,7 @@ class TaskWidgetItemInfo : public Plasma::Frame
         explicit TaskWidgetItemInfo(QGraphicsWidget * parent = 0);
         virtual ~TaskWidgetItemInfo(){};
                 
-        void setIcon(const QString & icon);
+        void setCompleted(const bool & completed);
         void setText(const QString & text);
         void setCheckboxOrientation(const bool & orientation = false);
         

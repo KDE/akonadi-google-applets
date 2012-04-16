@@ -47,9 +47,23 @@ TaskWidgetItemInfo::TaskWidgetItemInfo(QGraphicsWidget * parent): Frame(parent)
     connect(m_name,SIGNAL(clicked()),SIGNAL(textClicked()));
 }
 
-void TaskWidgetItemInfo::setIcon(const QString & icon)
+void TaskWidgetItemInfo::setCompleted(const bool & completed)
 {
-    m_icon->setIcon(KIcon(icon));
+    QFont fnt = m_name->font();
+        
+    if (completed) {
+	
+	m_icon->setIcon(KIcon("task-complete"));
+	fnt.setStrikeOut(true);
+	
+    } else {
+	
+	m_icon->setIcon(KIcon("task-reject"));
+	fnt.setStrikeOut(false);
+	
+    }
+    
+    m_name->setFont(fnt);
 }
 
 void TaskWidgetItemInfo::setText(const QString & text)

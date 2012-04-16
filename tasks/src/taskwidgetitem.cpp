@@ -62,11 +62,11 @@ void TaskWidgetItem::setItemInfo()
     
     if (m_todo->isCompleted()) {
         
-        m_name->setIcon("task-complete");
+        m_name->setCompleted(true);
         
     } else {
         
-        m_name->setIcon("task-reject");
+        m_name->setCompleted(false);
         
     }
     
