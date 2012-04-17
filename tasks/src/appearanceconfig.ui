@@ -6,22 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>244</height>
+    <width>400</width>
+    <height>250</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>352</width>
-    <height>228</height>
+    <width>400</width>
+    <height>250</height>
    </size>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>10</y>
-     <width>349</width>
+     <y>0</y>
+     <width>401</width>
      <height>222</height>
     </rect>
    </property>
