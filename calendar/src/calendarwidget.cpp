@@ -356,6 +356,8 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
         }
         
     } 
+    
+    
                                   
     AgendaWidgetEventItem * eventItem;                   
                        

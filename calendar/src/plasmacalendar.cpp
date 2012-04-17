@@ -280,9 +280,7 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 	}
 	
     }
-    
-    connect(m_widget,SIGNAL(updateGeometry()),SLOT(widgetGeometryChanged()));
-    
+        
     if (constraints & Plasma::SizeConstraint) {
         
         m_calendar->updateSize(size());        
@@ -293,7 +291,6 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 
 void PlasmaCalendar::widgetGeometryChanged()
 {
-    qDebug() << "widget " << m_widget->size().height();
     m_calendar->updateSize(m_widget->size()); 
 }
 
