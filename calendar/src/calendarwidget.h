@@ -106,6 +106,7 @@ class CalendarWidget : public QGraphicsWidget
         void monthChanged(const int & month);
         void yearChanged(const int & year);
         void setDate(const QDate & date);
+	void setToday();
         
         void updateSize(QSizeF size);
 	void updateFontWeeks(QFont font);

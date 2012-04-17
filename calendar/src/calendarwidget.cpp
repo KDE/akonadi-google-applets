@@ -126,7 +126,19 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
 void CalendarWidget::createCalendar()
 {
     QFont fnt = font();
-    fnt.setPointSize(fnt.pointSize()-3);
+    fnt.setPointSize(fnt.pointSize()-3.5);
+    
+    Plasma::IconWidget * today = new Plasma::IconWidget(this);
+    
+    today->setIcon(KIcon("view-pim-calendar"));
+    today->setDrawBackground(true);
+    today->setOrientation(Qt::Vertical);
+    today->setMinimumSize(10,10);
+    today->setFont(fnt);
+    
+    connect(today,SIGNAL(clicked()),SLOT(setToday()));
+    
+    m_daysLayout->addItem(today,0,0);
     
     Plasma::IconWidget * weekNumber;
     
@@ -356,8 +368,6 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
         }
         
     } 
-    
-    
                                   
     AgendaWidgetEventItem * eventItem;                   
                        
@@ -577,6 +587,11 @@ void CalendarWidget::setDate(const QDate & date)
     }
     
     setCollections(m_idList);
+}
+
+void CalendarWidget::setToday()
+{
+    setDate(QDate::currentDate());
 }
 
 void CalendarWidget::updateSize(QSizeF size)
