@@ -629,21 +629,13 @@ void CalendarWidget::updateSize(QSizeF size)
 
         m_scroll->setMinimumHeight(size.height()/3);
 
-    } else {
-
-        m_scroll->setMinimumHeight(size.height()/3.5);
-
-    }
-
+    } 
+    
     QFont fontWeeks = font();
 
     fontWeeks.setPointSize(10);
 
-    if (size.width() < 260) {
-
-        fontWeeks.setPointSize(fontWeeks.pointSize()-7);
-
-    } else if (size.width() < 300) {
+    if (size.width() < 300) {
 
         fontWeeks.setPointSize(fontWeeks.pointSize()-5);
 

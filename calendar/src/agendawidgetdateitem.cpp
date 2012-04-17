@@ -89,7 +89,6 @@ void AgendaWidgetDateItem::setBackgroundColor(const QString & color)
     palette = this->palette();
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
-    
 }
 
 void AgendaWidgetDateItem::setDate(const QDate & date)

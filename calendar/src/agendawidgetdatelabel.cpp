@@ -52,5 +52,4 @@ void AgendaWidgetDateLabel::setColor(const QString & color)
     palette = this->palette();
     palette.setColor(QPalette::Window,clr);
     this->setPalette(palette);
-    
 }
