@@ -72,7 +72,6 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
         m_layout->addItem(m_button);
 	
         m_widget = new QGraphicsWidget(this);
-	m_widget->setMinimumSize(250,350);
         m_widget->setPreferredSize(300, 500);
 	m_widget->setLayout(m_layout);
 		

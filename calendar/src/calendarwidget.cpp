@@ -132,7 +132,6 @@ void CalendarWidget::createCalendar()
 
     today->setIcon(KIcon("view-pim-calendar"));
     today->setDrawBackground(true);
-    today->setOrientation(Qt::Vertical);
     today->setMinimumSize(10,10);
     today->setFont(fnt);
 
@@ -140,13 +139,13 @@ void CalendarWidget::createCalendar()
 
     m_daysLayout->addItem(today,0,0);
 
-    Plasma::IconWidget * weekNumber;
+    Plasma::Label * weekNumber;
 
     for (int i = 1; i < 7; i++) {
 
-        weekNumber = new Plasma::IconWidget(this);
+        weekNumber = new Plasma::Label(this);
         weekNumber->setAutoFillBackground(true);
-        weekNumber->setOrientation(Qt::Vertical);
+        weekNumber->setAlignment(Qt::AlignCenter);
         weekNumber->setMinimumSize(10,10);
         weekNumber->setFont(fnt);
 
@@ -154,12 +153,13 @@ void CalendarWidget::createCalendar()
 
     }
 
-    Plasma::IconWidget * weekDay;
+    Plasma::Label * weekDay;
 
     for (int i = 1; i < 8; i++) {
 
-        weekDay = new Plasma::IconWidget(this);
+        weekDay = new Plasma::Label(this);
         weekDay->setAutoFillBackground(true);
+        weekDay->setAlignment(Qt::AlignCenter);
         weekDay->setMinimumSize(10,10);
         weekDay->setFont(fnt);
 
@@ -188,14 +188,14 @@ void CalendarWidget::createCalendar()
 
     for (int i = m_firstDay; i < 8; i++) {
 
-        weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i-m_firstDay+1));
+        weekDay = static_cast<Plasma::Label*>(m_daysLayout->itemAt(0,i-m_firstDay+1));
         weekDay->setText(days.at(i-1));
 
     }
 
     for (int i = 8-m_firstDay+1; i < 8; i++) {
 
-        weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i));
+        weekDay = static_cast<Plasma::Label*>(m_daysLayout->itemAt(0,i));
         weekDay->setText(days.at(i+m_firstDay-9));
     }
 
@@ -569,11 +569,11 @@ void CalendarWidget::setDate(const QDate & date)
     firstDate = firstDate.addDays(-weekDay+m_firstDay);
 
     CalendarWidgetDayItem * dayItem;
-    Plasma::IconWidget * weekNumber;
+    Plasma::Label * weekNumber;
 
     for (int week = 1; week < 7; week++) {
 
-        weekNumber = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(week,0));
+        weekNumber = static_cast<Plasma::Label*>(m_daysLayout->itemAt(week,0));
 
         weekNumber->setText(QString::number(firstDate.weekNumber()));
         weekNumber->update();
@@ -620,44 +620,31 @@ void CalendarWidget::updateSize(QSizeF size)
     if (size.height() > 700) {
 
         m_scroll->setMinimumHeight(size.height()/2);
+        m_scroll->setMaximumHeight(size.height()/2);
 
     } else if (size.height() > 500) {
 
         m_scroll->setMinimumHeight(size.height()/2.5);
+        m_scroll->setMaximumHeight(size.height()/2.5);
 
     } else if (size.height() > 300) {
 
         m_scroll->setMinimumHeight(size.height()/3);
+        m_scroll->setMaximumHeight(size.height()/3);
 
     } 
     
-    QFont fontWeeks = font();
-
-    fontWeeks.setPointSize(10);
-
-    if (size.width() < 300) {
-
-        fontWeeks.setPointSize(fontWeeks.pointSize()-5);
-
-    } else if (size.width() < 400) {
-
-        fontWeeks.setPointSize(fontWeeks.pointSize()-4);
-
-    } else {
-
-        fontWeeks.setPointSize(fontWeeks.pointSize()-3);
-
-    }
-
-    updateFontWeeks(fontWeeks);
-
     QFont fontDays = font();
 
     fontDays.setPointSize(10);
 
-    if (size.width() < 300) {
+    if (size.width() < 250) {
+        
+        fontDays.setPointSize(fontDays.pointSize()-4);
+        
+    } else if (size.width() < 300) {
 
-        fontDays.setPointSize(fontDays.pointSize()-2);
+        fontDays.setPointSize(fontDays.pointSize()-3);
 
     } else {
 
@@ -666,29 +653,6 @@ void CalendarWidget::updateSize(QSizeF size)
     }
 
     updateFontDays(fontDays);
-}
-
-void CalendarWidget::updateFontWeeks(QFont font)
-{
-    Plasma::IconWidget * weekNumber;
-
-    for (int i = 1; i < 7; i++) {
-
-        weekNumber = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(i,0));
-        weekNumber->setMinimumSize(10,10);
-        weekNumber->setFont(font);
-
-    }
-
-    Plasma::IconWidget * weekDay;
-
-    for (int i = 1; i < 8; i++) {
-
-        weekDay = static_cast<Plasma::IconWidget*>(m_daysLayout->itemAt(0,i));
-        weekDay->setFont(font);
-
-    }
-
 }
 
 void CalendarWidget::updateFontDays(QFont font)

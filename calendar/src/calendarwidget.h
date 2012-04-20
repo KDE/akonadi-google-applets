@@ -25,6 +25,8 @@
 #include <QGraphicsGridLayout>
 
 #include <Plasma/IconWidget>
+#include <Plasma/Label>
+#include <Plasma/PushButton>
 #include <Plasma/SpinBox>
 #include <Plasma/ComboBox>
 #include <Plasma/ScrollWidget>
@@ -109,7 +111,6 @@ class CalendarWidget : public QGraphicsWidget
 	void setToday();
         
         void updateSize(QSizeF size);
-	void updateFontWeeks(QFont font);
 	void updateFontDays(QFont font);
         
         void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
