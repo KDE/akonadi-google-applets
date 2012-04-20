@@ -89,7 +89,18 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
 
     connect(m_combo,SIGNAL(currentIndexChanged(int)),SLOT(monthChanged(int)));
 
+    Plasma::IconWidget * today = new Plasma::IconWidget(this);
+
+    today->setIcon(KIcon("view-pim-calendar"));
+    today->setOrientation(Qt::Horizontal);
+    today->setDrawBackground(true);
+    today->setMinimumSize(30,30);
+    today->setMaximumSize(30,30);
+
+    connect(today,SIGNAL(clicked()),SLOT(setToday()));
+    
     m_changeLayout->addItem(previousMonth);
+    m_changeLayout->addItem(today);
     m_changeLayout->addItem(m_combo);
     m_changeLayout->addItem(m_spin);
     m_changeLayout->addItem(nextMonth);
@@ -128,25 +139,13 @@ void CalendarWidget::createCalendar()
     QFont fnt = font();
     fnt.setPointSize(fnt.pointSize()-3.5);
 
-    Plasma::IconWidget * today = new Plasma::IconWidget(this);
-
-    today->setIcon(KIcon("view-pim-calendar"));
-    today->setDrawBackground(true);
-    today->setMinimumSize(10,10);
-    today->setFont(fnt);
-
-    connect(today,SIGNAL(clicked()),SLOT(setToday()));
-
-    m_daysLayout->addItem(today,0,0);
-
     Plasma::Label * weekNumber;
 
     for (int i = 1; i < 7; i++) {
 
         weekNumber = new Plasma::Label(this);
-        weekNumber->setAutoFillBackground(true);
         weekNumber->setAlignment(Qt::AlignCenter);
-        weekNumber->setMinimumSize(10,10);
+        weekNumber->setMinimumSize(15,10);
         weekNumber->setFont(fnt);
 
         m_daysLayout->addItem(weekNumber,i,0);
@@ -158,7 +157,6 @@ void CalendarWidget::createCalendar()
     for (int i = 1; i < 8; i++) {
 
         weekDay = new Plasma::Label(this);
-        weekDay->setAutoFillBackground(true);
         weekDay->setAlignment(Qt::AlignCenter);
         weekDay->setMinimumSize(10,10);
         weekDay->setFont(fnt);
