@@ -2,6 +2,7 @@
 Name=Calendar plasmoid
 Name[de]=Kalender-Plasmoid
 Name[es]=Plasmoide de calendario
+Name[fr]=Composant graphique de calendrier
 Name[it]=Plasmoide del calendario
 Name[nds]=Plasma-Lüttprogramm
 Name[nl]=Agenda-plasmoid
@@ -14,6 +15,7 @@ Name[uk]=Плазмоїд календаря
 Name[x-test]=xxCalendar plasmoidxx
 Comment=Calendar plasmoid for Akonadi Google resources
 Comment[es]=Plasmoide de calendario para recursos Google de Akonadi
+Comment[fr]=Composant graphique de calendrier pour les ressources Google Akonadi
 Comment[it]=Plasmoide del calendario per le risorse Google di Akonadi
 Comment[nl]=Agenda-plasmoid voor Google-hulpbronnen in Akonadi
 Comment[pl]=Plazmoid kalendarza dla zasobów Google Akonadi

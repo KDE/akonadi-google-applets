@@ -2,6 +2,7 @@
 Name=Google tasks
 Name[de]=Google-Aufgaben
 Name[es]=Tareas de Google
+Name[fr]=Tâches Google
 Name[it]=Attività di Google
 Name[nl]=Google-taken
 Name[pl]=Zadania Google
@@ -13,6 +14,7 @@ Name[uk]=Завдання Google
 Name[x-test]=xxGoogle tasksxx
 Comment=Tasks plasmoid for Akonadi Google resources
 Comment[es]=Plasmoide de tareas para recursos Google de Akonadi
+Comment[fr]=Composant graphique de tâches pour les ressources Google
 Comment[it]=Plasmoide delle attività per le risorse Google di Akonadi
 Comment[nl]=Taken-plasmoid voor Google-hulpbronnen in Akonadi
 Comment[pl]=Plazmoid zadań dla zasobów Google Akonadi
