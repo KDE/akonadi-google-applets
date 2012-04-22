@@ -91,23 +91,7 @@ void TaskWidgetItem::setItemInfo()
 
     }
 
-    Plasma::ToolTipContent content(m_todo->summary(), m_todo->description());
-
-    if (m_todo->isCompleted()) {
-
-        content.setImage(KIcon("dialog-ok"));
-
-    } else {
-
-        content.setImage(KIcon("edit-delete"));
-
-    }
-
-    Plasma::ToolTipManager::self()->setContent(m_name, content);
-
     if (m_date) {
-
-        Plasma::ToolTipManager::self()->setContent(m_date, content);
 
         connect(m_date, SIGNAL(dateClicked()), SLOT(editTask()));
 
