@@ -19,19 +19,6 @@
   <property name="windowTitle">
    <string>Configuration</string>
   </property>
-  <widget class="Line" name="line">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>155</y>
-     <width>391</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget1">
    <property name="geometry">
     <rect>
@@ -88,7 +75,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>180</y>
+     <y>170</y>
      <width>401</width>
      <height>52</height>
     </rect>
