@@ -26,9 +26,6 @@
 
 #include <Akonadi/ItemModifyJob>
 
-#include <Plasma/ToolTipContent>
-#include <Plasma/ToolTipManager>
-
 #include "taskwidget.h"
 
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent)
@@ -54,6 +51,7 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
     this->setPalette(palette);
     
     setItemInfo();
+       
 }
 
 void TaskWidgetItem::setItemInfo()
