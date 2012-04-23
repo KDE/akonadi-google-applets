@@ -155,7 +155,7 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(appearanceconfigDialog.backgroundColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
     connect(appearanceconfigDialog.expiredColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.todayColor,SIGNAL(changed(QColor)),parent,SLOT(settigsModified()));
+    connect(appearanceconfigDialog.todayColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
     connect(appearanceconfigDialog.weekColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
     connect(appearanceconfigDialog.otherColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
     connect(appearanceconfigDialog.completedColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
