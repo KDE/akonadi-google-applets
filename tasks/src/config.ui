@@ -130,7 +130,7 @@
         </property>
        </widget>
       </item>
-      <item alignment="Qt::AlignLeft">
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Hide completed tasks</string>
