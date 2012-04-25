@@ -93,7 +93,7 @@ void ContactWidgetItem::setContactIcon()
 
         } else {
 
-            m_icon->setText(i18n("Contact without name"));
+            m_icon->setText(i18n("Contact is without name"));
 
         }
 

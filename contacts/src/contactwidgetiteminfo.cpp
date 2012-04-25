@@ -32,6 +32,7 @@ ContactWidgetItemInfo::ContactWidgetItemInfo(QGraphicsItem * parent, Qt::WindowF
       m_cellLabel(0)
 {
     m_layout = new QGraphicsGridLayout(this);
+    m_layout->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
 
     this->setLayout(m_layout);
 
@@ -91,12 +92,13 @@ void ContactWidgetItemInfo::setHomeNumber(const QString & number)
     m_homeIcon = new Plasma::IconWidget(this);
     m_homeIcon->setIcon(KIcon("phone"));
     m_homeIcon->setOrientation(Qt::Horizontal);
-    m_homeIcon->setMinimumWidth(70);
+    m_homeIcon->setMinimumWidth(20);
     m_homeIcon->setMaximumHeight(15);
     m_homeIcon->setText(i18n("Home number"));
 
     m_homeLabel = new Plasma::Label(this);
     m_homeLabel->setTextSelectable(true);
+    m_homeLabel->setMinimumWidth(20);
     m_homeLabel->setMaximumHeight(15);
     m_homeLabel->setText(number);
 }
@@ -106,12 +108,13 @@ void ContactWidgetItemInfo::setWorkNumber(const QString & number)
     m_workIcon = new Plasma::IconWidget(this);
     m_workIcon->setIcon(KIcon("phone"));
     m_workIcon->setOrientation(Qt::Horizontal);
-    m_workIcon->setMinimumWidth(70);
+    m_workIcon->setMinimumWidth(20);
     m_workIcon->setMaximumHeight(15);
     m_workIcon->setText(i18n("Work number"));
 
     m_workLabel = new Plasma::Label(this);
     m_workLabel->setTextSelectable(true);
+    m_workLabel->setMinimumWidth(20);
     m_workLabel->setMaximumHeight(15);
     m_workLabel->setText(number);
 }
@@ -121,12 +124,13 @@ void ContactWidgetItemInfo::setCellPhone(const QString & number)
     m_cellIcon = new Plasma::IconWidget(this);
     m_cellIcon->setIcon(KIcon("phone"));
     m_cellIcon->setOrientation(Qt::Horizontal);
-    m_cellIcon->setMinimumWidth(70);
+    m_cellIcon->setMinimumWidth(20);
     m_cellIcon->setMaximumHeight(15);
     m_cellIcon->setText(i18n("Cell phone"));
 
     m_cellLabel = new Plasma::Label(this);
     m_cellLabel->setTextSelectable(true);
+    m_cellLabel->setMinimumWidth(10);
     m_cellLabel->setMaximumHeight(15);
     m_cellLabel->setText(number);
 }
@@ -136,7 +140,7 @@ void ContactWidgetItemInfo::setEmails(const QStringList & emails)
     m_emailsIcon = new Plasma::IconWidget(this);
     m_emailsIcon->setIcon(KIcon("mail-message"));
     m_emailsIcon->setOrientation(Qt::Horizontal);
-    m_emailsIcon->setMinimumWidth(70);
+    m_emailsIcon->setMinimumWidth(20);
     m_emailsIcon->setMaximumHeight(15);
 
     if (emails.count() > 1) {
@@ -155,7 +159,7 @@ void ContactWidgetItemInfo::setEmails(const QStringList & emails)
         email->setScaledContents(true);
         email->setWordWrap(true);
         email->setTextSelectable(true);
-        email->setMinimumWidth(70);
+        email->setMinimumWidth(20);
         email->setMaximumHeight(15);
 
         QString mailText = "<a href=\"" + emails.at(i) + "\">" + emails.at(i) + "</a><br>";
