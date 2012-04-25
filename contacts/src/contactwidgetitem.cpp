@@ -191,7 +191,22 @@ void ContactWidgetItem::showContactInfo()
 
 bool ContactWidgetItem::hasStringInName(const QString & string)
 {
-    return m_icon->text().toLower().contains(string.toLower());
+    if (m_addressee->name().toLower().contains(string.toLower())) {
+	
+	return true;
+	
+    } 
+    
+    if (m_addressee->formattedName().toLower().contains(string.toLower())) {
+	
+	return true;
+	
+    } else {
+    
+	return m_icon->text().toLower().contains(string.toLower());
+	
+    }
+    
 }
 
 bool ContactWidgetItem::hasStringInData(const QString & string)
