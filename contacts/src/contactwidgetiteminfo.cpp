@@ -22,157 +22,16 @@
 #include <KToolInvocation>
 
 ContactWidgetItemInfo::ContactWidgetItemInfo(QGraphicsItem * parent, Qt::WindowFlags wFlags)
-    : QGraphicsWidget(parent, wFlags),
-      m_homeIcon(0),
-      m_workIcon(0),
-      m_cellIcon(0),
-      m_emailsIcon(0),
-      m_homeLabel(0),
-      m_workLabel(0),
-      m_cellLabel(0)
+    : QGraphicsWidget(parent, wFlags)
 {
-    m_layout = new QGraphicsGridLayout(this);
-    m_layout->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
 
-    this->setLayout(m_layout);
+    setLayout(m_layout);
 
     QGraphicsWidget::hide();
 }
 
-void ContactWidgetItemInfo::show()
+void ContactWidgetItemInfo::addInfo(ContactWidgetItemInfoLabel * label)
 {
-    int row = 0;
-
-    if (m_homeIcon && m_homeLabel) {
-
-        m_layout->addItem(m_homeIcon, row, 0);
-        m_layout->addItem(m_homeLabel, row, 1);
-
-        row++;
-
-    }
-
-    if (m_workIcon && m_workLabel) {
-
-        m_layout->addItem(m_workIcon, row, 0);
-        m_layout->addItem(m_workLabel, row, 1);
-
-        row++;
-
-    }
-
-    if (m_cellIcon && m_cellLabel) {
-
-        m_layout->addItem(m_cellIcon, row, 0);
-        m_layout->addItem(m_cellLabel, row, 1);
-
-        row++;
-
-    }
-
-    if (m_emailsIcon) {
-
-        m_layout->addItem(m_emailsIcon, row, 0);
-
-        for(int i = 0; i < m_emailLabels.count(); i++) {
-
-            m_layout->addItem(m_emailLabels.at(i), row, 1);
-
-            row++;
-
-        }
-
-    }
-
-    QGraphicsWidget::show();
-}
-
-void ContactWidgetItemInfo::setHomeNumber(const QString & number)
-{
-    m_homeIcon = new Plasma::IconWidget(this);
-    m_homeIcon->setIcon(KIcon("phone"));
-    m_homeIcon->setOrientation(Qt::Horizontal);
-    m_homeIcon->setMinimumWidth(20);
-    m_homeIcon->setMaximumHeight(15);
-    m_homeIcon->setText(i18n("Home number"));
-
-    m_homeLabel = new Plasma::Label(this);
-    m_homeLabel->setTextSelectable(true);
-    m_homeLabel->setMinimumWidth(20);
-    m_homeLabel->setMaximumHeight(15);
-    m_homeLabel->setText(number);
-}
-
-void ContactWidgetItemInfo::setWorkNumber(const QString & number)
-{
-    m_workIcon = new Plasma::IconWidget(this);
-    m_workIcon->setIcon(KIcon("phone"));
-    m_workIcon->setOrientation(Qt::Horizontal);
-    m_workIcon->setMinimumWidth(20);
-    m_workIcon->setMaximumHeight(15);
-    m_workIcon->setText(i18n("Work number"));
-
-    m_workLabel = new Plasma::Label(this);
-    m_workLabel->setTextSelectable(true);
-    m_workLabel->setMinimumWidth(20);
-    m_workLabel->setMaximumHeight(15);
-    m_workLabel->setText(number);
-}
-
-void ContactWidgetItemInfo::setCellPhone(const QString & number)
-{
-    m_cellIcon = new Plasma::IconWidget(this);
-    m_cellIcon->setIcon(KIcon("phone"));
-    m_cellIcon->setOrientation(Qt::Horizontal);
-    m_cellIcon->setMinimumWidth(20);
-    m_cellIcon->setMaximumHeight(15);
-    m_cellIcon->setText(i18n("Cell phone"));
-
-    m_cellLabel = new Plasma::Label(this);
-    m_cellLabel->setTextSelectable(true);
-    m_cellLabel->setMinimumWidth(10);
-    m_cellLabel->setMaximumHeight(15);
-    m_cellLabel->setText(number);
-}
-
-void ContactWidgetItemInfo::setEmails(const QStringList & emails)
-{
-    m_emailsIcon = new Plasma::IconWidget(this);
-    m_emailsIcon->setIcon(KIcon("mail-message"));
-    m_emailsIcon->setOrientation(Qt::Horizontal);
-    m_emailsIcon->setMinimumWidth(20);
-    m_emailsIcon->setMaximumHeight(15);
-
-    if (emails.count() > 1) {
-
-        m_emailsIcon->setText(i18n("Emails"));
-
-    } else {
-
-        m_emailsIcon->setText(i18n("Email"));
-
-    }
-
-    for (int i = 0; i < emails.count(); i++) {
-
-        Plasma::Label * email = new Plasma::Label(this);
-        email->setScaledContents(true);
-        email->setWordWrap(true);
-        email->setTextSelectable(true);
-        email->setMinimumWidth(20);
-        email->setMaximumHeight(15);
-
-        QString mailText = "<a href=\"" + emails.at(i) + "\">" + emails.at(i) + "</a><br>";
-
-        email->setText(mailText);
-        connect(email, SIGNAL(linkActivated(QString)), SLOT(openEmail(QString)));
-
-        m_emailLabels.push_back(email);
-	
-    }
-}
-
-void ContactWidgetItemInfo::openEmail(const QString & string)
-{
-    KToolInvocation::invokeMailer(string);
+    m_layout->addItem(label);
 }

@@ -1,5 +1,5 @@
 /*
-    Akonadi google contact plasmoid - contactwidgetiteminfo.h
+    <one line to give the program's name and a brief idea of what it does.>
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -17,34 +17,39 @@
 */
 
 
-#ifndef CONTACTWIDGETITEMINFO_H
-#define CONTACTWIDGETITEMINFO_H
+#ifndef CONTACTWIDGETITEMINFOLABEL_H
+#define CONTACTWIDGETITEMINFOLABEL_H
 
-#include <QList>
-#include <QGraphicsWidget>
+#include <Plasma/Frame>
+#include <Plasma/IconWidget>
+
 #include <QGraphicsLinearLayout>
 
-#include <Plasma/IconWidget>
-#include <Plasma/Label>
-
-#include "contactwidgetiteminfolabel.h"
-
-class ContactWidgetItemInfo : public QGraphicsWidget
+class ContactWidgetItemInfoLabel : public Plasma::Frame
 {
     Q_OBJECT
-
+    
     public:
 
-        ContactWidgetItemInfo(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
-        virtual ~ContactWidgetItemInfo(){};
+        explicit ContactWidgetItemInfoLabel(QGraphicsWidget * parent = 0);
+        virtual ~ContactWidgetItemInfoLabel(){};
         
-        void addInfo(ContactWidgetItemInfoLabel * label);
+        void setText(const QString & value);
+        void setIcon(const QString & icon);
+        
+    private slots:
+
+        void clicked();
         
     private:
-
+            
+        Plasma::IconWidget * m_icon;
+        
         QGraphicsLinearLayout * m_layout;
-
-       
+        
+    signals:
+        
+        void clicked(const QString & email);
 };
 
-#endif // CONTACTWIDGETITEMINFO_H
+#endif // CONTACTWIDGETITEMINFOLABEL_H

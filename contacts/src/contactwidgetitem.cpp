@@ -82,7 +82,7 @@ void ContactWidgetItem::setContactIcon()
         m_icon->setIcon(KIcon(QIcon(pixmap)));
 
     }
-
+    
     if (m_addressee->formattedName().isEmpty() && m_addressee->name().isEmpty()) {
 
         QStringList emails = m_addressee->emails();
@@ -119,29 +119,121 @@ void ContactWidgetItem::setContactInfo()
 {
     m_contactInfo = new ContactWidgetItemInfo(this);
 
+    ContactWidgetItemInfoLabel * label;
+    
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
 
-        m_contactInfo->setHomeNumber(m_addressee->phoneNumber(KABC::PhoneNumber::Home).number());
+        label = new ContactWidgetItemInfoLabel(m_contactInfo);
+        label->setText(m_addressee->phoneNumber(KABC::PhoneNumber::Home).number());
+        label->setIcon("home-phone");
+        
+        m_contactInfo->addInfo(label);
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
 
-        m_contactInfo->setWorkNumber(m_addressee->phoneNumber(KABC::PhoneNumber::Work).number());
+        label = new ContactWidgetItemInfoLabel(m_contactInfo);
+        label->setText(m_addressee->phoneNumber(KABC::PhoneNumber::Work).number());
+        label->setIcon("work-phone");
+        
+        m_contactInfo->addInfo(label);
 
     }
 
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
 
-        m_contactInfo->setCellPhone(m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number());
+        label = new ContactWidgetItemInfoLabel(m_contactInfo);
+        label->setText(m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number());
+        label->setIcon("cell-phone");
+
+        m_contactInfo->addInfo(label);
 
     }
 
-    if (!m_addressee->emails().isEmpty()) {
+    foreach (const QString email, m_addressee->emails()) {
+        
+        label = new ContactWidgetItemInfoLabel(m_contactInfo);
+        label->setText(email);
+        label->setIcon("email");
 
-        m_contactInfo->setEmails(m_addressee->emails());
+        m_contactInfo->addInfo(label);
 
+        connect(label,SIGNAL(clicked(QString)),SLOT(openEmail(QString)));
     }
 
+    if (!m_addressee->url().pathOrUrl().isEmpty()) {
+
+        label = new ContactWidgetItemInfoLabel(m_contactInfo);
+        label->setText(m_addressee->url().pathOrUrl());
+        label->setIcon("homepage");
+
+        m_contactInfo->addInfo(label);
+
+        connect(label,SIGNAL(clicked(QString)),SLOT(openLink(QString)));
+    }
+    
+    foreach (const QString im, m_addressee->customs()) {
+                
+        if (im.contains("messaging/aim")) {
+            
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);            
+            label->setText(m_addressee->custom("messaging/aim","All"));
+            label->setIcon("aim");
+            
+            m_contactInfo->addInfo(label);
+            
+        } else if (im.contains("messaging/gadu")) {
+                   
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);
+            label->setText(m_addressee->custom("messaging/gadu","All"));
+            label->setIcon("gadu");
+            
+            m_contactInfo->addInfo(label);
+            
+        } else if (im.contains("messaging/icq")) {
+
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);
+            label->setText(m_addressee->custom("messaging/icq","All"));
+            label->setIcon("icq");
+            
+            m_contactInfo->addInfo(label);
+            
+        } else if (im.contains("messaging/irc")) {
+
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);
+            label->setText(m_addressee->custom("messaging/irc","All"));
+            label->setIcon("irc");
+            
+            m_contactInfo->addInfo(label);
+            
+        } else if (im.contains("messaging/msn")) {
+
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);
+            label->setText(m_addressee->custom("messaging/msn","All"));
+            label->setIcon("msn");
+            
+            m_contactInfo->addInfo(label);
+            
+        } else if (im.contains("messaging/skype")) {
+
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);
+            label->setText(m_addressee->custom("messaging/skype","All"));
+            label->setIcon("skype");
+            
+            m_contactInfo->addInfo(label);
+                        
+        } else if (im.contains("messaging/xmpp")) {
+
+            label = new ContactWidgetItemInfoLabel(m_contactInfo);
+            label->setText(m_addressee->custom("messaging/xmpp","All"));
+            label->setIcon("jabber");
+            
+            m_contactInfo->addInfo(label);
+            
+        }
+    
+    }
+    
 }
 
 void ContactWidgetItem::showContactInfo()
@@ -242,6 +334,87 @@ bool ContactWidgetItem::hasStringInData(const QString & string)
             return true;
 
     }
+    
+    foreach (const QString email, m_addressee->emails()) {
+        
+        if (email.toLower().contains(string.toLower())) {
+            
+            return true;
+            
+        }
+ 
+    }
+
+    if (!m_addressee->url().pathOrUrl().isEmpty()) {
+
+        if (m_addressee->url().pathOrUrl().toLower().contains(string.toLower())) {
+            
+            return true;
+            
+        }
+    }
+    
+    foreach (const QString im, m_addressee->customs()) {
+                
+        if (im.contains("messaging/aim")) {
+                     
+            if (m_addressee->custom("messaging/aim","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+            
+        } else if (im.contains("messaging/gadu")) {
+                   
+            if (m_addressee->custom("messaging/gadu","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+            
+        } else if (im.contains("messaging/icq")) {
+
+            if (m_addressee->custom("messaging/icq","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+            
+        } else if (im.contains("messaging/irc")) {
+
+            if (m_addressee->custom("messaging/irc","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+            
+        } else if (im.contains("messaging/msn")) {
+
+            if (m_addressee->custom("messaging/msn","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+            
+        } else if (im.contains("messaging/skype")) {
+
+            if (m_addressee->custom("messaging/skype","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+                        
+        } else if (im.contains("messaging/xmpp")) {
+
+            if (m_addressee->custom("messaging/xmpp","All").toLower().contains(string.toLower())) {
+                
+                return true;
+                
+            }
+            
+        }
+    
+    }
 
     return false;
 
@@ -289,13 +462,16 @@ void ContactWidgetItem::openEmail(const QString & string)
     KToolInvocation::invokeMailer(string);
 }
 
+void ContactWidgetItem::openLink(const QString & link)
+{
+    KToolInvocation::invokeBrowser(link);
+}
+
 void ContactWidgetItem::updateContact(const Akonadi::Item & item)
 {
     if (m_show) {
 
-        if (!isEmpty())
-
-            showContactInfo();
+        showContactInfo();
 
         m_show = false;
 
@@ -325,5 +501,3 @@ ContactWidgetItem::~ContactWidgetItem()
 {
     delete m_addressee;
 }
-
-

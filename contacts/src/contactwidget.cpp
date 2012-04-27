@@ -104,7 +104,7 @@ void ContactWidget::showContactsContains(const QString & text)
             item->show();
 
         }
-
+         
     }
 
 }
@@ -199,6 +199,7 @@ void ContactWidget::clear()
 
 void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection  & collection)
 {
+    
     for (int i = 0; i < m_idList.count(); i++) {
 
         if (m_idList.at(i) == collection.id()) {

@@ -33,6 +33,7 @@
 #include <QPropertyAnimation>
 
 #include "contactwidgetiteminfo.h"
+#include "contactwidgetiteminfolabel.h"
 
 class ContactWidgetItem : public Plasma::Frame
 {
@@ -58,6 +59,7 @@ class ContactWidgetItem : public Plasma::Frame
         void editContact();
         void showContactInfo();
         void openEmail(const QString & string);
+        void openLink(const QString & link);
 
     private:
 

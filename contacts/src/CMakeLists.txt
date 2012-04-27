@@ -15,10 +15,13 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(contacts_SRCS contactwidgetiteminfo.cpp contactslayout.cpp contactwidgetitem.cpp contactwidget.cpp plasmacontacts.cpp)
+set(contacts_SRCS contactwidgetiteminfolabel.cpp contactwidgetiteminfo.cpp contactslayout.cpp contactwidgetitem.cpp contactwidget.cpp plasmacontacts.cpp)
 
 kde4_add_ui_files(contacts_SRCS config.ui)
- 
+kde4_add_app_icon(contacts_SRCS "hi32-app-aim.png" "hi32-app-gadu.png" "hi32-app-icq.png"
+                                "hi32-app-irc.png" "hi32-app-msn.png" "hi32-app-skype.png" 
+			        "hi32-app-jabber.png" "hi32-app-email.png" "hi32-app-home-phone.png"
+                                "hi32-app-work-phone.png" "hi32-app-cell-phone.png" "hi32-app-homepage.png") 
 kde4_add_plugin(plasma_applet_google_contacts ${contacts_SRCS})
 target_link_libraries(plasma_applet_google_contacts
                       ${KDE4_PLASMA_LIBS}
