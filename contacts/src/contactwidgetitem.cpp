@@ -326,14 +326,6 @@ bool ContactWidgetItem::hasStringInData(const QString & string)
             return true;
 
     }
-
-    if (!m_addressee->emails().isEmpty()) {
-
-        if (m_addressee->emails().first().contains(string))
-
-            return true;
-
-    }
     
     foreach (const QString email, m_addressee->emails()) {
         
@@ -421,13 +413,60 @@ bool ContactWidgetItem::hasStringInData(const QString & string)
 }
 
 bool ContactWidgetItem::isEmpty()
-{
-    if (m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty() &&
-            m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() &&
-            m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty() &&
-            m_addressee->emails().isEmpty()) {
+{    
+    bool empty = true;
+    
+    foreach (const QString im, m_addressee->customs()) {
+                
+        if (im.contains("messaging/aim")) {
+                     
+            empty = false;
+            
+        } else if (im.contains("messaging/gadu")) {
+                   
+            empty = false;
+            
+        } else if (im.contains("messaging/icq")) {
 
-        return true;
+            empty = false;
+            
+        } else if (im.contains("messaging/irc")) {
+
+            empty = false;
+            
+        } else if (im.contains("messaging/msn")) {
+
+            empty = false;
+            
+        } else if (im.contains("messaging/skype")) {
+
+            empty = false;
+                        
+        } else if (im.contains("messaging/xmpp")) {
+
+            empty = false;
+            
+        }
+        
+        if (!empty) {
+            
+            break;
+            
+        }
+    
+    }
+    
+    if (m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty() &&
+        m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty() &&
+        m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty() &&
+        m_addressee->emails().isEmpty() &&
+        m_addressee->url().isEmpty()) {
+            
+        if (empty) {
+            
+            return true;
+            
+        }
 
     }
 
