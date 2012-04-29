@@ -229,6 +229,10 @@ void ContactWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > a
         if (tmpItem->operator=(item)) {
 
             tmpItem->updateContact(item);
+            
+            m_layout->removeItem(tmpItem);
+            
+            addItem(tmpItem);
 
             return;
         }
