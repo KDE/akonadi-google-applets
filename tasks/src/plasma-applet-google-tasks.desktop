@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Google tasks
+Name[da]=Google-opgaver
 Name[de]=Google-Aufgaben
 Name[es]=Tareas de Google
 Name[fr]=Tâches Google
@@ -13,6 +14,7 @@ Name[sv]=Google-uppgifter
 Name[uk]=Завдання Google
 Name[x-test]=xxGoogle tasksxx
 Comment=Tasks plasmoid for Akonadi Google resources
+Comment[da]=Opgave-plasmoid til Akonadi Google-ressourcer
 Comment[es]=Plasmoide de tareas para recursos Google de Akonadi
 Comment[fr]=Composant graphique de tâches pour les ressources Google
 Comment[it]=Plasmoide delle attività per le risorse Google di Akonadi
