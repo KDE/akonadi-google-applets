@@ -399,12 +399,6 @@ void AgendaWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > ar
 
 void AgendaWidget::itemRemoved(const Akonadi::Item & item)
 {
-    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
-	
-	return;
-	    
-    }
-    
     m_layout->removeEvent(item.id());
 }
 

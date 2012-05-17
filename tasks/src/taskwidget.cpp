@@ -297,13 +297,7 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
 }
 
 void TaskWidget::itemRemoved(const Akonadi::Item & item)
-{
-    if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
-	
-	return;
-	    
-    }
-    
+{       
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {
