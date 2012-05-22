@@ -81,7 +81,7 @@ void TaskWidgetItem::setItemInfo()
 
         m_date = new TaskWidgetItemDate(this);
 
-        m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(), KLocale::FancyLongDate));
+        m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue().toLocalZone(), KLocale::FancyLongDate));
 
         setColorForDate();
 
@@ -126,7 +126,7 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
 
     if (m_todo->hasDueDate()) {
 
-        m_editor->setDueDate(m_todo->dtDue());
+        m_editor->setDueDate(m_todo->dtDue().toLocalZone());
 
     } else {
 
@@ -164,7 +164,7 @@ void TaskWidgetItem::saveTask()
 
 void TaskWidgetItem::setColorForDate()
 {
-    int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
+    int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue().toLocalZone());
 
     if (!m_todo->isCompleted()) {
 
