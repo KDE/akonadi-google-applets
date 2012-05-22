@@ -41,68 +41,68 @@ class TaskWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
 
-    public:
+public:
 
-        TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
+    TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
-	int indent() const {
-            return m_indent;
-        }
+    int indent() const {
+        return m_indent;
+    }
 
-        QString relatedTo() const {
-            return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent);
-        }
+    QString relatedTo() const {
+        return m_todo->relatedTo(KCalCore::Incidence::RelTypeParent);
+    }
 
-        QString uid() const {
-            return m_todo->uid();
-        }
+    QString uid() const {
+        return m_todo->uid();
+    }
 
-        bool isCompleted() const {
-            return m_todo->isCompleted();
-        }
+    bool isCompleted() const {
+        return m_todo->isCompleted();
+    }
 
-        Akonadi::Item item() const {
-            return m_item;
-        }
-	
-        void setRelated(TaskWidgetItem * item);
-        void setUnrelated();
+    Akonadi::Item item() const {
+        return m_item;
+    }
 
-        void updateTask(const Akonadi::Item & item);
+    void setRelated(TaskWidgetItem * item);
+    void setUnrelated();
 
-        bool operator<(const TaskWidgetItem * item);
-        bool operator<<(const TaskWidgetItem * item);
-        bool operator==(const Akonadi::Item & item);
+    void updateTask(const Akonadi::Item & item);
 
-    public slots:
+    bool operator<(const TaskWidgetItem * item);
+    bool operator<<(const TaskWidgetItem * item);
+    bool operator==(const Akonadi::Item & item);
 
-        void setCompleted();
-        void editTask();
-        void saveTask();
+public slots:
 
-    private slots:
+    void setCompleted();
+    void editTask();
+    void saveTask();
 
-        void modifyFinished(KJob * job);
+private slots:
 
-    private:
+    void modifyFinished(KJob * job);
 
-        void setItemInfo();
-        void setColorForDate();
+private:
 
-        bool orderByName(const TaskWidgetItem * item, const bool & completedFirst = false);
-        bool orderByDate(const TaskWidgetItem * item, const bool & completedFirst = false);
+    void setItemInfo();
+    void setColorForDate();
 
-        TaskEditor * m_editor;
+    bool orderByName(const TaskWidgetItem * item, const bool & completedFirst = false);
+    bool orderByDate(const TaskWidgetItem * item, const bool & completedFirst = false);
 
-        QGraphicsLinearLayout * m_layout;
-        
-        TaskWidgetItemDate * m_date;
-        TaskWidgetItemInfo * m_name;
+    TaskEditor * m_editor;
 
-        Akonadi::Item m_item;
-        KCalCore::Todo::Ptr m_todo;
+    QGraphicsLinearLayout * m_layout;
 
-        int m_indent;
+    TaskWidgetItemDate * m_date;
+    TaskWidgetItemInfo * m_name;
+
+    Akonadi::Item m_item;
+    KCalCore::Todo::Ptr m_todo;
+
+    int m_indent;
 
 };
 

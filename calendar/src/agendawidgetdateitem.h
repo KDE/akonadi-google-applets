@@ -32,34 +32,34 @@
 class AgendaWidgetDateItem : public Plasma::Frame
 {
     Q_OBJECT
-    
-    public:
-	
-        AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent = 0);
-        virtual ~AgendaWidgetDateItem(){};
 
-	QDate date() const {
-	    return m_date;
-	}
-	
-	bool isEmpty() const {
-            return (m_layout->count() == 1);
-	}
-	
-	void addEvent(AgendaWidgetEventItem * event);
-        void clear();
-        void setBackgroundColor(const QString & color);
-	void setDate(const QDate & date);
-	void setDateColor(const QString & color);
-        void removeEvent(const Akonadi::Entity::Id & eventId);
-	
-    private:
-	
-	QGraphicsLinearLayout * m_layout;
-	
-	AgendaWidgetDateLabel * m_dateLabel;
-    
-	QDate m_date;
+public:
+
+    AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent = 0);
+    virtual ~AgendaWidgetDateItem() {};
+
+    QDate date() const {
+        return m_date;
+    }
+
+    bool isEmpty() const {
+        return (m_layout->count() == 1);
+    }
+
+    void addEvent(AgendaWidgetEventItem * event);
+    void clear();
+    void setBackgroundColor(const QString & color);
+    void setDate(const QDate & date);
+    void setDateColor(const QString & color);
+    void removeEvent(const Akonadi::Entity::Id & eventId);
+
+private:
+
+    QGraphicsLinearLayout * m_layout;
+
+    AgendaWidgetDateLabel * m_dateLabel;
+
+    QDate m_date;
 };
 
 #endif // AGENDAWIDGETDATELABEL_H

@@ -33,79 +33,79 @@
 class AgendaWidget : public QGraphicsWidget
 {
     Q_OBJECT
-    
-    public:
-	
-        AgendaWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
-	
-        virtual ~AgendaWidget(){};
-	
-	QList<Akonadi::Collection::Id> collectionsList() const {
-            return m_idList;
-        }
-        
-        QMap<Akonadi::Item::Id, QString> calendarsColors() const {
-            return m_calendarsColors;
-        }
-        
-        QString dateColor() const {
-	    return m_dateColor;
-        }
-        
-        QString upcomingDateColor() const {
-            return m_upcomingDateColor;
-        }
-        
-        QString eventBackgroundColor() const {
-            return m_eventBackgroundColor;
-        }
-        
-        int weeks() const {
-	    return m_weeks;
-        }
-        
-        int upcomingDays() const {
-            return m_upcomingDays;
-        }
-        
-        void setCollections(const QList<Akonadi::Collection::Id> & ids);
-        void setCalendarsColors(const QMap<Akonadi::Collection::Id,QString> & colors);
-        void setDateColor(const QString  &color);
-        void setUpcomingDateColor(const QString & color);
-        void setEventBackgroundColor(const QString & color);
-	void setWeeks(const int & weeks);
-        void setUpcomingDays(const int & days);
-	
-    public slots:
-	
-	void fetchCollectionsFinished(KJob * job);
-        void fetchItemsFinished(KJob * job);
-        
-        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
-        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
-        void itemRemoved(const Akonadi::Item & item);
-	
-    private:
-	
-	void addItem(const Akonadi::Item & item);
-	
-	void fetchCollections();
-        void fetchItems(const Akonadi::Collection & collections);
-	
-	AgendaWidgetLayout * m_layout;
-	
-	QList<Akonadi::Item::Id> m_idList;
-	QMap<Akonadi::Item::Id, QString> m_calendarsColors;
-        
-	QString m_dateColor;
-        QString m_upcomingDateColor;
-        QString m_eventBackgroundColor;
-	
-	int m_weeks;
-        int m_upcomingDays;
-        
-        Akonadi::Monitor * m_monitor;
 
-};      
+public:
+
+    AgendaWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
+
+    virtual ~AgendaWidget() {};
+
+    QList<Akonadi::Collection::Id> collectionsList() const {
+        return m_idList;
+    }
+
+    QMap<Akonadi::Item::Id, QString> calendarsColors() const {
+        return m_calendarsColors;
+    }
+
+    QString dateColor() const {
+        return m_dateColor;
+    }
+
+    QString upcomingDateColor() const {
+        return m_upcomingDateColor;
+    }
+
+    QString eventBackgroundColor() const {
+        return m_eventBackgroundColor;
+    }
+
+    int weeks() const {
+        return m_weeks;
+    }
+
+    int upcomingDays() const {
+        return m_upcomingDays;
+    }
+
+    void setCollections(const QList<Akonadi::Collection::Id> & ids);
+    void setCalendarsColors(const QMap<Akonadi::Collection::Id, QString> & colors);
+    void setDateColor(const QString  &color);
+    void setUpcomingDateColor(const QString & color);
+    void setEventBackgroundColor(const QString & color);
+    void setWeeks(const int & weeks);
+    void setUpcomingDays(const int & days);
+
+public slots:
+
+    void fetchCollectionsFinished(KJob * job);
+    void fetchItemsFinished(KJob * job);
+
+    void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+    void itemRemoved(const Akonadi::Item & item);
+
+private:
+
+    void addItem(const Akonadi::Item & item);
+
+    void fetchCollections();
+    void fetchItems(const Akonadi::Collection & collections);
+
+    AgendaWidgetLayout * m_layout;
+
+    QList<Akonadi::Item::Id> m_idList;
+    QMap<Akonadi::Item::Id, QString> m_calendarsColors;
+
+    QString m_dateColor;
+    QString m_upcomingDateColor;
+    QString m_eventBackgroundColor;
+
+    int m_weeks;
+    int m_upcomingDays;
+
+    Akonadi::Monitor * m_monitor;
+
+};
 
 #endif // AGENDAWIDGET_H

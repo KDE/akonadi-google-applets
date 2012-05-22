@@ -37,7 +37,7 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
       m_order(DNC)
 {
     m_layout = new TaskLayout(Qt::Vertical, this);
-    
+
     setLayout(m_layout);
 
     m_monitor = new Akonadi::Monitor();
@@ -48,7 +48,7 @@ TaskWidget::TaskWidget(QGraphicsWidget * parent)
     connect(m_monitor, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)),
             SLOT(itemChanged(Akonadi::Item, QSet<QByteArray>)));
     connect(m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
-            SLOT(itemRemoved(Akonadi::Item))); 
+            SLOT(itemRemoved(Akonadi::Item)));
 }
 
 void TaskWidget::setBackgroundColor(const QString & color)
@@ -106,13 +106,13 @@ void TaskWidget::setCollections(const QList<Akonadi::Entity::Id> & ids)
     clear();
 
     m_idList = ids;
-    
+
     if (!m_idList.isEmpty()) {
 
         fetchCollections();
-	
+
     }
-    
+
 }
 
 void TaskWidget::fetchCollections()
@@ -137,8 +137,8 @@ void TaskWidget::fetchCollectionsFinished(KJob * job)
 
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach (const Akonadi::Collection & collection, collections) {
-	
+    foreach(const Akonadi::Collection & collection, collections) {
+
         if (m_idList.contains(collection.id())) {
 
             m_monitor->setCollectionMonitored(collection, true);
@@ -173,17 +173,17 @@ void TaskWidget::fetchItemsFinished(KJob * job)
 
     const Akonadi::Item::List items = fetchJob->items();
 
-    foreach (const Akonadi::Item & item, items) {
+    foreach(const Akonadi::Item & item, items) {
 
-	if (item.hasPayload<KCalCore::Todo::Ptr>()) {
-	
-	    TaskWidgetItem * contact;
+        if (item.hasPayload<KCalCore::Todo::Ptr>()) {
 
-	    contact = new TaskWidgetItem(item, this);
+            TaskWidgetItem * contact;
 
-	    addItem(contact);
-	    
-	}
+            contact = new TaskWidgetItem(item, this);
+
+            addItem(contact);
+
+        }
 
     }
 
@@ -194,13 +194,13 @@ void TaskWidget::itemDeleted(KJob * job)
     if (job->error()) {
 
         qDebug() << "Error occurred";
-	
+
     } else {
 
         qDebug() << "Item removed successfully";
-	
+
     }
-    
+
 }
 
 
@@ -220,39 +220,39 @@ void TaskWidget::clear()
 void TaskWidget::updateCompletedTasks()
 {
     if (!m_autoDel && !m_autoHide) {
-	
-	return;
-	
+
+        return;
+
     }
-    
+
     QList<TaskWidgetItem*> list = m_layout->updateCompletedTasks();
-    
+
     for (int i = 0; i < list.count(); i++) {
-	
-	m_layout->removeItem(list.at(i));
-	list.at(i)->hide();
-	
-	if (m_autoDel) {
-	 
-	    Akonadi::ItemDeleteJob * job = new Akonadi::ItemDeleteJob(list.at(i)->item());
-	    connect(job, SIGNAL(result(KJob*)), this, SLOT(itemDeleted(KJob*)));
-	    
-	    list.at(i)->deleteLater();
-	    
-	}
-	
+
+        m_layout->removeItem(list.at(i));
+        list.at(i)->hide();
+
+        if (m_autoDel) {
+
+            Akonadi::ItemDeleteJob * job = new Akonadi::ItemDeleteJob(list.at(i)->item());
+            connect(job, SIGNAL(result(KJob*)), this, SLOT(itemDeleted(KJob*)));
+
+            list.at(i)->deleteLater();
+
+        }
+
     }
-    
+
 }
 
 void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
     if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
-	
-	return;
-	    
+
+        return;
+
     }
-    
+
     if (m_idList.contains(collection.id())) {
 
         TaskWidgetItem * task;
@@ -260,7 +260,7 @@ void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection
         task = new TaskWidgetItem(item, this);
 
         addItem(task);
-	    
+
     }
 
 }
@@ -270,11 +270,11 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
     Q_UNUSED(array);
 
     if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
-	
-	return;
-	    
+
+        return;
+
     }
-    
+
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {
@@ -286,9 +286,9 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
             task->updateTask(item);
 
             m_layout->updateItem(task);
-	    
-	    updateCompletedTasks();
-	    
+
+            updateCompletedTasks();
+
             return;
         }
 
@@ -297,7 +297,7 @@ void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > arra
 }
 
 void TaskWidget::itemRemoved(const Akonadi::Item & item)
-{       
+{
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {

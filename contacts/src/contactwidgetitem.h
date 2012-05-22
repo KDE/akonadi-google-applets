@@ -39,45 +39,45 @@ class ContactWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
 
-    public:
+public:
 
-        ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
+    ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
-        virtual ~ContactWidgetItem();
+    virtual ~ContactWidgetItem();
 
-        void updateContact(const Akonadi::Item & item);
+    void updateContact(const Akonadi::Item & item);
 
-        bool isEmpty();
-        bool hasStringInName(const QString & string);
-        bool hasStringInData(const QString & string);
+    bool isEmpty();
+    bool hasStringInName(const QString & string);
+    bool hasStringInData(const QString & string);
 
-        bool operator<(const ContactWidgetItem * item);
-        bool operator=(const Akonadi::Item & item);
+    bool operator<(const ContactWidgetItem * item);
+    bool operator=(const Akonadi::Item & item);
 
-    public slots:
+public slots:
 
-        void editContact();
-        void showContactInfo();
-        void openEmail(const QString & string);
-        void openLink(const QString & link);
+    void editContact();
+    void showContactInfo();
+    void openEmail(const QString & string);
+    void openLink(const QString & link);
 
-    private:
+private:
 
-        void setContactInfo();
-        void setContactIcon();
+    void setContactInfo();
+    void setContactIcon();
 
-        QGraphicsLinearLayout * m_mainLayout;
-        QPropertyAnimation * m_animation;
-        ContactWidgetItemInfo * m_contactInfo;
+    QGraphicsLinearLayout * m_mainLayout;
+    QPropertyAnimation * m_animation;
+    ContactWidgetItemInfo * m_contactInfo;
 
-        Plasma::IconWidget * m_icon;
-        Plasma::PushButton * m_edit;
+    Plasma::IconWidget * m_icon;
+    Plasma::PushButton * m_edit;
 
-        Akonadi::Item m_item;
-        KABC::Addressee * m_addressee;
+    Akonadi::Item m_item;
+    KABC::Addressee * m_addressee;
 
-        bool m_show;
-        bool m_info;
+    bool m_show;
+    bool m_info;
 };
 
 #endif // CONTACTWIDGETITEM_H

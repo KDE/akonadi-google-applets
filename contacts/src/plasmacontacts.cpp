@@ -40,7 +40,7 @@ PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
 
 void PlasmaContacts::init()
 {
-     configChanged();
+    configChanged();
 }
 
 QGraphicsWidget * PlasmaContacts::graphicsWidget()
@@ -53,7 +53,7 @@ QGraphicsWidget * PlasmaContacts::graphicsWidget()
 
         connect(m_find, SIGNAL(textChanged(QString)), SLOT(lineChanged(QString)));
         connect(m_find, SIGNAL(focusChanged(bool)), SLOT(lineFocusChanged(bool)));
-        
+
         m_contactList = new ContactWidget(this);
 
         m_scroll = new Plasma::ScrollWidget(this);
@@ -125,7 +125,7 @@ void PlasmaContacts::createConfigurationInterface(KConfigDialog * parent)
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
     connect(configDialog.findData, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
     connect(configDialog.showEmptyContacts, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
-    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
+    connect(configDialog.collectionsList, SIGNAL(clicked(QModelIndex)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 
     parent->addPage(widget, i18n("General"), icon());
@@ -162,9 +162,9 @@ void PlasmaContacts::lineChanged(const QString & text)
 void PlasmaContacts::lineFocusChanged(const bool & change)
 {
     if (change && m_find->text().contains(i18n("Find"))) {
-	
+
         m_find->setText("");
-	
+
     }
 }
 
@@ -195,7 +195,7 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *> (job);
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach (const Akonadi::Collection & collection, collections) {
+    foreach(const Akonadi::Collection & collection, collections) {
 
 #ifndef ALL_COLLECTIONS
         if (collection.resource().contains("akonadi_googlecontacts_resource")) {
@@ -203,39 +203,39 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
             if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
 
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
-	    
-                QListWidgetItem * item = new QListWidgetItem();
-	        
-	        QString name;
 
-	        if (collections.contains(collection.parentCollection())) {
-		 
-		    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
-		    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
-		    
-		    if (!attribute) {
-			
-			name = col.name();
-			
-		    } else {
-			
-			name = attr->displayName();
-			
-		    }
-		    
-		    name += " / ";
-		}
-	     
+                QListWidgetItem * item = new QListWidgetItem();
+
+                QString name;
+
+                if (collections.contains(collection.parentCollection())) {
+
+                    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
+                    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
+
+                    if (!attribute) {
+
+                        name = col.name();
+
+                    } else {
+
+                        name = attr->displayName();
+
+                    }
+
+                    name += " / ";
+                }
+
                 if (!attribute) {
 
-		    name += collection.name();
-		    
+                    name += collection.name();
+
                 } else {
 
-                   name += attribute->displayName();
+                    name += attribute->displayName();
 
-		}
-                
+                }
+
                 item->setText(name);
 
                 item->setData(Qt::UserRole, collection.id());

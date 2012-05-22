@@ -26,16 +26,16 @@ AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent), m_agendaConfig(ne
     m_agendaConfig->setupUi(this);
 
     m_agendaConfig->loadCalendars->setIcon(KIcon("view-refresh"));
-    
+
     connect(m_agendaConfig->loadCalendars, SIGNAL(clicked(bool)), SLOT(loadCalendarsClicked()));
     connect(m_agendaConfig->calendarsList, SIGNAL(currentIndexChanged(int)), SLOT(calendarChanged(int)));
     connect(m_agendaConfig->calendarColor, SIGNAL(changed(QColor)), SLOT(colorChanged(QColor)));
-    connect(m_agendaConfig->weeks, SIGNAL(currentIndexChanged(int)),SIGNAL(changed()));
-    connect(m_agendaConfig->upcomingDays,SIGNAL(currentIndexChanged(int)),SIGNAL(changed()));
-    connect(m_agendaConfig->dateColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    connect(m_agendaConfig->upcomingDateColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    connect(m_agendaConfig->eventBackground,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    connect(m_agendaConfig->calendarColor,SIGNAL(changed(QColor)),SIGNAL(changed()));
+    connect(m_agendaConfig->weeks, SIGNAL(currentIndexChanged(int)), SIGNAL(changed()));
+    connect(m_agendaConfig->upcomingDays, SIGNAL(currentIndexChanged(int)), SIGNAL(changed()));
+    connect(m_agendaConfig->dateColor, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_agendaConfig->upcomingDateColor, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_agendaConfig->eventBackground, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_agendaConfig->calendarColor, SIGNAL(changed(QColor)), SIGNAL(changed()));
 }
 
 void AgendaConfig::loadCalendarsClicked()
@@ -46,15 +46,15 @@ void AgendaConfig::loadCalendarsClicked()
 void AgendaConfig::calendarChanged(const int & index)
 {
     Akonadi::Entity::Id id = m_agendaConfig->calendarsList->itemData(index).toInt();
-    
+
     if (m_calendarsColors.contains(id)) {
-        
+
         m_agendaConfig->calendarColor->setColor(QColor(m_calendarsColors[id]));
-        
+
     } else {
-        
+
         m_agendaConfig->calendarColor->setColor(QColor("#00C000"));
-        
+
     }
 }
 
@@ -76,9 +76,9 @@ void AgendaConfig::clear()
 
 }
 
-void AgendaConfig::addItem(const QString & text,const int & id)
+void AgendaConfig::addItem(const QString & text, const int & id)
 {
-    m_agendaConfig->calendarsList->addItem(text,id);
+    m_agendaConfig->calendarsList->addItem(text, id);
 }
 
 void AgendaConfig::setDateColor(const QColor & color)

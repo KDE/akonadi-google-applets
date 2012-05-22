@@ -27,21 +27,21 @@
 
 class AgendaWidgetLayout : public QGraphicsLinearLayout
 {
-    public:
+public:
 
-        AgendaWidgetLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
+    AgendaWidgetLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
 
-        virtual ~AgendaWidgetLayout(){};
+    virtual ~AgendaWidgetLayout() {};
 
-        virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
-	
-	bool existDateItem(const QDate & date);
-	
-	void addDateItem(AgendaWidgetDateItem * item);
-	void addEventItem(const QDate & date, AgendaWidgetEventItem * item);
-        
-        void clear();
-        void removeEvent(const Akonadi::Entity::Id & eventId);
+    virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
+
+    bool existDateItem(const QDate & date);
+
+    void addDateItem(AgendaWidgetDateItem * item);
+    void addEventItem(const QDate & date, AgendaWidgetEventItem * item);
+
+    void clear();
+    void removeEvent(const Akonadi::Entity::Id & eventId);
 };
 
 #endif // AGENDAWIDGETLAYOUT_H

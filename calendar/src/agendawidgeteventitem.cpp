@@ -21,7 +21,7 @@
 
 #include <KRun>
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id,QGraphicsWidget * parent)
+AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGraphicsWidget * parent)
     : Plasma::Frame(parent),
       m_line(0),
       m_eventName(0),
@@ -30,10 +30,10 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id,QGra
       m_hasEndTime(false)
 {
     m_id = id;
-    
+
     m_mainLayout = new QGraphicsLinearLayout(this);
     m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
-    m_textLayout->setContentsMargins(5,2,2,2);
+    m_textLayout->setContentsMargins(5, 2, 2, 2);
 
     m_line = new QGraphicsWidget();
 
@@ -50,12 +50,12 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id,QGra
     m_line->setPalette(palette);
 
     m_mainLayout->addItem(m_line);
-    m_mainLayout->setAlignment(m_line,Qt::AlignHCenter);
+    m_mainLayout->setAlignment(m_line, Qt::AlignHCenter);
     m_mainLayout->addItem(m_textLayout);
-    m_mainLayout->setAlignment(m_textLayout,Qt::AlignCenter);
+    m_mainLayout->setAlignment(m_textLayout, Qt::AlignCenter);
 
     setFrameShadow(Raised);
-    
+
     setLayout(m_mainLayout);
 }
 void AgendaWidgetEventItem::setColor(const QString & color)
@@ -71,15 +71,15 @@ void AgendaWidgetEventItem::setColor(const QString & color)
 void AgendaWidgetEventItem::setEventName(const QString & name)
 {
     if (m_eventName) {
-	
-	delete m_eventName;
-	m_eventName = 0;
-	
+
+        delete m_eventName;
+        m_eventName = 0;
+
     }
-    
+
     QFont font = this->font();
     font.setBold(true);
-    
+
     m_eventName = new Plasma::IconWidget(this);
     m_eventName->setOrientation(Qt::Horizontal);
     m_eventName->setMinimumWidth(50);
@@ -89,19 +89,19 @@ void AgendaWidgetEventItem::setEventName(const QString & name)
     if (!m_timeText) {
 
         m_textLayout->addItem(m_eventName);
-	
+
     } else {
-	
-	m_textLayout->insertItem(0,m_eventName);
-	
+
+        m_textLayout->insertItem(0, m_eventName);
+
     }
-    
-    m_textLayout->setAlignment(m_eventName,Qt::AlignCenter);
-    
-    connect(m_eventName,SIGNAL(clicked()),SLOT(edit()));
+
+    m_textLayout->setAlignment(m_eventName, Qt::AlignCenter);
+
+    connect(m_eventName, SIGNAL(clicked()), SLOT(edit()));
 }
 
-void AgendaWidgetEventItem::setEventTime(const QTime & start,const QTime & end)
+void AgendaWidgetEventItem::setEventTime(const QTime & start, const QTime & end)
 {
     QString time;
 
@@ -109,193 +109,193 @@ void AgendaWidgetEventItem::setEventTime(const QTime & start,const QTime & end)
     m_endTime = end;
     m_hasStartTime = true;
     m_hasEndTime = true;
-    
+
     time += m_startTime.toString("hh:mm");
     time += " - ";
     time += m_endTime.toString("hh:mm");
 
     QFont font = this->font();
-    font.setPointSize(font.pointSize()-2);
-    
+    font.setPointSize(font.pointSize() - 2);
+
     if (m_timeText) {
-	
-	delete m_timeText;
-	m_timeText = 0;
-	
+
+        delete m_timeText;
+        m_timeText = 0;
+
     }
-    
+
     m_timeText = new Plasma::IconWidget(this);
     m_timeText->setOrientation(Qt::Horizontal);
     m_timeText->setMinimumWidth(50);
     m_timeText->setMaximumHeight(15);
     m_timeText->setText(time);
     m_timeText->setFont(font);
-    
+
     m_textLayout->addItem(m_timeText);
-    
-    connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
+
+    connect(m_timeText, SIGNAL(clicked()), SLOT(edit()));
 }
 
 void AgendaWidgetEventItem::setEventStartTime(const QTime & start)
 {
     QString time;
-    
+
     m_startTime = start;
     m_hasEndTime = false;
     m_hasStartTime = true;
-    
+
     time += i18n("From");
     time += " " + m_startTime.toString("hh:mm");
-    
+
     QFont font = this->font();
-    font.setPointSize(font.pointSize()-2);
-    
+    font.setPointSize(font.pointSize() - 2);
+
     if (m_timeText) {
-	
-	delete m_timeText;
-	m_timeText = 0;
-	
+
+        delete m_timeText;
+        m_timeText = 0;
+
     }
-    
+
     m_timeText = new Plasma::IconWidget(this);
     m_timeText->setOrientation(Qt::Horizontal);
     m_timeText->setMinimumWidth(50);
     m_timeText->setMaximumHeight(15);
     m_timeText->setText(time);
     m_timeText->setFont(font);
-    
+
     m_textLayout->addItem(m_timeText);
 
-    connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
+    connect(m_timeText, SIGNAL(clicked()), SLOT(edit()));
 }
 
 void AgendaWidgetEventItem::setEventEndTime(const QTime & end)
 {
     QString time;
-    
+
     m_endTime = end;
     m_hasEndTime = true;
     m_hasStartTime = false;
-    
+
     time += i18n("Till");
     time += " " + m_endTime.toString("hh:mm");
-    
+
     if (m_timeText) {
-	
-	delete m_timeText;
-	m_timeText = 0;
-	
+
+        delete m_timeText;
+        m_timeText = 0;
+
     }
-    
+
     QFont font = this->font();
-    font.setPointSize(font.pointSize()-2);
-    
+    font.setPointSize(font.pointSize() - 2);
+
     m_timeText = new Plasma::IconWidget(this);
     m_timeText->setOrientation(Qt::Horizontal);
     m_timeText->setMinimumWidth(50);
     m_timeText->setMaximumHeight(15);
     m_timeText->setText(time);
     m_timeText->setFont(font);
-    
+
     m_textLayout->addItem(m_timeText);
 
-    connect(m_timeText,SIGNAL(clicked()),SLOT(edit()));
+    connect(m_timeText, SIGNAL(clicked()), SLOT(edit()));
 }
 
 bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
 {
     if (m_hasStartTime && item->m_hasStartTime) {
-        
+
         if (m_startTime == item->m_startTime) {
-            
+
             if (m_hasEndTime && item->m_hasEndTime) {
-                
+
                 return (m_endTime > item->m_endTime);
-                
+
             } else {
-                
+
                 if (m_hasEndTime) {
-                    
+
                     return false;
-                    
+
                 } else {
-                    
+
                     return true;
-                    
+
                 }
-                
+
             }
-            
+
         } else {
-            
+
             return (m_startTime > item->m_startTime);
-            
+
         }
-        
+
     }
-    
+
     if (m_hasStartTime && !item->m_hasStartTime) {
-        
+
         if (!m_hasEndTime && item->m_hasEndTime) {
-            
+
             return (m_startTime > item->m_endTime);
-            
+
         }
-        
+
         return false;
-        
+
     } else if (!m_hasStartTime && item->m_hasStartTime) {
-        
+
         if (m_hasEndTime && !item->m_hasEndTime) {
-                    
+
             return (m_endTime > item->m_startTime);
-            
+
         }
-        
+
         return true;
-        
+
     }
-    
+
     if (m_hasEndTime && item->m_hasEndTime) {
-        
+
         if (m_endTime == item->m_endTime) {
-            
+
             if (m_hasEndTime && item->m_hasEndTime) {
-                
+
                 return (m_endTime > item->m_endTime);
-                
+
             } else {
-                
+
                 if (m_hasEndTime) {
-                    
+
                     return false;
-                    
+
                 } else {
-                    
+
                     return true;
-                    
+
                 }
-                
+
             }
-            
+
         } else {
-            
+
             return (m_endTime < item->m_endTime);
-            
+
         }
-        
+
     }
-    
-    if (m_hasEndTime && !item->m_hasEndTime) {    
-        
+
+    if (m_hasEndTime && !item->m_hasEndTime) {
+
         return false;
-        
+
     } else if (!m_hasEndTime && item->m_hasEndTime) {
-        
+
         return true;
-        
+
     }
-        
+
     return (m_eventName->text().toLower() > item->m_eventName->text().toLower());
 
 }
@@ -308,7 +308,7 @@ bool AgendaWidgetEventItem::operator==(const Akonadi::Entity::Id & id)
 void AgendaWidgetEventItem::edit()
 {
     QString cmd = "kincidenceeditor " + QString::number(m_id);
-    
-    KRun::runCommand(cmd,0);
+
+    KRun::runCommand(cmd, 0);
 }
 

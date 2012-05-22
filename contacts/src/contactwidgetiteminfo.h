@@ -33,18 +33,18 @@ class ContactWidgetItemInfo : public QGraphicsWidget
 {
     Q_OBJECT
 
-    public:
+public:
 
-        ContactWidgetItemInfo(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
-        virtual ~ContactWidgetItemInfo(){};
-        
-        void addInfo(ContactWidgetItemInfoLabel * label);
-        
-    private:
+    ContactWidgetItemInfo(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
+    virtual ~ContactWidgetItemInfo() {};
 
-        QGraphicsLinearLayout * m_layout;
+    void addInfo(ContactWidgetItemInfoLabel * label);
 
-       
+private:
+
+    QGraphicsLinearLayout * m_layout;
+
+
 };
 
 #endif // CONTACTWIDGETITEMINFO_H

@@ -29,20 +29,20 @@
 class AgendaWidgetDateLabel : public Plasma::Frame
 {
     Q_OBJECT
-    
-    public:
-	
-        AgendaWidgetDateLabel(QGraphicsWidget * parent = 0);
-        virtual ~AgendaWidgetDateLabel(){};
-	
-	void setColor(const QString & color);
-	void setText(const QString & date);
-	
-    private:
-	
-	QGraphicsLinearLayout * m_layout;
-	
-	Plasma::IconWidget * m_icon;
+
+public:
+
+    AgendaWidgetDateLabel(QGraphicsWidget * parent = 0);
+    virtual ~AgendaWidgetDateLabel() {};
+
+    void setColor(const QString & color);
+    void setText(const QString & date);
+
+private:
+
+    QGraphicsLinearLayout * m_layout;
+
+    Plasma::IconWidget * m_icon;
 };
 
 #endif // AGENDAWIDGETDATELABEL_H

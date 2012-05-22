@@ -44,7 +44,7 @@ PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
 
 void PlasmaTasks::init()
 {
-     configChanged();
+    configChanged();
 }
 
 QGraphicsWidget * PlasmaTasks::graphicsWidget()
@@ -70,13 +70,13 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
         connect(m_add, SIGNAL(clicked()), SLOT(addTask()));
 
         m_mainLayout->addItem(m_buttonLayout);
-        
+
         m_widget = new QGraphicsWidget(this);
         m_widget->setPreferredSize(300, 500);
         m_widget->setLayout(m_mainLayout);
-        
+
     }
-    
+
     return m_widget;
 }
 
@@ -92,8 +92,8 @@ void PlasmaTasks::configChanged()
     m_tasksList->setTodayColor(conf.readEntry("todayColor", "#e64600"));
     m_tasksList->setWeekColor(conf.readEntry("weekColor", "#e6f000"));
     m_tasksList->setOtherColor(conf.readEntry("otherColor", ""));
-    m_tasksList->setCompletedColor(conf.readEntry("completedColor","#343e88"));
-    m_tasksList->setCheckboxesOrientation(conf.readEntry("orientation",0));
+    m_tasksList->setCompletedColor(conf.readEntry("completedColor", "#343e88"));
+    m_tasksList->setCheckboxesOrientation(conf.readEntry("orientation", 0));
 
     m_tasksList->setOrderBy((TaskWidget::OrderBy)conf.readEntry("orderMode", 0));
 
@@ -129,9 +129,9 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     connect(configDialog.autoDel, SIGNAL(clicked(bool)), SLOT(uncheckHideTasks()));
     connect(configDialog.autoHide, SIGNAL(clicked(bool)), SLOT(uncheckDelTasks()));
-    connect(configDialog.collectionsList,SIGNAL(clicked(QModelIndex)),parent,SLOT(settingsModified()));
-    connect(configDialog.autoDel,SIGNAL(clicked(bool)),parent,SLOT(settingsModified()));
-    connect(configDialog.autoHide,SIGNAL(clicked(bool)),parent,SLOT(settingsModified()));
+    connect(configDialog.collectionsList, SIGNAL(clicked(QModelIndex)), parent, SLOT(settingsModified()));
+    connect(configDialog.autoDel, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
+    connect(configDialog.autoHide, SIGNAL(clicked(bool)), parent, SLOT(settingsModified()));
 
     parent->addPage(widget, i18n("General"), icon());
 
@@ -153,14 +153,14 @@ void PlasmaTasks::createConfigurationInterface(KConfigDialog * parent)
 
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
     connect(parent, SIGNAL(applyClicked()), this, SLOT(configAccepted()));
-    connect(appearanceconfigDialog.backgroundColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.expiredColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.todayColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.weekColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.otherColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.completedColor,SIGNAL(changed(QColor)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.orderBy,SIGNAL(currentIndexChanged(int)),parent,SLOT(settingsModified()));
-    connect(appearanceconfigDialog.orientation,SIGNAL(currentIndexChanged(int)),parent,SLOT(settingsModified()));
+    connect(appearanceconfigDialog.backgroundColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.expiredColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.todayColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.weekColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.otherColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.completedColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.orderBy, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
+    connect(appearanceconfigDialog.orientation, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
 }
 
@@ -170,9 +170,9 @@ void PlasmaTasks::configAccepted()
 
     QList<Akonadi::Item::Id> list;
 
-    for(int i = 0; i < configDialog.collectionsList->count(); i++) {
+    for (int i = 0; i < configDialog.collectionsList->count(); i++) {
 
-        if(configDialog.collectionsList->item(i)->checkState()) {
+        if (configDialog.collectionsList->item(i)->checkState()) {
 
             list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
 
@@ -189,7 +189,7 @@ void PlasmaTasks::configAccepted()
 
         conf.writeEntry("backgroundColor", appearanceconfigDialog.backgroundColor->color().name());
     }
-    
+
     if (appearanceconfigDialog.expiredColor->color().name() != m_tasksList->expiredColor()) {
 
         conf.writeEntry("expiredColor", appearanceconfigDialog.expiredColor->color().name());
@@ -209,7 +209,7 @@ void PlasmaTasks::configAccepted()
 
         conf.writeEntry("otherColor", appearanceconfigDialog.otherColor->color().name());
     }
-    
+
     if (appearanceconfigDialog.completedColor->color().name() != m_tasksList->completedColor()) {
 
         conf.writeEntry("completedColor", appearanceconfigDialog.completedColor->color().name());
@@ -219,9 +219,9 @@ void PlasmaTasks::configAccepted()
 
         conf.writeEntry("orderMode", appearanceconfigDialog.orderBy->currentIndex());
     }
-    
+
     if (appearanceconfigDialog.orientation->currentIndex() != m_tasksList->checkboxesOrientation()) {
-        
+
         conf.writeEntry("orientation", appearanceconfigDialog.orientation->currentIndex());
     }
 
@@ -263,39 +263,39 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
             if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
 
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
-	    
-                QListWidgetItem * item = new QListWidgetItem();
-	        
-	        QString name;
 
-	        if (collections.contains(collection.parentCollection())) {
-		 
-		    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
-		    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
-		    
-		    if (!attribute) {
-			
-			name = col.name();
-			
-		    } else {
-			
-			name = attr->displayName();
-			
-		    }
-		    
-		    name += " / ";
-		}
-	     
+                QListWidgetItem * item = new QListWidgetItem();
+
+                QString name;
+
+                if (collections.contains(collection.parentCollection())) {
+
+                    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
+                    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
+
+                    if (!attribute) {
+
+                        name = col.name();
+
+                    } else {
+
+                        name = attr->displayName();
+
+                    }
+
+                    name += " / ";
+                }
+
                 if (!attribute) {
 
-		    name += collection.name();
-		    
+                    name += collection.name();
+
                 } else {
 
-                   name += attribute->displayName();
+                    name += attribute->displayName();
 
-		}
-                
+                }
+
                 item->setText(name);
 
                 item->setData(Qt::UserRole, collection.id());
@@ -345,16 +345,16 @@ void PlasmaTasks::fetchCollectionsForEditorFinished(KJob * job)
     Akonadi::CollectionFetchJob * fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach (const Akonadi::Collection & collection, collections) {
+    foreach(const Akonadi::Collection & collection, collections) {
 
 #ifndef ALL_COLLECTIONS
         if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
 #endif
-	    if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
-	
-		m_collections.push_back(collection);
-		
-	    }
+            if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+
+                m_collections.push_back(collection);
+
+            }
 #ifndef ALL_COLLECTIONS
         }
 #endif
@@ -386,7 +386,7 @@ void PlasmaTasks::addTask()
         connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
 
         dialog->show();
-	
+
     }
 
 }

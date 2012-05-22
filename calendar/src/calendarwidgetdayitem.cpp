@@ -21,22 +21,22 @@
 
 CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
     : IconWidget(parent),
-    m_layout(0),
-    m_event(false)
+      m_layout(0),
+      m_event(false)
 {
-    setMinimumSize(10,10);
+    setMinimumSize(10, 10);
     setDrawBackground(true);
     setAutoFillBackground(true);
-    
-    connect(this,SIGNAL(clicked()),SLOT(clicked()));
+
+    connect(this, SIGNAL(clicked()), SLOT(clicked()));
 }
 
 void CalendarWidgetDayItem::setDay(const QDate & date)
 {
     m_date = date;
-    
+
     setText(QString::number(m_date.day()));
-    
+
     update();
 }
 
@@ -51,7 +51,7 @@ void CalendarWidgetDayItem::setColor(const QString & color)
     clr.setAlphaF(0.5);
     QPalette palette;
     palette = this->palette();
-    palette.setColor(QPalette::Window,clr);
+    palette.setColor(QPalette::Window, clr);
     this->setPalette(palette);
 }
 

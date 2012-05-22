@@ -40,38 +40,38 @@ class PlasmaContacts : public Plasma::PopupApplet
 {
     Q_OBJECT
 
-    public:
+public:
 
-        PlasmaContacts(QObject * parent, const QVariantList & args);
-        ~PlasmaContacts() {};
+    PlasmaContacts(QObject * parent, const QVariantList & args);
+    ~PlasmaContacts() {};
 
-        void init();
-        void createConfigurationInterface(KConfigDialog * parent);
+    void init();
+    void createConfigurationInterface(KConfigDialog * parent);
 
-    private slots:
+private slots:
 
-        void configAccepted();
+    void configAccepted();
 
-        void fetchCollections();
-        void fetchCollectionsFinished(KJob * job);
+    void fetchCollections();
+    void fetchCollectionsFinished(KJob * job);
 
-        void lineChanged(const QString & text);
-        void lineFocusChanged(const bool & change);
+    void lineChanged(const QString & text);
+    void lineFocusChanged(const bool & change);
 
-    private:
+private:
 
-        virtual QGraphicsWidget * graphicsWidget();
-	
-        void configChanged();
+    virtual QGraphicsWidget * graphicsWidget();
 
-        Ui::config configDialog;
+    void configChanged();
 
-        ContactWidget * m_contactList;
-        QGraphicsWidget * m_widget;
-        QGraphicsLinearLayout * m_mainLayout;
+    Ui::config configDialog;
 
-        Plasma::ScrollWidget * m_scroll;
-        Plasma::LineEdit * m_find;
+    ContactWidget * m_contactList;
+    QGraphicsWidget * m_widget;
+    QGraphicsLinearLayout * m_mainLayout;
+
+    Plasma::ScrollWidget * m_scroll;
+    Plasma::LineEdit * m_find;
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_contacts, PlasmaContacts)

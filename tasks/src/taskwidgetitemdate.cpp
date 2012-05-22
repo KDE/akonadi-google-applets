@@ -23,37 +23,37 @@ TaskWidgetItemDate::TaskWidgetItemDate(QGraphicsWidget * parent)
     : Plasma::Frame(parent)
 {
     m_layout = new QGraphicsLinearLayout(this);
-    
+
     m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumWidth(50);
     m_icon->setMaximumHeight(15);
-    
+
     QFont font = m_icon->font();
-    font.setPointSize(font.pointSize()-1);
-    
+    font.setPointSize(font.pointSize() - 1);
+
     m_icon->setFont(font);
-    
+
     m_layout->addItem(m_icon);
-    
+
     setLayout(m_layout);
     setAutoFillBackground(true);
-    
+
     QColor color("#343e88");
     color.setAlphaF(0.3);
     QPalette palette;
     palette = this->palette();
-    palette.setColor(QPalette::Window,color);
+    palette.setColor(QPalette::Window, color);
     this->setPalette(palette);
-    
+
     setFrameShadow(Raised);
-    
-    connect(m_icon,SIGNAL(clicked()),SIGNAL(dateClicked()));
+
+    connect(m_icon, SIGNAL(clicked()), SIGNAL(dateClicked()));
 }
 
 void TaskWidgetItemDate::setText(const QString & date)
 {
-    m_icon->setText(date);   
+    m_icon->setText(date);
 }
 
 void TaskWidgetItemDate::setColor(const QString & color)
@@ -62,7 +62,7 @@ void TaskWidgetItemDate::setColor(const QString & color)
     clr.setAlphaF(0.3);
     QPalette palette;
     palette = this->palette();
-    palette.setColor(QPalette::Window,clr);
+    palette.setColor(QPalette::Window, clr);
     this->setPalette(palette);
-    
+
 }

@@ -35,33 +35,33 @@ class TaskEditor : public QWidget
 {
     Q_OBJECT
 
-    public:
+public:
 
-        explicit TaskEditor(QWidget * parent = 0);
+    explicit TaskEditor(QWidget * parent = 0);
 
-        void disableStartDate();
-        void disableDueDate();
-        void setCollections(const QList<Akonadi::Collection> & collections);
-        void setAllDay(const bool & checked);
-        void setStartDate(const KDateTime & dateTime);
-        void setDueDate(const KDateTime & dateTime);
-        void setName(const QString & name);
-        void setDescription(const QString & description);
+    void disableStartDate();
+    void disableDueDate();
+    void setCollections(const QList<Akonadi::Collection> & collections);
+    void setAllDay(const bool & checked);
+    void setStartDate(const KDateTime & dateTime);
+    void setDueDate(const KDateTime & dateTime);
+    void setName(const QString & name);
+    void setDescription(const QString & description);
 
-        void updateTodo(const KCalCore::Todo::Ptr & todo);
+    void updateTodo(const KCalCore::Todo::Ptr & todo);
 
-        Akonadi::Item::Id selectedCollection();
+    Akonadi::Item::Id selectedCollection();
 
-    public slots:
+public slots:
 
-        void setAllDayEnabled();
-        void setTimeDisabled(const bool & disabled);
-        void setDateTimeStart(const bool & enabled);
-        void setDateTimeDue(const bool & enabled);
+    void setAllDayEnabled();
+    void setTimeDisabled(const bool & disabled);
+    void setDateTimeStart(const bool & enabled);
+    void setDateTimeDue(const bool & enabled);
 
-    private:
+private:
 
-        Ui::taskedit * m_taskEditor;
+    Ui::taskedit * m_taskEditor;
 };
 
 #endif // TASKEDITOR_H

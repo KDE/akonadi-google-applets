@@ -28,31 +28,31 @@
 
 class TaskLayout : public QGraphicsLinearLayout
 {
-    public:
+public:
 
-        TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
+    TaskLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
 
-        virtual ~TaskLayout();
+    virtual ~TaskLayout();
 
-        virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
+    virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 
-        void addItem(TaskWidgetItem * item);
-        void clear();
-        void updateItem(TaskWidgetItem * item);
+    void addItem(TaskWidgetItem * item);
+    void clear();
+    void updateItem(TaskWidgetItem * item);
 
-        QList<TaskWidgetItem *> updateCompletedTasks();
+    QList<TaskWidgetItem *> updateCompletedTasks();
 
-    private:
+private:
 
-        bool hasParent(TaskWidgetItem * item);
+    bool hasParent(TaskWidgetItem * item);
 
-        int lastIndex(TaskWidgetItem * item);
+    int lastIndex(TaskWidgetItem * item);
 
-        QList<int> neighborsIndexes(TaskWidgetItem * item);
+    QList<int> neighborsIndexes(TaskWidgetItem * item);
 
-        void updateHierarchy();
+    void updateHierarchy();
 
-        QList<TaskWidgetItem *> m_list;
+    QList<TaskWidgetItem *> m_list;
 };
 
 #endif // TASKLAYOUT_H

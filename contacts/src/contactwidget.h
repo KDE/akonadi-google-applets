@@ -38,55 +38,55 @@ class ContactWidget : public QGraphicsWidget
 {
     Q_OBJECT
 
-    public:
+public:
 
-        ContactWidget(QGraphicsWidget * parent = 0);
+    ContactWidget(QGraphicsWidget * parent = 0);
 
-        virtual ~ContactWidget();
+    virtual ~ContactWidget();
 
-        bool findData() const {
-            return m_findData;
-        }
+    bool findData() const {
+        return m_findData;
+    }
 
-        bool showEmptyContacts() const {
-            return m_showEmptyContacts;
-        }
+    bool showEmptyContacts() const {
+        return m_showEmptyContacts;
+    }
 
-        QList<Akonadi::Collection::Id> collectionsList() const {
-            return m_idList;
-        }
+    QList<Akonadi::Collection::Id> collectionsList() const {
+        return m_idList;
+    }
 
-        void setCollections(const QList<Akonadi::Collection::Id> & ids);
-        void setFilterData(const bool & filter = true);
-        void setShowEmptyContacts(const bool & show = true);
-        void showContactsContains(const QString & text);
+    void setCollections(const QList<Akonadi::Collection::Id> & ids);
+    void setFilterData(const bool & filter = true);
+    void setShowEmptyContacts(const bool & show = true);
+    void showContactsContains(const QString & text);
 
-    public slots:
+public slots:
 
-        void fetchCollectionsFinished(KJob * job);
-        void fetchItemsFinished(KJob * job);
+    void fetchCollectionsFinished(KJob * job);
+    void fetchItemsFinished(KJob * job);
 
-        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
-        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
-        void itemRemoved(const Akonadi::Item & item);
+    void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+    void itemRemoved(const Akonadi::Item & item);
 
-    private:
+private:
 
-        void addItem(ContactWidgetItem * item);
-        void clear();
+    void addItem(ContactWidgetItem * item);
+    void clear();
 
-        void fetchCollections();
-        void fetchItems(const Akonadi::Collection & collections);
+    void fetchCollections();
+    void fetchItems(const Akonadi::Collection & collections);
 
-        ContactsLayout * m_layout;
+    ContactsLayout * m_layout;
 
-        QList<QGraphicsLayoutItem *> m_listFilterText;
+    QList<QGraphicsLayoutItem *> m_listFilterText;
 
-        QList<Akonadi::Collection::Id> m_idList;
-        Akonadi::Monitor * m_monitor;
+    QList<Akonadi::Collection::Id> m_idList;
+    Akonadi::Monitor * m_monitor;
 
-        bool m_findData;
-        bool m_showEmptyContacts;
+    bool m_findData;
+    bool m_showEmptyContacts;
 
 };
 

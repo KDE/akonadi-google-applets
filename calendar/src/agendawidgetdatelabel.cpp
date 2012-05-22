@@ -23,24 +23,24 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent)
     : Plasma::Frame(parent)
 {
     m_layout = new QGraphicsLinearLayout(this);
-    
+
     m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumWidth(50);
     m_icon->setMinimumHeight(20);
     m_icon->setMaximumHeight(20);
-    
+
     m_layout->addItem(m_icon);
-    
+
     setLayout(m_layout);
     setAutoFillBackground(true);
-    
+
     setFrameShadow(Raised);
 }
 
 void AgendaWidgetDateLabel::setText(const QString & date)
 {
-    m_icon->setText(date);   
+    m_icon->setText(date);
     m_icon->update();
 }
 
@@ -50,6 +50,6 @@ void AgendaWidgetDateLabel::setColor(const QString & color)
     clr.setAlphaF(0.3);
     QPalette palette;
     palette = this->palette();
-    palette.setColor(QPalette::Window,clr);
+    palette.setColor(QPalette::Window, clr);
     this->setPalette(palette);
 }

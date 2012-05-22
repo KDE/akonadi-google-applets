@@ -38,9 +38,9 @@ bool AgendaWidgetLayout::existDateItem(const QDate & date)
         }
 
     }
-    
+
     return false;
-    
+
 }
 
 void AgendaWidgetLayout::addDateItem(AgendaWidgetDateItem * item)
@@ -81,7 +81,7 @@ void AgendaWidgetLayout::addEventItem(const QDate & date, AgendaWidgetEventItem 
         }
 
     }
-    
+
 }
 
 void AgendaWidgetLayout::clear()
@@ -97,31 +97,31 @@ void AgendaWidgetLayout::clear()
         item->deleteLater();
 
     }
-    
+
 }
 
 void AgendaWidgetLayout::removeEvent(const Akonadi::Entity::Id & eventId)
 {
     AgendaWidgetDateItem * dateItem;
-    
+
     for (int i = 0; i < count(); i++) {
-        
+
         dateItem = static_cast<AgendaWidgetDateItem*>(itemAt(i));
-        
+
         dateItem->removeEvent(eventId);
-        
+
         if (dateItem->isEmpty()) {
-            
+
             removeItem(dateItem);
-            
+
             dateItem->deleteLater();
-            
+
             i--;
-            
+
         }
-        
+
     }
-    
+
 }
 
 

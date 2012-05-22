@@ -28,27 +28,27 @@
 class TaskWidgetItemInfo : public Plasma::Frame
 {
     Q_OBJECT
-    
-    public:
-        
-        explicit TaskWidgetItemInfo(QGraphicsWidget * parent = 0);
-        virtual ~TaskWidgetItemInfo(){};
-                
-        void setCompleted(const bool & completed);
-        void setText(const QString & text);
-        void setCheckboxOrientation(const bool & orientation = false);
-        
-    signals:        
-    
-        void changeCheckstate();
-        void textClicked();
-        
-    private:
-        
-        QGraphicsLinearLayout * m_layout;
-        
-        Plasma::IconWidget * m_icon;
-        Plasma::IconWidget * m_name;
+
+public:
+
+    explicit TaskWidgetItemInfo(QGraphicsWidget * parent = 0);
+    virtual ~TaskWidgetItemInfo() {};
+
+    void setCompleted(const bool & completed);
+    void setText(const QString & text);
+    void setCheckboxOrientation(const bool & orientation = false);
+
+signals:
+
+    void changeCheckstate();
+    void textClicked();
+
+private:
+
+    QGraphicsLinearLayout * m_layout;
+
+    Plasma::IconWidget * m_icon;
+    Plasma::IconWidget * m_name;
 };
 
 #endif // TASKWIDGETITEMINFO_H

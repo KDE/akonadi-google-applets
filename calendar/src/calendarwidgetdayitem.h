@@ -28,40 +28,40 @@
 class CalendarWidgetDayItem : public Plasma::IconWidget
 {
     Q_OBJECT
-    
-    public:
-        
-        explicit CalendarWidgetDayItem(QGraphicsItem * parent = 0);
-        virtual ~CalendarWidgetDayItem(){};
- 
-        QDate date() const {
-            return m_date;
-        }
-        
-        bool hasEvent() const {
-	    return m_event;
-        }
-        
-        void setDay(const QDate & date);
-	void setDayWithEvent(const bool & event);
-        void setColor(const QString & color);
- 
-    public slots:
-    
-        void clicked();
-        
-    signals:
-    
-        void clicked(const QDate & date);
-        
-    private:
-                
-        QGraphicsLinearLayout * m_layout;
-        
-        QDate m_date;
-	
-	bool m_event;
-        
+
+public:
+
+    explicit CalendarWidgetDayItem(QGraphicsItem * parent = 0);
+    virtual ~CalendarWidgetDayItem() {};
+
+    QDate date() const {
+        return m_date;
+    }
+
+    bool hasEvent() const {
+        return m_event;
+    }
+
+    void setDay(const QDate & date);
+    void setDayWithEvent(const bool & event);
+    void setColor(const QString & color);
+
+public slots:
+
+    void clicked();
+
+signals:
+
+    void clicked(const QDate & date);
+
+private:
+
+    QGraphicsLinearLayout * m_layout;
+
+    QDate m_date;
+
+    bool m_event;
+
 };
 
 #endif // CALENDARWIDGETDAYITEM_H

@@ -54,7 +54,7 @@ void TaskLayout::addItem(TaskWidgetItem * item)
 
     }
 
-    foreach (const int index, neighborsIndexes(item)) {
+    foreach(const int index, neighborsIndexes(item)) {
 
         item2 = static_cast<TaskWidgetItem *>(itemAt(index));
 
@@ -243,13 +243,13 @@ void TaskLayout::clear()
         item->deleteLater();
 
     }
-    
+
     while (!m_list.isEmpty()) {
 
         item = static_cast<TaskWidgetItem *>(m_list.at(0));
-        
+
         item->deleteLater();
-        
+
         m_list.removeAt(0);
 
     }

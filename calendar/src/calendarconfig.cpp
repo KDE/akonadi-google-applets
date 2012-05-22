@@ -22,13 +22,13 @@
 CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarConfig(new Ui::calendarConfig)
 {
     m_calendarConfig->setupUi(this);
-    
+
     connect(m_calendarConfig->selectedDay, SIGNAL(changed(QColor)), SIGNAL(changed()));
-    connect(m_calendarConfig->currentMonth,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    connect(m_calendarConfig->outdatedMonth,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    connect(m_calendarConfig->currentEvent,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    connect(m_calendarConfig->outdatedEvent,SIGNAL(changed(QColor)),SIGNAL(changed()));
-    
+    connect(m_calendarConfig->currentMonth, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_calendarConfig->outdatedMonth, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_calendarConfig->currentEvent, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_calendarConfig->outdatedEvent, SIGNAL(changed(QColor)), SIGNAL(changed()));
+
 }
 
 void CalendarConfig::setSelectedDayColor(const QColor & color)

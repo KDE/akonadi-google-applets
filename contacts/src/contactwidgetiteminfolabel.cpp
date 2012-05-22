@@ -27,20 +27,20 @@ ContactWidgetItemInfoLabel::ContactWidgetItemInfoLabel(QGraphicsWidget * parent)
       m_layout(0)
 {
     m_layout = new QGraphicsLinearLayout(this);
-    
+
     m_icon = new Plasma::IconWidget(this);
     m_icon->setMinimumWidth(20);
     m_icon->setMaximumHeight(20);
     m_icon->setMinimumHeight(20);
     m_icon->setOrientation(Qt::Horizontal);
-    
+
     m_layout->addItem(m_icon);
-    
+
     setLayout(m_layout);
-    
+
     setFrameShadow(Raised);
-    
-    connect(m_icon,SIGNAL(clicked()),SLOT(clicked()));
+
+    connect(m_icon, SIGNAL(clicked()), SLOT(clicked()));
 }
 
 void ContactWidgetItemInfoLabel::setText(const QString & value)

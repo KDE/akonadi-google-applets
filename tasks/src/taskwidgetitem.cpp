@@ -39,49 +39,49 @@ TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * par
 
     m_todo = m_item.payload<KCalCore::Todo::Ptr>();
 
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical,this);
-    
+    m_layout = new QGraphicsLinearLayout(Qt::Vertical, this);
+
     setAutoFillBackground(true);
-        
+
     QColor color = QColor(((TaskWidget *)parentWidget())->backgroundColor());
     color.setAlphaF(0.5);
     QPalette palette;
     palette = this->palette();
-    palette.setColor(QPalette::Window,color);
+    palette.setColor(QPalette::Window, color);
     this->setPalette(palette);
-    
+
     setItemInfo();
-       
+
 }
 
 void TaskWidgetItem::setItemInfo()
 {
     m_name = new TaskWidgetItemInfo(this);
-    
+
     if (m_todo->isCompleted()) {
-        
+
         m_name->setCompleted(true);
-        
+
     } else {
-        
+
         m_name->setCompleted(false);
-        
+
     }
-    
+
     m_name->setCheckboxOrientation((((TaskWidget *)parentWidget())->checkboxesOrientation()));
 
     m_name->setText(m_todo->summary());
-    
+
     connect(m_name, SIGNAL(changeCheckstate()), SLOT(setCompleted()));
-    connect(m_name, SIGNAL(textClicked()),SLOT(editTask()));
+    connect(m_name, SIGNAL(textClicked()), SLOT(editTask()));
 
     m_layout->addItem(m_name);
-    
+
     if (m_todo->hasDueDate()) {
 
         m_date = new TaskWidgetItemDate(this);
-	
-	m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(),KLocale::FancyLongDate));
+
+        m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(), KLocale::FancyLongDate));
 
         setColorForDate();
 
@@ -167,13 +167,13 @@ void TaskWidgetItem::setColorForDate()
     int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
 
     if (!m_todo->isCompleted()) {
-        
+
         if (days < 0 || m_todo->dtDue() < KDateTime::currentLocalDateTime()) {
 
             m_date->setColor(((TaskWidget *)parentWidget())->expiredColor());
 
         } else if (days == 0) {
-            
+
             m_date->setColor(((TaskWidget *)parentWidget())->todayColor());
 
         } else if (days < 8) {
@@ -187,9 +187,9 @@ void TaskWidgetItem::setColorForDate()
         }
 
     } else {
-	
-	m_date->setColor(((TaskWidget *)parentWidget())->completedColor());
-	
+
+        m_date->setColor(((TaskWidget *)parentWidget())->completedColor());
+
     }
 
 }
@@ -221,7 +221,7 @@ void TaskWidgetItem::setRelated(TaskWidgetItem * item)
 void TaskWidgetItem::setUnrelated()
 {
     m_layout->setContentsMargins(5, 2, 2, 2);
-    
+
     m_indent = 0;
 }
 
@@ -277,7 +277,7 @@ bool TaskWidgetItem::orderByName(const TaskWidgetItem * item, const bool & compl
     } else {
 
         if (this->m_todo->hasDueDate() && item->m_todo->hasDueDate()) {
- 
+
             if (this->m_todo->dtDue() == item->m_todo->dtDue()) {
 
                 return (this->m_todo->summary().toLower() <= item->m_todo->summary().toLower());

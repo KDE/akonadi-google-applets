@@ -30,62 +30,62 @@ class AgendaConfig : public QWidget
 {
     Q_OBJECT
 
-    public:
+public:
 
-        explicit AgendaConfig(QWidget * parent = 0);
+    explicit AgendaConfig(QWidget * parent = 0);
 
-        QMap<Akonadi::Entity::Id,QString> calendarsColors() const {
-            return m_calendarsColors;
-        }
-        
-        QString dateColor() const {
-            return m_agendaConfig->dateColor->color().name();
-        }
-        
-        QString upcomingDateColor() const {
-            return m_agendaConfig->upcomingDateColor->color().name();
-        }
-        
-        QString eventBackgroundColor() const {
-            return m_agendaConfig->eventBackground->color().name();
-        }
-        
-        int weeks() const {
-            return m_agendaConfig->weeks->currentIndex()+1;
-        }
-        
-        int upcomingDays() const {
-            return m_agendaConfig->upcomingDays->currentIndex();
-        }
+    QMap<Akonadi::Entity::Id, QString> calendarsColors() const {
+        return m_calendarsColors;
+    }
 
-        void clear();
-        void addItem(const QString & text, const int & id);
-        void setDateColor(const QColor & color);
-        void setUpcomingColor(const QColor & color);
-        void setEventBackgroundColor(const QColor & color);
-        void setWeeks(const int & weeks);
-        void setUpcomingDays(const int & days);
-        void setCalendarsColors(const QMap<Akonadi::Entity::Id,QString> & colors);
+    QString dateColor() const {
+        return m_agendaConfig->dateColor->color().name();
+    }
 
-    public slots:
-    
-        void calendarChanged(const int & index);
-        void colorChanged(const QColor & color);
-        
-    private slots:
+    QString upcomingDateColor() const {
+        return m_agendaConfig->upcomingDateColor->color().name();
+    }
 
-        void loadCalendarsClicked();
+    QString eventBackgroundColor() const {
+        return m_agendaConfig->eventBackground->color().name();
+    }
 
-    signals:
-    
-        void updateCalendars();
-        void changed();
-        
-    private:
+    int weeks() const {
+        return m_agendaConfig->weeks->currentIndex() + 1;
+    }
 
-        Ui::agendaConfig * m_agendaConfig;
-        
-        QMap<Akonadi::Entity::Id,QString> m_calendarsColors;
+    int upcomingDays() const {
+        return m_agendaConfig->upcomingDays->currentIndex();
+    }
+
+    void clear();
+    void addItem(const QString & text, const int & id);
+    void setDateColor(const QColor & color);
+    void setUpcomingColor(const QColor & color);
+    void setEventBackgroundColor(const QColor & color);
+    void setWeeks(const int & weeks);
+    void setUpcomingDays(const int & days);
+    void setCalendarsColors(const QMap<Akonadi::Entity::Id, QString> & colors);
+
+public slots:
+
+    void calendarChanged(const int & index);
+    void colorChanged(const QColor & color);
+
+private slots:
+
+    void loadCalendarsClicked();
+
+signals:
+
+    void updateCalendars();
+    void changed();
+
+private:
+
+    Ui::agendaConfig * m_agendaConfig;
+
+    QMap<Akonadi::Entity::Id, QString> m_calendarsColors;
 };
 
 #endif // AGENDACONFIG_H

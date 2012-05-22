@@ -32,46 +32,46 @@
 class AgendaWidgetEventItem : public Plasma::Frame
 {
     Q_OBJECT
-    
-    public:
-	
-        explicit AgendaWidgetEventItem(const Akonadi::Entity::Id & id,QGraphicsWidget * parent = 0);
-        virtual ~AgendaWidgetEventItem(){};
-	
-        Akonadi::Entity::Id id() const {
-            return m_id;
-        }
-        
-	bool operator<(AgendaWidgetEventItem * item);
-        bool operator==(const Akonadi::Entity::Id & id);
-	
-        void setColor(const QString & color);
-	void setEventName(const QString & name);
-	void setEventTime(const QTime & start, const QTime & end);
-	void setEventStartTime(const QTime & start);
-	void setEventEndTime(const QTime & end);
-	
-    public slots:
-    
-        void edit();
-        
-    private:
-	
-	QGraphicsLinearLayout * m_mainLayout;
-	QGraphicsLinearLayout * m_textLayout;
-	
-        QGraphicsWidget * m_line;
-        
-	Plasma::IconWidget * m_eventName;
-	Plasma::IconWidget * m_timeText;
-		
-	QTime m_startTime;
-	QTime m_endTime;
-	
-	bool m_hasStartTime;
-	bool m_hasEndTime;
-        
-        Akonadi::Entity::Id m_id;
+
+public:
+
+    explicit AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGraphicsWidget * parent = 0);
+    virtual ~AgendaWidgetEventItem() {};
+
+    Akonadi::Entity::Id id() const {
+        return m_id;
+    }
+
+    bool operator<(AgendaWidgetEventItem * item);
+    bool operator==(const Akonadi::Entity::Id & id);
+
+    void setColor(const QString & color);
+    void setEventName(const QString & name);
+    void setEventTime(const QTime & start, const QTime & end);
+    void setEventStartTime(const QTime & start);
+    void setEventEndTime(const QTime & end);
+
+public slots:
+
+    void edit();
+
+private:
+
+    QGraphicsLinearLayout * m_mainLayout;
+    QGraphicsLinearLayout * m_textLayout;
+
+    QGraphicsWidget * m_line;
+
+    Plasma::IconWidget * m_eventName;
+    Plasma::IconWidget * m_timeText;
+
+    QTime m_startTime;
+    QTime m_endTime;
+
+    bool m_hasStartTime;
+    bool m_hasEndTime;
+
+    Akonadi::Entity::Id m_id;
 };
 
 #endif // AGENDAWIDGETEVENTITEM_H

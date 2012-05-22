@@ -104,7 +104,7 @@ void ContactWidget::showContactsContains(const QString & text)
             item->show();
 
         }
-         
+
     }
 
 }
@@ -131,7 +131,7 @@ void ContactWidget::fetchCollectionsFinished(KJob * job)
 
     const Akonadi::Collection::List collections = fetchJob->collections();
 
-    foreach (const Akonadi::Collection & collection, collections) {
+    foreach(const Akonadi::Collection & collection, collections) {
 
         if (m_idList.contains(collection.id())) {
 
@@ -167,7 +167,7 @@ void ContactWidget::fetchItemsFinished(KJob * job)
 
     const Akonadi::Item::List items = fetchJob->items();
 
-    foreach (const Akonadi::Item & item, items) {
+    foreach(const Akonadi::Item & item, items) {
 
         ContactWidgetItem * contact;
 
@@ -199,7 +199,7 @@ void ContactWidget::clear()
 
 void ContactWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection  & collection)
 {
-    
+
     for (int i = 0; i < m_idList.count(); i++) {
 
         if (m_idList.at(i) == collection.id()) {
@@ -229,9 +229,9 @@ void ContactWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > a
         if (tmpItem->operator=(item)) {
 
             tmpItem->updateContact(item);
-            
+
             m_layout->removeItem(tmpItem);
-            
+
             addItem(tmpItem);
 
             return;

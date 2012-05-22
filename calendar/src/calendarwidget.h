@@ -41,119 +41,119 @@
 class CalendarWidget : public QGraphicsWidget
 {
     Q_OBJECT
-    
-    public:
-        
-        CalendarWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
-        virtual ~CalendarWidget(){};
 
-        QList<Akonadi::Collection::Id> collectionsList() const {
-            return m_idList;
-        }
-        
-        QMap<Akonadi::Item::Id, QString> calendarsColors() const {
-            return m_calendarsColors;
-        }
-        
-        QString dateColor() const {
-            return m_dateColor;
-        }
-        
-        QString eventBackgroundColor() const {
-            return m_eventBackgroundColor;
-        }
-        
-        QString selectedDayColor() const {
-            return m_selectedDayColor;
-        }
-        
-        QString currentMonthColor() const {
-            return m_currentMonthColor;
-        }
-        
-        QString outdatedMonthColor() const {
-            return m_outdatedMonthColor;
-        }
-        
-        QString currentEventColor() const {
-            return m_currentEventColor;
-        }
-        
-        QString outdatedEventColor() const {
-            return m_outdatedEventColor;
-        } 
-        
-        int firstDay() const {
-            return m_firstDay;
-        }
-        
-        void setCollections(const QList<Akonadi::Collection::Id> & ids);
-        void setCalendarsColors(const QMap<Akonadi::Collection::Id,QString> & colors);
-        void setDateColor(const QString & color);
-        void setEventBackgroundColor(const QString & color);
-        void setSelectedDayColor(const QString & color);
-        void setCurrentMonthColor(const QString & color);
-        void setOutdatedMonthColor(const QString & color);
-        void setCurrentEventColor(const QString & color);
-        void setOutdatedEventColor(const QString & color);
-        
-    public slots:
-        
-        void fetchCollectionsFinished(KJob * job);
-        void fetchItemsFinished(KJob * job);
-        
-        void previousMonth();
-        void nextMonth();
-        void dayChanged(const QDate & date);
-        void monthChanged(const int & month);
-        void yearChanged(const int & year);
-        void setDate(const QDate & date);
-	void setToday();
-        
-        void updateSize(QSizeF size);
-	void updateFontDays(QFont font);
-        
-        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
-        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
-        void itemRemoved(const Akonadi::Item & item);
-        
-    private:
-    
-        void fetchCollections();
-        void fetchItems(const Akonadi::Collection & collection);
-        
-        void addItem(const Akonadi::Item & item);
-        void createCalendar();
-        void clearEvents();
-        void setColored(const QDate & date);
-        
-        QGraphicsLinearLayout * m_mainLayout;
-        QGraphicsLinearLayout * m_changeLayout;
-        QGraphicsGridLayout * m_daysLayout;
-        
-        QList<Akonadi::Item::Id> m_idList;
-        QMap<Akonadi::Item::Id, QString> m_calendarsColors;
-        
-        QString m_dateColor;
-        QString m_eventBackgroundColor;
-        QString m_selectedDayColor;
-        QString m_currentMonthColor;
-        QString m_outdatedMonthColor;
-        QString m_currentEventColor;
-        QString m_outdatedEventColor;
-        
-        Plasma::SpinBox * m_spin;
-        Plasma::ComboBox * m_combo;
-        Plasma::ScrollWidget * m_scroll;
-        
-        AgendaWidgetDateItem * m_agenda;
-        
-        int m_firstDay;
-        
-        QDate m_date;
-        
-        Akonadi::Monitor * m_monitor;
-        
+public:
+
+    CalendarWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
+    virtual ~CalendarWidget() {};
+
+    QList<Akonadi::Collection::Id> collectionsList() const {
+        return m_idList;
+    }
+
+    QMap<Akonadi::Item::Id, QString> calendarsColors() const {
+        return m_calendarsColors;
+    }
+
+    QString dateColor() const {
+        return m_dateColor;
+    }
+
+    QString eventBackgroundColor() const {
+        return m_eventBackgroundColor;
+    }
+
+    QString selectedDayColor() const {
+        return m_selectedDayColor;
+    }
+
+    QString currentMonthColor() const {
+        return m_currentMonthColor;
+    }
+
+    QString outdatedMonthColor() const {
+        return m_outdatedMonthColor;
+    }
+
+    QString currentEventColor() const {
+        return m_currentEventColor;
+    }
+
+    QString outdatedEventColor() const {
+        return m_outdatedEventColor;
+    }
+
+    int firstDay() const {
+        return m_firstDay;
+    }
+
+    void setCollections(const QList<Akonadi::Collection::Id> & ids);
+    void setCalendarsColors(const QMap<Akonadi::Collection::Id, QString> & colors);
+    void setDateColor(const QString & color);
+    void setEventBackgroundColor(const QString & color);
+    void setSelectedDayColor(const QString & color);
+    void setCurrentMonthColor(const QString & color);
+    void setOutdatedMonthColor(const QString & color);
+    void setCurrentEventColor(const QString & color);
+    void setOutdatedEventColor(const QString & color);
+
+public slots:
+
+    void fetchCollectionsFinished(KJob * job);
+    void fetchItemsFinished(KJob * job);
+
+    void previousMonth();
+    void nextMonth();
+    void dayChanged(const QDate & date);
+    void monthChanged(const int & month);
+    void yearChanged(const int & year);
+    void setDate(const QDate & date);
+    void setToday();
+
+    void updateSize(QSizeF size);
+    void updateFontDays(QFont font);
+
+    void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+    void itemRemoved(const Akonadi::Item & item);
+
+private:
+
+    void fetchCollections();
+    void fetchItems(const Akonadi::Collection & collection);
+
+    void addItem(const Akonadi::Item & item);
+    void createCalendar();
+    void clearEvents();
+    void setColored(const QDate & date);
+
+    QGraphicsLinearLayout * m_mainLayout;
+    QGraphicsLinearLayout * m_changeLayout;
+    QGraphicsGridLayout * m_daysLayout;
+
+    QList<Akonadi::Item::Id> m_idList;
+    QMap<Akonadi::Item::Id, QString> m_calendarsColors;
+
+    QString m_dateColor;
+    QString m_eventBackgroundColor;
+    QString m_selectedDayColor;
+    QString m_currentMonthColor;
+    QString m_outdatedMonthColor;
+    QString m_currentEventColor;
+    QString m_outdatedEventColor;
+
+    Plasma::SpinBox * m_spin;
+    Plasma::ComboBox * m_combo;
+    Plasma::ScrollWidget * m_scroll;
+
+    AgendaWidgetDateItem * m_agenda;
+
+    int m_firstDay;
+
+    QDate m_date;
+
+    Akonadi::Monitor * m_monitor;
+
 };
 
 #endif // CALENDARWIDGET_H

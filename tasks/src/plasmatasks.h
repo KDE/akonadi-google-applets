@@ -42,57 +42,57 @@ class PlasmaTasks : public Plasma::PopupApplet
 {
     Q_OBJECT
 
-    public:
+public:
 
-        PlasmaTasks(QObject * parent, const QVariantList & args);
+    PlasmaTasks(QObject * parent, const QVariantList & args);
 
-        ~PlasmaTasks(){};
-        
-        void init();
+    ~PlasmaTasks() {};
 
-        void createConfigurationInterface(KConfigDialog * parent);
+    void init();
 
-    public slots:
+    void createConfigurationInterface(KConfigDialog * parent);
 
-        void addTask();
+public slots:
 
-        void uncheckHideTasks();
-        void uncheckDelTasks();
+    void addTask();
 
-    private slots:
+    void uncheckHideTasks();
+    void uncheckDelTasks();
 
-        void configAccepted();
+private slots:
 
-        void createTask();
+    void configAccepted();
 
-        void fetchCollections();
-        void fetchCollectionsForEditor();
-        void fetchCollectionsFinished(KJob * job);
-        void fetchCollectionsForEditorFinished(KJob * job);
+    void createTask();
 
-        void addFinished(KJob * job);
+    void fetchCollections();
+    void fetchCollectionsForEditor();
+    void fetchCollectionsFinished(KJob * job);
+    void fetchCollectionsForEditorFinished(KJob * job);
 
-    private:
+    void addFinished(KJob * job);
 
-        void configChanged();
+private:
 
-        virtual QGraphicsWidget * graphicsWidget();
+    void configChanged();
 
-        QGraphicsWidget * m_widget;
-        QGraphicsLinearLayout * m_mainLayout;
-        QGraphicsLinearLayout * m_buttonLayout;
+    virtual QGraphicsWidget * graphicsWidget();
 
-        TaskWidget * m_tasksList;
-        TaskEditor * m_editor;
+    QGraphicsWidget * m_widget;
+    QGraphicsLinearLayout * m_mainLayout;
+    QGraphicsLinearLayout * m_buttonLayout;
 
-        Plasma::PushButton * m_add;
-        Plasma::PushButton * m_del;
-        Plasma::ScrollWidget * m_scroll;
+    TaskWidget * m_tasksList;
+    TaskEditor * m_editor;
 
-        Ui::config configDialog;
-        Ui::appearanceconfig appearanceconfigDialog;
+    Plasma::PushButton * m_add;
+    Plasma::PushButton * m_del;
+    Plasma::ScrollWidget * m_scroll;
 
-        QList<Akonadi::Collection> m_collections;
+    Ui::config configDialog;
+    Ui::appearanceconfig appearanceconfigDialog;
+
+    QList<Akonadi::Collection> m_collections;
 
 };
 

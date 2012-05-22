@@ -34,110 +34,110 @@ class TaskWidget : public QGraphicsWidget
 {
     Q_OBJECT
 
-    public:
+public:
 
-        enum OrderBy {
-            DNC = 0, NDC = 1, CDN = 2, CND = 3
-        };
+    enum OrderBy {
+        DNC = 0, NDC = 1, CDN = 2, CND = 3
+    };
 
-        TaskWidget(QGraphicsWidget * parent = 0);
+    TaskWidget(QGraphicsWidget * parent = 0);
 
-	QString backgroundColor() const {
-            return m_backgroundColor;
-        }
-	
-        QString expiredColor() const {
-            return m_expiredColor;
-        }
+    QString backgroundColor() const {
+        return m_backgroundColor;
+    }
 
-        QString todayColor() const {
-            return m_todayColor;
-        }
+    QString expiredColor() const {
+        return m_expiredColor;
+    }
 
-        QString weekColor() const {
-            return m_weekColor;
-        }
+    QString todayColor() const {
+        return m_todayColor;
+    }
 
-        QString otherColor() const {
-            return m_otherColor;
-        }
-        
-        QString completedColor() const {
-	    return m_completedColor;
-        }
+    QString weekColor() const {
+        return m_weekColor;
+    }
 
-        QList<Akonadi::Collection::Id> idList() const {
-            return m_idList;
-        }
+    QString otherColor() const {
+        return m_otherColor;
+    }
 
-        OrderBy orderBy() const {
-            return m_order;
-        }
+    QString completedColor() const {
+        return m_completedColor;
+    }
 
-        bool autoHideCompleted() const {
-            return m_autoHide;
-        }
+    QList<Akonadi::Collection::Id> idList() const {
+        return m_idList;
+    }
 
-        bool autoDeleteCompleted() const {
-            return m_autoDel;
-        }
-        
-        bool checkboxesOrientation() const {
-            return m_orientation;
-        }
+    OrderBy orderBy() const {
+        return m_order;
+    }
 
-        void setBackgroundColor(const QString & color);
-        void setExpiredColor(const QString & color);
-        void setTodayColor(const QString & color);
-        void setWeekColor(const QString & color);
-        void setOtherColor(const QString & color);
-	void setCompletedColor(const QString & color);
-        void setOrderBy(const OrderBy & order);
-        void setCheckboxesOrientation(const bool & orientation);
+    bool autoHideCompleted() const {
+        return m_autoHide;
+    }
 
-        void setAutoHideCompleted(const bool & hide);
-        void setAutoDeleteCompleted(const bool & del);
+    bool autoDeleteCompleted() const {
+        return m_autoDel;
+    }
 
-        void setCollections(const QList<Akonadi::Collection::Id> & ids);
+    bool checkboxesOrientation() const {
+        return m_orientation;
+    }
 
-    private slots:
+    void setBackgroundColor(const QString & color);
+    void setExpiredColor(const QString & color);
+    void setTodayColor(const QString & color);
+    void setWeekColor(const QString & color);
+    void setOtherColor(const QString & color);
+    void setCompletedColor(const QString & color);
+    void setOrderBy(const OrderBy & order);
+    void setCheckboxesOrientation(const bool & orientation);
 
-        void fetchCollectionsFinished(KJob * job);
-        void fetchItemsFinished(KJob * job);
+    void setAutoHideCompleted(const bool & hide);
+    void setAutoDeleteCompleted(const bool & del);
 
-        void itemDeleted(KJob * job);
+    void setCollections(const QList<Akonadi::Collection::Id> & ids);
 
-        void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
-        void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
-        void itemRemoved(const Akonadi::Item & item);
+private slots:
 
-    private:
+    void fetchCollectionsFinished(KJob * job);
+    void fetchItemsFinished(KJob * job);
 
-        void addItem(TaskWidgetItem * item);
-        void clear();
-        void updateCompletedTasks();
+    void itemDeleted(KJob * job);
 
-        void fetchCollections();
-        void fetchItems(const Akonadi::Collection & collections);
+    void itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection);
+    void itemChanged(const Akonadi::Item & item, QSet< QByteArray > array);
+    void itemRemoved(const Akonadi::Item & item);
 
-        TaskLayout * m_layout;
+private:
 
-	QString m_backgroundColor;
-        QString m_expiredColor;
-        QString m_todayColor;
-        QString m_weekColor;
-        QString m_otherColor;
-	QString m_completedColor;
+    void addItem(TaskWidgetItem * item);
+    void clear();
+    void updateCompletedTasks();
 
-        bool m_autoHide;
-        bool m_autoDel;
-        bool m_orientation;
+    void fetchCollections();
+    void fetchItems(const Akonadi::Collection & collections);
 
-        QList<Akonadi::Collection::Id> m_idList;
+    TaskLayout * m_layout;
 
-        Akonadi::Monitor * m_monitor;
+    QString m_backgroundColor;
+    QString m_expiredColor;
+    QString m_todayColor;
+    QString m_weekColor;
+    QString m_otherColor;
+    QString m_completedColor;
 
-        OrderBy m_order;
+    bool m_autoHide;
+    bool m_autoDel;
+    bool m_orientation;
+
+    QList<Akonadi::Collection::Id> m_idList;
+
+    Akonadi::Monitor * m_monitor;
+
+    OrderBy m_order;
 };
 
 
