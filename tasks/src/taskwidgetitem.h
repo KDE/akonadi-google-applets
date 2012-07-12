@@ -21,21 +21,24 @@
 
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
-#include <QGraphicsGridLayout>
 
 #include <Plasma/Frame>
-#include <Plasma/CheckBox>
-#include <Plasma/Label>
-#include <Plasma/IconWidget>
 
 #include <KCalCore/Todo>
 #include <Akonadi/Item>
 
-#include <KJob>
-
 #include "taskeditor.h"
 #include "taskwidgetitemdate.h"
 #include "taskwidgetiteminfo.h"
+
+namespace Plasma
+{
+    class CheckBox;
+    class Label;
+    class IconWidget;
+}
+
+class KJob;
 
 class TaskWidgetItem : public Plasma::Frame
 {
@@ -75,17 +78,14 @@ public:
     bool operator==(const Akonadi::Item & item);
 
 public slots:
-
     void setCompleted();
     void editTask();
     void saveTask();
 
 private slots:
-
     void modifyFinished(KJob * job);
 
 private:
-
     void setItemInfo();
     void setColorForDate();
 

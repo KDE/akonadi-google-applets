@@ -35,7 +35,6 @@ class TaskWidget : public QGraphicsWidget
     Q_OBJECT
 
 public:
-
     enum OrderBy {
         DNC = 0, NDC = 1, CDN = 2, CND = 3
     };
@@ -94,14 +93,11 @@ public:
     void setCompletedColor(const QString & color);
     void setOrderBy(const OrderBy & order);
     void setCheckboxesOrientation(const bool & orientation);
-
     void setAutoHideCompleted(const bool & hide);
     void setAutoDeleteCompleted(const bool & del);
-
     void setCollections(const QList<Akonadi::Collection::Id> & ids);
 
 private slots:
-
     void fetchCollectionsFinished(KJob * job);
     void fetchItemsFinished(KJob * job);
 
@@ -112,7 +108,6 @@ private slots:
     void itemRemoved(const Akonadi::Item & item);
 
 private:
-
     void addItem(TaskWidgetItem * item);
     void clear();
     void updateCompletedTasks();
@@ -139,6 +134,5 @@ private:
 
     OrderBy m_order;
 };
-
 
 #endif // TASKWIDGET_H

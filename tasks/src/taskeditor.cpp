@@ -23,7 +23,9 @@
 
 #include "taskeditor.h"
 
-TaskEditor::TaskEditor(QWidget * parent): QWidget(parent), m_taskEditor(new Ui::taskedit)
+TaskEditor::TaskEditor(QWidget * parent):
+    QWidget(parent),
+    m_taskEditor(new Ui::taskedit)
 {
     m_taskEditor->setupUi(this);
 
@@ -57,43 +59,31 @@ void TaskEditor::setCollections(const QList< Akonadi::Collection > & collections
     m_taskEditor->comboBox->setEnabled(true);
 
     for (int i = 0; i < collections.count(); i++) {
-
         Akonadi::EntityDisplayAttribute * attribute = collections.at(i).attribute< Akonadi::EntityDisplayAttribute > ();
 
         QString name;
 
         if (collections.contains(collections.at(i).parentCollection())) {
-
             Akonadi::Collection col = collections.at(collections.indexOf(collections.at(i).parentCollection()));
             Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
             if (!attribute) {
-
                 name = col.name();
-
             } else {
-
                 name = attr->displayName();
-
             }
 
             name += " / ";
         }
 
         if (!attribute) {
-
             name += collections.at(i).name();
-
         } else {
-
             name += attribute->displayName();
-
         }
 
         m_taskEditor->comboBox->addItem(name, collections.at(i).id()) ;
-
     }
-
 }
 
 void TaskEditor::setAllDay(const bool & checked)
@@ -109,15 +99,10 @@ void TaskEditor::setStartDate(const KDateTime & dateTime)
     m_taskEditor->dateEditStart->setDate(dateTime.date());
 
     if (m_taskEditor->allDay->isChecked()) {
-
         m_taskEditor->timeEditStart->setEnabled(false);
-
     } else {
-
         m_taskEditor->timeEditStart->setTime(dateTime.time());
-
     }
-
 }
 
 void TaskEditor::setDueDate(const KDateTime & dateTime)
@@ -125,15 +110,10 @@ void TaskEditor::setDueDate(const KDateTime & dateTime)
     m_taskEditor->dateEditDue->setDate(dateTime.date());
 
     if (m_taskEditor->allDay->isChecked()) {
-
         m_taskEditor->timeEditDue->setEnabled(false);
-
     } else {
-
         m_taskEditor->timeEditDue->setTime(dateTime.time());
-
     }
-
 }
 
 void TaskEditor::setName(const QString & name)
@@ -149,49 +129,35 @@ void TaskEditor::setDescription(const QString & description)
 void TaskEditor::updateTodo(const KCalCore::Todo::Ptr & todo)
 {
     if (m_taskEditor->dateTimeStart->isChecked()) {
-
         KDateTime time;
 
         if (m_taskEditor->allDay->isChecked()) {
-
             time = KDateTime(m_taskEditor->dateEditStart->date());
-
         } else {
-
             time = KDateTime(m_taskEditor->dateEditStart->date(), m_taskEditor->timeEditStart->time());
-
         }
 
         todo->setAllDay(m_taskEditor->allDay->isChecked());
         todo->setDtStart(time);
 
     } else {
-
         todo->setHasStartDate(false);
-
     }
 
     if (m_taskEditor->dateTimeDue->isChecked()) {
-
         KDateTime time;
 
         if (m_taskEditor->allDay->isChecked()) {
-
             time = KDateTime(m_taskEditor->dateEditDue->date());
-
         } else {
-
             time = KDateTime(m_taskEditor->dateEditDue->date(), m_taskEditor->timeEditDue->time());
-
         }
 
         todo->setAllDay(m_taskEditor->allDay->isChecked());
         todo->setDtDue(time);
 
     } else {
-
         todo->setHasDueDate(false);
-
     }
 
     todo->setSummary(m_taskEditor->nameEdit->text());
@@ -203,57 +169,36 @@ Akonadi::Entity::Id TaskEditor::selectedCollection()
     return m_taskEditor->comboBox->itemData(m_taskEditor->comboBox->currentIndex()).toInt();
 }
 
-
 void TaskEditor::setAllDayEnabled()
 {
     if (!m_taskEditor->dateTimeDue->isChecked() && !m_taskEditor->dateTimeStart->isChecked()) {
-
         m_taskEditor->allDay->setDisabled(true);
-
     } else {
-
         m_taskEditor->allDay->setEnabled(true);
-
     }
-
 }
 
 void TaskEditor::setTimeDisabled(const bool & disabled)
 {
-    if (m_taskEditor->dateTimeStart->isChecked()) {
-
+    if (m_taskEditor->dateTimeStart->isChecked())
         m_taskEditor->timeEditStart->setDisabled(disabled);
 
-    }
-
-    if (m_taskEditor->dateTimeDue->isChecked()) {
-
+    if (m_taskEditor->dateTimeDue->isChecked())
         m_taskEditor->timeEditDue->setDisabled(disabled);
-
-    }
-
 }
 
 void TaskEditor::setDateTimeStart(const bool & enabled)
 {
     m_taskEditor->dateEditStart->setEnabled(enabled);
 
-    if (!m_taskEditor->allDay->isChecked()) {
-
+    if (!m_taskEditor->allDay->isChecked())
         m_taskEditor->timeEditStart->setEnabled(enabled);
-
-    }
-
 }
 
 void TaskEditor::setDateTimeDue(const bool & enabled)
 {
     m_taskEditor->dateEditDue->setEnabled(enabled);
 
-    if (!m_taskEditor->allDay->isChecked()) {
-
+    if (!m_taskEditor->allDay->isChecked())
         m_taskEditor->timeEditDue->setEnabled(enabled);
-
-    }
-
 }

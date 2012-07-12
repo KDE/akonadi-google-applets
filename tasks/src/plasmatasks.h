@@ -20,11 +20,9 @@
 #define PLASMA_TASKS_HEADER
 
 #include <QList>
-#include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
 #include <KConfigDialog>
-#include <KIcon>
 
 #include <Plasma/PushButton>
 #include <Plasma/PopupApplet>
@@ -43,37 +41,28 @@ class PlasmaTasks : public Plasma::PopupApplet
     Q_OBJECT
 
 public:
-
     PlasmaTasks(QObject * parent, const QVariantList & args);
 
     ~PlasmaTasks() {};
 
     void init();
-
     void createConfigurationInterface(KConfigDialog * parent);
 
 public slots:
-
     void addTask();
-
     void uncheckHideTasks();
     void uncheckDelTasks();
 
 private slots:
-
+    void addFinished(KJob * job);
     void configAccepted();
-
     void createTask();
-
     void fetchCollections();
     void fetchCollectionsForEditor();
     void fetchCollectionsFinished(KJob * job);
     void fetchCollectionsForEditorFinished(KJob * job);
 
-    void addFinished(KJob * job);
-
 private:
-
     void configChanged();
 
     virtual QGraphicsWidget * graphicsWidget();
@@ -93,7 +82,6 @@ private:
     Ui::appearanceconfig appearanceconfigDialog;
 
     QList<Akonadi::Collection> m_collections;
-
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_tasks, PlasmaTasks)

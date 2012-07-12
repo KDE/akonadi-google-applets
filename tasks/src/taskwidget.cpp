@@ -24,23 +24,23 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemDeleteJob>
 
-TaskWidget::TaskWidget(QGraphicsWidget * parent)
-    : QGraphicsWidget(parent),
-      m_backgroundColor("#303030"),
-      m_expiredColor("#c80000"),
-      m_todayColor("#e64600"),
-      m_weekColor("#e6f000"),
-      m_otherColor(""),
-      m_autoHide(false),
-      m_autoDel(false),
-      m_orientation(false),
-      m_order(DNC)
+TaskWidget::TaskWidget(QGraphicsWidget * parent):
+    QGraphicsWidget(parent),
+    m_layout(new TaskLayout(Qt::Vertical, this)),
+    m_backgroundColor("#303030"),
+    m_expiredColor("#c80000"),
+    m_todayColor("#e64600"),
+    m_weekColor("#e6f000"),
+    m_otherColor(""),
+    m_completedColor(""),
+    m_autoHide(false),
+    m_autoDel(false),
+    m_orientation(false),
+    m_monitor(new Akonadi::Monitor),
+    m_order(DNC)
 {
-    m_layout = new TaskLayout(Qt::Vertical, this);
-
     setLayout(m_layout);
 
-    m_monitor = new Akonadi::Monitor();
     m_monitor->itemFetchScope().fetchFullPayload(true);
 
     connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
@@ -107,18 +107,14 @@ void TaskWidget::setCollections(const QList<Akonadi::Entity::Id> & ids)
 
     m_idList = ids;
 
-    if (!m_idList.isEmpty()) {
-
+    if (!m_idList.isEmpty())
         fetchCollections();
-
-    }
-
 }
 
 void TaskWidget::fetchCollections()
 {
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+            Akonadi::CollectionFetchJob::Recursive, this);
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
@@ -127,9 +123,7 @@ void TaskWidget::fetchCollections()
 void TaskWidget::fetchCollectionsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchCollections failed";
-
         return;
     }
 
@@ -140,15 +134,10 @@ void TaskWidget::fetchCollectionsFinished(KJob * job)
     foreach(const Akonadi::Collection & collection, collections) {
 
         if (m_idList.contains(collection.id())) {
-
             m_monitor->setCollectionMonitored(collection, true);
-
             fetchItems(collection);
-
         }
-
     }
-
 }
 
 void TaskWidget::fetchItems(const Akonadi::Collection & collection)
@@ -163,9 +152,7 @@ void TaskWidget::fetchItems(const Akonadi::Collection & collection)
 void TaskWidget::fetchItemsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchItems failed";
-
         return;
     }
 
@@ -176,33 +163,20 @@ void TaskWidget::fetchItemsFinished(KJob * job)
     foreach(const Akonadi::Item & item, items) {
 
         if (item.hasPayload<KCalCore::Todo::Ptr>()) {
-
             TaskWidgetItem * contact;
-
             contact = new TaskWidgetItem(item, this);
-
             addItem(contact);
-
         }
-
     }
-
 }
 
 void TaskWidget::itemDeleted(KJob * job)
 {
-    if (job->error()) {
-
+    if (job->error())
         qDebug() << "Error occurred";
-
-    } else {
-
+    else
         qDebug() << "Item removed successfully";
-
-    }
-
 }
-
 
 void TaskWidget::addItem(TaskWidgetItem * item)
 {
@@ -211,7 +185,6 @@ void TaskWidget::addItem(TaskWidgetItem * item)
     updateCompletedTasks();
 }
 
-
 void TaskWidget::clear()
 {
     m_layout->clear();
@@ -219,11 +192,8 @@ void TaskWidget::clear()
 
 void TaskWidget::updateCompletedTasks()
 {
-    if (!m_autoDel && !m_autoHide) {
-
+    if (!m_autoDel && !m_autoHide)
         return;
-
-    }
 
     QList<TaskWidgetItem*> list = m_layout->updateCompletedTasks();
 
@@ -233,67 +203,47 @@ void TaskWidget::updateCompletedTasks()
         list.at(i)->hide();
 
         if (m_autoDel) {
-
             Akonadi::ItemDeleteJob * job = new Akonadi::ItemDeleteJob(list.at(i)->item());
             connect(job, SIGNAL(result(KJob*)), this, SLOT(itemDeleted(KJob*)));
 
             list.at(i)->deleteLater();
-
         }
-
     }
-
 }
 
 void TaskWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
-    if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
-
+    if (!item.hasPayload<KCalCore::Todo::Ptr>())
         return;
 
-    }
-
     if (m_idList.contains(collection.id())) {
-
         TaskWidgetItem * task;
-
         task = new TaskWidgetItem(item, this);
-
         addItem(task);
-
     }
-
 }
 
 void TaskWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
 {
     Q_UNUSED(array);
 
-    if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
-
+    if (!item.hasPayload<KCalCore::Todo::Ptr>())
         return;
-
-    }
 
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {
-
         task = static_cast<TaskWidgetItem *>(m_layout->itemAt(i));
 
         if (task->operator==(item)) {
-
             task->updateTask(item);
-
             m_layout->updateItem(task);
 
             updateCompletedTasks();
 
             return;
         }
-
     }
-
 }
 
 void TaskWidget::itemRemoved(const Akonadi::Item & item)
@@ -301,20 +251,14 @@ void TaskWidget::itemRemoved(const Akonadi::Item & item)
     TaskWidgetItem * task;
 
     for (int i = 0; i < m_layout->count(); i++) {
-
         task = static_cast<TaskWidgetItem *>(m_layout->itemAt(i));
 
         if (task->operator==(item)) {
-
             task->hide();
-
             m_layout->removeItem(task);
-
             task->deleteLater();
 
             return;
         }
-
     }
-
-}
+} d

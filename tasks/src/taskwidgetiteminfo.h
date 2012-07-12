@@ -30,7 +30,6 @@ class TaskWidgetItemInfo : public Plasma::Frame
     Q_OBJECT
 
 public:
-
     explicit TaskWidgetItemInfo(QGraphicsWidget * parent = 0);
     virtual ~TaskWidgetItemInfo() {};
 
@@ -39,12 +38,10 @@ public:
     void setCheckboxOrientation(const bool & orientation = false);
 
 signals:
-
     void changeCheckstate();
     void textClicked();
 
 private:
-
     QGraphicsLinearLayout * m_layout;
 
     Plasma::IconWidget * m_icon;

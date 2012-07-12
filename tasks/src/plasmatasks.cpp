@@ -16,25 +16,29 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <plasmatasks.h>
+#include "plasmatasks.h"
 
 #include <Plasma/Theme>
 
-#include <KIcon>
-#include <KJob>
-
 #include <QListWidgetItem>
+
+#include <KCalCore/Todo>
 
 #include <Akonadi/Entity>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/ItemCreateJob>
 
-#include <KCalCore/Todo>
-
-PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args)
-    : Plasma::PopupApplet(parent, args),
-      m_widget(0)
+PlasmaTasks::PlasmaTasks(QObject * parent, const QVariantList & args):
+    Plasma::PopupApplet(parent, args),
+    m_widget(0),
+    m_mainLayout(0),
+    m_buttonLayout(0),
+    m_tasksList(0),
+    m_editor(0),
+    m_add(0),
+    m_del(0),
+    m_scroll(0)
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -50,7 +54,6 @@ void PlasmaTasks::init()
 QGraphicsWidget * PlasmaTasks::graphicsWidget()
 {
     if (!m_widget) {
-
         m_tasksList = new TaskWidget(this);
 
         m_scroll = new Plasma::ScrollWidget(this);
@@ -74,7 +77,6 @@ QGraphicsWidget * PlasmaTasks::graphicsWidget()
         m_widget = new QGraphicsWidget(this);
         m_widget->setPreferredSize(300, 500);
         m_widget->setLayout(m_mainLayout);
-
     }
 
     return m_widget;
@@ -99,15 +101,10 @@ void PlasmaTasks::configChanged()
 
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
-    if (list.isEmpty()) {
-
+    if (list.isEmpty())
         setConfigurationRequired(true);
-
-    } else {
-
+    else
         setConfigurationRequired(false);
-
-    }
 
     m_tasksList->setCollections(list);
 }
@@ -185,45 +182,29 @@ void PlasmaTasks::configAccepted()
 
     conf.writeEntry("collections", list);
 
-    if (appearanceconfigDialog.backgroundColor->color().name() != m_tasksList->backgroundColor()) {
-
+    if (appearanceconfigDialog.backgroundColor->color().name() != m_tasksList->backgroundColor())
         conf.writeEntry("backgroundColor", appearanceconfigDialog.backgroundColor->color().name());
-    }
 
-    if (appearanceconfigDialog.expiredColor->color().name() != m_tasksList->expiredColor()) {
-
+    if (appearanceconfigDialog.expiredColor->color().name() != m_tasksList->expiredColor())
         conf.writeEntry("expiredColor", appearanceconfigDialog.expiredColor->color().name());
-    }
 
-    if (appearanceconfigDialog.todayColor->color().name() != m_tasksList->todayColor()) {
-
+    if (appearanceconfigDialog.todayColor->color().name() != m_tasksList->todayColor())
         conf.writeEntry("todayColor", appearanceconfigDialog.todayColor->color().name());
-    }
 
-    if (appearanceconfigDialog.weekColor->color().name() != m_tasksList->weekColor()) {
-
+    if (appearanceconfigDialog.weekColor->color().name() != m_tasksList->weekColor())
         conf.writeEntry("weekColor", appearanceconfigDialog.weekColor->color().name());
-    }
 
-    if (appearanceconfigDialog.otherColor->color().name() != m_tasksList->otherColor()) {
-
+    if (appearanceconfigDialog.otherColor->color().name() != m_tasksList->otherColor())
         conf.writeEntry("otherColor", appearanceconfigDialog.otherColor->color().name());
-    }
 
-    if (appearanceconfigDialog.completedColor->color().name() != m_tasksList->completedColor()) {
-
+    if (appearanceconfigDialog.completedColor->color().name() != m_tasksList->completedColor())
         conf.writeEntry("completedColor", appearanceconfigDialog.completedColor->color().name());
-    }
 
-    if (appearanceconfigDialog.orderBy->currentIndex() != m_tasksList->orderBy()) {
-
+    if (appearanceconfigDialog.orderBy->currentIndex() != m_tasksList->orderBy())
         conf.writeEntry("orderMode", appearanceconfigDialog.orderBy->currentIndex());
-    }
 
-    if (appearanceconfigDialog.orientation->currentIndex() != m_tasksList->checkboxesOrientation()) {
-
+    if (appearanceconfigDialog.orientation->currentIndex() != m_tasksList->checkboxesOrientation())
         conf.writeEntry("orientation", appearanceconfigDialog.orientation->currentIndex());
-    }
 
     emit configNeedsSaving();
 }
@@ -231,24 +212,19 @@ void PlasmaTasks::configAccepted()
 void PlasmaTasks::fetchCollections()
 {
     while (configDialog.collectionsList->count() != 0) {
-
         delete configDialog.collectionsList->item(0);
-
     }
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+            Akonadi::CollectionFetchJob::Recursive, this);
     job->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
-
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
 
 void PlasmaTasks::fetchCollectionsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchCollections failed";
-
         return;
     }
 
@@ -261,7 +237,6 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
         if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
 #endif
             if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
-
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
                 QListWidgetItem * item = new QListWidgetItem();
@@ -269,31 +244,22 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
                 QString name;
 
                 if (collections.contains(collection.parentCollection())) {
-
                     Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
                     Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
                     if (!attribute) {
-
                         name = col.name();
-
                     } else {
-
                         name = attr->displayName();
-
                     }
 
                     name += " / ";
                 }
 
                 if (!attribute) {
-
                     name += collection.name();
-
                 } else {
-
                     name += attribute->displayName();
-
                 }
 
                 item->setText(name);
@@ -302,7 +268,6 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
                 item->setCheckState(Qt::Unchecked);
 
                 configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
-
             }
 #ifndef ALL_COLLECTIONS
         }
@@ -316,25 +281,19 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
             for (int j = 0; j < configDialog.collectionsList->count(); j++) {
 
                 if (m_tasksList->idList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
-
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
-
                 }
-
             }
-
         }
-
     }
-
 }
 
 void PlasmaTasks::fetchCollectionsForEditor()
 {
     m_collections.clear();
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+            Akonadi::CollectionFetchJob::Recursive, this);
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsForEditorFinished(KJob *)));
@@ -351,15 +310,12 @@ void PlasmaTasks::fetchCollectionsForEditorFinished(KJob * job)
         if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
 #endif
             if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
-
                 m_collections.push_back(collection);
-
             }
 #ifndef ALL_COLLECTIONS
         }
 #endif
     }
-
     m_editor->setCollections(m_collections);
 }
 
@@ -386,9 +342,7 @@ void PlasmaTasks::addTask()
         connect(dialog, SIGNAL(cancelClicked()), dialog, SLOT(delayedDestruct()));
 
         dialog->show();
-
     }
-
 }
 
 void PlasmaTasks::uncheckDelTasks()
@@ -414,31 +368,21 @@ void PlasmaTasks::createTask()
     for (int i = 0; i < m_collections.count(); i++) {
 
         if (m_collections.at(i).id() == m_editor->selectedCollection()) {
-
             Akonadi::ItemCreateJob * job = new Akonadi::ItemCreateJob(item, m_collections.at(i));
             connect(job, SIGNAL(result(KJob *)), SLOT(addFinished(KJob *)));
 
             break;
         }
-
     }
-
 }
 
 void PlasmaTasks::addFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "Error occurred";
-
     } else {
-
         qDebug() << "Item added successfully";
-
     }
-
 }
 
 #include "plasmatasks.moc"
-
-

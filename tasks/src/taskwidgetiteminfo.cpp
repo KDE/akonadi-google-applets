@@ -21,16 +21,16 @@
 
 #include <KIcon>
 
-TaskWidgetItemInfo::TaskWidgetItemInfo(QGraphicsWidget * parent): Frame(parent)
+TaskWidgetItemInfo::TaskWidgetItemInfo(QGraphicsWidget * parent):
+    Frame(parent),
+    m_layout(new QGraphicsLinearLayout(Qt::Horizontal, this)),
+    m_icon(new Plasma::IconWidget(this)),
+    m_name(new Plasma::IconWidget(this))
 {
-    m_layout = new QGraphicsLinearLayout(Qt::Horizontal, this);
-
-    m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumSize(20, 20);
     m_icon->setMaximumSize(20, 20);
 
-    m_name = new Plasma::IconWidget(this);
     m_name->setMinimumWidth(50);
     m_name->setMinimumHeight(15);
     m_name->setMaximumHeight(15);
@@ -52,15 +52,11 @@ void TaskWidgetItemInfo::setCompleted(const bool & completed)
     QFont fnt = m_name->font();
 
     if (completed) {
-
         m_icon->setIcon(KIcon("task-complete"));
         fnt.setStrikeOut(true);
-
     } else {
-
         m_icon->setIcon(KIcon("task-reject"));
         fnt.setStrikeOut(false);
-
     }
 
     m_name->setFont(fnt);
@@ -77,14 +73,10 @@ void TaskWidgetItemInfo::setCheckboxOrientation(const bool & orientation)
     m_layout->removeItem(m_name);
 
     if (orientation) {
-
         m_layout->addItem(m_name);
         m_layout->addItem(m_icon);
-
     } else {
-
         m_layout->addItem(m_icon);
         m_layout->addItem(m_name);
-
     }
 }

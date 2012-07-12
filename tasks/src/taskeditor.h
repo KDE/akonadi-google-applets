@@ -36,7 +36,6 @@ class TaskEditor : public QWidget
     Q_OBJECT
 
 public:
-
     explicit TaskEditor(QWidget * parent = 0);
 
     void disableStartDate();
@@ -53,14 +52,12 @@ public:
     Akonadi::Item::Id selectedCollection();
 
 public slots:
-
     void setAllDayEnabled();
     void setTimeDisabled(const bool & disabled);
     void setDateTimeStart(const bool & enabled);
     void setDateTimeDue(const bool & enabled);
 
 private:
-
     Ui::taskedit * m_taskEditor;
 };
 

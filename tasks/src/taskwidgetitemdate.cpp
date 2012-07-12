@@ -19,12 +19,11 @@
 
 #include "taskwidgetitemdate.h"
 
-TaskWidgetItemDate::TaskWidgetItemDate(QGraphicsWidget * parent)
-    : Plasma::Frame(parent)
+TaskWidgetItemDate::TaskWidgetItemDate(QGraphicsWidget * parent):
+    Plasma::Frame(parent),
+    m_layout(new QGraphicsLinearLayout(this)),
+    m_icon(new Plasma::IconWidget(this))
 {
-    m_layout = new QGraphicsLinearLayout(this);
-
-    m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumWidth(50);
     m_icon->setMaximumHeight(15);
@@ -64,5 +63,4 @@ void TaskWidgetItemDate::setColor(const QString & color)
     palette = this->palette();
     palette.setColor(QPalette::Window, clr);
     this->setPalette(palette);
-
 }
