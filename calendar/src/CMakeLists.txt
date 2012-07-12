@@ -19,9 +19,9 @@ include_directories(
 
 set(calendar_SRCS calendarconfig.cpp calendarwidgetdayitem.cpp calendarwidget.cpp agendaconfig.cpp agendawidgetdatelabel.cpp agendawidgetlayout.cpp agendawidget.cpp agendawidgeteventitem.cpp agendawidgetdateitem.cpp plasmacalendar.cpp)
 
-kde4_add_ui_files(calendar_SRCS config.ui)
-kde4_add_ui_files(calendar_SRCS agendaconfig.ui)
-kde4_add_ui_files(calendar_SRCS calendarconfig.ui)
+kde4_add_ui_files(calendar_SRCS ui/config.ui)
+kde4_add_ui_files(calendar_SRCS ui/agendaconfig.ui)
+kde4_add_ui_files(calendar_SRCS ui/calendarconfig.ui)
 
 kde4_add_plugin(plasma_applet_google_calendar ${calendar_SRCS})
 target_link_libraries(plasma_applet_google_calendar
