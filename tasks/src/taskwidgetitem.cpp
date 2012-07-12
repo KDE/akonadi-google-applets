@@ -30,15 +30,15 @@
 
 TaskWidgetItem::TaskWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent):
     Plasma::Frame(parent),
-    m_layout(new QGraphicsLinearLayout(Qt::Vertical, this)),
     m_editor(0),
+    m_layout(new QGraphicsLinearLayout(Qt::Vertical, this)),
     m_date(0),
     m_name(0),
     m_item(item),
     m_indent(0)
 {
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical, this);
-
+    m_todo = m_item.payload<KCalCore::Todo::Ptr>();
+    
     setAutoFillBackground(true);
 
     QColor color = QColor(((TaskWidget *)parentWidget())->backgroundColor());

@@ -261,4 +261,4 @@ void TaskWidget::itemRemoved(const Akonadi::Item & item)
             return;
         }
     }
-} d
+} 
