@@ -28,16 +28,13 @@
 class ContactsLayout : public QGraphicsLinearLayout
 {
 public:
-
     ContactsLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
 
     virtual ~ContactsLayout() {};
-
     virtual QSizeF sizeHint(Qt::SizeHint which, const QSizeF & constraint = QSizeF()) const;
 
     void addItem(ContactWidgetItem * item);
     void clear();
-
 };
 
 #endif // CONTACTSLAYOUT_H

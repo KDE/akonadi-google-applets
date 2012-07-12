@@ -22,25 +22,26 @@
 
 #include <QGraphicsLinearLayout>
 
-#include <Plasma/IconWidget>
-#include <Plasma/Label>
 #include <Plasma/PushButton>
-#include <Plasma/Frame>
 
 #include <KABC/Addressee>
 #include <Akonadi/Item>
 
-#include <QPropertyAnimation>
-
 #include "contactwidgetiteminfo.h"
 #include "contactwidgetiteminfolabel.h"
+
+namespace Plasma
+{
+    class IconWidget;
+    class Label;
+    class Frame;
+}
 
 class ContactWidgetItem : public Plasma::Frame
 {
     Q_OBJECT
 
 public:
-
     ContactWidgetItem(const Akonadi::Item & item, QGraphicsWidget * parent = 0);
 
     virtual ~ContactWidgetItem();
@@ -55,19 +56,16 @@ public:
     bool operator=(const Akonadi::Item & item);
 
 public slots:
-
     void editContact();
     void showContactInfo();
     void openEmail(const QString & string);
     void openLink(const QString & link);
 
 private:
-
     void setContactInfo();
     void setContactIcon();
 
     QGraphicsLinearLayout * m_mainLayout;
-    QPropertyAnimation * m_animation;
     ContactWidgetItemInfo * m_contactInfo;
 
     Plasma::IconWidget * m_icon;

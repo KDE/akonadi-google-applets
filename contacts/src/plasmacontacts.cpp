@@ -16,21 +16,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <plasmacontacts.h>
+#include "plasmacontacts.h"
 
+#include <Plasma/Theme>
+#include <Plasma/LineEdit>
+#include <Plasma/ScrollWidget>
+
+#include <QGraphicsWidget>
 #include <QListWidgetItem>
-
-#include <KABC/Addressee>
 
 #include <Akonadi/Entity>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CollectionFetchScope>
 
-#include <Plasma/Theme>
+#include <KConfigDialog>
 
-PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args)
-    : Plasma::PopupApplet(parent, args),
-      m_widget(0)
+#include <KABC/Addressee>
+
+PlasmaContacts::PlasmaContacts(QObject * parent, const QVariantList & args):
+    Plasma::PopupApplet(parent, args),
+    m_contactList(0),
+    m_widget(0),
+    m_mainLayout(0),
+    m_find(0),
+    m_scroll(0)
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -46,7 +55,6 @@ void PlasmaContacts::init()
 QGraphicsWidget * PlasmaContacts::graphicsWidget()
 {
     if (!m_widget) {
-
         m_find = new Plasma::LineEdit(this);
         m_find->setClearButtonShown(true);
         m_find->setText(i18n("Find contact"));
@@ -67,7 +75,6 @@ QGraphicsWidget * PlasmaContacts::graphicsWidget()
         m_widget = new QGraphicsWidget(this);
         m_widget->setPreferredSize(300, 500);
         m_widget->setLayout(m_mainLayout);
-
     }
 
     return m_widget;
@@ -79,29 +86,17 @@ void PlasmaContacts::configChanged()
 
     m_find->setText("");
 
-    if (conf.readEntry("findData", true) != m_contactList->findData()) {
-
+    if (conf.readEntry("findData", true) != m_contactList->findData())
         m_contactList->setFilterData(conf.readEntry("findData", true));
-
-    }
-
-    if (conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts()) {
-
+    if (conf.readEntry("showEmptyContacts", true) != m_contactList->showEmptyContacts())
         m_contactList->setShowEmptyContacts(conf.readEntry("showEmptyContacts", true));
-
-    }
 
     QList<Akonadi::Item::Id> list = conf.readEntry("collections", QList<Akonadi::Item::Id>());
 
-    if (list.isEmpty()) {
-
+    if (list.isEmpty())
         setConfigurationRequired(true);
-
-    } else {
-
+    else
         setConfigurationRequired(false);
-
-    }
 
     m_contactList->setCollections(list);
 }
@@ -138,13 +133,8 @@ void PlasmaContacts::configAccepted()
     QList<Akonadi::Item::Id> list;
 
     for (int i = 0; i < configDialog.collectionsList->count(); i++) {
-
-        if (configDialog.collectionsList->item(i)->checkState()) {
-
+        if (configDialog.collectionsList->item(i)->checkState())
             list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
-
-        }
-
     }
 
     conf.writeEntry("collections", list);
@@ -161,23 +151,18 @@ void PlasmaContacts::lineChanged(const QString & text)
 
 void PlasmaContacts::lineFocusChanged(const bool & change)
 {
-    if (change && m_find->text().contains(i18n("Find"))) {
-
+    if (change && m_find->text().contains(i18n("Find")))
         m_find->setText("");
-
-    }
 }
 
 void PlasmaContacts::fetchCollections()
 {
     while (configDialog.collectionsList->count() != 0) {
-
         delete configDialog.collectionsList->item(0);
-
     }
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+            Akonadi::CollectionFetchJob::Recursive, this);
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
@@ -186,9 +171,7 @@ void PlasmaContacts::fetchCollections()
 void PlasmaContacts::fetchCollectionsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchCollections failed";
-
         return;
     }
 
@@ -201,7 +184,6 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
         if (collection.resource().contains("akonadi_googlecontacts_resource")) {
 #endif
             if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
-
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
                 QListWidgetItem * item = new QListWidgetItem();
@@ -209,31 +191,21 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
                 QString name;
 
                 if (collections.contains(collection.parentCollection())) {
-
                     Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
                     Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
-                    if (!attribute) {
-
+                    if (!attribute)
                         name = col.name();
-
-                    } else {
-
+                    else
                         name = attr->displayName();
-
-                    }
 
                     name += " / ";
                 }
 
                 if (!attribute) {
-
                     name += collection.name();
-
                 } else {
-
                     name += attribute->displayName();
-
                 }
 
                 item->setText(name);
@@ -242,7 +214,6 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
                 item->setCheckState(Qt::Unchecked);
 
                 configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
-
             }
 #ifndef ALL_COLLECTIONS
         }
@@ -250,23 +221,17 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     }
 
     if (!m_contactList->collectionsList().isEmpty()) {
-
+        
         for (int i = 0; i < m_contactList->collectionsList().count(); i++) {
-
+            
             for (int j = 0; j < configDialog.collectionsList->count(); j++) {
-
-                if (m_contactList->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
-
+                
+                if (m_contactList->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt())
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
 
-                }
-
             }
-
         }
-
     }
-
 }
 
 #include "plasmacontacts.moc"

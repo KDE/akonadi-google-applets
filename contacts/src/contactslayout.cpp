@@ -33,17 +33,12 @@ void ContactsLayout::addItem(ContactWidgetItem * item)
     ContactWidgetItem * tmpItem;
 
     for (int i = 0; i < count(); i++) {
-
         tmpItem = static_cast<ContactWidgetItem *>(itemAt(i));
 
         if (item->operator<(tmpItem)) {
-
             insertItem(i, item);
-
             return;
-
         }
-
     }
 
     item->show();
@@ -56,15 +51,10 @@ void ContactsLayout::clear()
     ContactWidgetItem * item;
 
     while (count() > 0) {
-
         item = static_cast<ContactWidgetItem *>(itemAt(0));
-
         removeItem(item);
-
         item->deleteLater();
-
     }
-
 }
 
 QSizeF ContactsLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) const
@@ -72,15 +62,10 @@ QSizeF ContactsLayout::sizeHint(Qt::SizeHint which, const QSizeF & constraint) c
     QSizeF hint;
     int cnt = count();
 
-    if (cnt == 0) {
-
+    if (cnt == 0)
         hint.setHeight(0);
-
-    } else {
-
+    else
         hint = QGraphicsLinearLayout::sizeHint(which, constraint);
-
-    }
 
     return hint;
 }

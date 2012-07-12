@@ -20,30 +20,30 @@
 #ifndef CONTACTWIDGETITEMINFO_H
 #define CONTACTWIDGETITEMINFO_H
 
-#include <QList>
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
 
-#include <Plasma/IconWidget>
-#include <Plasma/Label>
-
 #include "contactwidgetiteminfolabel.h"
+
+namespace Plasma
+{
+    class Label;
+}
+
+class QGraphicsWidget;
 
 class ContactWidgetItemInfo : public QGraphicsWidget
 {
     Q_OBJECT
 
 public:
-
     ContactWidgetItemInfo(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
-    virtual ~ContactWidgetItemInfo() {};
+    virtual ~ContactWidgetItemInfo() { };
 
     void addInfo(ContactWidgetItemInfoLabel * label);
 
 private:
-
     QGraphicsLinearLayout * m_layout;
-
 
 };
 

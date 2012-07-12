@@ -18,14 +18,10 @@
 
 #include "contactwidgetiteminfo.h"
 
-#include <KIcon>
-#include <KToolInvocation>
-
-ContactWidgetItemInfo::ContactWidgetItemInfo(QGraphicsItem * parent, Qt::WindowFlags wFlags)
-    : QGraphicsWidget(parent, wFlags)
+ContactWidgetItemInfo::ContactWidgetItemInfo(QGraphicsItem * parent, Qt::WindowFlags wFlags):
+    QGraphicsWidget(parent, wFlags),
+    m_layout(new QGraphicsLinearLayout(Qt::Vertical, this))
 {
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical, this);
-
     setLayout(m_layout);
 
     QGraphicsWidget::hide();

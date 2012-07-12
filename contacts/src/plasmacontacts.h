@@ -19,16 +19,10 @@
 #ifndef PLASMA_CONTACTS_HEADER
 #define PLASMA_CONTACTS_HEADER
 
-#include <KConfigDialog>
-#include <KIcon>
-
 #include <Plasma/PopupApplet>
-#include <Plasma/ScrollWidget>
-#include <Plasma/LineEdit>
 
-#include <QList>
-#include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
+#include <QList>
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
@@ -36,12 +30,26 @@
 #include "contactwidget.h"
 #include "ui_config.h"
 
+namespace Plasma
+{
+class ScrollWidget;
+class LineEdit;
+};
+
+namespace Akonadi
+{
+class Collection;
+class CollectionFetchJob;
+}
+
+class KConfigDialog;
+class KIcon;
+
 class PlasmaContacts : public Plasma::PopupApplet
 {
     Q_OBJECT
 
 public:
-
     PlasmaContacts(QObject * parent, const QVariantList & args);
     ~PlasmaContacts() {};
 
@@ -49,29 +57,25 @@ public:
     void createConfigurationInterface(KConfigDialog * parent);
 
 private slots:
-
     void configAccepted();
-
     void fetchCollections();
     void fetchCollectionsFinished(KJob * job);
-
     void lineChanged(const QString & text);
     void lineFocusChanged(const bool & change);
 
 private:
-
     virtual QGraphicsWidget * graphicsWidget();
-
     void configChanged();
 
-    Ui::config configDialog;
+    Ui::Config configDialog;
 
     ContactWidget * m_contactList;
     QGraphicsWidget * m_widget;
     QGraphicsLinearLayout * m_mainLayout;
 
-    Plasma::ScrollWidget * m_scroll;
     Plasma::LineEdit * m_find;
+    Plasma::ScrollWidget * m_scroll;
+
 };
 
 K_EXPORT_PLASMA_APPLET(plasma_google_contacts, PlasmaContacts)

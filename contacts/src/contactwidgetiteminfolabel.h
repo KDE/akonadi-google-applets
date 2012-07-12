@@ -30,7 +30,6 @@ class ContactWidgetItemInfoLabel : public Plasma::Frame
     Q_OBJECT
 
 public:
-
     explicit ContactWidgetItemInfoLabel(QGraphicsWidget * parent = 0);
     virtual ~ContactWidgetItemInfoLabel() {};
 
@@ -38,18 +37,14 @@ public:
     void setIcon(const QString & icon);
 
 private slots:
-
     void clicked();
 
-private:
-
-    Plasma::IconWidget * m_icon;
-
-    QGraphicsLinearLayout * m_layout;
-
 signals:
-
     void clicked(const QString & email);
+
+private:
+    Plasma::IconWidget * m_icon;
+    QGraphicsLinearLayout * m_layout;
 };
 
 #endif // CONTACTWIDGETITEMINFOLABEL_H

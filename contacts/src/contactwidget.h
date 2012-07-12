@@ -21,18 +21,21 @@
 #define CONTACTWIDGET_H
 
 #include <QList>
-#include <QGraphicsWidget>
-#include <QGraphicsLayoutItem>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Collection>
 #include <Akonadi/Monitor>
 
-#include <Plasma/IconWidget>
-#include <Plasma/Label>
-
 #include "contactwidgetitem.h"
 #include "contactslayout.h"
+
+namespace Plasma
+{
+    class IconWidget;
+    class Label;
+}
+
+class QGraphicsWidget;
 
 class ContactWidget : public QGraphicsWidget
 {
