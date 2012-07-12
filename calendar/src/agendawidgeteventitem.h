@@ -34,7 +34,6 @@ class AgendaWidgetEventItem : public Plasma::Frame
     Q_OBJECT
 
 public:
-
     explicit AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGraphicsWidget * parent = 0);
     virtual ~AgendaWidgetEventItem() {};
 
@@ -52,11 +51,9 @@ public:
     void setEventEndTime(const QTime & end);
 
 public slots:
-
     void edit();
 
 private:
-
     QGraphicsLinearLayout * m_mainLayout;
     QGraphicsLinearLayout * m_textLayout;
 

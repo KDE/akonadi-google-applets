@@ -19,7 +19,9 @@
 
 #include "calendarconfig.h"
 
-CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarConfig(new Ui::calendarConfig)
+CalendarConfig::CalendarConfig(QWidget * parent):
+    QWidget(parent),
+    m_calendarConfig(new Ui::calendarConfig)
 {
     m_calendarConfig->setupUi(this);
 
@@ -28,7 +30,6 @@ CalendarConfig::CalendarConfig(QWidget * parent): QWidget(parent), m_calendarCon
     connect(m_calendarConfig->outdatedMonth, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_calendarConfig->currentEvent, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_calendarConfig->outdatedEvent, SIGNAL(changed(QColor)), SIGNAL(changed()));
-
 }
 
 void CalendarConfig::setSelectedDayColor(const QColor & color)

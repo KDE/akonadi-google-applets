@@ -21,21 +21,18 @@
 
 #include <KRun>
 
-AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGraphicsWidget * parent)
-    : Plasma::Frame(parent),
-      m_line(0),
-      m_eventName(0),
-      m_timeText(0),
-      m_hasStartTime(false),
-      m_hasEndTime(false)
+AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGraphicsWidget * parent):
+    Plasma::Frame(parent),
+    m_mainLayout(new QGraphicsLinearLayout(this)),
+    m_textLayout(new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout)),
+    m_line(new QGraphicsWidget),
+    m_eventName(0),
+    m_timeText(0),
+    m_hasStartTime(false),
+    m_hasEndTime(false),
+    m_id(id)
 {
-    m_id = id;
-
-    m_mainLayout = new QGraphicsLinearLayout(this);
-    m_textLayout = new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout);
     m_textLayout->setContentsMargins(5, 2, 2, 2);
-
-    m_line = new QGraphicsWidget();
 
     m_line->setMinimumHeight(5);
     m_line->setMaximumHeight(35);
@@ -71,10 +68,8 @@ void AgendaWidgetEventItem::setColor(const QString & color)
 void AgendaWidgetEventItem::setEventName(const QString & name)
 {
     if (m_eventName) {
-
         delete m_eventName;
         m_eventName = 0;
-
     }
 
     QFont font = this->font();
@@ -86,15 +81,10 @@ void AgendaWidgetEventItem::setEventName(const QString & name)
     m_eventName->setMaximumHeight(15);
     m_eventName->setText(name);
 
-    if (!m_timeText) {
-
+    if (!m_timeText)
         m_textLayout->addItem(m_eventName);
-
-    } else {
-
+    else
         m_textLayout->insertItem(0, m_eventName);
-
-    }
 
     m_textLayout->setAlignment(m_eventName, Qt::AlignCenter);
 
@@ -118,10 +108,8 @@ void AgendaWidgetEventItem::setEventTime(const QTime & start, const QTime & end)
     font.setPointSize(font.pointSize() - 2);
 
     if (m_timeText) {
-
         delete m_timeText;
         m_timeText = 0;
-
     }
 
     m_timeText = new Plasma::IconWidget(this);
@@ -151,10 +139,8 @@ void AgendaWidgetEventItem::setEventStartTime(const QTime & start)
     font.setPointSize(font.pointSize() - 2);
 
     if (m_timeText) {
-
         delete m_timeText;
         m_timeText = 0;
-
     }
 
     m_timeText = new Plasma::IconWidget(this);
@@ -181,10 +167,8 @@ void AgendaWidgetEventItem::setEventEndTime(const QTime & end)
     time += " " + m_endTime.toString("hh:mm");
 
     if (m_timeText) {
-
         delete m_timeText;
         m_timeText = 0;
-
     }
 
     QFont font = this->font();
@@ -209,37 +193,25 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
         if (m_startTime == item->m_startTime) {
 
             if (m_hasEndTime && item->m_hasEndTime) {
-
                 return (m_endTime > item->m_endTime);
-
             } else {
 
                 if (m_hasEndTime) {
-
                     return false;
-
                 } else {
-
                     return true;
-
                 }
-
             }
 
         } else {
-
             return (m_startTime > item->m_startTime);
-
         }
-
     }
 
     if (m_hasStartTime && !item->m_hasStartTime) {
 
         if (!m_hasEndTime && item->m_hasEndTime) {
-
             return (m_startTime > item->m_endTime);
-
         }
 
         return false;
@@ -247,13 +219,10 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
     } else if (!m_hasStartTime && item->m_hasStartTime) {
 
         if (m_hasEndTime && !item->m_hasEndTime) {
-
             return (m_endTime > item->m_startTime);
-
         }
 
         return true;
-
     }
 
     if (m_hasEndTime && item->m_hasEndTime) {
@@ -261,43 +230,28 @@ bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
         if (m_endTime == item->m_endTime) {
 
             if (m_hasEndTime && item->m_hasEndTime) {
-
                 return (m_endTime > item->m_endTime);
-
             } else {
 
                 if (m_hasEndTime) {
-
                     return false;
-
                 } else {
-
                     return true;
-
                 }
-
             }
 
         } else {
-
             return (m_endTime < item->m_endTime);
-
         }
-
     }
 
     if (m_hasEndTime && !item->m_hasEndTime) {
-
         return false;
-
     } else if (!m_hasEndTime && item->m_hasEndTime) {
-
         return true;
-
     }
 
     return (m_eventName->text().toLower() > item->m_eventName->text().toLower());
-
 }
 
 bool AgendaWidgetEventItem::operator==(const Akonadi::Entity::Id & id)
@@ -311,4 +265,3 @@ void AgendaWidgetEventItem::edit()
 
     KRun::runCommand(cmd, 0);
 }
-

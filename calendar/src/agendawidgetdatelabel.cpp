@@ -19,12 +19,11 @@
 
 #include "agendawidgetdatelabel.h"
 
-AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent)
-    : Plasma::Frame(parent)
+AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent):
+    Plasma::Frame(parent),
+    m_layout(new QGraphicsLinearLayout(this)),
+    m_icon(new Plasma::IconWidget(this))
 {
-    m_layout = new QGraphicsLinearLayout(this);
-
-    m_icon = new Plasma::IconWidget(this);
     m_icon->setOrientation(Qt::Horizontal);
     m_icon->setMinimumWidth(50);
     m_icon->setMinimumHeight(20);

@@ -28,7 +28,6 @@
 class AgendaWidgetLayout : public QGraphicsLinearLayout
 {
 public:
-
     AgendaWidgetLayout(Qt::Orientation orientation, QGraphicsLayoutItem * parent = 0);
 
     virtual ~AgendaWidgetLayout() {};
@@ -39,7 +38,6 @@ public:
 
     void addDateItem(AgendaWidgetDateItem * item);
     void addEventItem(const QDate & date, AgendaWidgetEventItem * item);
-
     void clear();
     void removeEvent(const Akonadi::Entity::Id & eventId);
 };

@@ -21,7 +21,8 @@
 
 #include <KIcon>
 
-AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent), m_agendaConfig(new Ui::agendaConfig)
+AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent),
+    m_agendaConfig(new Ui::agendaConfig)
 {
     m_agendaConfig->setupUi(this);
 
@@ -47,15 +48,10 @@ void AgendaConfig::calendarChanged(const int & index)
 {
     Akonadi::Entity::Id id = m_agendaConfig->calendarsList->itemData(index).toInt();
 
-    if (m_calendarsColors.contains(id)) {
-
+    if (m_calendarsColors.contains(id))
         m_agendaConfig->calendarColor->setColor(QColor(m_calendarsColors[id]));
-
-    } else {
-
+    else
         m_agendaConfig->calendarColor->setColor(QColor("#00C000"));
-
-    }
 }
 
 void AgendaConfig::colorChanged(const QColor & color)
@@ -69,11 +65,8 @@ void AgendaConfig::colorChanged(const QColor & color)
 void AgendaConfig::clear()
 {
     while (m_agendaConfig->calendarsList->count() != 0) {
-
         m_agendaConfig->calendarsList->removeItem(0);
-
     }
-
 }
 
 void AgendaConfig::addItem(const QString & text, const int & id)
@@ -106,9 +99,7 @@ void AgendaConfig::setUpcomingDays(const int & days)
     m_agendaConfig->upcomingDays->setCurrentIndex(days);
 }
 
-
 void AgendaConfig::setCalendarsColors(const QMap< Akonadi::Entity::Id, QString > & colors)
 {
     m_calendarsColors = colors;
 }
-

@@ -58,11 +58,9 @@ public:
     void setOutdatedEventColor(const QColor & color);
 
 signals:
-
     void changed();
 
 private:
-
     Ui::calendarConfig * m_calendarConfig;
 
 };

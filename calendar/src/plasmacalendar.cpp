@@ -29,9 +29,16 @@
 #include <Plasma/PushButton>
 #include <Plasma/IconWidget>
 
-PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args)
-    : Plasma::PopupApplet(parent, args),
-      m_widget(0)
+PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args):
+    Plasma::PopupApplet(parent, args),
+    agendaConfigDialog(0),
+    calendarConfigDialog(0),
+    m_widget(0),
+    m_layout(0),
+    m_agenda(0),
+    m_calendar(0),
+    m_scroll(0),
+    m_tab(0)
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -47,7 +54,6 @@ void PlasmaCalendar::init()
 QGraphicsWidget * PlasmaCalendar::graphicsWidget()
 {
     if (!m_widget) {
-
         m_agenda = new AgendaWidget(this);
         m_calendar = new CalendarWidget(this);
 
@@ -73,11 +79,9 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
         m_widget = new QGraphicsWidget(this);
         m_widget->setPreferredSize(300, 500);
         m_widget->setLayout(m_layout);
-
     }
 
     return m_widget;
-
 }
 
 void PlasmaCalendar::configChanged()
@@ -94,26 +98,18 @@ void PlasmaCalendar::configChanged()
     m_agenda->setWeeks(conf.readEntry("weeks", 1));
     m_agenda->setUpcomingDays(conf.readEntry("upcomingDays", 3));
 
-    if (list.isEmpty()) {
-
+    if (list.isEmpty())
         setConfigurationRequired(true);
-
-    } else {
-
+    else
         setConfigurationRequired(false);
-
-    }
 
     m_agenda->setCollections(list);
 
     foreach(Akonadi::Entity::Id id, m_agenda->collectionsList()) {
-
         map.insert(id, conf.readEntry(QString::number(id), "#00C000"));
-
     }
 
     m_agenda->setCalendarsColors(map);
-
 
     m_calendar->setDateColor(conf.readEntry("dateColor", "#343E88"));
     m_calendar->setEventBackgroundColor(conf.readEntry("eventBackgroundColor", "#303030"));
@@ -181,76 +177,56 @@ void PlasmaCalendar::configAccepted()
     for (int i = 0; i < configDialog.collectionsList->count(); i++) {
 
         if (configDialog.collectionsList->item(i)->checkState()) {
-
             list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
-
         }
 
     }
 
-    if (agendaConfigDialog->dateColor() != m_agenda->dateColor()) {
-
+    if (agendaConfigDialog->dateColor() != m_agenda->dateColor())
         conf.writeEntry("dateColor", agendaConfigDialog->dateColor());
-    }
 
-    if (agendaConfigDialog->upcomingDateColor() != m_agenda->upcomingDateColor()) {
 
+    if (agendaConfigDialog->upcomingDateColor() != m_agenda->upcomingDateColor())
         conf.writeEntry("upcomingDateColor", agendaConfigDialog->upcomingDateColor());
-    }
 
-    if (agendaConfigDialog->eventBackgroundColor() != m_agenda->eventBackgroundColor()) {
 
+    if (agendaConfigDialog->eventBackgroundColor() != m_agenda->eventBackgroundColor())
         conf.writeEntry("eventBackgroundColor", agendaConfigDialog->eventBackgroundColor());
-    }
 
-    if (agendaConfigDialog->weeks() != m_agenda->weeks()) {
 
+    if (agendaConfigDialog->weeks() != m_agenda->weeks())
         conf.writeEntry("weeks", agendaConfigDialog->weeks());
-    }
 
-    if (agendaConfigDialog->upcomingDays() != m_agenda->upcomingDays()) {
 
+    if (agendaConfigDialog->upcomingDays() != m_agenda->upcomingDays())
         conf.writeEntry("upcomingDays", agendaConfigDialog->upcomingDays());
 
-    }
+
 
     conf.writeEntry("collections", list);
 
     foreach(Akonadi::Entity::Id id, agendaConfigDialog->calendarsColors().keys()) {
-
         conf.writeEntry(QString::number(id), agendaConfigDialog->calendarsColors()[id]);
-
     }
 
-    if (calendarConfigDialog->selectedDayColor() != m_calendar->selectedDayColor()) {
-
+    if (calendarConfigDialog->selectedDayColor() != m_calendar->selectedDayColor())
         conf.writeEntry("selectedDayColor", calendarConfigDialog->selectedDayColor());
 
-    }
 
-    if (calendarConfigDialog->currentMonthColor() != m_calendar->currentMonthColor()) {
-
+    if (calendarConfigDialog->currentMonthColor() != m_calendar->currentMonthColor())
         conf.writeEntry("currentMonthColor", calendarConfigDialog->currentMonthColor());
 
-    }
 
-    if (calendarConfigDialog->outdatedMonthColor() != m_calendar->outdatedMonthColor()) {
-
+    if (calendarConfigDialog->outdatedMonthColor() != m_calendar->outdatedMonthColor())
         conf.writeEntry("outdatedMonthColor", calendarConfigDialog->outdatedMonthColor());
 
-    }
 
-    if (calendarConfigDialog->currentEventColor() != m_calendar->currentEventColor()) {
-
+    if (calendarConfigDialog->currentEventColor() != m_calendar->currentEventColor())
         conf.writeEntry("currentEventColor", calendarConfigDialog->currentEventColor());
 
-    }
 
-    if (calendarConfigDialog->outdatedEventColor() != m_calendar->outdatedEventColor()) {
-
+    if (calendarConfigDialog->outdatedEventColor() != m_calendar->outdatedEventColor())
         conf.writeEntry("outdatedEventColor", calendarConfigDialog->outdatedEventColor());
-
-    }
 
     emit configNeedsSaving();
 }
@@ -262,24 +238,15 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
         if (constraints & Plasma::FormFactorConstraint) {
 
             if (formFactor() == 2) {
-
                 connect(m_widget, SIGNAL(geometryChanged()), SLOT(widgetGeometryChanged()));
-
             } else {
-
                 m_widget->disconnect(SIGNAL(geometryChanged()));
-
             }
-
         }
-
     }
 
-    if (constraints & Plasma::SizeConstraint) {
-
+    if (constraints & Plasma::SizeConstraint)
         m_calendar->updateSize(size());
-
-    }
 
 }
 
@@ -291,13 +258,11 @@ void PlasmaCalendar::widgetGeometryChanged()
 void PlasmaCalendar::fetchCollections()
 {
     while (configDialog.collectionsList->count() != 0) {
-
         delete configDialog.collectionsList->item(0);
-
     }
 
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+            Akonadi::CollectionFetchJob::Recursive, this);
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
@@ -310,22 +275,16 @@ void PlasmaCalendar::updateCalendars()
     for (int i = 0; i < configDialog.collectionsList->count(); i++) {
 
         if (configDialog.collectionsList->item(i)->checkState() == Qt::Checked) {
-
             agendaConfigDialog->addItem(configDialog.collectionsList->item(i)->text(),
                                         configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());
-
         }
-
     }
-
 }
 
 void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchCollections failed";
-
         return;
     }
 
@@ -338,7 +297,6 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
         if (collection.resource().contains("akonadi_googlecalendar_resource")) {
 #endif
             if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
-
                 Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
                 QListWidgetItem * item = new QListWidgetItem();
@@ -346,31 +304,22 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
                 QString name;
 
                 if (collections.contains(collection.parentCollection())) {
-
                     Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
                     Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
                     if (!attribute) {
-
                         name = col.name();
-
                     } else {
-
                         name = attr->displayName();
-
                     }
 
                     name += " / ";
                 }
 
                 if (!attribute) {
-
                     name += collection.name();
-
                 } else {
-
                     name += attribute->displayName();
-
                 }
 
                 item->setText(name);
@@ -379,7 +328,6 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
                 item->setCheckState(Qt::Unchecked);
 
                 configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
-
             }
 #ifndef ALL_COLLECTIONS
         }
@@ -393,17 +341,11 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
             for (int j = 0; j < configDialog.collectionsList->count(); j++) {
 
                 if (m_agenda->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
-
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
-
                 }
-
             }
-
         }
-
     }
-
     updateCalendars();
 }
 
@@ -413,4 +355,3 @@ void PlasmaCalendar::createEvent()
 }
 
 #include "plasmacalendar.moc"
-

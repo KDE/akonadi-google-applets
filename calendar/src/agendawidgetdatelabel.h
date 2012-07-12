@@ -31,7 +31,6 @@ class AgendaWidgetDateLabel : public Plasma::Frame
     Q_OBJECT
 
 public:
-
     AgendaWidgetDateLabel(QGraphicsWidget * parent = 0);
     virtual ~AgendaWidgetDateLabel() {};
 
@@ -39,7 +38,6 @@ public:
     void setText(const QString & date);
 
 private:
-
     QGraphicsLinearLayout * m_layout;
 
     Plasma::IconWidget * m_icon;

@@ -21,13 +21,11 @@
 
 #include <KIcon>
 
-AgendaWidgetDateItem::AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent)
-    : Plasma::Frame(parent)
+AgendaWidgetDateItem::AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent):
+    Plasma::Frame(parent),
+    m_layout(new QGraphicsLinearLayout(Qt::Vertical, this)),
+    m_dateLabel(new AgendaWidgetDateLabel(this))
 {
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical, this);
-
-    m_dateLabel = new AgendaWidgetDateLabel(this);
-
     m_layout->addItem(m_dateLabel);
 
     setDate(date);
@@ -49,15 +47,12 @@ void AgendaWidgetDateItem::addEvent(AgendaWidgetEventItem * event)
     AgendaWidgetEventItem * item;
 
     for (int i = 1; i < m_layout->count(); i++) {
-
         item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
 
         if (item->operator<(event)) {
-
             m_layout->insertItem(i, event);
             return;
         }
-
     }
 
     m_layout->addItem(event);
@@ -68,18 +63,13 @@ void AgendaWidgetDateItem::clear()
     AgendaWidgetEventItem * item;
 
     for (int i = 1; i < m_layout->count(); i++) {
-
         item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
-
         item->deleteLater();
         m_layout->removeItem(item);
 
         i--;
-
     }
-
 }
-
 
 void AgendaWidgetDateItem::setBackgroundColor(const QString & color)
 {
@@ -108,20 +98,13 @@ void AgendaWidgetDateItem::removeEvent(const Akonadi::Entity::Id & eventId)
     AgendaWidgetEventItem * item;
 
     for (int i = 1; i < m_layout->count(); i++) {
-
         item = static_cast<AgendaWidgetEventItem*>(m_layout->itemAt(i));
 
         if (item->operator==(eventId)) {
-
             m_layout->removeItem(item);
-
             item->deleteLater();
 
             i--;
-
         }
-
     }
-
 }
-

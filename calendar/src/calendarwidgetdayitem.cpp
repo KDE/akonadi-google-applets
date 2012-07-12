@@ -19,10 +19,10 @@
 
 #include "calendarwidgetdayitem.h"
 
-CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
-    : IconWidget(parent),
-      m_layout(0),
-      m_event(false)
+CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent):
+    IconWidget(parent),
+    m_layout(0),
+    m_event(false)
 {
     setMinimumSize(10, 10);
     setDrawBackground(true);
@@ -34,9 +34,7 @@ CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent)
 void CalendarWidgetDayItem::setDay(const QDate & date)
 {
     m_date = date;
-
     setText(QString::number(m_date.day()));
-
     update();
 }
 

@@ -31,7 +31,6 @@ class AgendaConfig : public QWidget
     Q_OBJECT
 
 public:
-
     explicit AgendaConfig(QWidget * parent = 0);
 
     QMap<Akonadi::Entity::Id, QString> calendarsColors() const {
@@ -68,21 +67,17 @@ public:
     void setCalendarsColors(const QMap<Akonadi::Entity::Id, QString> & colors);
 
 public slots:
-
     void calendarChanged(const int & index);
     void colorChanged(const QColor & color);
 
 private slots:
-
     void loadCalendarsClicked();
 
 signals:
-
     void updateCalendars();
     void changed();
 
 private:
-
     Ui::agendaConfig * m_agendaConfig;
 
     QMap<Akonadi::Entity::Id, QString> m_calendarsColors;

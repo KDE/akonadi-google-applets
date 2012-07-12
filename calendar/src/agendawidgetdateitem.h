@@ -34,7 +34,6 @@ class AgendaWidgetDateItem : public Plasma::Frame
     Q_OBJECT
 
 public:
-
     AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent = 0);
     virtual ~AgendaWidgetDateItem() {};
 
@@ -54,9 +53,7 @@ public:
     void removeEvent(const Akonadi::Entity::Id & eventId);
 
 private:
-
     QGraphicsLinearLayout * m_layout;
-
     AgendaWidgetDateLabel * m_dateLabel;
 
     QDate m_date;

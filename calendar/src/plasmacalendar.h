@@ -41,7 +41,6 @@ class PlasmaCalendar : public Plasma::PopupApplet
     Q_OBJECT
 
 public:
-
     PlasmaCalendar(QObject *parent, const QVariantList &args);
     ~PlasmaCalendar() {};
 
@@ -49,24 +48,18 @@ public:
     void createConfigurationInterface(KConfigDialog * parent);
 
 public slots:
-
     void configAccepted();
     void createEvent();
-
     void fetchCollections();
     void fetchCollectionsFinished(KJob * job);
-
     void updateCalendars();
     void widgetGeometryChanged();
 
 protected:
-
     void constraintsEvent(Plasma::Constraints constraints);
 
 private:
-
     virtual QGraphicsWidget * graphicsWidget();
-
     void configChanged();
 
     Ui::config configDialog;

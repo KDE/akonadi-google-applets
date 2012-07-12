@@ -43,7 +43,6 @@ class CalendarWidget : public QGraphicsWidget
     Q_OBJECT
 
 public:
-
     CalendarWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
     virtual ~CalendarWidget() {};
 
@@ -98,7 +97,6 @@ public:
     void setOutdatedEventColor(const QString & color);
 
 public slots:
-
     void fetchCollectionsFinished(KJob * job);
     void fetchItemsFinished(KJob * job);
 
@@ -118,7 +116,6 @@ public slots:
     void itemRemoved(const Akonadi::Item & item);
 
 private:
-
     void fetchCollections();
     void fetchItems(const Akonadi::Collection & collection);
 

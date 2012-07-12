@@ -27,19 +27,18 @@
 
 #include <KCalCore/Event>
 
-AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
-    : QGraphicsWidget(parent, wFlags),
-      m_dateColor("#343E88"),
-      m_upcomingDateColor("#C00000"),
-      m_eventBackgroundColor("#303030"),
-      m_weeks(1),
-      m_upcomingDays(3)
+AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags):
+    QGraphicsWidget(parent, wFlags),
+    m_layout(new AgendaWidgetLayout(Qt::Vertical, this)),
+    m_dateColor("#343E88"),
+    m_upcomingDateColor("#C00000"),
+    m_eventBackgroundColor("#303030"),
+    m_weeks(1),
+    m_upcomingDays(3),
+    m_monitor(new Akonadi::Monitor)
 {
-    m_layout = new AgendaWidgetLayout(Qt::Vertical, this);
-
     setLayout(m_layout);
 
-    m_monitor = new Akonadi::Monitor();
     m_monitor->itemFetchScope().fetchFullPayload(true);
 
     connect(m_monitor, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)),
@@ -86,18 +85,14 @@ void AgendaWidget::setCollections(const QList< Akonadi::Entity::Id > & ids)
 
     m_idList = ids;
 
-    if (!m_idList.isEmpty()) {
-
+    if (!m_idList.isEmpty())
         fetchCollections();
-
-    }
-
 }
 
 void AgendaWidget::fetchCollections()
 {
-    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-
+    Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+            Akonadi::CollectionFetchJob::Recursive, this);
     job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
@@ -106,9 +101,7 @@ void AgendaWidget::fetchCollections()
 void AgendaWidget::fetchCollectionsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchCollections failed";
-
         return;
     }
 
@@ -119,15 +112,10 @@ void AgendaWidget::fetchCollectionsFinished(KJob * job)
     foreach(const Akonadi::Collection & collection, collections) {
 
         if (m_idList.contains(collection.id())) {
-
             m_monitor->setCollectionMonitored(collection);
-
             fetchItems(collection);
-
         }
-
     }
-
 }
 
 void AgendaWidget::fetchItems(const Akonadi::Collection & collection)
@@ -142,9 +130,7 @@ void AgendaWidget::fetchItems(const Akonadi::Collection & collection)
 void AgendaWidget::fetchItemsFinished(KJob * job)
 {
     if (job->error()) {
-
         qDebug() << "fetchItems failed";
-
         return;
     }
 
@@ -155,13 +141,9 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
     foreach(const Akonadi::Item & item, items) {
 
         if (item.hasPayload<KCalCore::Event::Ptr>()) {
-
             addItem(item);
-
         }
-
     }
-
 }
 
 void AgendaWidget::addItem(const Akonadi::Item & item)
@@ -178,57 +160,40 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     int daysTo = dateStart.daysTo(dateEnd);
 
     if (dateStart > max) {
-
         return;
-
     } else if (dateStart < min && dateEnd < min && !event->recurs()) {
-
         return;
-
     } else if (dateStart < min && event->recurs()) {
-
         date = event->recurrence()->getPreviousDateTime(KDateTime(min)).date();
 
         if (date.addDays(daysTo) < min) {
-
             date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
-
         }
 
         if (date.addDays(daysTo) < min || date > max) {
-
             return;
-
         }
-
     }
 
     while (date < max) {
-
         AgendaWidgetEventItem * newEvent;
         AgendaWidgetDateItem * dateItem;
 
         for (int i = 1; i < daysTo; i++) {
 
             if (date.addDays(i) >= min  && date.addDays(i) <= max) {
-
                 newEvent = new AgendaWidgetEventItem(item.id());
                 newEvent->setEventName(event->summary());
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!m_layout->existDateItem(date.addDays(i))) {
-
                     dateItem = new AgendaWidgetDateItem(date.addDays(i) , this);
                     dateItem->setBackgroundColor(m_eventBackgroundColor);
 
                     if (min.daysTo(date.addDays(i)) < m_upcomingDays) {
-
                         dateItem->setDateColor(m_upcomingDateColor);
-
                     } else {
-
                         dateItem->setDateColor(m_dateColor);
-
                     }
 
                     m_layout->addDateItem(dateItem);
@@ -236,162 +201,114 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
                 }
 
                 m_layout->addEventItem(date.addDays(i) , newEvent);
-
             }
         }
 
         if (dateStart == dateEnd) {
-
             newEvent = new AgendaWidgetEventItem(item.id());
             newEvent->setEventName(event->summary());
             newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
             if (!event->allDay()) {
-
                 newEvent->setEventTime(event->dtStart().time(), event->dtEnd().time());
-
             }
 
             if (!m_layout->existDateItem(date)) {
-
                 dateItem = new AgendaWidgetDateItem(date, this);
                 dateItem->setBackgroundColor(m_eventBackgroundColor);
 
                 if (min.daysTo(date) < m_upcomingDays) {
-
                     dateItem->setDateColor(m_upcomingDateColor);
-
                 } else {
-
                     dateItem->setDateColor(m_dateColor);
-
                 }
 
                 m_layout->addDateItem(dateItem);
-
             }
 
             m_layout->addEventItem(date, newEvent);
 
-
         } else {
 
             if (date >= min) {
-
                 newEvent = new AgendaWidgetEventItem(item.id());
                 newEvent->setEventName(event->summary());
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!event->allDay()) {
-
                     newEvent->setEventStartTime(event->dtStart().time());
-
                 }
 
                 if (!m_layout->existDateItem(date)) {
-
                     dateItem = new AgendaWidgetDateItem(date , this);
                     dateItem->setBackgroundColor(m_eventBackgroundColor);
 
                     if (min.daysTo(date) < m_upcomingDays) {
-
                         dateItem->setDateColor(m_upcomingDateColor);
-
                     } else {
-
                         dateItem->setDateColor(m_dateColor);
-
                     }
 
                     m_layout->addDateItem(dateItem);
-
                 }
 
                 m_layout->addEventItem(date, newEvent);
-
             }
 
             if (dateEnd <= max) {
-
                 newEvent = new AgendaWidgetEventItem(item.id());
                 newEvent->setEventName(event->summary());
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!event->allDay()) {
-
                     newEvent->setEventEndTime(event->dtEnd().time());
-
                 }
 
                 if (!m_layout->existDateItem(date.addDays(daysTo))) {
-
                     dateItem = new AgendaWidgetDateItem(date.addDays(daysTo) , this);
                     dateItem->setBackgroundColor(m_eventBackgroundColor);
 
                     if (min.daysTo(date.addDays(daysTo)) < m_upcomingDays) {
-
                         dateItem->setDateColor(m_upcomingDateColor);
-
                     } else {
-
                         dateItem->setDateColor(m_dateColor);
-
                     }
 
                     m_layout->addDateItem(dateItem);
-
                 }
 
                 m_layout->addEventItem(date.addDays(daysTo), newEvent);
-
             }
-
         }
 
         if (event->recurs()) {
-
             date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
 
             if (date.isNull()) {
-
                 return;
-
             }
 
         } else {
-
             return;
-
         }
-
     }
-
 }
 
 void AgendaWidget::itemAdded(const Akonadi::Item & item, const Akonadi::Collection & collection)
 {
-    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
-
+    if (!item.hasPayload<KCalCore::Event::Ptr>())
         return;
 
-    }
-
-    if (m_idList.contains(collection.id())) {
-
+    if (m_idList.contains(collection.id()))
         addItem(item);
-
-    }
 }
 
 void AgendaWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > array)
 {
     Q_UNUSED(array);
 
-    if (!item.hasPayload<KCalCore::Event::Ptr>()) {
-
+    if (!item.hasPayload<KCalCore::Event::Ptr>())
         return;
-
-    }
 
     itemRemoved(item);
     itemAdded(item, item.parentCollection());
@@ -401,4 +318,3 @@ void AgendaWidget::itemRemoved(const Akonadi::Item & item)
 {
     m_layout->removeEvent(item.id());
 }
-

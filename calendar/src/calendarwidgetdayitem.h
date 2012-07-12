@@ -30,7 +30,6 @@ class CalendarWidgetDayItem : public Plasma::IconWidget
     Q_OBJECT
 
 public:
-
     explicit CalendarWidgetDayItem(QGraphicsItem * parent = 0);
     virtual ~CalendarWidgetDayItem() {};
 
@@ -47,19 +46,14 @@ public:
     void setColor(const QString & color);
 
 public slots:
-
     void clicked();
 
 signals:
-
     void clicked(const QDate & date);
 
 private:
-
     QGraphicsLinearLayout * m_layout;
-
     QDate m_date;
-
     bool m_event;
 
 };
