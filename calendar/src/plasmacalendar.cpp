@@ -307,7 +307,7 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
                     Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
                     Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
-                    if (!attribute) {
+		    if (!attribute || attribute->displayName().isEmpty()) {
                         name = col.name();
                     } else {
                         name = attr->displayName();
@@ -316,7 +316,7 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
                     name += " / ";
                 }
 
-                if (!attribute) {
+                if (!attribute || attribute->displayName().isEmpty()) {
                     name += collection.name();
                 } else {
                     name += attribute->displayName();

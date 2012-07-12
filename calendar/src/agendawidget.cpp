@@ -153,8 +153,8 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
 
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
 
-    QDate dateStart = event->dtStart().date();
-    QDate dateEnd = event->dtEnd().date();
+    QDate dateStart = event->dtStart().toLocalZone().date();
+    QDate dateEnd = event->dtEnd().toLocalZone().date();
     QDate date = dateStart;
 
     int daysTo = dateStart.daysTo(dateEnd);
@@ -164,10 +164,10 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
     } else if (dateStart < min && dateEnd < min && !event->recurs()) {
         return;
     } else if (dateStart < min && event->recurs()) {
-        date = event->recurrence()->getPreviousDateTime(KDateTime(min)).date();
+        date = event->recurrence()->getPreviousDateTime(KDateTime(min)).toLocalZone().date();
 
         if (date.addDays(daysTo) < min) {
-            date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
+            date = event->recurrence()->getNextDateTime(KDateTime(date)).toLocalZone().date();
         }
 
         if (date.addDays(daysTo) < min || date > max) {
@@ -210,7 +210,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
             newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
             if (!event->allDay()) {
-                newEvent->setEventTime(event->dtStart().time(), event->dtEnd().time());
+                newEvent->setEventTime(event->dtStart().toLocalZone().time(), event->dtEnd().toLocalZone().time());
             }
 
             if (!m_layout->existDateItem(date)) {
@@ -236,7 +236,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!event->allDay()) {
-                    newEvent->setEventStartTime(event->dtStart().time());
+                    newEvent->setEventStartTime(event->dtStart().toLocalZone().time());
                 }
 
                 if (!m_layout->existDateItem(date)) {
@@ -261,7 +261,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!event->allDay()) {
-                    newEvent->setEventEndTime(event->dtEnd().time());
+                    newEvent->setEventEndTime(event->dtEnd().toLocalZone().time());
                 }
 
                 if (!m_layout->existDateItem(date.addDays(daysTo))) {
@@ -282,7 +282,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
         }
 
         if (event->recurs()) {
-            date = event->recurrence()->getNextDateTime(KDateTime(date)).date();
+            date = event->recurrence()->getNextDateTime(KDateTime(date)).toLocalZone().date();
 
             if (date.isNull()) {
                 return;

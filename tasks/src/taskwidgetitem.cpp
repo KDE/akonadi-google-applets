@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "taskwidgetitem.h"
 
 #include <QWidget>
@@ -72,7 +71,8 @@ void TaskWidgetItem::setItemInfo()
 
     if (m_todo->hasDueDate()) {
         m_date = new TaskWidgetItemDate(this);
-        m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue(), KLocale::FancyLongDate));
+        m_date->setText(KGlobal::locale()->formatDateTime(m_todo->dtDue().toLocalZone(), KLocale::FancyLongDate));
+
         setColorForDate();
         m_layout->addItem(m_date);
     }
@@ -102,7 +102,7 @@ void TaskWidgetItem::TaskWidgetItem::editTask()
     }
 
     if (m_todo->hasDueDate()) {
-        m_editor->setDueDate(m_todo->dtDue());
+        m_editor->setDueDate(m_todo->dtDue().toLocalZone());
     } else {
         m_editor->disableDueDate();
     }
@@ -136,7 +136,7 @@ void TaskWidgetItem::saveTask()
 
 void TaskWidgetItem::setColorForDate()
 {
-    int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue());
+    int days = KDateTime::currentLocalDateTime().daysTo(m_todo->dtDue().toLocalZone());
 
     if (!m_todo->isCompleted()) {
 
