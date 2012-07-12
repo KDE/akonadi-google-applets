@@ -79,19 +79,20 @@ void ContactWidgetItem::setContactIcon()
     if (m_addressee->formattedName().isEmpty() && m_addressee->name().isEmpty()) {
         QStringList emails = m_addressee->emails();
 
-        if (!emails.empty())
+        if (!emails.empty()) {
             m_icon->setText(emails.first());
-        else
+        } else {
             m_icon->setText(i18n("Contact is without name"));
+        }
 
     } else {
 
-        if (!m_addressee->formattedName().isEmpty())
+        if (!m_addressee->formattedName().isEmpty()) {
             m_icon->setText(m_addressee->formattedName());
-        else
+        } else {
             m_icon->setText(m_addressee->name());
+        }
     }
-
 }
 
 void ContactWidgetItem::setContactInfo()
