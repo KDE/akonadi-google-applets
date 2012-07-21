@@ -1,4 +1,4 @@
 [Project]
 Manager=KDevCMakeManager
-Name=akonadi-google-applets
+Name=akonadi-applets
 VersionControl=

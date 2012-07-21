@@ -1,5 +1,4 @@
 /*
-    Akonadi google calendar plasmoid - plasmacalendar.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -293,45 +292,39 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
 
     foreach(const Akonadi::Collection & collection, collections) {
 
-#ifndef ALL_COLLECTIONS
-        if (collection.resource().contains("akonadi_googlecalendar_resource")) {
-#endif
-            if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
-                Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+        if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+            Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
-                QListWidgetItem * item = new QListWidgetItem();
+            QListWidgetItem * item = new QListWidgetItem();
 
-                QString name;
+            QString name;
 
-                if (collections.contains(collection.parentCollection())) {
-                    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
-                    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
+            if (collections.contains(collection.parentCollection())) {
+                Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
+                Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
-		    if (!attribute || attribute->displayName().isEmpty()) {
-                        name = col.name();
-                    } else {
-                        name = attr->displayName();
-                    }
-
-                    name += " / ";
-                }
-
-                if (!attribute || attribute->displayName().isEmpty()) {
-                    name += collection.name();
+		if (!attribute || attribute->displayName().isEmpty()) {
+                    name = col.name();
                 } else {
-                    name += attribute->displayName();
+                    name = attr->displayName();
                 }
 
-                item->setText(name);
-
-                item->setData(Qt::UserRole, collection.id());
-                item->setCheckState(Qt::Unchecked);
-
-                configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
+                name += " / ";
             }
-#ifndef ALL_COLLECTIONS
+
+            if (!attribute || attribute->displayName().isEmpty()) {
+                name += collection.name();
+            } else {
+                name += attribute->displayName();
+            }
+
+            item->setText(name);
+
+            item->setData(Qt::UserRole, collection.id());
+            item->setCheckState(Qt::Unchecked);
+
+            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
         }
-#endif
     }
 
     if (!m_agenda->collectionsList().isEmpty()) {

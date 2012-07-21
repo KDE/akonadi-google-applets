@@ -1,5 +1,4 @@
 /*
-    Akonadi google tasks plasmoid - plasmatasks.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modif y
@@ -233,45 +232,40 @@ void PlasmaTasks::fetchCollectionsFinished(KJob * job)
 
     foreach(const Akonadi::Collection & collection, collections) {
 
-#ifndef ALL_COLLECTIONS
-        if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
-#endif
-            if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
-                Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
+        if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+            Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
 
-                QListWidgetItem * item = new QListWidgetItem();
+            QListWidgetItem * item = new QListWidgetItem();
 
-                QString name;
+            QString name;
 
-                if (collections.contains(collection.parentCollection())) {
-                    Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
-                    Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
-
-                    if (!attribute) {
-                        name = col.name();
-                    } else {
-                        name = attr->displayName();
-                    }
-
-                    name += " / ";
-                }
+            if (collections.contains(collection.parentCollection())) {
+                Akonadi::Collection col = collections.at(collections.indexOf(collection.parentCollection()));
+                Akonadi::EntityDisplayAttribute * attr = col.attribute< Akonadi::EntityDisplayAttribute > ();
 
                 if (!attribute) {
-                    name += collection.name();
+                    name = col.name();
                 } else {
-                    name += attribute->displayName();
+                    name = attr->displayName();
                 }
 
-                item->setText(name);
-
-                item->setData(Qt::UserRole, collection.id());
-                item->setCheckState(Qt::Unchecked);
-
-                configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
+                name += " / ";
             }
-#ifndef ALL_COLLECTIONS
+
+            if (!attribute) {
+                name += collection.name();
+            } else {
+                name += attribute->displayName();
+            }
+
+            item->setText(name);
+
+            item->setData(Qt::UserRole, collection.id());
+            item->setCheckState(Qt::Unchecked);
+
+            configDialog.collectionsList->insertItem(configDialog.collectionsList->count(), item);
         }
-#endif
+
     }
 
     if (!m_tasksList->idList().isEmpty()) {
@@ -306,16 +300,11 @@ void PlasmaTasks::fetchCollectionsForEditorFinished(KJob * job)
 
     foreach(const Akonadi::Collection & collection, collections) {
 
-#ifndef ALL_COLLECTIONS
-        if ((collection.resource().contains("akonadi_googlecalendar_resource")) || (collection.resource().contains("akonadi_googletasks_resource"))) {
-#endif
-            if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
-                m_collections.push_back(collection);
-            }
-#ifndef ALL_COLLECTIONS
+        if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+            m_collections.push_back(collection);
         }
-#endif
     }
+
     m_editor->setCollections(m_collections);
 }
 

@@ -1,5 +1,4 @@
 /*
-    Akonadi google tasks plasmoid - plasmatasks.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -84,6 +83,6 @@ private:
     QList<Akonadi::Collection> m_collections;
 };
 
-K_EXPORT_PLASMA_APPLET(plasma_google_tasks, PlasmaTasks)
+K_EXPORT_PLASMA_APPLET(plasma_tasks, PlasmaTasks)
 
 #endif

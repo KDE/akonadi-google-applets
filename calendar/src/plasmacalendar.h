@@ -1,5 +1,4 @@
 /*
-    Akonadi google calendar plasmoid - plasmacalendar.h
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -77,6 +76,6 @@ private:
     Plasma::TabBar * m_tab;
 };
 
-K_EXPORT_PLASMA_APPLET(plasma_google_calendar, PlasmaCalendar)
+K_EXPORT_PLASMA_APPLET(plasma_calendar, PlasmaCalendar)
 
 #endif

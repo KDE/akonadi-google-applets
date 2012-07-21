@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=Akonadi calendar applet
+Comment=Calendar plasmoid for Akonadi resources
+Type=Service
+ServiceTypes=Plasma/Applet
+Icon=plasma_google_calendar
+
+X-KDE-Library=plasma_applet_calendar
+X-KDE-PluginInfo-Name=plasma_calendar
+X-KDE-PluginInfo-Category=Online Services
+X-KDE-PluginInfo-Author=Jan Grulich
+X-KDE-PluginInfo-Email=grulja@gmail.com
+X-KDE-PluginInfo-Version=0.1.1
+X-KDE-PluginInfo-Website=
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true

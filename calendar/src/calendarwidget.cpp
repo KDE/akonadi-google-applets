@@ -1,5 +1,4 @@
 /*
-    Akonadi google calendar plasmoid - calendarwidget.cpp
     Copyright (C) 2012  Jan Grulich <grulja@gmail.com>
 
     This program is free software: you can redistribute it and/or modify

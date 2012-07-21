@@ -22,8 +22,8 @@ kde4_add_app_icon(contacts_SRCS "im-icons/hi32-app-aim.png" "im-icons/hi32-app-g
                                 "im-icons/hi32-app-irc.png" "im-icons/hi32-app-msn.png" "im-icons/hi32-app-skype.png" 
 			        "im-icons/hi32-app-jabber.png" "im-icons/hi32-app-email.png" "im-icons/hi32-app-home-phone.png"
                                 "im-icons/hi32-app-work-phone.png" "im-icons/hi32-app-cell-phone.png" "im-icons/hi32-app-homepage.png") 
-kde4_add_plugin(plasma_applet_google_contacts ${contacts_SRCS})
-target_link_libraries(plasma_applet_google_contacts
+kde4_add_plugin(plasma_applet_contacts ${contacts_SRCS})
+target_link_libraries(plasma_applet_contacts
                       ${KDE4_PLASMA_LIBS}
 		      ${KDE4_KDEUI_LIBS}
 		      ${KDEPIMLIBS_KABC_LIBS}
@@ -32,10 +32,10 @@ target_link_libraries(plasma_applet_google_contacts
 		      ${KDE4_KIO_LIBS} 
 		      ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
  
-install(TARGETS plasma_applet_google_contacts
+install(TARGETS plasma_applet_contacts
         DESTINATION ${PLUGIN_INSTALL_DIR})
  
-install(FILES plasma-applet-google-contacts.desktop
+install(FILES plasma-applet-contacts.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
 kde4_install_icons(${ICON_INSTALL_DIR})

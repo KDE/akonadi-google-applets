@@ -23,18 +23,18 @@ kde4_add_ui_files(tasks_SRCS ui/config.ui)
 kde4_add_ui_files(tasks_SRCS ui/taskedit.ui)
 kde4_add_ui_files(tasks_SRCS ui/appearanceconfig.ui)
  
-kde4_add_plugin(plasma_applet_google_tasks ${tasks_SRCS})
-target_link_libraries(plasma_applet_google_tasks
+kde4_add_plugin(plasma_applet_tasks ${tasks_SRCS})
+target_link_libraries(plasma_applet_tasks
                       ${KDE4_PLASMA_LIBS} 
 		      ${KDE4_KDEUI_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS} 
                       ${KDE4_KDECORE_LIBS}
                       ${KDE4_KCALCORE_LIBS})
  
-install(TARGETS plasma_applet_google_tasks
+install(TARGETS plasma_applet_tasks
         DESTINATION ${PLUGIN_INSTALL_DIR})
  
-install(FILES plasma-applet-google-tasks.desktop
+install(FILES plasma-applet-tasks.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
 kde4_install_icons(${ICON_INSTALL_DIR})

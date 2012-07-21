@@ -23,8 +23,8 @@ kde4_add_ui_files(calendar_SRCS ui/config.ui)
 kde4_add_ui_files(calendar_SRCS ui/agendaconfig.ui)
 kde4_add_ui_files(calendar_SRCS ui/calendarconfig.ui)
 
-kde4_add_plugin(plasma_applet_google_calendar ${calendar_SRCS})
-target_link_libraries(plasma_applet_google_calendar
+kde4_add_plugin(plasma_applet_calendar ${calendar_SRCS})
+target_link_libraries(plasma_applet_calendar
                       ${KDE4_PLASMA_LIBS}
 		      ${KDE4_KDEUI_LIBS}
 		      ${KDEPIMLIBS_KABC_LIBS}
@@ -33,10 +33,10 @@ target_link_libraries(plasma_applet_google_calendar
 		      ${KDE4_KIO_LIBS} 
 		      ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
  
-install(TARGETS plasma_applet_google_calendar
+install(TARGETS plasma_applet_calendar
         DESTINATION ${PLUGIN_INSTALL_DIR})
  
-install(FILES plasma-applet-google-calendar.desktop
+install(FILES plasma-applet-calendar.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
 kde4_install_icons(${ICON_INSTALL_DIR})
