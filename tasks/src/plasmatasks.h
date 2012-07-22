@@ -83,6 +83,6 @@ private:
     QList<Akonadi::Collection> m_collections;
 };
 
-K_EXPORT_PLASMA_APPLET(plasma_tasks, PlasmaTasks)
+K_EXPORT_PLASMA_APPLET(tasks, PlasmaTasks)
 
 #endif

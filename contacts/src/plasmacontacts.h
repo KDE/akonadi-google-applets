@@ -77,6 +77,6 @@ private:
 
 };
 
-K_EXPORT_PLASMA_APPLET(plasma_contacts, PlasmaContacts)
+K_EXPORT_PLASMA_APPLET(contacts, PlasmaContacts)
 
 #endif

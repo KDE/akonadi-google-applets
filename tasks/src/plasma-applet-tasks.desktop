@@ -6,7 +6,7 @@ ServiceTypes=Plasma/Applet
 Icon=plasma_tasks
 
 X-KDE-Library=plasma_applet_tasks
-X-KDE-PluginInfo-Name=plasma_tasks
+X-KDE-PluginInfo-Name=tasks
 X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Author=Jan Grulich
 X-KDE-PluginInfo-Email=grulja@gmail.com
