@@ -18,10 +18,6 @@ include_directories(
 set(contacts_SRCS contactwidgetiteminfolabel.cpp contactwidgetiteminfo.cpp contactslayout.cpp contactwidgetitem.cpp contactwidget.cpp plasmacontacts.cpp)
 
 kde4_add_ui_files(contacts_SRCS ui/config.ui)
-kde4_add_app_icon(contacts_SRCS "im-icons/hi32-app-aim.png" "im-icons/hi32-app-gadu.png" "im-icons/hi32-app-icq.png"
-                                "im-icons/hi32-app-irc.png" "im-icons/hi32-app-msn.png" "im-icons/hi32-app-skype.png" 
-			        "im-icons/hi32-app-jabber.png" "im-icons/hi32-app-email.png" "im-icons/hi32-app-home-phone.png"
-                                "im-icons/hi32-app-work-phone.png" "im-icons/hi32-app-cell-phone.png" "im-icons/hi32-app-homepage.png") 
 kde4_add_plugin(plasma_applet_contacts ${contacts_SRCS})
 target_link_libraries(plasma_applet_contacts
                       ${KDE4_PLASMA_LIBS}
@@ -39,3 +35,5 @@ install(FILES plasma-applet-contacts.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
 kde4_install_icons(${ICON_INSTALL_DIR})
+
+add_subdirectory(im-icons)
