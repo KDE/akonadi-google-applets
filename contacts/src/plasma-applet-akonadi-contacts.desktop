@@ -3,7 +3,7 @@ Name=Akonadi contacts applet
 Comment=Contacts plasmoid for Akonadi resources
 Type=Service
 ServiceTypes=Plasma/Applet
-Icon=plasma-akonadi-contacts
+Icon=kaddressbook
 
 X-KDE-Library=plasma_applet_akonadi_contacts
 X-KDE-PluginInfo-Name=akonadi_contacts

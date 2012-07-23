@@ -3,7 +3,7 @@ Name=Akonadi calendar applet
 Comment=Calendar plasmoid for Akonadi resources
 Type=Service
 ServiceTypes=Plasma/Applet
-Icon=plasma-akonadi-calendars
+Icon=korganizer
 
 X-KDE-Library=plasma_applet_akonadi_calendars
 X-KDE-PluginInfo-Name=akonadi_calendars

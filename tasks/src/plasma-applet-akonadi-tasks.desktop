@@ -3,7 +3,7 @@ Name=Akonadi tasks applet
 Comment=Tasks plasmoid for Akonadi resources
 Type=Service
 ServiceTypes=Plasma/Applet
-Icon=plasma-akonadi-tasks
+Icon=korg-todo
 
 X-KDE-Library=plasma_applet_akonadi_tasks
 X-KDE-PluginInfo-Name=akonadi_tasks
