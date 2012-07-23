@@ -38,5 +38,3 @@ install(TARGETS plasma_applet_akonadi_calendars
  
 install(FILES plasma-applet-akonadi-calendars.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
- 
-kde4_install_icons(${ICON_INSTALL_DIR})

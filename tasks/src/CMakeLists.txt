@@ -36,5 +36,3 @@ install(TARGETS plasma_applet_akonadi_tasks
  
 install(FILES plasma-applet-akonadi-tasks.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
- 
-kde4_install_icons(${ICON_INSTALL_DIR})
