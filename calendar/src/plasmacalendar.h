@@ -76,6 +76,6 @@ private:
     Plasma::TabBar * m_tab;
 };
 
-K_EXPORT_PLASMA_APPLET(calendar, PlasmaCalendar)
+K_EXPORT_PLASMA_APPLET(akonadi_calendars, PlasmaCalendar)
 
 #endif

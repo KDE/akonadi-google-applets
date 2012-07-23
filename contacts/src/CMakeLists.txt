@@ -1,4 +1,4 @@
-project(plasma-contacts)
+project(plasma-akonadi-contacts)
 
 cmake_minimum_required(VERSION 2.6)
 
@@ -18,8 +18,8 @@ include_directories(
 set(contacts_SRCS contactwidgetiteminfolabel.cpp contactwidgetiteminfo.cpp contactslayout.cpp contactwidgetitem.cpp contactwidget.cpp plasmacontacts.cpp)
 
 kde4_add_ui_files(contacts_SRCS ui/config.ui)
-kde4_add_plugin(plasma_applet_contacts ${contacts_SRCS})
-target_link_libraries(plasma_applet_contacts
+kde4_add_plugin(plasma_applet_akonadi_contacts ${contacts_SRCS})
+target_link_libraries(plasma_applet_akonadi_contacts
                       ${KDE4_PLASMA_LIBS}
 		      ${KDE4_KDEUI_LIBS}
 		      ${KDEPIMLIBS_KABC_LIBS}
@@ -28,10 +28,10 @@ target_link_libraries(plasma_applet_contacts
 		      ${KDE4_KIO_LIBS} 
 		      ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
  
-install(TARGETS plasma_applet_contacts
+install(TARGETS plasma_applet_akonadi_contacts
         DESTINATION ${PLUGIN_INSTALL_DIR})
  
-install(FILES plasma-applet-contacts.desktop
+install(FILES plasma-applet-akonadi-contacts.desktop
         DESTINATION ${SERVICES_INSTALL_DIR})
  
 kde4_install_icons(${ICON_INSTALL_DIR})
