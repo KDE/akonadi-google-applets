@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=Akonadi calendar applet
+Name[et]=Akonadi kalendriaplett
+Name[nl]=Akonadi-applet voor agenda
+Name[pt]='Applet' de calendários do Akonadi
+Name[pt_BR]=Mini-aplicativo de calendário do Akonadi
+Name[uk]=Аплет календаря Akonadi
+Name[x-test]=xxAkonadi calendar appletxx
 Comment=Calendar plasmoid for Akonadi resources
+Comment[et]=Kalendri plasmoid Akonadi ressurssidele
+Comment[nl]=Agenda-plasmoid voor hulpbronnen in Akonadi
+Comment[pt]=Um plasmóide de calendários para os recursos do Akonadi
+Comment[pt_BR]=Um plasmoide de calendário para os recursos do Akonadi
+Comment[uk]=Плазмоїд календаря для ресурсів Akonadi
+Comment[x-test]=xxCalendar plasmoid for Akonadi resourcesxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=korganizer

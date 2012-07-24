@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=Akonadi tasks applet
+Name[et]=Akonadi ülesanneteaplett
+Name[nl]=Akonadi-applet voor taken
+Name[pt]='Applet' de tarefas do Akonadi
+Name[pt_BR]=Mini-aplicativo de tarefas do Akonadi
+Name[uk]=Аплет завдань Akonadi
+Name[x-test]=xxAkonadi tasks appletxx
 Comment=Tasks plasmoid for Akonadi resources
+Comment[et]=Ülesannete plasmoid Akonadi ressurssidele
+Comment[nl]=Taken-plasmoid voor hulpbronnen in Akonadi
+Comment[pt]=Um plasmóide de tarefas para os recursos do Akonadi
+Comment[pt_BR]=Plasmoide de tarefas para os recursos do Akonadi
+Comment[uk]=Плазмоїд завдань для ресурсів Akonadi
+Comment[x-test]=xxTasks plasmoid for Akonadi resourcesxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=korg-todo
