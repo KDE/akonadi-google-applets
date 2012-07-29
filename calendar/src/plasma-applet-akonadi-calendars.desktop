@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi calendar applet
+Name[es]=Miniaplicación de calendario para Akonadi
 Name[et]=Akonadi kalendriaplett
 Name[hu]=Akonadi naptár kisalkalmazás
 Name[it]=Applet del calendario di Akonadi
@@ -10,6 +11,7 @@ Name[sv]=Akonadi kalenderminiprogram
 Name[uk]=Аплет календаря Akonadi
 Name[x-test]=xxAkonadi calendar appletxx
 Comment=Calendar plasmoid for Akonadi resources
+Comment[es]=Plasmoide de calendario para recursos de Akonadi
 Comment[et]=Kalendri plasmoid Akonadi ressurssidele
 Comment[hu]=Naptár plazmoid az Akonadi erőforrásokhoz
 Comment[it]=Plasmoide del calendario per le risorse di Akonadi
