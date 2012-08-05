@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi contacts applet
+Name[da]=Akonadi kontakt-applet
 Name[es]=Miniaplicación de contactos para Akonadi
 Name[et]=Akonadi kontaktideaplett
 Name[hu]=Akonadi partnerek kisalkalmazás
@@ -11,6 +12,7 @@ Name[sv]=Akonadi kontaktminiprogram
 Name[uk]=Аплет контактів Akonadi
 Name[x-test]=xxAkonadi contacts appletxx
 Comment=Contacts plasmoid for Akonadi resources
+Comment[da]=Kontakt-plasmoid til Akonadi-ressourcer
 Comment[es]=Plasmoide de contactos para recursos de Akonadi
 Comment[et]=Kontaktide plasmoid Akonadi ressurssidele
 Comment[hu]=Partnerek plazmoid az Akonadi erőforrásokhoz
