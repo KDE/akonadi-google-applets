@@ -132,12 +132,12 @@ void PlasmaContacts::configAccepted()
     QList<Akonadi::Item::Id> list;
 
     for (int i = 0; i < configDialog.collectionsList->count(); i++) {
-        
-        if (configDialog.collectionsList->item(i)->checkState()) {
+
+	if (configDialog.collectionsList->item(i)->checkState()) {
             list.push_back(configDialog.collectionsList->item(i)->data(Qt::UserRole).toInt());   
         }
     }
-    
+
     conf.writeEntry("collections", list);
     conf.writeEntry("findData", configDialog.findData->isChecked());
     conf.writeEntry("showEmptyContacts", configDialog.showEmptyContacts->isChecked());
@@ -217,12 +217,12 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     }
 
     if (!m_contactList->collectionsList().isEmpty()) {
-        
-        for (int i = 0; i < m_contactList->collectionsList().count(); i++) {
-            
-            for (int j = 0; j < configDialog.collectionsList->count(); j++) {
-                
-                if (m_contactList->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
+
+	for (int i = 0; i < m_contactList->collectionsList().count(); i++) {
+
+	    for (int j = 0; j < configDialog.collectionsList->count(); j++) {
+
+		if (m_contactList->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
                 }
             }

@@ -119,6 +119,8 @@ void PlasmaCalendar::configChanged()
     m_calendar->setOutdatedEventColor(conf.readEntry("outdatedEventColor", "#e64600"));
     m_calendar->setCalendarsColors(map);
     m_calendar->setCollections(list);
+
+    m_tab->setCurrentIndex(conf.readEntry("defaultView", 0));
 }
 
 void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
@@ -132,9 +134,11 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     fetchCollections();
 
     configDialog.loadCollections->setIcon(KIcon("view-refresh"));
+    configDialog.view->setCurrentIndex(conf.readEntry("defaultView", 0));
 
     connect(configDialog.collectionsList, SIGNAL(clicked(QModelIndex)), parent, SLOT(settingsModified()));
     connect(configDialog.loadCollections, SIGNAL(clicked(bool)), SLOT(fetchCollections()));
+    connect(configDialog.view, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
 
     parent->addPage(widget, i18n("General"), icon());
 
@@ -180,6 +184,9 @@ void PlasmaCalendar::configAccepted()
         }
 
     }
+
+    if (configDialog.view->currentIndex() != m_tab->currentIndex())
+	conf.writeEntry("defaultView", configDialog.view->currentIndex());
 
     if (agendaConfigDialog->dateColor() != m_agenda->dateColor())
         conf.writeEntry("dateColor", agendaConfigDialog->dateColor());
