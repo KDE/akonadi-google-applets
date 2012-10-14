@@ -6,35 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>250</height>
+    <width>480</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>250</height>
+    <width>480</width>
+    <height>300</height>
    </size>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>401</width>
-     <height>138</height>
+     <y>10</y>
+     <width>481</width>
+     <height>171</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Show events up to</string>
+       <string>Highlight upcoming events up to </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="KColorButton" name="upcomingDateColor"/>
     </item>
     <item row="0" column="1">
      <widget class="QComboBox" name="weeks">
@@ -60,34 +63,20 @@
       </item>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="KColorButton" name="dateColor">
-      <property name="defaultColor">
-       <color>
-        <red>52</red>
-        <green>62</green>
-        <blue>136</blue>
-       </color>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>Date background color</string>
+       <string>Background color for upcoming events </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="KColorButton" name="upcomingDateColor"/>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_4">
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>Upcoming events background color</string>
+       <string>Background color for date </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -156,10 +145,21 @@
       </item>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_5">
+    <item row="2" column="1">
+     <widget class="KColorButton" name="dateColor">
+      <property name="defaultColor">
+       <color>
+        <red>52</red>
+        <green>62</green>
+        <blue>136</blue>
+       </color>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>Upcoming events up to</string>
+       <string>Display events up to </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -169,7 +169,7 @@
     <item row="4" column="0">
      <widget class="QLabel" name="label_6">
       <property name="text">
-       <string>Events background color</string>
+       <string>Background color for events </string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -185,16 +185,16 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>140</y>
-     <width>401</width>
-     <height>47</height>
+     <y>180</y>
+     <width>471</width>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>Calendar color</string>
+       <string>Colors for calendars</string>
       </property>
      </widget>
     </item>
