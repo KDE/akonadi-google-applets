@@ -116,6 +116,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_dateLayout->addItem(m_daysLayout);
     m_mainLayout->addItem(m_dateLayout);
     m_mainLayout->addItem(m_scroll);
+    m_mainLayout->itemSpacing(5);
 
     setLayout(m_mainLayout);
 
@@ -688,6 +689,7 @@ void CalendarWidget::updateSize(QSizeF size)
 	updateFontDays(fontDays);
     } else if (m_agendaPosition == NextTo) {
 	m_scroll->setMinimumWidth(size.width()/2);
+	m_scroll->setMaximumHeight(size.height());
     }
 }
 

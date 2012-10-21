@@ -37,9 +37,9 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args):
     m_agenda(0),
     m_calendar(0),
     m_scroll(0),
-    m_tab(0),
+    m_tab(0)/*,
     m_agendaSize(300,500),
-    m_calendarSize(300,500)
+    m_calendarSize(300,500)*/
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -127,10 +127,10 @@ void PlasmaCalendar::configChanged()
 
     if (((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2)) == 1) {
 	resize(600, 500);
-	m_calendarSize.setWidth(600);
+	m_widget->setPreferredSize(600, 500);
     } else {
 	resize(300, 500);
-	m_calendarSize.setWidth(300);
+	m_widget->setPreferredSize(300, 500);
     }
 
     m_tab->setCurrentIndex(conf.readEntry("defaultView", 0));
@@ -269,27 +269,29 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
     }
 
     if (constraints & Plasma::SizeConstraint) {
-	if (m_tab->currentIndex() == 0) {
+	/*if (m_tab->currentIndex() == 0) {
 	    m_agendaSize.setHeight(m_widget->size().height());
 	    m_agendaSize.setWidth(m_widget->size().width());
 	} else {
 	    m_calendarSize.setHeight(m_widget->size().height());
 	    m_calendarSize.setWidth(m_widget->size().width());
 	    m_calendar->updateSize(m_widget->size());
-	}
+	}*/
+	m_calendar->updateSize(m_widget->size());
     }
 }
 
 void PlasmaCalendar::widgetGeometryChanged()
 {
-    if (m_tab->currentIndex() == 0) {
+   /* if (m_tab->currentIndex() == 0) {
 	m_agendaSize.setHeight(m_widget->size().height());
 	m_agendaSize.setWidth(m_widget->size().width());
     } else {
 	m_calendarSize.setHeight(m_widget->size().height());
 	m_calendarSize.setWidth(m_widget->size().width());
 	m_calendar->updateSize(m_widget->size());
-    }
+    }*/
+    m_calendar->updateSize(m_widget->size());
 }
 
 void PlasmaCalendar::fetchCollections()
@@ -385,20 +387,23 @@ void PlasmaCalendar::createEvent()
     KRun::runCommand("kincidenceeditor --new-event", 0);
 }
 
-void PlasmaCalendar::tabChanged (int index)
+/*void PlasmaCalendar::tabChanged (int index)
 {
     qDebug() << "tab changed";
     if (index == 0) {
 	if (m_agendaSize != QSize(0,0)) {
-	    resize(m_agendaSize);
+	    //resize(m_agendaSize);
+	    setPreferredSize(m_agendaSize);
 	    qDebug() << "tab 0 " << m_agendaSize;
 	}
     }
     else {
 	if (m_calendarSize != QSize(0,0)) {
-	    resize(m_calendarSize);
+	    setPreferredSize(m_calendarSize);
+	    //resize(m_calendarSize);
 	}
     }
-}
+    m_widget->adjustSize();
+}*/
 
 #include "plasmacalendar.moc"
