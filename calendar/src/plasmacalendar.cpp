@@ -37,7 +37,9 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args):
     m_agenda(0),
     m_calendar(0),
     m_scroll(0),
-    m_tab(0)
+    m_tab(0),
+    m_agendaSize(300,500),
+    m_calendarSize(300,500)
 {
     setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
@@ -72,6 +74,8 @@ QGraphicsWidget * PlasmaCalendar::graphicsWidget()
         m_tab->addTab(i18n("Calendar"), m_calendar);
         m_tab->setTabBarShown(true);
 
+	connect(m_tab, SIGNAL(currentChanged(int)), SLOT(tabChanged(int)));
+	
         m_layout->addItem(m_tab);
         m_layout->addItem(m_button);
 
@@ -104,12 +108,13 @@ void PlasmaCalendar::configChanged()
 
     m_agenda->setCollections(list);
 
-    foreach(Akonadi::Entity::Id id, m_agenda->collectionsList()) {
+    foreach(Akonadi::Entity::Id id, m_agenda->collections()) {
         map.insert(id, conf.readEntry(QString::number(id), "#00C000"));
     }
 
     m_agenda->setCalendarsColors(map);
 
+    m_calendar->setCollections(list);
     m_calendar->setDateColor(conf.readEntry("dateColor", "#343E88"));
     m_calendar->setEventBackgroundColor(conf.readEntry("eventBackgroundColor", "#303030"));
     m_calendar->setSelectedDayColor(conf.readEntry("selectedDayColor", "#306fb5"));
@@ -118,7 +123,15 @@ void PlasmaCalendar::configChanged()
     m_calendar->setCurrentEventColor(conf.readEntry("currentEventColor", "#831215"));
     m_calendar->setOutdatedEventColor(conf.readEntry("outdatedEventColor", "#e64600"));
     m_calendar->setCalendarsColors(map);
-    m_calendar->setCollections(list);
+    m_calendar->setAgendaPosition((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2));
+
+    if (((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2)) == 1) {
+	resize(600, 500);
+	m_calendarSize.setWidth(600);
+    } else {
+	resize(300, 500);
+	m_calendarSize.setWidth(300);
+    }
 
     m_tab->setCurrentIndex(conf.readEntry("defaultView", 0));
 }
@@ -162,6 +175,7 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
     calendarConfigDialog->setOutdatedMonthColor(m_calendar->outdatedMonthColor());
     calendarConfigDialog->setCurrentEventColor(m_calendar->currentEventColor());
     calendarConfigDialog->setOutdatedEventColor(m_calendar->outdatedEventColor());
+    calendarConfigDialog->setAgendaPosition(m_calendar->agendaPosition());
 
     parent->addPage(calendarConfigDialog, i18n("Calendar"), "view-calendar-month");
 
@@ -234,6 +248,9 @@ void PlasmaCalendar::configAccepted()
     if (calendarConfigDialog->outdatedEventColor() != m_calendar->outdatedEventColor())
         conf.writeEntry("outdatedEventColor", calendarConfigDialog->outdatedEventColor());
 
+    if (calendarConfigDialog->agendaPosition() != m_calendar->agendaPosition())
+	conf.writeEntry("agendaPosition", (int)calendarConfigDialog->agendaPosition());
+
     emit configNeedsSaving();
 }
 
@@ -251,14 +268,28 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
         }
     }
 
-    if (constraints & Plasma::SizeConstraint)
-        m_calendar->updateSize(size());
-
+    if (constraints & Plasma::SizeConstraint) {
+	if (m_tab->currentIndex() == 0) {
+	    m_agendaSize.setHeight(m_widget->size().height());
+	    m_agendaSize.setWidth(m_widget->size().width());
+	} else {
+	    m_calendarSize.setHeight(m_widget->size().height());
+	    m_calendarSize.setWidth(m_widget->size().width());
+	    m_calendar->updateSize(m_widget->size());
+	}
+    }
 }
 
 void PlasmaCalendar::widgetGeometryChanged()
 {
-    m_calendar->updateSize(m_widget->size());
+    if (m_tab->currentIndex() == 0) {
+	m_agendaSize.setHeight(m_widget->size().height());
+	m_agendaSize.setWidth(m_widget->size().width());
+    } else {
+	m_calendarSize.setHeight(m_widget->size().height());
+	m_calendarSize.setWidth(m_widget->size().width());
+	m_calendar->updateSize(m_widget->size());
+    }
 }
 
 void PlasmaCalendar::fetchCollections()
@@ -334,13 +365,13 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
         }
     }
 
-    if (!m_agenda->collectionsList().isEmpty()) {
+    if (!m_agenda->collections().isEmpty()) {
 
-        for (int i = 0; i < m_agenda->collectionsList().count(); i++) {
+        for (int i = 0; i < m_agenda->collections().count(); i++) {
 
             for (int j = 0; j < configDialog.collectionsList->count(); j++) {
 
-                if (m_agenda->collectionsList().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
+                if (m_agenda->collections().at(i) == configDialog.collectionsList->item(j)->data(Qt::UserRole).toInt()) {
                     configDialog.collectionsList->item(j)->setCheckState(Qt::Checked);
                 }
             }
@@ -352,6 +383,22 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
 void PlasmaCalendar::createEvent()
 {
     KRun::runCommand("kincidenceeditor --new-event", 0);
+}
+
+void PlasmaCalendar::tabChanged (int index)
+{
+    qDebug() << "tab changed";
+    if (index == 0) {
+	if (m_agendaSize != QSize(0,0)) {
+	    resize(m_agendaSize);
+	    qDebug() << "tab 0 " << m_agendaSize;
+	}
+    }
+    else {
+	if (m_calendarSize != QSize(0,0)) {
+	    resize(m_calendarSize);
+	}
+    }
 }
 
 #include "plasmacalendar.moc"

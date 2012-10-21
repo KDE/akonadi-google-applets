@@ -36,44 +36,28 @@ class AgendaWidget : public QGraphicsWidget
 public:
 
     AgendaWidget(QGraphicsItem * parent = 0, Qt::WindowFlags wFlags = 0);
-
     virtual ~AgendaWidget() {};
 
-    QList<Akonadi::Collection::Id> collectionsList() const {
-        return m_idList;
-    }
-
-    QMap<Akonadi::Item::Id, QString> calendarsColors() const {
-        return m_calendarsColors;
-    }
-
-    QString dateColor() const {
-        return m_dateColor;
-    }
-
-    QString upcomingDateColor() const {
-        return m_upcomingDateColor;
-    }
-
-    QString eventBackgroundColor() const {
-        return m_eventBackgroundColor;
-    }
-
-    int weeks() const {
-        return m_weeks;
-    }
-
-    int upcomingDays() const {
-        return m_upcomingDays;
-    }
-
     void setCollections(const QList<Akonadi::Collection::Id> & ids);
+    QList<Akonadi::Collection::Id> collections() const;
+
     void setCalendarsColors(const QMap<Akonadi::Collection::Id, QString> & colors);
+    QMap<Akonadi::Item::Id, QString> calendarsColors() const;
+
     void setDateColor(const QString  &color);
+    QString dateColor() const;
+
     void setUpcomingDateColor(const QString & color);
+    QString upcomingDateColor() const;
+
     void setEventBackgroundColor(const QString & color);
+    QString eventBackgroundColor() const;
+
     void setWeeks(const int & weeks);
+    int weeks() const;
+
     void setUpcomingDays(const int & days);
+    int upcomingDays() const;
 
 public slots:
     void fetchCollectionsFinished(KJob * job);

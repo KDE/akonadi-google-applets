@@ -48,36 +48,6 @@ AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags):
             SLOT(itemRemoved(Akonadi::Item)));
 }
 
-void AgendaWidget::setDateColor(const QString & color)
-{
-    m_dateColor = color;
-}
-
-void AgendaWidget::setCalendarsColors(const QMap< Akonadi::Entity::Id, QString > & colors)
-{
-    m_calendarsColors = colors;
-}
-
-void AgendaWidget::setUpcomingDateColor(const QString & color)
-{
-    m_upcomingDateColor = color;
-}
-
-void AgendaWidget::setEventBackgroundColor(const QString & color)
-{
-    m_eventBackgroundColor = color;
-}
-
-void AgendaWidget::setWeeks(const int & weeks)
-{
-    m_weeks = weeks;
-}
-
-void AgendaWidget::setUpcomingDays(const int & days)
-{
-    m_upcomingDays = days;
-}
-
 void AgendaWidget::setCollections(const QList< Akonadi::Entity::Id > & ids)
 {
     m_layout->clear();
@@ -86,6 +56,71 @@ void AgendaWidget::setCollections(const QList< Akonadi::Entity::Id > & ids)
 
     if (!m_idList.isEmpty())
         fetchCollections();
+}
+
+QList< Akonadi::Entity::Id > AgendaWidget::collections() const
+{
+    return m_idList;
+}
+
+void AgendaWidget::setDateColor(const QString & color)
+{
+    m_dateColor = color;
+}
+
+QString AgendaWidget::dateColor() const
+{
+    return m_dateColor;
+}
+
+void AgendaWidget::setCalendarsColors(const QMap< Akonadi::Entity::Id, QString > & colors)
+{
+    m_calendarsColors = colors;
+}
+
+QMap< Akonadi::Entity::Id, QString > AgendaWidget::calendarsColors() const
+{
+    return m_calendarsColors;
+}
+
+void AgendaWidget::setUpcomingDateColor(const QString & color)
+{
+    m_upcomingDateColor = color;
+}
+
+QString AgendaWidget::upcomingDateColor() const
+{
+    return m_upcomingDateColor;
+}
+
+void AgendaWidget::setEventBackgroundColor(const QString & color)
+{
+    m_eventBackgroundColor = color;
+}
+
+QString AgendaWidget::eventBackgroundColor() const
+{
+    return m_eventBackgroundColor;
+}
+
+void AgendaWidget::setWeeks(const int & weeks)
+{
+    m_weeks = weeks;
+}
+
+int AgendaWidget::weeks() const
+{
+    return m_weeks;
+}
+
+void AgendaWidget::setUpcomingDays(const int & days)
+{
+    m_upcomingDays = days;
+}
+
+int AgendaWidget::upcomingDays() const
+{
+    return m_upcomingDays;
 }
 
 void AgendaWidget::fetchCollections()

@@ -29,6 +29,7 @@ CalendarConfig::CalendarConfig(QWidget * parent):
     connect(m_calendarConfig->outdatedMonth, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_calendarConfig->currentEvent, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_calendarConfig->outdatedEvent, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_calendarConfig->agendaPosition, SIGNAL(currentIndexChanged(int)), SIGNAL(changed()));
 }
 
 void CalendarConfig::setSelectedDayColor(const QColor & color)
@@ -54,4 +55,9 @@ void CalendarConfig::setCurrentEventColor(const QColor & color)
 void CalendarConfig::setOutdatedEventColor(const QColor & color)
 {
     m_calendarConfig->outdatedEvent->setColor(color);
+}
+
+void CalendarConfig::setAgendaPosition (const CalendarWidget::AgendaPosition position)
+{
+    m_calendarConfig->agendaPosition->setCurrentIndex(position);
 }

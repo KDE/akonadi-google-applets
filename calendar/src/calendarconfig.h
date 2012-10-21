@@ -21,6 +21,7 @@
 
 #include <QWidget>
 #include "ui_calendarconfig.h"
+#include "calendarwidget.h"
 
 class CalendarConfig : public QWidget
 {
@@ -50,11 +51,16 @@ public:
         return m_calendarConfig->outdatedEvent->color().name();
     }
 
+    CalendarWidget::AgendaPosition agendaPosition() const {
+	return (CalendarWidget::AgendaPosition) m_calendarConfig->agendaPosition->currentIndex();
+    }
+
     void setSelectedDayColor(const QColor & color);
     void setCurrentMonthColor(const QColor & color);
     void setOutdatedMonthColor(const QColor & color);
     void setCurrentEventColor(const QColor & color);
     void setOutdatedEventColor(const QColor & color);
+    void setAgendaPosition(const CalendarWidget::AgendaPosition position);
 
 signals:
     void changed();

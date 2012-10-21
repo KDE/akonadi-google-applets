@@ -52,6 +52,7 @@ public slots:
     void fetchCollections();
     void fetchCollectionsFinished(KJob * job);
     void updateCalendars();
+    void tabChanged(int index);
     void widgetGeometryChanged();
 
 protected:
@@ -74,6 +75,9 @@ private:
 
     Plasma::ScrollWidget * m_scroll;
     Plasma::TabBar * m_tab;
+
+    QSize m_agendaSize;
+    QSize m_calendarSize;
 };
 
 K_EXPORT_PLASMA_APPLET(akonadi_calendars, PlasmaCalendar)
