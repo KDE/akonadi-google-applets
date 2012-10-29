@@ -21,7 +21,7 @@
 #include <KRun>
 
 AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGraphicsWidget * parent):
-    Plasma::Frame(parent),
+    QGraphicsWidget(parent),
     m_mainLayout(new QGraphicsLinearLayout(this)),
     m_textLayout(new QGraphicsLinearLayout(Qt::Vertical, m_mainLayout)),
     m_line(new QGraphicsWidget),
@@ -50,8 +50,6 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGr
     m_mainLayout->setAlignment(m_line, Qt::AlignHCenter);
     m_mainLayout->addItem(m_textLayout);
     m_mainLayout->setAlignment(m_textLayout, Qt::AlignCenter);
-
-    setFrameShadow(Raised);
 
     setLayout(m_mainLayout);
 }

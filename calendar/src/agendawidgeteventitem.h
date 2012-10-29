@@ -28,7 +28,7 @@
 #include <Akonadi/Entity>
 #include <KCalCore/Event>
 
-class AgendaWidgetEventItem : public Plasma::Frame
+class AgendaWidgetEventItem : public QGraphicsWidget
 {
     Q_OBJECT
 

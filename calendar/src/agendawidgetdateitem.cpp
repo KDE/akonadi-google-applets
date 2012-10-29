@@ -20,11 +20,14 @@
 
 #include <KIcon>
 
+#include <Plasma/FrameSvg>
+
 AgendaWidgetDateItem::AgendaWidgetDateItem(const QDate & date, QGraphicsWidget * parent):
-    Plasma::Frame(parent),
+    QGraphicsWidget(parent),
     m_layout(new QGraphicsLinearLayout(Qt::Vertical, this)),
     m_dateLabel(new AgendaWidgetDateLabel(this))
 {
+    m_layout->setSpacing(1);
     m_layout->addItem(m_dateLabel);
 
     setDate(date);
@@ -72,12 +75,17 @@ void AgendaWidgetDateItem::clear()
 
 void AgendaWidgetDateItem::setBackgroundColor(const QString & color)
 {
-    QColor clr = QColor(color);
-    clr.setAlphaF(0.5);
-    QPalette palette;
-    palette = this->palette();
-    palette.setColor(QPalette::Window, clr);
-    this->setPalette(palette);
+    if (color != "none") {
+	QColor clr = QColor(color);
+	clr.setAlphaF(0.5);
+	QPalette palette;
+	palette = this->palette();
+	palette.setColor(QPalette::Window, clr);
+	this->setPalette(palette);
+	setAutoFillBackground(true);
+    } else {
+	setAutoFillBackground(false);
+    }
 }
 
 void AgendaWidgetDateItem::setDate(const QDate & date)

@@ -179,6 +179,22 @@
     <item row="4" column="1">
      <widget class="KColorButton" name="eventBackground"/>
     </item>
+    <item row="4" column="2">
+     <widget class="QCheckBox" name="eventBackgroundCheckbox">
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="layoutWidget1">
@@ -257,5 +273,22 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>eventBackgroundCheckbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>eventBackground</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>464</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

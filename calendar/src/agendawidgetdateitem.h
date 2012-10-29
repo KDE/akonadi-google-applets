@@ -28,7 +28,7 @@
 #include "agendawidgetdatelabel.h"
 #include "agendawidgeteventitem.h"
 
-class AgendaWidgetDateItem : public Plasma::Frame
+class AgendaWidgetDateItem : public QGraphicsWidget
 {
     Q_OBJECT
 

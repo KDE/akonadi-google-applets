@@ -303,7 +303,7 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 
 void PlasmaCalendar::widgetGeometryChanged()
 {
-   /* if (m_tab->currentIndex() == 0) {
+    /*if (m_tab->currentIndex() == 0) {
 	m_agendaSize.setHeight(m_widget->size().height());
 	m_agendaSize.setWidth(m_widget->size().width());
     } else {
@@ -433,17 +433,17 @@ void PlasmaCalendar::dataUpdated(const QString& name, const Plasma::DataEngine::
 
 /*void PlasmaCalendar::tabChanged (int index)
 {
-    qDebug() << "tab changed";
+    //qDebug() << "tab changed";
     if (index == 0) {
 	if (m_agendaSize != QSize(0,0)) {
 	    //resize(m_agendaSize);
-	    setPreferredSize(m_agendaSize);
-	    qDebug() << "tab 0 " << m_agendaSize;
+	    m_widget->setPreferredSize(m_agendaSize);
+	    //qDebug() << "tab 0 " << m_agendaSize;
 	}
     }
     else {
 	if (m_calendarSize != QSize(0,0)) {
-	    setPreferredSize(m_calendarSize);
+	    m_widget->setPreferredSize(m_calendarSize);
 	    //resize(m_calendarSize);
 	}
     }

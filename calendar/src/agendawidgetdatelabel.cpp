@@ -29,7 +29,7 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent):
     m_icon->setMaximumHeight(20);
 
     m_layout->addItem(m_icon);
-    m_layout->setContentsMargins(1, 1, 1, 1);
+    m_layout->setContentsMargins(5, 1, 1, 1);
 
     setLayout(m_layout);
     setAutoFillBackground(true);
@@ -51,4 +51,5 @@ void AgendaWidgetDateLabel::setColor(const QString & color)
     palette = this->palette();
     palette.setColor(QPalette::Window, clr);
     this->setPalette(palette);
+    setAutoFillBackground(true);
 }
