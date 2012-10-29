@@ -51,7 +51,6 @@ signals:
     void clicked(const QDate & date);
 
 private:
-    QGraphicsLinearLayout * m_layout;
     QDate m_date;
     bool m_event;
 

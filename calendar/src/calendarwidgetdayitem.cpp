@@ -20,7 +20,6 @@
 
 CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent):
     IconWidget(parent),
-    m_layout(0),
     m_event(false)
 {
     setMinimumSize(10, 10);
