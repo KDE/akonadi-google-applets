@@ -31,6 +31,7 @@
 
 #include "agendawidget.h"
 #include "calendarwidget.h"
+#include "clockwidget.h"
 #include "agendaconfig.h"
 #include "calendarconfig.h"
 #include "ui_config.h"
@@ -59,7 +60,7 @@ protected:
     void constraintsEvent(Plasma::Constraints constraints);
 
 private:
-    virtual QGraphicsWidget * graphicsWidget();
+    //virtual QGraphicsWidget * graphicsWidget();
     void configChanged();
 
     Ui::config configDialog;
@@ -72,6 +73,7 @@ private:
 
     AgendaWidget * m_agenda;
     CalendarWidget * m_calendar;
+    ClockWidget * m_clock;
 
     Plasma::ScrollWidget * m_scroll;
     Plasma::TabBar * m_tab;

@@ -17,7 +17,7 @@ include_directories(
    ${KDEPIMLIBS_INCLUDE_DIRS}
    )
 
-set(calendar_SRCS calendarconfig.cpp calendarwidgetdayitem.cpp calendarwidget.cpp agendaconfig.cpp agendawidgetdatelabel.cpp agendawidgetlayout.cpp agendawidget.cpp agendawidgeteventitem.cpp agendawidgetdateitem.cpp plasmacalendar.cpp)
+set(calendar_SRCS clockwidget.cpp calendarconfig.cpp calendarwidgetdayitem.cpp calendarwidget.cpp agendaconfig.cpp agendawidgetdatelabel.cpp agendawidgetlayout.cpp agendawidget.cpp agendawidgeteventitem.cpp agendawidgetdateitem.cpp plasmacalendar.cpp)
 
 kde4_add_ui_files(calendar_SRCS ui/config.ui)
 kde4_add_ui_files(calendar_SRCS ui/agendaconfig.ui)
@@ -30,7 +30,7 @@ target_link_libraries(plasma_applet_akonadi_calendars
 		      ${KDEPIMLIBS_KABC_LIBS}
                       ${KDEPIMLIBS_AKONADI_LIBS}
 		      ${KDE4_KDECORE_LIBS}
-		      ${KDE4_KIO_LIBS} 
+		      ${KDE4_KIO_LIBS}
 		      ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
  
 install(TARGETS plasma_applet_akonadi_calendars

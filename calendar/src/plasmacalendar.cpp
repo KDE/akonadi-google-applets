@@ -25,6 +25,7 @@
 
 #include <Akonadi/EntityDisplayAttribute>
 
+#include <Plasma/Containment>
 #include <Plasma/PushButton>
 #include <Plasma/IconWidget>
 
@@ -36,55 +37,61 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args):
     m_layout(0),
     m_agenda(0),
     m_calendar(0),
+    m_clock(0),
     m_scroll(0),
     m_tab(0)/*,
     m_agendaSize(300,500),
     m_calendarSize(300,500)*/
 {
-    setConfigurationRequired(true);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
-    setPopupIcon(icon());
+    setPopupIcon(QIcon());
 }
 
 void PlasmaCalendar::init()
 {
-    configChanged();
-}
+    m_widget = new QGraphicsWidget(this);
 
-QGraphicsWidget * PlasmaCalendar::graphicsWidget()
-{
-    if (!m_widget) {
-        m_agenda = new AgendaWidget(this);
-        m_calendar = new CalendarWidget(this);
+    m_agenda = new AgendaWidget(m_widget);
+    m_calendar = new CalendarWidget(m_widget);
 
-        Plasma::PushButton * m_button = new Plasma::PushButton(this);
-        m_button->setMaximumHeight(25);
-        m_button->setText(i18n("Add event"));
+    Plasma::PushButton * m_button = new Plasma::PushButton(m_widget);
+    m_button->setMaximumHeight(25);
+    m_button->setText(i18n("Add event"));
 
-        connect(m_button, SIGNAL(clicked()), SLOT(createEvent()));
+    connect(m_button, SIGNAL(clicked()), SLOT(createEvent()));
 
-        m_layout = new QGraphicsLinearLayout(Qt::Vertical);
+    m_layout = new QGraphicsLinearLayout(Qt::Vertical);
 
-        m_scroll = new Plasma::ScrollWidget(this);
-        m_scroll->setWidget(m_agenda);
+    m_scroll = new Plasma::ScrollWidget(m_widget);
+    m_scroll->setWidget(m_agenda);
 
-        m_tab = new Plasma::TabBar(this);
-        m_tab->addTab(i18n("Agenda"), m_scroll);
-        m_tab->addTab(i18n("Calendar"), m_calendar);
-        m_tab->setTabBarShown(true);
+    m_tab = new Plasma::TabBar(m_widget);
+    m_tab->addTab(i18n("Agenda"), m_scroll);
+    m_tab->addTab(i18n("Calendar"), m_calendar);
+    m_tab->setTabBarShown(true);
 
-	connect(m_tab, SIGNAL(currentChanged(int)), SLOT(tabChanged(int)));
-	
-        m_layout->addItem(m_tab);
-        m_layout->addItem(m_button);
+    connect(m_tab, SIGNAL(currentChanged(int)), SLOT(tabChanged(int)));
 
-        m_widget = new QGraphicsWidget(this);
-        m_widget->setPreferredSize(300, 500);
-        m_widget->setLayout(m_layout);
+    m_layout->addItem(m_tab);
+    m_layout->addItem(m_button);
+
+    if (containment()->containmentType() == Plasma::Containment::DesktopContainment) {
+	resize(300,500);
+	setLayout(m_layout);
+    } else {
+	m_widget->setPreferredSize(300, 500);
+	m_widget->setLayout(m_layout);
+	resize(150, 75);
+	setGraphicsWidget(m_widget);
+
+	m_clock = new ClockWidget(this);
+	QGraphicsLinearLayout * layout = new QGraphicsLinearLayout(this);
+	layout->addItem(m_clock);
+	setLayout(layout);
     }
 
-    return m_widget;
+    configChanged();
 }
 
 void PlasmaCalendar::configChanged()
@@ -126,10 +133,10 @@ void PlasmaCalendar::configChanged()
     m_calendar->setAgendaPosition((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2));
 
     if (((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2)) == 1) {
-	resize(600, 500);
+	//resize(600, 500);
 	m_widget->setPreferredSize(600, 500);
     } else {
-	resize(300, 500);
+	//resize(300, 500);
 	m_widget->setPreferredSize(300, 500);
     }
 
@@ -260,7 +267,7 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 
         if (constraints & Plasma::FormFactorConstraint) {
 
-            if (formFactor() == 2) {
+            if (formFactor() == Plasma::Horizontal) {
                 connect(m_widget, SIGNAL(geometryChanged()), SLOT(widgetGeometryChanged()));
             } else {
                 m_widget->disconnect(SIGNAL(geometryChanged()));
@@ -268,7 +275,7 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
         }
     }
 
-    if (constraints & Plasma::SizeConstraint) {
+    if (constraints & Plasma::SizeConstraint || constraints & Plasma::FormFactorConstraint) {
 	/*if (m_tab->currentIndex() == 0) {
 	    m_agendaSize.setHeight(m_widget->size().height());
 	    m_agendaSize.setWidth(m_widget->size().width());
@@ -278,6 +285,9 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 	    m_calendar->updateSize(m_widget->size());
 	}*/
 	m_calendar->updateSize(m_widget->size());
+
+	if (m_clock)
+	    m_clock->updateSize(size().toSize(), formFactor());
     }
 }
 
