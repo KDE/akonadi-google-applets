@@ -665,7 +665,7 @@ void CalendarWidget::setToday()
 void CalendarWidget::updateSize(QSizeF size)
 {
     if (m_agendaPosition == Under) {
-	if (size.height() > 700) {
+	/*if (size.height() > 700) {
 	    m_scroll->setMinimumHeight(size.height() / 2);
 	    m_scroll->setMaximumHeight(size.height() / 2);
 	} else if (size.height() > 500) {
@@ -686,9 +686,9 @@ void CalendarWidget::updateSize(QSizeF size)
 	} else {
 	    fontDays.setPointSize(fontDays.pointSize());
 	}
-	updateFontDays(fontDays);
+	updateFontDays(fontDays);*/
     } else if (m_agendaPosition == NextTo) {
-	m_scroll->setMinimumWidth(size.width()/2);
+	/*m_scroll->setMinimumWidth(size.width()/2);*/
 	m_scroll->setMaximumHeight(size.height());
     }
 }

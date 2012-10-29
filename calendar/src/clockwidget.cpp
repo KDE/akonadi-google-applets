@@ -49,8 +49,6 @@ void ClockWidget::updateTimeLabel()
     }
     time += QString::number(m_time.minute());
     m_timeLabel->setText(time);
-
-    update();
 }
 
 void ClockWidget::updateDateLabel()
@@ -65,8 +63,6 @@ void ClockWidget::updateDateLabel()
     }
     date += QString::number(m_date.month());
     m_dateLabel->setText(date);
-
-    update();
 }
 
 void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor)

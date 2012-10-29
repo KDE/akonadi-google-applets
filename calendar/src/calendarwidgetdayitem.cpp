@@ -15,14 +15,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "calendarwidgetdayitem.h"
 
 CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent):
     IconWidget(parent),
     m_event(false)
 {
-    setMinimumSize(10, 10);
+    setMinimumSize(12, 12);
     setDrawBackground(true);
     setAutoFillBackground(true);
 
