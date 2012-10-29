@@ -509,7 +509,7 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
 void CalendarWidget::createCalendar()
 {
     QFont fnt = font();
-    fnt.setPointSize(fnt.pointSize() - 3.5);
+    fnt.setPixelSize(11);
 
     Plasma::Label * weekNumber;
 
