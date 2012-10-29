@@ -49,9 +49,26 @@ ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
 
 void ClockWidget::updateLabels()
 {
-    QString time = QString::number(m_time.hour()) + ":" + QString::number(m_time.minute());
+    QString time;
+    if (m_time.hour() < 10) {
+	time += "0";
+    }
+    time = QString::number(m_time.hour()) + ":";
+    if (m_time.minute() < 10) {
+	time += "0";
+    }
+    time += QString::number(m_time.minute());
     m_timeLabel->setText(time);
-    QString date = QString::number(m_date.day()) + "/" + QString::number(m_date.month());
+
+    QString date;
+    if (m_date.day() < 10) {
+	date += "0";
+    }
+    date += QString::number(m_date.day()) + "/";
+    if (m_date.month() < 10) {
+	date += "0";
+    }
+    date += QString::number(m_date.month());
     m_dateLabel->setText(date);
 
     update();
