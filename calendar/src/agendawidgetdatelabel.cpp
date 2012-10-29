@@ -29,6 +29,7 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent):
     m_icon->setMaximumHeight(20);
 
     m_layout->addItem(m_icon);
+    m_layout->setContentsMargins(1, 1, 1, 1);
 
     setLayout(m_layout);
     setAutoFillBackground(true);

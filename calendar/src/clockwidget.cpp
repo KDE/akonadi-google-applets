@@ -35,7 +35,6 @@ ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
     m_layout->addItem(m_dateLabel);
 
     setLayout(m_layout);
-
 }
 
 void ClockWidget::updateTimeLabel()

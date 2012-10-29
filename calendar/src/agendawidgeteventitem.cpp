@@ -31,10 +31,11 @@ AgendaWidgetEventItem::AgendaWidgetEventItem(const Akonadi::Entity::Id & id, QGr
     m_hasEndTime(false),
     m_id(id)
 {
-    m_textLayout->setContentsMargins(5, 2, 2, 2);
+    m_textLayout->setContentsMargins(5, 0, 0, 0);
+    m_textLayout->setSpacing(1);
 
     m_line->setMinimumHeight(5);
-    m_line->setMaximumHeight(35);
+    m_line->setMaximumHeight(30);
     m_line->setMaximumWidth(7);
     m_line->setAutoFillBackground(true);
 
