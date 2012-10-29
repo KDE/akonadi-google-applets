@@ -34,7 +34,8 @@ AgendaWidget::AgendaWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags):
     m_eventBackgroundColor("#303030"),
     m_weeks(1),
     m_upcomingDays(3),
-    m_monitor(new Akonadi::Monitor)
+    m_monitor(new Akonadi::Monitor),
+    m_date(KDateTime::currentLocalDate())
 {
     setLayout(m_layout);
 
@@ -182,7 +183,7 @@ void AgendaWidget::fetchItemsFinished(KJob * job)
 
 void AgendaWidget::addItem(const Akonadi::Item & item)
 {
-    QDate min = KDateTime::currentLocalDate();
+    QDate min = m_date;
     QDate max = min.addDays(7 * m_weeks);
 
     KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
@@ -351,4 +352,13 @@ void AgendaWidget::itemChanged(const Akonadi::Item & item, QSet< QByteArray > ar
 void AgendaWidget::itemRemoved(const Akonadi::Item & item)
 {
     m_layout->removeEvent(item.id());
+}
+
+void AgendaWidget::setDate(const QDate& date)
+{
+    m_date = date;
+
+    m_layout->clear();
+
+    fetchCollections();
 }

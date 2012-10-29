@@ -609,7 +609,7 @@ void CalendarWidget::setColored(const QDate & date)
 
 void CalendarWidget::setDate(const QDate & date)
 {
-    if (!date.isValid()) {
+    if (!date.isValid() || date == m_date) {
         return;
     }
 

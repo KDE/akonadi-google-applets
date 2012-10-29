@@ -23,7 +23,6 @@
 #include <QGraphicsLinearLayout>
 
 #include <Plasma/Label>
-#include <Plasma/DataEngine>
 
 class ClockWidget : public QGraphicsWidget
 {
@@ -34,10 +33,12 @@ public:
     virtual ~ClockWidget();
 
 public slots:
-    void dataUpdated(const QString &name, const Plasma::DataEngine::Data &data);
     void updateSize(const QSize & size, const Plasma::FormFactor factor);
+    void updateClock(const QTime & time, const QDate & date);
+    void updateClock(const QTime & time);
 private slots:
-    void updateLabels();
+    void updateTimeLabel();
+    void updateDateLabel();
 private:
     QGraphicsLinearLayout * m_layout;
 
@@ -46,8 +47,6 @@ private:
 
     Plasma::Label * m_timeLabel;
     Plasma::Label * m_dateLabel;
-
-    Plasma::DataEngine * m_engine;
 };
 
 #endif // CLOCKWIDGET_H

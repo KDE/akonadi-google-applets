@@ -60,6 +60,8 @@ public:
     int upcomingDays() const;
 
 public slots:
+    void setDate(const QDate & date);
+
     void fetchCollectionsFinished(KJob * job);
     void fetchItemsFinished(KJob * job);
 
@@ -86,6 +88,8 @@ private:
     int m_upcomingDays;
 
     Akonadi::Monitor * m_monitor;
+
+    QDate m_date;
 };
 
 #endif // AGENDAWIDGET_H

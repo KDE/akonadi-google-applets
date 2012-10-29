@@ -26,17 +26,8 @@ ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
     m_timeLabel(new Plasma::Label(this)),
     m_dateLabel(new Plasma::Label(this))
 {
-    m_engine = Plasma::DataEngineManager::self()->loadEngine("time");
-    m_engine->connectSource("Local", this, 60000, Plasma::AlignToMinute);
-
-    Plasma::DataEngine::Data data = m_engine->query("Local");
-    m_date = data["Date"].toDate();
-    m_time = data["Time"].toTime();
-
     m_timeLabel->setAlignment(Qt::AlignCenter);
     m_dateLabel->setAlignment(Qt::AlignCenter);
-
-    updateLabels();
 
     m_layout->setItemSpacing(0,2);
     m_layout->setContentsMargins(0, 0, 0, 2);
@@ -47,7 +38,7 @@ ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
 
 }
 
-void ClockWidget::updateLabels()
+void ClockWidget::updateTimeLabel()
 {
     QString time;
     if (m_time.hour() < 10) {
@@ -60,6 +51,11 @@ void ClockWidget::updateLabels()
     time += QString::number(m_time.minute());
     m_timeLabel->setText(time);
 
+    update();
+}
+
+void ClockWidget::updateDateLabel()
+{
     QString date;
     if (m_date.day() < 10) {
 	date += "0";
@@ -100,15 +96,20 @@ void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor
     update();
 }
 
-void ClockWidget::dataUpdated(const QString& name, const Plasma::DataEngine::Data& data)
+void ClockWidget::updateClock(const QTime & time, const QDate & date)
 {
-    qDebug() << "updated";
-    Q_UNUSED(name);
+    m_time = time;
+    m_date = date;
 
-    m_date = data["Date"].toDate();
-    m_time = data["Time"].toTime();
+    updateTimeLabel();
+    updateDateLabel();
+}
 
-    updateLabels();
+void ClockWidget::updateClock(const QTime& time)
+{
+    m_time = time;
+
+    updateTimeLabel();
 }
 
 ClockWidget::~ClockWidget()

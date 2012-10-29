@@ -50,6 +50,9 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args):
 
 void PlasmaCalendar::init()
 {
+    m_engine = dataEngine("time");
+    m_engine->connectSource("Local", this, 60000, Plasma::AlignToMinute);
+
     m_widget = new QGraphicsWidget(this);
 
     m_agenda = new AgendaWidget(m_widget);
@@ -86,9 +89,16 @@ void PlasmaCalendar::init()
 	setGraphicsWidget(m_widget);
 
 	m_clock = new ClockWidget(this);
+	
+	Plasma::DataEngine::Data data = m_engine->query("Local");
+	m_lastTime = data["Time"].toTime();
+	m_lastDate = data["Date"].toDate();
+	m_clock->updateClock(m_lastTime, m_lastDate);
+
 	QGraphicsLinearLayout * layout = new QGraphicsLinearLayout(this);
 	layout->addItem(m_clock);
 	setLayout(layout);
+
     }
 
     configChanged();
@@ -395,6 +405,30 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
 void PlasmaCalendar::createEvent()
 {
     KRun::runCommand("kincidenceeditor --new-event", 0);
+}
+
+void PlasmaCalendar::dataUpdated(const QString& name, const Plasma::DataEngine::Data& data)
+{
+    Q_UNUSED(name);
+
+    m_lastTime = data["Time"].toTime();
+
+    if (m_lastDate != data["Date"].toDate()) {
+	m_lastDate = data["Date"].toDate();
+	if (m_clock) {
+	    m_clock->updateClock(m_lastTime, m_lastDate);
+	}
+	if (m_calendar) {
+	    m_calendar->setDate(m_lastDate);
+	}
+	if (m_agenda) {
+	    m_agenda->setDate(m_lastDate);
+	}
+    } else {
+	if (m_clock) {
+	    m_clock->updateClock(m_lastTime);
+	}
+    }
 }
 
 /*void PlasmaCalendar::tabChanged (int index)

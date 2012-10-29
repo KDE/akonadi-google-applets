@@ -22,6 +22,7 @@
 #include <Plasma/PopupApplet>
 #include <Plasma/ScrollWidget>
 #include <Plasma/TabBar>
+#include <Plasma/DataEngine>
 
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
@@ -48,6 +49,7 @@ public:
     void createConfigurationInterface(KConfigDialog * parent);
 
 public slots:
+    void dataUpdated(const QString &name, const Plasma::DataEngine::Data &data);
     void configAccepted();
     void createEvent();
     void fetchCollections();
@@ -60,7 +62,6 @@ protected:
     void constraintsEvent(Plasma::Constraints constraints);
 
 private:
-    //virtual QGraphicsWidget * graphicsWidget();
     void configChanged();
 
     Ui::config configDialog;
@@ -78,6 +79,10 @@ private:
     Plasma::ScrollWidget * m_scroll;
     Plasma::TabBar * m_tab;
 
+    Plasma::DataEngine * m_engine;
+
+    QTime m_lastTime;
+    QDate m_lastDate;
     /*QSize m_agendaSize;
     QSize m_calendarSize;*/
 };
