@@ -43,7 +43,7 @@ void ClockWidget::updateTimeLabel()
     if (m_time.hour() < 10) {
 	time += "0";
     }
-    time = QString::number(m_time.hour()) + ":";
+    time += QString::number(m_time.hour()) + ":";
     if (m_time.minute() < 10) {
 	time += "0";
     }
