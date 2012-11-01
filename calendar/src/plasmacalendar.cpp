@@ -39,9 +39,7 @@ PlasmaCalendar::PlasmaCalendar(QObject * parent, const QVariantList & args):
     m_calendar(0),
     m_clock(0),
     m_scroll(0),
-    m_tab(0)/*,
-    m_agendaSize(300,500),
-    m_calendarSize(300,500)*/
+    m_tab(0)
 {
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setBackgroundHints(DefaultBackground);
@@ -82,10 +80,13 @@ void PlasmaCalendar::init()
     if (containment()->containmentType() == Plasma::Containment::DesktopContainment) {
 	resize(300,500);
 	setLayout(m_layout);
+	setMinimumSize(200,300);
     } else {
 	m_widget->setPreferredSize(300, 500);
+	m_widget->setMinimumSize(200,300);
 	m_widget->setLayout(m_layout);
 	resize(150, 75);
+
 	setGraphicsWidget(m_widget);
 
 	m_clock = new ClockWidget(this);
@@ -98,7 +99,6 @@ void PlasmaCalendar::init()
 	QGraphicsLinearLayout * layout = new QGraphicsLinearLayout(this);
 	layout->addItem(m_clock);
 	setLayout(layout);
-
     }
 
     configChanged();
@@ -143,11 +143,21 @@ void PlasmaCalendar::configChanged()
     m_calendar->setAgendaPosition((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2));
 
     if (((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2)) == 1) {
-	//resize(600, 500);
-	m_widget->setPreferredSize(600, 500);
+	if (m_clock) {
+	    m_widget->setPreferredSize(600, 500);
+	    m_widget->setMinimumSize(400, 300);
+	} else {
+	    resize(600,500);
+	    setMinimumSize(400,300);
+	}
     } else {
-	//resize(300, 500);
-	m_widget->setPreferredSize(300, 500);
+	if (m_clock) {
+	    m_widget->setPreferredSize(300, 500);
+	    m_widget->setMinimumSize(200, 400);
+	} else {
+	    resize(300,500);
+	    setMinimumSize(200,400);
+	}
     }
 
     m_tab->setCurrentIndex(conf.readEntry("defaultView", 0));
@@ -286,16 +296,11 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
     }
 
     if (constraints & Plasma::SizeConstraint || constraints & Plasma::FormFactorConstraint) {
-	/*if (m_tab->currentIndex() == 0) {
-	    m_agendaSize.setHeight(m_widget->size().height());
-	    m_agendaSize.setWidth(m_widget->size().width());
-	} else {
-	    m_calendarSize.setHeight(m_widget->size().height());
-	    m_calendarSize.setWidth(m_widget->size().width());
+	if (m_clock)
 	    m_calendar->updateSize(m_widget->size());
-	}*/
-	m_calendar->updateSize(m_widget->size());
-
+	else
+	    m_calendar->updateSize(size());
+	
 	if (m_clock)
 	    m_clock->updateSize(size().toSize(), formFactor());
     }
@@ -303,15 +308,10 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 
 void PlasmaCalendar::widgetGeometryChanged()
 {
-    /*if (m_tab->currentIndex() == 0) {
-	m_agendaSize.setHeight(m_widget->size().height());
-	m_agendaSize.setWidth(m_widget->size().width());
-    } else {
-	m_calendarSize.setHeight(m_widget->size().height());
-	m_calendarSize.setWidth(m_widget->size().width());
+    if (m_clock)
 	m_calendar->updateSize(m_widget->size());
-    }*/
-    m_calendar->updateSize(m_widget->size());
+    else
+	m_calendar->updateSize(size());
 }
 
 void PlasmaCalendar::fetchCollections()
@@ -430,24 +430,5 @@ void PlasmaCalendar::dataUpdated(const QString& name, const Plasma::DataEngine::
 	}
     }
 }
-
-/*void PlasmaCalendar::tabChanged (int index)
-{
-    //qDebug() << "tab changed";
-    if (index == 0) {
-	if (m_agendaSize != QSize(0,0)) {
-	    //resize(m_agendaSize);
-	    m_widget->setPreferredSize(m_agendaSize);
-	    //qDebug() << "tab 0 " << m_agendaSize;
-	}
-    }
-    else {
-	if (m_calendarSize != QSize(0,0)) {
-	    m_widget->setPreferredSize(m_calendarSize);
-	    //resize(m_calendarSize);
-	}
-    }
-    m_widget->adjustSize();
-}*/
 
 #include "plasmacalendar.moc"

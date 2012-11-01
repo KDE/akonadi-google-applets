@@ -82,7 +82,7 @@ void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor
 	timeSize -= 1;
     }
 
-    if (dateSize < 10 && factor == Plasma::Horizontal) {
+    if (dateSize < 8 && factor == Plasma::Horizontal) {
 	m_layout->setOrientation(Qt::Horizontal);
 	timeSize = ((size.height()/3) * 3) - 3;
 	dateSize = ((size.height()/3) * 3) - 2;

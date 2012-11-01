@@ -52,7 +52,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_firstDay = KGlobal::locale()->weekStartDay();
 
     Plasma::IconWidget * previousMonth = new Plasma::IconWidget(this);
-    previousMonth->setMinimumSize(20, 20);
+    previousMonth->setMinimumSize(10, 10);
     previousMonth->setMaximumSize(20, 20);
     previousMonth->setOrientation(Qt::Horizontal);
     previousMonth->setIcon(KIcon("arrow-left"));
@@ -60,7 +60,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     connect(previousMonth, SIGNAL(clicked()), SLOT(previousMonth()));
 
     Plasma::IconWidget * nextMonth = new Plasma::IconWidget(this);
-    nextMonth->setMinimumSize(20, 20);
+    nextMonth->setMinimumSize(10, 10);
     nextMonth->setMaximumSize(20, 20);
     nextMonth->setOrientation(Qt::Horizontal);
     nextMonth->setIcon(KIcon("arrow-right"));
@@ -72,6 +72,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     connect(m_spin, SIGNAL(valueChanged(int)), SLOT(yearChanged(int)));
 
     m_combo = new Plasma::ComboBox(this);
+
     m_combo->addItem(i18n("January"));
     m_combo->addItem(i18n("February"));
     m_combo->addItem(i18n("March"));
@@ -92,7 +93,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     today->setIcon(KIcon("view-pim-calendar"));
     today->setOrientation(Qt::Horizontal);
     today->setDrawBackground(true);
-    today->setMinimumSize(30, 30);
+    today->setMinimumSize(10, 10);
     today->setMaximumSize(30, 30);
 
     connect(today, SIGNAL(clicked()), SLOT(setToday()));
@@ -112,11 +113,12 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
     m_scroll = new Plasma::ScrollWidget(this);
     m_scroll->setWidget(m_agenda);
 
+    m_daysLayout->setSpacing(1);
+
     m_dateLayout->addItem(m_changeLayout);
     m_dateLayout->addItem(m_daysLayout);
     m_mainLayout->addItem(m_dateLayout);
     m_mainLayout->addItem(m_scroll);
-    m_mainLayout->itemSpacing(5);
 
     setLayout(m_mainLayout);
 
@@ -577,7 +579,7 @@ void CalendarWidget::clearEvents()
                 dayItem->setColor(m_outdatedMonthColor);
             }
 
-            dayItem->setDayWithEvent(false);
+            dayItem->setHasEvent(false);
         }
     }
 
@@ -601,7 +603,7 @@ void CalendarWidget::setColored(const QDate & date)
                     dayItem->setColor(m_outdatedEventColor);
                 }
 
-                dayItem->setDayWithEvent(true);
+                dayItem->setHasEvent(true);
             }
         }
     }
@@ -637,7 +639,7 @@ void CalendarWidget::setDate(const QDate & date)
 
         for (int day = 1; day < 8; day++) {
             dayItem = static_cast<CalendarWidgetDayItem*>(m_daysLayout->itemAt(week, day));
-            dayItem->setDay(firstDate);
+            dayItem->setDate(firstDate);
 
             if (firstDate == m_date) {
                 dayItem->setColor(m_selectedDayColor);
@@ -665,31 +667,14 @@ void CalendarWidget::setToday()
 void CalendarWidget::updateSize(QSizeF size)
 {
     if (m_agendaPosition == Under) {
-	/*if (size.height() > 700) {
-	    m_scroll->setMinimumHeight(size.height() / 2);
-	    m_scroll->setMaximumHeight(size.height() / 2);
-	} else if (size.height() > 500) {
-	    m_scroll->setMinimumHeight(size.height() / 2.5);
-	    m_scroll->setMaximumHeight(size.height() / 2.5);
-	} else if (size.height() > 300) {
-	    m_scroll->setMinimumHeight(size.height() / 3);
-	    m_scroll->setMaximumHeight(size.height() / 3);
-	}
-
-	QFont fontDays = font();
-	fontDays.setPointSize(10);
-
-	if (size.width() < 250) {
-	    fontDays.setPointSize(fontDays.pointSize() - 4);
-	} else if (size.width() < 300) {
-	    fontDays.setPointSize(fontDays.pointSize() - 3);
-	} else {
-	    fontDays.setPointSize(fontDays.pointSize());
-	}
-	updateFontDays(fontDays);*/
+	m_dateLayout->setMaximumHeight(size.height()/2);
+	m_dateLayout->setMaximumWidth(size.width());
     } else if (m_agendaPosition == NextTo) {
-	/*m_scroll->setMinimumWidth(size.width()/2);*/
-	m_scroll->setMaximumHeight(size.height());
+	m_dateLayout->setMaximumHeight(size.height());
+	m_dateLayout->setMaximumWidth(size.width()/2);
+    } else {
+	m_dateLayout->setMaximumHeight(size.height());
+	m_dateLayout->setMaximumWidth(size.width());
     }
 }
 

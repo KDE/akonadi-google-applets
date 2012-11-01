@@ -55,7 +55,6 @@ public slots:
     void fetchCollections();
     void fetchCollectionsFinished(KJob * job);
     void updateCalendars();
-    //void tabChanged(int index);
     void widgetGeometryChanged();
 
 protected:
@@ -83,8 +82,6 @@ private:
 
     QTime m_lastTime;
     QDate m_lastDate;
-    /*QSize m_agendaSize;
-    QSize m_calendarSize;*/
 };
 
 K_EXPORT_PLASMA_APPLET(akonadi_calendars, PlasmaCalendar)
