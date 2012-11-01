@@ -20,37 +20,40 @@
 #define CALENDARWIDGETDAYITEM_H
 
 #include <Plasma/Frame>
-#include <Plasma/IconWidget>
+#include <Plasma/Label>
 
 #include <QGraphicsLinearLayout>
+#include <QGraphicsWidget>
+#include <QPainter>
 
-class CalendarWidgetDayItem : public Plasma::IconWidget
+class CalendarWidgetDayItem : public QGraphicsWidget
 {
     Q_OBJECT
 
 public:
-    explicit CalendarWidgetDayItem(QGraphicsItem * parent = 0);
+    explicit CalendarWidgetDayItem(QGraphicsWidget * parent = 0);
     virtual ~CalendarWidgetDayItem() {};
 
-    QDate date() const {
-        return m_date;
-    }
+    void setDate(const QDate & date);
+    QDate date() const;
 
-    bool hasEvent() const {
-        return m_event;
-    }
+    void setHasEvent(const bool & event);
+    bool hasEvent() const;
 
-    void setDay(const QDate & date);
-    void setDayWithEvent(const bool & event);
     void setColor(const QString & color);
-
-public slots:
-    void clicked();
 
 signals:
     void clicked(const QDate & date);
 
 private:
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
+
+    Plasma::Label * m_icon;
+    QGraphicsLinearLayout * m_layout;
+
+    QColor m_color;
     QDate m_date;
     bool m_event;
 

@@ -17,40 +17,78 @@
 
 #include "calendarwidgetdayitem.h"
 
-CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsItem * parent):
-    IconWidget(parent),
+CalendarWidgetDayItem::CalendarWidgetDayItem(QGraphicsWidget * parent):
+    QGraphicsWidget(parent),
+    m_icon(new Plasma::Label(this)),
+    m_layout(new QGraphicsLinearLayout(this)),
     m_event(false)
 {
-    setMinimumSize(12, 12);
-    setDrawBackground(true);
-    setAutoFillBackground(true);
+    m_icon->setMinimumSize(25, 25);
+    m_icon->setAlignment(Qt::AlignCenter);
 
-    connect(this, SIGNAL(clicked()), SLOT(clicked()));
+    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->addItem(m_icon);
+
+    setLayout(m_layout);
+
+    setAutoFillBackground(true);
+    setAcceptHoverEvents(true);
 }
 
-void CalendarWidgetDayItem::setDay(const QDate & date)
+void CalendarWidgetDayItem::setDate(const QDate & date)
 {
     m_date = date;
-    setText(QString::number(m_date.day()));
-    update();
+    m_icon->setText(QString::number(m_date.day()));
 }
 
-void CalendarWidgetDayItem::setDayWithEvent(const bool & event)
+QDate CalendarWidgetDayItem::date() const {
+    return m_date;
+}
+
+void CalendarWidgetDayItem::setHasEvent(const bool & event)
 {
     m_event = event;
 }
 
+bool CalendarWidgetDayItem::hasEvent() const {
+    return m_event;
+}
+
 void CalendarWidgetDayItem::setColor(const QString & color)
 {
-    QColor clr = QColor(color);
-    clr.setAlphaF(0.5);
+    m_color = QColor(color);
+    m_color.setAlphaF(0.5);
     QPalette palette;
     palette = this->palette();
-    palette.setColor(QPalette::Window, clr);
+    palette.setColor(QPalette::Window, m_color);
     this->setPalette(palette);
 }
 
-void CalendarWidgetDayItem::clicked()
+void CalendarWidgetDayItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
+    Q_UNUSED(event);
+
     emit clicked(m_date);
+}
+
+void CalendarWidgetDayItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    Q_UNUSED(event);
+
+    m_color.setAlphaF(1);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window, m_color);
+    this->setPalette(palette);
+}
+
+void CalendarWidgetDayItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    Q_UNUSED(event);
+
+    m_color.setAlphaF(0.5);
+    QPalette palette;
+    palette = this->palette();
+    palette.setColor(QPalette::Window, m_color);
+    this->setPalette(palette);
 }
