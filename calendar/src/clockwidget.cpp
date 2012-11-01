@@ -46,34 +46,19 @@ ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
 
 void ClockWidget::updateTimeLabel()
 {
-    QString time;
-    if (m_time.hour() < 10) {
-	time += "0";
-    }
-    time += QString::number(m_time.hour()) + ":";
-    if (m_time.minute() < 10) {
-	time += "0";
-    }
-    time += QString::number(m_time.minute());
+    QString time = KGlobal::locale()->formatTime(m_time);
     m_timeLabel->setText(time);
 }
 
 void ClockWidget::updateDateLabel()
 {
     QString date;
-    /*if (m_date.day() < 10) {
-	date += "0";
-    }
-    date += QString::number(m_date.day()) + "/";
-    if (m_date.month() < 10) {
-	date += "0";
-    }
-    date += QString::number(m_date.month());*/
+
     if (m_dateFormat == 1) {
         date = KGlobal::locale()->formatDate(m_date, KLocale::ShortDate);
-    } else if (m_dateFormat == 2) {    //long date
+    } else if (m_dateFormat == 2) {
         date = KGlobal::locale()->formatDate(m_date, KLocale::LongDate);
-    } else if (m_dateFormat == 3) {    //ISO date
+    } else if (m_dateFormat == 3) {
         date = KGlobal::locale()->formatDate(m_date, KLocale::IsoDate);
     }
 
@@ -176,7 +161,7 @@ int ClockWidget::dateFormat() const
     return m_dateFormat;
 }
 
-void ClockWidget::setFontColor(const QString color)
+void ClockWidget::setFontColor(const QString & color)
 {
     m_color = color;
 

@@ -35,7 +35,7 @@ public:
     void setDateFormat(const int format);
     int dateFormat() const;
 
-    void setFontColor(const QString color);
+    void setFontColor(const QString & color);
     QString fontColor() const;
 
 public slots:
