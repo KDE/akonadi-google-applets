@@ -25,11 +25,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
+     <x>12</x>
+     <y>12</y>
      <width>461</width>
      <height>58</height>
     </rect>
@@ -93,7 +93,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Own font color</string>
+         <string>Custom font color</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -111,7 +111,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="ownFontColor">
+       <widget class="QCheckBox" name="customFontColor">
         <property name="maximumSize">
          <size>
           <width>20</width>
@@ -138,7 +138,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>ownFontColor</sender>
+   <sender>customFontColor</sender>
    <signal>toggled(bool)</signal>
    <receiver>fontColor</receiver>
    <slot>setEnabled(bool)</slot>

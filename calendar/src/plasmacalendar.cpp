@@ -225,15 +225,15 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
 
 	clockConfigDialog.dateFormat->setCurrentIndex(m_clock->dateFormat());
 	if (m_clock->fontColor() == "none") {
-	    clockConfigDialog.ownFontColor->setChecked(false);
+	    clockConfigDialog.customFontColor->setChecked(false);
 	} else {
-	    clockConfigDialog.ownFontColor->setChecked(true);
+	    clockConfigDialog.customFontColor->setChecked(true);
 	    clockConfigDialog.fontColor->setColor(QColor(m_clock->fontColor()));
 	}
 	
 	connect(clockConfigDialog.dateFormat, SIGNAL(currentIndexChanged(int)), parent, SLOT(settingsModified()));
 	connect(clockConfigDialog.fontColor, SIGNAL(changed(QColor)), parent, SLOT(settingsModified()));
-	connect(clockConfigDialog.ownFontColor, SIGNAL(toggled(bool)), parent, SLOT(settingsModified()));
+	connect(clockConfigDialog.customFontColor, SIGNAL(toggled(bool)), parent, SLOT(settingsModified()));
     }
 }
 
@@ -306,7 +306,7 @@ void PlasmaCalendar::configAccepted()
     if (m_clock) {
 	if (clockConfigDialog.dateFormat->currentIndex() != m_clock->dateFormat())
 	    conf.writeEntry("clockDateFormat", clockConfigDialog.dateFormat->currentIndex());
-	if (clockConfigDialog.ownFontColor->isChecked()) {
+	if (clockConfigDialog.customFontColor->isChecked()) {
 	    conf.writeEntry("clockFontColor", clockConfigDialog.fontColor->color().name());
 	} else {
 	    conf.writeEntry("clockFontColor", "none");
