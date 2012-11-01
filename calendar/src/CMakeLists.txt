@@ -22,6 +22,7 @@ set(calendar_SRCS clockwidget.cpp calendarconfig.cpp calendarwidgetdayitem.cpp c
 kde4_add_ui_files(calendar_SRCS ui/config.ui)
 kde4_add_ui_files(calendar_SRCS ui/agendaconfig.ui)
 kde4_add_ui_files(calendar_SRCS ui/calendarconfig.ui)
+kde4_add_ui_files(calendar_SRCS ui/clockconfig.ui)
 
 kde4_add_plugin(plasma_applet_akonadi_calendars ${calendar_SRCS})
 target_link_libraries(plasma_applet_akonadi_calendars

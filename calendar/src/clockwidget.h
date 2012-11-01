@@ -32,6 +32,12 @@ public:
     ClockWidget(QGraphicsItem* parent = 0, Qt::WindowFlags wFlags = 0);
     virtual ~ClockWidget();
 
+    void setDateFormat(const int format);
+    int dateFormat() const;
+
+    void setFontColor(const QString color);
+    QString fontColor() const;
+
 public slots:
     void updateSize(const QSize & size, const Plasma::FormFactor factor);
     void updateClock(const QTime & time, const QDate & date);
@@ -47,6 +53,9 @@ private:
 
     Plasma::Label * m_timeLabel;
     Plasma::Label * m_dateLabel;
+
+    int m_dateFormat;
+    QString m_color;
 };
 
 #endif // CLOCKWIDGET_H

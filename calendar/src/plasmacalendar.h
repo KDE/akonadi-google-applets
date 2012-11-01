@@ -36,6 +36,7 @@
 #include "agendaconfig.h"
 #include "calendarconfig.h"
 #include "ui_config.h"
+#include "ui_clockconfig.h"
 
 class PlasmaCalendar : public Plasma::PopupApplet
 {
@@ -64,6 +65,7 @@ private:
     void configChanged();
 
     Ui::config configDialog;
+    Ui::clockconfig clockConfigDialog;
 
     AgendaConfig * agendaConfigDialog;
     CalendarConfig * calendarConfigDialog;
