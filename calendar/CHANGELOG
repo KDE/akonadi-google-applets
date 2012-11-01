@@ -1,16 +1,35 @@
-########################
+CHANGELOG
+========================
+
+ 0.2.0 - xxxxxxxx
+-------------------------
+ - display a clock instead of a calendar icon
+ - remove the frames around the events
+ - make background under the date with events as an option
+ - calendar switches to the next day
+ - save more space (labels are smaller)
+ - better resizing
+
+ TODO
+ - separate size of individual views
+ - some options for clock
+
+ 0.1.3 - 21.10.2012
+-------------------------
+ - add option for position of daily agenda
+
  0.1.2 - 14.10.2012
- #######################
+-------------------------
  - use bigger window with configurations
  - add option for default view
-########################
+
  0.1.1 - 23.4.2012
-########################
+-------------------------
 - better resizing
 - new today button
 - improvements and bugfixes
 
-########################
  0.1.0 - 10.4.2012
-########################
+----------------------
+
 - initial version

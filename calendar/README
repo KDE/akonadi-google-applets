@@ -1,23 +1,30 @@
-##############
-Installation
-##############
+Akonadi calendar plasmoid
+===========================
 
-mkdir build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr
-make
-make install (as root)
+This is a calendar plasmoid for displaying events from selected Akonadi resources.
+It is written in C++ and was created as part of my bachelors thesis.
 
-kbuildsycoca4
+Dependencies
+---------------------------
 
-and maybe you must quit plasma-desktop
+  - KDE Libraries
+  - KDEPIM Libraries
+  - QJSON
+  - Boost
 
-kquitapp plasma-desktop
-kstart plasma-desktop
+INSTALATION
+---------------------------
 
-################
-Required
-################
-Qt4 
-KDE4
-KdepimLibs
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+  make
+  make install (as root)
+
+  kbuildsycoca4
+
+  and maybe you will have to restart plasma-desktop
+
+  kquitapp plasma-desktop
+  kstart plasma-desktop
+
