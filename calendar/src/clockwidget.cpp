@@ -73,7 +73,8 @@ void ClockWidget::updateDateLabel()
 
 void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor)
 {
-    int timeSize, dateSize;
+    int timeSize = font().pixelSize();
+    int dateSize = font().pixelSize();
 
     if (factor == Plasma::Horizontal) {
 	if (m_dateLabel)
