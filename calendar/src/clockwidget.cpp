@@ -107,8 +107,8 @@ void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor
 	do {
 	    fnt.setPixelSize(fnt.pixelSize() - 1);
 	    QFontMetrics metrics(fnt);
-	    tmpRect = metrics.boundingRect(m_timeLabel->text());
-	    timeSize = fnt.pixelSize()-1;
+	    tmpRect = metrics.boundingRect(QRect(),Qt::TextSingleLine,m_timeLabel->text());
+	    timeSize = fnt.pixelSize();
 	} while (tmpRect.width() > size.width());
 
 	if (m_dateLabel) {
@@ -119,7 +119,7 @@ void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor
 		fnt.setPixelSize(fnt.pixelSize() - 1);
 		QFontMetrics metrics(fnt);
 		tmpRect = metrics.boundingRect(QRect(),Qt::TextWordWrap, m_dateLabel->text());
-		dateSize = fnt.pixelSize()-1;
+		dateSize = fnt.pixelSize();
 	    } while (tmpRect.width() > size.width());
 	}
     }
