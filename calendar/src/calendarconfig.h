@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef CALENDARCONFIG_H
 #define CALENDARCONFIG_H
 

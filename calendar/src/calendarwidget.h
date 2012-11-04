@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef CALENDARWIDGET_H
 #define CALENDARWIDGET_H
 

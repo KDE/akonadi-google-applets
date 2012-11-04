@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "calendarwidget.h"
 
 #include <Akonadi/Entity>
@@ -468,7 +467,7 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
                     eventItem->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                     if (!event->allDay()) {
-                        eventItem->setEventStartTime(event->dtStart().toLocalZone().time());
+                        eventItem->setEventTime(event->dtStart().toLocalZone().time(), QTime());
                     }
 
                     m_agenda->addEvent(eventItem);
@@ -485,7 +484,7 @@ void CalendarWidget::addItem(const Akonadi::Item & item)
                     eventItem->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                     if (!event->allDay()) {
-                        eventItem->setEventEndTime(event->dtEnd().toLocalZone().time());
+                        eventItem->setEventTime(QTime(),event->dtEnd().toLocalZone().time());
                     }
 
                     m_agenda->addEvent(eventItem);

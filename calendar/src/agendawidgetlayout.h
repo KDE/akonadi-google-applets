@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef AGENDAWIDGETLAYOUT_H
 #define AGENDAWIDGETLAYOUT_H
 

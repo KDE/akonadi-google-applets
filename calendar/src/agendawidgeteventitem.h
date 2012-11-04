@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef AGENDAWIDGETEVENTITEM_H
 #define AGENDAWIDGETEVENTITEM_H
 
@@ -46,8 +45,6 @@ public:
     void setColor(const QString & color);
     void setEventName(const QString & name);
     void setEventTime(const QTime & start, const QTime & end);
-    void setEventStartTime(const QTime & start);
-    void setEventEndTime(const QTime & end);
 
 public slots:
     void edit();

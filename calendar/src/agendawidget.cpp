@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "agendawidget.h"
 
 #include <Plasma/Label>
@@ -271,7 +270,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!event->allDay()) {
-                    newEvent->setEventStartTime(event->dtStart().toLocalZone().time());
+                    newEvent->setEventTime(event->dtStart().toLocalZone().time(), QTime());
                 }
 
                 if (!m_layout->existDateItem(date)) {
@@ -296,7 +295,7 @@ void AgendaWidget::addItem(const Akonadi::Item & item)
                 newEvent->setColor(m_calendarsColors[item.storageCollectionId()]);
 
                 if (!event->allDay()) {
-                    newEvent->setEventEndTime(event->dtEnd().toLocalZone().time());
+                    newEvent->setEventTime(QTime(),event->dtEnd().toLocalZone().time());
                 }
 
                 if (!m_layout->existDateItem(date.addDays(daysTo))) {
