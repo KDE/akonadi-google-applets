@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "plasmacalendar.h"
 
 #include <QListWidgetItem>
@@ -85,7 +84,6 @@ void PlasmaCalendar::init()
 	m_widget->setPreferredSize(300, 500);
 	m_widget->setMinimumSize(200,300);
 	m_widget->setLayout(m_layout);
-	resize(150, 75);
 
 	setGraphicsWidget(m_widget);
 
@@ -98,6 +96,8 @@ void PlasmaCalendar::init()
 
 	QGraphicsLinearLayout * layout = new QGraphicsLinearLayout(this);
 	layout->addItem(m_clock);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setSpacing(0);
 	setLayout(layout);
     }
 

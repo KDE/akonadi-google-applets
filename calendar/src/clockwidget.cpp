@@ -15,10 +15,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "clockwidget.h"
 
 #include <Plasma/DataEngineManager>
+#include <KLocale>
+#include <KCalendarSystem>
+#include <QFontMetrics>
 
 ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
     QGraphicsWidget(parent, wFlags),
@@ -55,10 +57,14 @@ void ClockWidget::updateDateLabel()
     QString date;
 
     if (m_dateFormat == 1) {
-        date = KGlobal::locale()->formatDate(m_date, KLocale::ShortDate);
+	QString day = KGlobal::locale()->calendar()->formatDate(m_date, KLocale::Day, KLocale::ShortNumber);
+        QString month = KGlobal::locale()->calendar()->formatDate(m_date, KLocale::Month, KLocale::LongNumber);
+	date = day + "/" + month;
     } else if (m_dateFormat == 2) {
-        date = KGlobal::locale()->formatDate(m_date, KLocale::LongDate);
+        date = KGlobal::locale()->formatDate(m_date, KLocale::ShortDate);
     } else if (m_dateFormat == 3) {
+        date = KGlobal::locale()->formatDate(m_date, KLocale::LongDate);
+    } else if (m_dateFormat == 4) {
         date = KGlobal::locale()->formatDate(m_date, KLocale::IsoDate);
     }
 
@@ -67,44 +73,55 @@ void ClockWidget::updateDateLabel()
 
 void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor)
 {
-    int timeSize = m_timeLabel->font().pixelSize();
-    int dateSize = font().pixelSize();
-
-    if (m_dateLabel)
-	dateSize = m_dateLabel->font().pixelSize();
+    int timeSize, dateSize;
 
     if (factor == Plasma::Horizontal) {
-	if (m_dateLabel) {
-	    timeSize = ((size.height()/3) * 2) - 2;
-	    dateSize = (size.height()/3) - 1;
-	} else {
-	    timeSize = size.height() - 2;
-	}
-    } else if (factor == Plasma::Vertical) {
-	if (m_dateLabel) {
-	    dateSize = (size.width()/6) - 1;
-	}
-	timeSize = ((size.width()/6) * 2) - 2;
-    }
+	if (m_dateLabel)
+	    m_dateLabel->setWordWrap(false);
 
-    if (((size.height() - dateSize - timeSize) <= 4) && m_dateLabel) {
-	timeSize -= 1;
-    }
+	if (m_dateLabel)
+	    timeSize = (size.height() / 3) * 2;
+	else
+	    timeSize = size.height();
+	
+	dateSize = (size.height() / 3);
 
-    if (m_dateLabel) {
-	if (dateSize < 8 && factor == Plasma::Horizontal) {
+	if (dateSize < 8) {
 	    m_layout->setOrientation(Qt::Horizontal);
-	    timeSize = ((size.height()/3) * 3) - 3;
-	    dateSize = ((size.height()/3) * 3) - 2;
-	    m_layout->setSpacing(4);
+	    timeSize = size.height();
+	    dateSize = size.height();
 	} else {
-	    m_layout->setSpacing(2);
 	    m_layout->setOrientation(Qt::Vertical);
 	}
-    }
+	
+    } else if (factor == Plasma::Vertical) {
+	if (m_dateLabel)
+	    m_dateLabel->setWordWrap(true);
 
-    if ((dateSize < 10 && factor == Plasma::Vertical) && m_dateLabel) {
-	dateSize = timeSize;
+	QRect tmpRect;
+	timeSize = size.width();
+
+	QFont fnt = font();
+	fnt.setPixelSize(timeSize);
+	
+	do {
+	    fnt.setPixelSize(fnt.pixelSize() - 1);
+	    QFontMetrics metrics(fnt);
+	    tmpRect = metrics.boundingRect(m_timeLabel->text());
+	    timeSize = fnt.pixelSize()-1;
+	} while (tmpRect.width() > size.width());
+
+	if (m_dateLabel) {
+	    dateSize = timeSize;
+	    fnt = font();
+	    fnt.setPixelSize(dateSize);
+	    do {
+		fnt.setPixelSize(fnt.pixelSize() - 1);
+		QFontMetrics metrics(fnt);
+		tmpRect = metrics.boundingRect(QRect(),Qt::TextWordWrap, m_dateLabel->text());
+		dateSize = fnt.pixelSize()-1;
+	    } while (tmpRect.width() > size.width());
+	}
     }
 
     QFont timeFont = m_timeLabel->font();
@@ -118,8 +135,6 @@ void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor
 	m_dateLabel->setFont(dateFont);
 	m_dateLabel->setMaximumHeight(dateSize);
     }
-
-    update();
 }
 
 void ClockWidget::updateClock(const QTime & time, const QDate & date)

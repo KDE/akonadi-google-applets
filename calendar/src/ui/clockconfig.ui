@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>12</x>
@@ -71,12 +71,17 @@
         </item>
         <item>
          <property name="text">
-          <string>Short date format</string>
+          <string>Compact date</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Long date format</string>
+          <string>Short date</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Long date</string>
          </property>
         </item>
         <item>
