@@ -99,9 +99,11 @@ void AgendaWidgetEventItem::setEventTime(const QTime & start, const QTime & end)
 	time += KGlobal::locale()->formatTime(m_endTime);
     } else if (m_hasStartTime && !m_hasEndTime) {
 	time += i18n("From");
+	time += " ";
 	time += KGlobal::locale()->formatTime(m_startTime);
     } else if (!m_hasStartTime && m_hasEndTime) {
 	time += i18n("Till");
+	time += " ";
 	time += KGlobal::locale()->formatTime(m_endTime);
     }
 
