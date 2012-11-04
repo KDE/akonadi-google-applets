@@ -122,58 +122,80 @@ void AgendaWidgetEventItem::setEventTime(const QTime & start, const QTime & end)
 
 bool AgendaWidgetEventItem::operator<(AgendaWidgetEventItem * item)
 {
+    bool lower = true;
+    bool higher = false;
+
     if (m_hasStartTime && item->m_hasStartTime) {
-        if (m_startTime == item->m_startTime) {
-            if (m_hasEndTime && item->m_hasEndTime) {
-                return (m_endTime > item->m_endTime);
-            } else {
-                if (m_hasEndTime) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        } else {
-            return (m_startTime > item->m_startTime);
-        }
-    }
 
-    if (m_hasStartTime && !item->m_hasStartTime) {
-        if (!m_hasEndTime && item->m_hasEndTime) {
-            return (m_startTime > item->m_endTime);
-        }
-        return false;
+	if (m_startTime != item->m_startTime) {
+
+	    if (m_startTime > item->m_startTime) {
+		return lower;
+	    } else {
+		return higher;
+	    }
+	} else {
+
+	    if (m_hasEndTime && item->m_hasEndTime) {
+
+		if (m_endTime != item->m_endTime) {
+		 
+		    if (m_endTime > item->m_endTime) {
+			return lower;
+		    } else {
+			return higher;
+		    }
+		} else {
+
+		    if (m_eventName->text().toLower() > item->m_eventName->text().toLower()) {
+			return lower;
+		    } else {
+			return higher;
+		    }
+		}
+	    } else {
+
+		if (!m_hasEndTime && item->m_hasEndTime) {
+		    return lower;
+		} else if (m_hasEndTime && !item->m_hasEndTime) {
+		    return higher;
+		}
+	    }
+	}
+    } else {
 	
-    } else if (!m_hasStartTime && item->m_hasStartTime) {
-        if (m_hasEndTime && !item->m_hasEndTime) {
-            return (m_endTime > item->m_startTime);
-        }
-        return true;
+	    if (m_hasEndTime && item->m_hasEndTime) {
+
+		if (m_endTime != item->m_endTime) {
+
+		    if (m_endTime > item->m_endTime) {
+			return lower;
+		    } else {
+			return higher;
+		    }
+		} else {
+
+		    if (m_eventName->text().toLower() > item->m_eventName->text().toLower()) {
+			return lower;
+		    } else {
+			return higher;
+		    }
+		}
+	    } else {
+
+		if (!m_hasEndTime && item->m_hasEndTime) {
+		    return lower;
+		} else if (m_hasEndTime && !item->m_hasEndTime) {
+		    return higher;
+		}
+	    }
     }
 
-    if (m_hasEndTime && item->m_hasEndTime) {
-        if (m_endTime == item->m_endTime) {
-            if (m_hasEndTime && item->m_hasEndTime) {
-                return (m_endTime > item->m_endTime);
-            } else {
-                if (m_hasEndTime) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        } else {
-            return (m_endTime < item->m_endTime);
-        }
+    if (m_eventName->text().toLower() > item->m_eventName->text().toLower()) {
+	return lower;
+    } else {
+	return higher;
     }
-
-    if (m_hasEndTime && !item->m_hasEndTime) {
-        return false;
-    } else if (!m_hasEndTime && item->m_hasEndTime) {
-        return true;
-    }
-
-    return (m_eventName->text().toLower() > item->m_eventName->text().toLower());
 }
 
 bool AgendaWidgetEventItem::operator==(const Akonadi::Entity::Id & id)
