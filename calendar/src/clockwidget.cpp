@@ -30,15 +30,15 @@ ClockWidget::ClockWidget(QGraphicsItem* parent, Qt::WindowFlags wFlags):
     m_dateFormat(0),
     m_color("none")
 {
-    m_timeLabel->setAlignment(Qt::AlignCenter);
+    m_timeLabel->setAlignment(Qt::AlignHCenter);
 
-    m_layout->setSpacing(2);
+    m_layout->setSpacing(1);
     m_layout->setContentsMargins(0, 0, 0, 2);
     m_layout->addItem(m_timeLabel);
 
     if (m_dateFormat) {
 	m_dateLabel = new Plasma::Label(this);
-	m_dateLabel->setAlignment(Qt::AlignCenter);
+	m_dateLabel->setAlignment(Qt::AlignHCenter);
 	m_layout->addItem(m_dateLabel);
     }
 
@@ -80,19 +80,24 @@ void ClockWidget::updateSize(const QSize & size, const Plasma::FormFactor factor
 	if (m_dateLabel)
 	    m_dateLabel->setWordWrap(false);
 
-	if (m_dateLabel)
-	    timeSize = (size.height() / 3) * 2;
-	else
-	    timeSize = size.height();
-	
-	dateSize = (size.height() / 3);
-
-	if (dateSize < 8) {
-	    m_layout->setOrientation(Qt::Horizontal);
-	    timeSize = size.height();
-	    dateSize = size.height();
+	if (m_dateLabel) {
+	    timeSize = ((size.height() / 3) * 2) - 2;
 	} else {
-	    m_layout->setOrientation(Qt::Vertical);
+	    timeSize = size.height() - 2;
+	}
+
+	if (m_dateLabel) {
+	    dateSize = (size.height() / 3) - 1;
+
+	    if (dateSize < 8) {
+		m_layout->setOrientation(Qt::Horizontal);
+		m_layout->setSpacing(4);
+		timeSize = size.height();
+		dateSize = size.height();
+	    } else {
+		m_layout->setOrientation(Qt::Vertical);
+		m_layout->setSpacing(1);
+	    }
 	}
 	
     } else if (factor == Plasma::Vertical) {
@@ -159,7 +164,7 @@ void ClockWidget::setDateFormat(const int format)
 {
     if (m_dateFormat == 0 && format != 0) {
 	m_dateLabel = new Plasma::Label(this);
-	m_dateLabel->setAlignment(Qt::AlignCenter);
+	m_dateLabel->setAlignment(Qt::AlignHCenter);
 	m_layout->addItem(m_dateLabel);
     } else if (m_dateFormat != 0 && format == 0) {
 	m_layout->removeItem(m_dateLabel);
@@ -199,4 +204,3 @@ QString ClockWidget::fontColor() const
 
 ClockWidget::~ClockWidget()
 { }
-

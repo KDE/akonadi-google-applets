@@ -76,10 +76,13 @@ void PlasmaCalendar::init()
     m_layout->addItem(m_tab);
     m_layout->addItem(m_button);
 
+    Plasma::DataEngine::Data data = m_engine->query("Local");
+    m_lastTime = data["Time"].toTime();
+    m_lastDate = data["Date"].toDate();
+
     if (containment()->containmentType() == Plasma::Containment::DesktopContainment) {
-	resize(300,500);
 	setLayout(m_layout);
-	setMinimumSize(200,300);
+	setMinimumSize(300,500);
     } else {
 	m_widget->setPreferredSize(300, 500);
 	m_widget->setMinimumSize(200,300);
@@ -89,16 +92,14 @@ void PlasmaCalendar::init()
 
 	m_clock = new ClockWidget(this);
 	
-	Plasma::DataEngine::Data data = m_engine->query("Local");
-	m_lastTime = data["Time"].toTime();
-	m_lastDate = data["Date"].toDate();
 	m_clock->updateClock(m_lastTime, m_lastDate);
 
 	QGraphicsLinearLayout * layout = new QGraphicsLinearLayout(this);
 	layout->addItem(m_clock);
-	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setContentsMargins(0, 0, 0, 2);
 	layout->setSpacing(0);
 	setLayout(layout);
+	setMaximumSize(384, 256);
     }
 
     configChanged();
@@ -144,18 +145,26 @@ void PlasmaCalendar::configChanged()
 
     if (((CalendarWidget::AgendaPosition)conf.readEntry("agendaPosition", 2)) == 1) {
 	if (m_clock) {
-	    m_widget->setPreferredSize(600, 500);
+	    if (m_widget->size().width() < 400) {
+		m_widget->setPreferredSize(600, 500);
+	    }
 	    m_widget->setMinimumSize(400, 300);
 	} else {
-	    resize(600,500);
+	    if (size().width() < 400) {
+		resize(600,500);
+	    }
 	    setMinimumSize(400,300);
 	}
     } else {
 	if (m_clock) {
-	    m_widget->setPreferredSize(300, 500);
+	    if (m_widget->size().width() < 200) {
+		m_widget->setPreferredSize(300, 500);
+	    }
 	    m_widget->setMinimumSize(200, 400);
 	} else {
-	    resize(300,500);
+	    if (size().width() < 200) {
+		resize(300,500);
+	    }
 	    setMinimumSize(200,400);
 	}
     }
@@ -336,8 +345,9 @@ void PlasmaCalendar::constraintsEvent(Plasma::Constraints constraints)
 	else
 	    m_calendar->updateSize(size());
 	
-	if (m_clock)
+	if (m_clock) {
 	    m_clock->updateSize(size().toSize(), formFactor());
+	}
     }
 }
 
