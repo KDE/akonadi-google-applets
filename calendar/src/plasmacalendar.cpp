@@ -99,7 +99,6 @@ void PlasmaCalendar::init()
 	layout->setContentsMargins(0, 0, 0, 2);
 	layout->setSpacing(0);
 	setLayout(layout);
-	setMaximumSize(384, 256);
     }
 
     configChanged();
