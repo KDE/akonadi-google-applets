@@ -29,15 +29,15 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>Highlight upcoming events up to </string>
+       <string>Highlight upcoming events up to</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="indent">
+       <number>2</number>
+      </property>
      </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="KColorButton" name="upcomingDateColor"/>
     </item>
     <item row="0" column="1">
      <widget class="QComboBox" name="weeks">
@@ -63,23 +63,16 @@
       </item>
      </widget>
     </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Background color for upcoming events </string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>Background color for date </string>
+       <string>Background color for date</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>
@@ -159,20 +152,26 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Display events up to </string>
+       <string>Display events up to</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_6">
       <property name="text">
-       <string>Background color for events </string>
+       <string>Background color for events</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>
@@ -187,6 +186,45 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Background color for upcoming events</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="KColorButton" name="upcomingDateColor"/>
+    </item>
+    <item row="3" column="2">
+     <widget class="QCheckBox" name="upcomingDateColorCheckbox">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+      <property name="tristate">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QCheckBox" name="dateColorCheckbox">
       <property name="text">
        <string/>
       </property>
@@ -278,6 +316,38 @@
    <sender>eventBackgroundCheckbox</sender>
    <signal>toggled(bool)</signal>
    <receiver>eventBackground</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>464</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dateColorCheckbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dateColor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>464</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>upcomingDateColorCheckbox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>upcomingDateColor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

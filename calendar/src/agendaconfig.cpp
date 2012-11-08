@@ -35,6 +35,8 @@ AgendaConfig::AgendaConfig(QWidget * parent): QWidget(parent),
     connect(m_agendaConfig->upcomingDateColor, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_agendaConfig->eventBackground, SIGNAL(changed(QColor)), SIGNAL(changed()));
     connect(m_agendaConfig->calendarColor, SIGNAL(changed(QColor)), SIGNAL(changed()));
+    connect(m_agendaConfig->dateColorCheckbox, SIGNAL(toggled(bool)), SIGNAL(changed()));
+    connect(m_agendaConfig->upcomingDateColorCheckbox, SIGNAL(toggled(bool)), SIGNAL(changed()));
     connect(m_agendaConfig->eventBackgroundCheckbox, SIGNAL(toggled(bool)), SIGNAL(changed()));
 }
 
@@ -75,22 +77,34 @@ void AgendaConfig::addItem(const QString & text, const int & id)
 
 void AgendaConfig::setDateColor(const QColor & color)
 {
-    m_agendaConfig->dateColor->setColor(color);
+    if (color.isValid())
+	m_agendaConfig->dateColor->setColor(color);
+    else
+	m_agendaConfig->dateColorCheckbox->setChecked(false);
 }
 
 QString AgendaConfig::dateColor() const
 {
-    return m_agendaConfig->dateColor->color().name();
+    if (m_agendaConfig->dateColorCheckbox->isChecked())
+	return m_agendaConfig->dateColor->color().name();
+    else
+	return QString("none");
 }
 
 void AgendaConfig::setUpcomingColor(const QColor & color)
 {
-    m_agendaConfig->upcomingDateColor->setColor(color);
+    if (color.isValid())
+	m_agendaConfig->upcomingDateColor->setColor(color);
+    else
+	m_agendaConfig->upcomingDateColorCheckbox->setChecked(false);
 }
 
 QString AgendaConfig::upcomingDateColor() const
 {
-    return m_agendaConfig->upcomingDateColor->color().name();
+    if (m_agendaConfig->upcomingDateColorCheckbox->isChecked())
+	return m_agendaConfig->upcomingDateColor->color().name();
+    else
+	return QString("none");
 }
 
 void AgendaConfig::setEventBackgroundColor(const QColor & color)

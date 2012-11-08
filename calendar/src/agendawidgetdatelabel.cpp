@@ -31,7 +31,6 @@ AgendaWidgetDateLabel::AgendaWidgetDateLabel(QGraphicsWidget * parent):
     m_layout->setContentsMargins(5, 1, 1, 1);
 
     setLayout(m_layout);
-    setAutoFillBackground(true);
 
     setFrameShadow(Raised);
 }
@@ -44,11 +43,15 @@ void AgendaWidgetDateLabel::setText(const QString & date)
 
 void AgendaWidgetDateLabel::setColor(const QString & color)
 {
-    QColor clr(color);
-    clr.setAlphaF(0.3);
-    QPalette palette;
-    palette = this->palette();
-    palette.setColor(QPalette::Window, clr);
-    this->setPalette(palette);
-    setAutoFillBackground(true);
+    if (color != "none") {
+	QColor clr(color);
+	clr.setAlphaF(0.3);
+	QPalette palette;
+	palette = this->palette();
+	palette.setColor(QPalette::Window, clr);
+	this->setPalette(palette);
+	setAutoFillBackground(true);
+    } else {
+	setAutoFillBackground(false);
+    }
 }
