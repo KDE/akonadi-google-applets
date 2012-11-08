@@ -34,6 +34,7 @@ CalendarWidget::CalendarWidget(QGraphicsItem * parent, Qt::WindowFlags wFlags)
       m_changeLayout(new QGraphicsLinearLayout(m_mainLayout)),
       m_daysLayout(new QGraphicsGridLayout(m_mainLayout)),
       m_dateColor("#343E88"),
+      m_actualDayColor("#16ae16"),
       m_eventBackgroundColor("#303030"),
       m_selectedDayColor("#306fb5"),
       m_currentMonthColor("#45484b"),
@@ -170,6 +171,16 @@ void CalendarWidget::setDateColor(const QString & color)
 QString CalendarWidget::dateColor() const
 {
     return m_dateColor;
+}
+
+void CalendarWidget::setActualDayColor(const QString& color)
+{
+    m_actualDayColor = color;
+}
+
+QString CalendarWidget::actualDayColor() const
+{
+    return m_actualDayColor;
 }
 
 void CalendarWidget::setEventBackgroundColor(const QString & color)
@@ -344,7 +355,9 @@ void CalendarWidget::dayChanged(const QDate & date)
 
                 if (m_dayItem->date() == m_date) {
 
-                    if (m_dayItem->hasEvent()) {
+                    if (m_dayItem->date() == KDateTime::currentLocalDate()) {
+			m_dayItem->setColor(m_actualDayColor);
+		    } else if (m_dayItem->hasEvent()) {
                         m_dayItem->setColor(m_currentEventColor);
                     } else {
                         m_dayItem->setColor(m_currentMonthColor);
@@ -572,7 +585,9 @@ void CalendarWidget::clearEvents()
 
             if (dayItem->date() == m_date) {
                 dayItem->setColor(m_selectedDayColor);
-            } else if (dayItem->date().month() == m_date.month()) {
+            } else if (dayItem->date() == KDateTime::currentLocalDate()) {
+		dayItem->setColor(m_actualDayColor);
+	    } else if (dayItem->date().month() == m_date.month()) {
                 dayItem->setColor(m_currentMonthColor);
             } else {
                 dayItem->setColor(m_outdatedMonthColor);
@@ -596,7 +611,9 @@ void CalendarWidget::setColored(const QDate & date)
 
             if (dayItem->date() == date && date != m_date) {
 
-                if (m_date.month() == date.month()) {
+		if (dayItem->date() == KDateTime::currentLocalDate()) {
+		    dayItem->setColor(m_actualDayColor);
+		} else if (m_date.month() == date.month()) {
                     dayItem->setColor(m_currentEventColor);
                 } else {
                     dayItem->setColor(m_outdatedEventColor);
@@ -642,8 +659,10 @@ void CalendarWidget::setDate(const QDate & date)
 
             if (firstDate == m_date) {
                 dayItem->setColor(m_selectedDayColor);
-            } else {
-
+            } else if (firstDate == KDateTime::currentLocalDate()) {
+		dayItem->setColor(m_actualDayColor);
+	    } else {
+		
                 if (firstDate.month() == m_date.month()) {
                     dayItem->setColor(m_currentMonthColor);
                 } else {

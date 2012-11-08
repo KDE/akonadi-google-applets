@@ -133,6 +133,7 @@ void PlasmaCalendar::configChanged()
 
     m_calendar->setCollections(list);
     m_calendar->setDateColor(conf.readEntry("dateColor", "#343E88"));
+    m_calendar->setActualDayColor(conf.readEntry("actualDayColor", "#16ae16"));
     m_calendar->setEventBackgroundColor(conf.readEntry("eventBackgroundColor", "#303030"));
     m_calendar->setSelectedDayColor(conf.readEntry("selectedDayColor", "#306fb5"));
     m_calendar->setCurrentMonthColor(conf.readEntry("currentMonthColor", "#45484b"));
@@ -211,6 +212,7 @@ void PlasmaCalendar::createConfigurationInterface(KConfigDialog * parent)
 
     calendarConfigDialog = new CalendarConfig(0);
 
+    calendarConfigDialog->setActualDayColor(m_calendar->actualDayColor());
     calendarConfigDialog->setSelectedDayColor(m_calendar->selectedDayColor());
     calendarConfigDialog->setCurrentMonthColor(m_calendar->currentMonthColor());
     calendarConfigDialog->setOutdatedMonthColor(m_calendar->outdatedMonthColor());
@@ -288,6 +290,9 @@ void PlasmaCalendar::configAccepted()
     foreach(Akonadi::Entity::Id id, agendaConfigDialog->calendarsColors().keys()) {
         conf.writeEntry(QString::number(id), agendaConfigDialog->calendarsColors()[id]);
     }
+
+    if (calendarConfigDialog->actualDayColor() != m_calendar->actualDayColor())
+        conf.writeEntry("actualDayColor", calendarConfigDialog->actualDayColor());
 
     if (calendarConfigDialog->selectedDayColor() != m_calendar->selectedDayColor())
         conf.writeEntry("selectedDayColor", calendarConfigDialog->selectedDayColor());

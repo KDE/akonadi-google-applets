@@ -30,6 +30,10 @@ public:
 
     explicit CalendarConfig(QWidget * parent = 0);
 
+    QString actualDayColor() const {
+        return m_calendarConfig->actualDay->color().name();
+    }
+
     QString selectedDayColor() const {
         return m_calendarConfig->selectedDay->color().name();
     }
@@ -54,6 +58,7 @@ public:
 	return (CalendarWidget::AgendaPosition) m_calendarConfig->agendaPosition->currentIndex();
     }
 
+    void setActualDayColor(const QColor & color);
     void setSelectedDayColor(const QColor & color);
     void setCurrentMonthColor(const QColor & color);
     void setOutdatedMonthColor(const QColor & color);

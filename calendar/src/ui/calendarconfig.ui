@@ -22,72 +22,87 @@
      <x>0</x>
      <y>10</y>
      <width>481</width>
-     <height>171</height>
+     <height>204</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="1">
-     <widget class="KColorButton" name="selectedDay"/>
+    <item row="7" column="1">
+     <widget class="KColorButton" name="outdatedEvent"/>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>selected day </string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="KColorButton" name="currentEvent"/>
-    </item>
-    <item row="2" column="1">
-     <widget class="KColorButton" name="currentMonth"/>
-    </item>
-    <item row="3" column="1">
-     <widget class="KColorButton" name="outdatedMonth"/>
-    </item>
-    <item row="4" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>day with event in actual month </string>
+       <string>day with event in actual month</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>
     <item row="5" column="0">
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>day with event in outdated month  </string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>day in outdated month </string>
+       <string>day in outdated month</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>
+    <item row="2" column="1">
+     <widget class="KColorButton" name="selectedDay"/>
+    </item>
     <item row="5" column="1">
-     <widget class="KColorButton" name="outdatedEvent"/>
+     <widget class="KColorButton" name="outdatedMonth"/>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>day in actual month </string>
+       <string>selected day</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="KColorButton" name="currentMonth"/>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>day with event in outdated month</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="KColorButton" name="currentEvent"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>day in actual month</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>
@@ -100,12 +115,31 @@
        </font>
       </property>
       <property name="text">
-       <string>Color for: </string>
+       <string>Color for:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
+      <property name="indent">
+       <number>2</number>
+      </property>
      </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>actual day</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="KColorButton" name="actualDay"/>
     </item>
    </layout>
   </widget>
@@ -113,7 +147,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>200</y>
+     <y>220</y>
      <width>481</width>
      <height>26</height>
     </rect>
@@ -122,10 +156,13 @@
     <item>
      <widget class="QLabel" name="label_7">
       <property name="text">
-       <string>Daily agenda position </string>
+       <string>Daily agenda position</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>2</number>
       </property>
      </widget>
     </item>

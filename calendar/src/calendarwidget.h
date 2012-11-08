@@ -57,6 +57,9 @@ public:
     void setDateColor(const QString & color);
     QString dateColor() const;
 
+    void setActualDayColor(const QString & color);
+    QString actualDayColor() const;
+
     void setEventBackgroundColor(const QString & color);
     QString eventBackgroundColor() const;
 
@@ -119,6 +122,7 @@ private:
     QMap<Akonadi::Item::Id, QString> m_calendarsColors;
 
     QString m_dateColor;
+    QString m_actualDayColor;
     QString m_eventBackgroundColor;
     QString m_selectedDayColor;
     QString m_currentMonthColor;
