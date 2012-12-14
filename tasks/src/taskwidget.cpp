@@ -114,7 +114,6 @@ void TaskWidget::fetchCollections()
 {
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
             Akonadi::CollectionFetchJob::Recursive, this);
-    job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
@@ -131,6 +130,11 @@ void TaskWidget::fetchCollectionsFinished(KJob * job)
     const Akonadi::Collection::List collections = fetchJob->collections();
 
     foreach(const Akonadi::Collection & collection, collections) {
+
+        /* Ignore "Last Search" collections */
+        if (collection.resource() == QLatin1String("akonadi_search_resource")) {
+            continue;
+        }
 
         if (m_idList.contains(collection.id())) {
             m_monitor->setCollectionMonitored(collection, true);

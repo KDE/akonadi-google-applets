@@ -164,7 +164,6 @@ void PlasmaContacts::fetchCollections()
 
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
             Akonadi::CollectionFetchJob::Recursive, this);
-    job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
@@ -180,6 +179,11 @@ void PlasmaContacts::fetchCollectionsFinished(KJob * job)
     const Akonadi::Collection::List collections = fetchJob->collections();
 
     foreach(const Akonadi::Collection & collection, collections) {
+
+        /* Ignore "Last Search" collections */
+        if (collection.resource() == QLatin1String("akonadi_search_resource")) {
+            continue;
+        }
 
         if (collection.contentMimeTypes().contains(KABC::Addressee::mimeType())) {
             Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();

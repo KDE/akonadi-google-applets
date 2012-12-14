@@ -371,7 +371,6 @@ void PlasmaCalendar::fetchCollections()
 
     Akonadi::CollectionFetchJob * job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
             Akonadi::CollectionFetchJob::Recursive, this);
-    job->fetchScope();
 
     connect(job, SIGNAL(result(KJob *)), SLOT(fetchCollectionsFinished(KJob *)));
 }
@@ -400,6 +399,11 @@ void PlasmaCalendar::fetchCollectionsFinished(KJob * job)
     const Akonadi::Collection::List collections = fetchJob->collections();
 
     foreach(const Akonadi::Collection & collection, collections) {
+
+        /* Ignore "Last Search" collections */
+        if (collection.resource() == QLatin1String("akonadi_search_resource")) {
+            continue;
+        }
 
         if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
             Akonadi::EntityDisplayAttribute * attribute = collection.attribute< Akonadi::EntityDisplayAttribute > ();
