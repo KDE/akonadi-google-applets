@@ -103,7 +103,7 @@ void ContactWidgetItem::setContactInfo()
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Home).isEmpty()) {
         label = new ContactWidgetItemInfoLabel(m_contactInfo);
         label->setText(m_addressee->phoneNumber(KABC::PhoneNumber::Home).number());
-        label->setIcon("home-phone");
+        label->setIcon("contact-home-phone");
 
         m_contactInfo->addInfo(label);
     }
@@ -111,7 +111,7 @@ void ContactWidgetItem::setContactInfo()
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Work).isEmpty()) {
         label = new ContactWidgetItemInfoLabel(m_contactInfo);
         label->setText(m_addressee->phoneNumber(KABC::PhoneNumber::Work).number());
-        label->setIcon("work-phone");
+        label->setIcon("contact-work-phone");
 
         m_contactInfo->addInfo(label);
     }
@@ -119,7 +119,7 @@ void ContactWidgetItem::setContactInfo()
     if (!m_addressee->phoneNumber(KABC::PhoneNumber::Cell).isEmpty()) {
         label = new ContactWidgetItemInfoLabel(m_contactInfo);
         label->setText(m_addressee->phoneNumber(KABC::PhoneNumber::Cell).number());
-        label->setIcon("cell-phone");
+        label->setIcon("contact-cell-phone");
 
         m_contactInfo->addInfo(label);
     }
@@ -127,7 +127,7 @@ void ContactWidgetItem::setContactInfo()
     foreach(const QString email, m_addressee->emails()) {
         label = new ContactWidgetItemInfoLabel(m_contactInfo);
         label->setText(email);
-        label->setIcon("email");
+        label->setIcon("contact-email");
 
         m_contactInfo->addInfo(label);
 
@@ -137,7 +137,7 @@ void ContactWidgetItem::setContactInfo()
     if (!m_addressee->url().pathOrUrl().isEmpty()) {
         label = new ContactWidgetItemInfoLabel(m_contactInfo);
         label->setText(m_addressee->url().pathOrUrl());
-        label->setIcon("homepage");
+        label->setIcon("contact-homepage");
 
         m_contactInfo->addInfo(label);
 
@@ -148,49 +148,49 @@ void ContactWidgetItem::setContactInfo()
         if (im.contains("messaging/aim")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/aim", "All"));
-            label->setIcon("aim");
+            label->setIcon("contact-aim");
 
             m_contactInfo->addInfo(label);
 
         } else if (im.contains("messaging/gadu")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/gadu", "All"));
-            label->setIcon("gadu");
+            label->setIcon("contact-gadu");
 
             m_contactInfo->addInfo(label);
 
         } else if (im.contains("messaging/icq")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/icq", "All"));
-            label->setIcon("icq");
+            label->setIcon("contact-icq");
 
             m_contactInfo->addInfo(label);
 
         } else if (im.contains("messaging/irc")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/irc", "All"));
-            label->setIcon("irc");
+            label->setIcon("contact-irc");
 
             m_contactInfo->addInfo(label);
 
         } else if (im.contains("messaging/msn")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/msn", "All"));
-            label->setIcon("msn");
+            label->setIcon("contact-msn");
 
             m_contactInfo->addInfo(label);
 
         } else if (im.contains("messaging/skype")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/skype", "All"));
-            label->setIcon("skype");
+            label->setIcon("contact-skype");
 
             m_contactInfo->addInfo(label);
 
         } else if (im.contains("messaging/xmpp")) {
             label = new ContactWidgetItemInfoLabel(m_contactInfo);
             label->setText(m_addressee->custom("messaging/xmpp", "All"));
-            label->setIcon("jabber");
+            label->setIcon("contact-jabber");
 
             m_contactInfo->addInfo(label);
         }
