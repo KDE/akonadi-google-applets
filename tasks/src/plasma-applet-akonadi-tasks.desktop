@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Akonadi tasks applet
+Name[bs]=Akonadi programčić zadataka
 Name[da]=Akonadi opgave-applet
 Name[de]=Akonadi-Aufgaben-Miniprogramm
 Name[es]=Miniaplicación de tareas para Akonadi
@@ -19,6 +20,7 @@ Name[tr]=Akonadi görev uygulamacığı
 Name[uk]=Аплет завдань Akonadi
 Name[x-test]=xxAkonadi tasks appletxx
 Comment=Tasks plasmoid for Akonadi resources
+Comment[bs]=Plazmoid zadataka za Akonadi resurse
 Comment[da]=Opgave-plasmoid til Akonadi-ressourcer
 Comment[de]=Aufgaben-Plasmoid für Akonadi-Ressourcen
 Comment[es]=Plasmoide de tareas para recursos de Akonadi
