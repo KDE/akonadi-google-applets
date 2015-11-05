@@ -2,6 +2,7 @@
 Name=Akonadi contacts applet
 Name[bs]=Akonadi programčić kontakta
 Name[ca]=Miniaplicació de contactes de l'Akonadi
+Name[ca@valencia]=Miniaplicació de contactes de l'Akonadi
 Name[da]=Akonadi kontakt-applet
 Name[de]=Akonadi-Kontakt-Miniprogramm
 Name[es]=Miniaplicación de contactos para Akonadi
@@ -26,6 +27,7 @@ Name[x-test]=xxAkonadi contacts appletxx
 Comment=Contacts plasmoid for Akonadi resources
 Comment[bs]=Plazmoid kontakta za Akonadi resurs
 Comment[ca]=Plasmoide de contactes per als recursos de l'Akonadi
+Comment[ca@valencia]=Plasmoide de contactes per als recursos de l'Akonadi
 Comment[da]=Kontakt-plasmoid til Akonadi-ressourcer
 Comment[de]=Kontakt-Plasmoid für Akonadi-Ressourcen
 Comment[es]=Plasmoide de contactos para recursos de Akonadi

@@ -2,6 +2,7 @@
 Name=Akonadi calendar applet
 Name[bs]=Akonadi kalendarski programčić
 Name[ca]=Miniaplicació de calendari de l'Akonadi
+Name[ca@valencia]=Miniaplicació de calendari de l'Akonadi
 Name[da]=Akonadi kalender-applet
 Name[de]=Akonadi-Kalender-Miniprogramm
 Name[es]=Miniaplicación de calendario para Akonadi
@@ -26,6 +27,7 @@ Name[x-test]=xxAkonadi calendar appletxx
 Comment=Calendar plasmoid for Akonadi resources
 Comment[bs]=Kalendarski plasmoid za Akonadi resurse
 Comment[ca]=Plasmoide de calendari per als recursos de l'Akonadi
+Comment[ca@valencia]=Plasmoide de calendari per als recursos de l'Akonadi
 Comment[da]=Kalender-plasmoid til Akonadi-ressourcer
 Comment[de]=Kalender-Plasmoid für Akonadi-Ressourcen
 Comment[es]=Plasmoide de calendario para recursos de Akonadi
